@@ -25,7 +25,7 @@ import {useGlobalModalContext} from 'context/globalModals';
 import {useDaoVault} from '../hooks/useDaoVault';
 import ProposalSnapshot from 'containers/proposalSnapshot';
 import {useProposals} from '../hooks/useProposals';
-const Dashboard: React.FC = () => {
+const DashboardCopy: React.FC = () => {
   const {t} = useTranslation();
   const {alert} = useAlertContext();
   const {isDesktop, isMobile} = useScreen();
@@ -48,86 +48,12 @@ const Dashboard: React.FC = () => {
   const {data: favoritedDaos, isLoading: favoritedDaosLoading} =
     useFavoritedDaosQuery();
 
-  // Mock 데이터 추가
-  const mockDaoDetail = {
-    address: '0x1234567890abcdef1234567890abcdef12345678',
-    chain: 1,
-    creationDate: new Date('2023-01-01'),
-    metadata: {
-      name: '테스트 DAO',
-      description: '이것은 테스트 목적의 DAO입니다.',
-      avatar: 'https://example.com/avatar.png',
-    },
-    plugins: [
-      {
-        id: 'multisig.plugin.dao.eth',
-        instanceAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-      }
-    ]
-  };
-
-  // Mock 제안 데이터 추가
-  const mockProposals = [
-    {
-      id: 'proposal-1',
-      dao: {
-        address: daoAddressOrEns,
-        name: '테스트 DAO'
-      },
-      title: '첫 번째 제안',
-      description: '이것은 첫 번째 테스트 제안입니다.',
-      status: 'active',
-      creator: '0x1234...', 
-      creationDate: new Date('2024-03-15'),
-      endDate: new Date('2024-03-22'),
-      votes: {
-        yes: 10,
-        no: 2,
-        abstain: 1
-      },
-      executionTxHash: '0x...',
-      approvals: ['0x...'],
-      minApprovals: 1
-    },
-    {
-      id: 'proposal-2',
-      dao: {
-        address: daoAddressOrEns,
-        name: '테스트 DAO'
-      },
-      title: '두 번째 제안',
-      description: '이것은 두 번째 테스트 제안입니다.',
-      status: 'pending',
-      creator: '0x1234...', 
-      creationDate: new Date('2024-03-16'),
-      endDate: new Date('2024-03-23'),
-      votes: {
-        yes: 5,
-        no: 3,
-        abstain: 0
-      },
-      executionTxHash: '0x...',
-      approvals: ['0x...'],
-      minApprovals: 1
-    }
-  ];
-
-  // useDaoQuery 호출 부분 교체
+  // live DAO
   const {
-    data: daoDetail = mockDaoDetail, // 기본값으로 mock 데이터 사용
-    isLoading: daoDetailLoading = false,
-    isSuccess = true,
-  } = {
-    // useDaoQuery(daoAddressOrEns, pollInterval) 대신 mock 객체 반환
-  };
-
-  // useProposals 호출 부분 교체
-  const {
-    data: tempProposals = mockProposals,
-    totalCount = mockProposals.length
-  } = {
-    // useProposals(daoAddressOrEns, 'multisig.plugin.dao.eth', 4) 대신 mock 객체 반환
-  };
+    data: daoDetail,
+    isLoading: daoDetailLoading,
+    isSuccess,
+  } = useDaoQuery(daoAddressOrEns, pollInterval);
 
   const favoriteDaoMatchPredicate = useCallback(
     (favoriteDao: NavigationDao) => {
@@ -189,7 +115,7 @@ const Dashboard: React.FC = () => {
   if (daoDetail && daoAddressOrEns) {
     return (
       <>
-        {/* <HeaderWrapper>
+        <HeaderWrapper>
           <HeaderDao
             daoName={daoDetail.metadata.name}
             daoUrl={`${window.location.origin}/#/multisig-wallets/${network}/${daoAddressOrEns}`}
@@ -212,14 +138,13 @@ const Dashboard: React.FC = () => {
               })
             }
           />
-        </HeaderWrapper> */}
-{/* 
+        </HeaderWrapper>
+
         {isDesktop ? (
           <DashboardContent daoAddressOrEns={daoAddressOrEns} />
         ) : (
           <MobileDashboardContent daoAddressOrEns={daoAddressOrEns} />
-        )} */}
-        <DashboardContent daoAddressOrEns={daoAddressOrEns} />
+        )}
       </>
     );
   } else if (!daoDetail) {
@@ -249,58 +174,11 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   daoAddressOrEns,
 }) => {
   const {transfers, totalAssetValue} = useDaoVault();
-  const mockProposals = [
-    {
-      id: 'proposal-1',
-      dao: {
-        address: daoAddressOrEns,
-        name: '테스트 DAO'
-      },
-      title: '첫 번째 제안',
-      description: '이것은 첫 번째 테스트 제안입니다.',
-      status: 'active',
-      creator: '0x1234...', 
-      creationDate: new Date('2024-03-15'),
-      endDate: new Date('2024-03-22'),
-      votes: {
-        yes: 10,
-        no: 2,
-        abstain: 1
-      },
-      executionTxHash: '0x...',
-      approval: ['0x...'],
-      minApprovals: 1
-    },
-    {
-      id: 'proposal-2',
-      dao: {
-        address: daoAddressOrEns,
-        name: '테스트 DAO'
-      },
-      title: '두 번째 제안',
-      description: '이것은 두 번째 테스트 제안입니다.',
-      status: 'active',
-      creator: '0x1234...', 
-      creationDate: new Date('2024-03-16'),
-      endDate: new Date('2024-03-23'),
-      votes: {
-        yes: 5,
-        no: 3,
-        abstain: 0
-      },
-      executionTxHash: '0x...',
-      approval: ['0x...'],
-      minApprovals: 1
-    }
-  ];
-  
-  // useProposals 호출 부분 교체
-  const {
-    data: tempProposals = mockProposals,
-    totalCount = mockProposals.length
-  } = {
-    // useProposals(daoAddressOrEns, 'multisig.plugin.dao.eth', 4) 대신 mock 객체 반환
-  };
+  const {data: tempProposals, totalCount} = useProposals(
+    daoAddressOrEns,
+    'multisig.plugin.dao.eth',
+    4
+  );
 
   const proposals = useMemo(() => {
     return tempProposals ? tempProposals.slice(0, 4) : [];
@@ -316,7 +194,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         />
       </LeftWideContent>
 
-      {/* <RightNarrowContent>
+      <RightNarrowContent>
         <TreasurySnapshot
           multiSignatureWalletAddress={daoAddressOrEns}
           transfers={transfers}
@@ -326,7 +204,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         <MembersWrapper>
           <MembershipSnapshot daoAddressOrEns={daoAddressOrEns} />
         </MembersWrapper>
-      </RightNarrowContent> */}
+      </RightNarrowContent>
     </>
   );
 };
@@ -353,39 +231,39 @@ const MembersWrapper = styled.div.attrs({
 
 /* MOBILE DASHBOARD CONTENT ================================================= */
 
-// const MobileDashboardContent: React.FC<DashboardContentProps> = ({
-//   daoAddressOrEns,
-// }) => {
-//   const {transfers, totalAssetValue} = useDaoVault();
-//   const {data: tempProposals, totalCount} = useProposals(
-//     daoAddressOrEns,
-//     'multisig.plugin.dao.eth',
-//     4
-//   );
+const MobileDashboardContent: React.FC<DashboardContentProps> = ({
+  daoAddressOrEns,
+}) => {
+  const {transfers, totalAssetValue} = useDaoVault();
+  const {data: tempProposals, totalCount} = useProposals(
+    daoAddressOrEns,
+    'multisig.plugin.dao.eth',
+    4
+  );
 
-//   const proposals = useMemo(() => {
-//     return tempProposals ? tempProposals.slice(0, 4) : [];
-//   }, [tempProposals]);
+  const proposals = useMemo(() => {
+    return tempProposals ? tempProposals.slice(0, 4) : [];
+  }, [tempProposals]);
 
-//   return (
-//     <MobileLayout>
-//       <ProposalSnapshot
-//         daoAddressOrEns={daoAddressOrEns}
-//         proposals={proposals}
-//         proposalLength={totalCount || 0}
-//       />
-//       <TreasurySnapshot
-//         multiSignatureWalletAddress={daoAddressOrEns}
-//         transfers={transfers}
-//         totalAssetValue={totalAssetValue}
-//       />
-//       <MembershipSnapshot daoAddressOrEns={daoAddressOrEns} />
-//     </MobileLayout>
-//   );
-// };
+  return (
+    <MobileLayout>
+      <ProposalSnapshot
+        daoAddressOrEns={daoAddressOrEns}
+        proposals={proposals}
+        proposalLength={totalCount || 0}
+      />
+      <TreasurySnapshot
+        multiSignatureWalletAddress={daoAddressOrEns}
+        transfers={transfers}
+        totalAssetValue={totalAssetValue}
+      />
+      <MembershipSnapshot daoAddressOrEns={daoAddressOrEns} />
+    </MobileLayout>
+  );
+};
 
-// const MobileLayout = styled.div.attrs({
-//   className: 'col-span-full space-y-5',
-// })``;
+const MobileLayout = styled.div.attrs({
+  className: 'col-span-full space-y-5',
+})``;
 
-export default withTransaction('Dashboard', 'component')(Dashboard);
+export default withTransaction('DashboardCopy', 'component')(DashboardCopy);

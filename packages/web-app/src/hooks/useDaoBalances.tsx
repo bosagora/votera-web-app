@@ -40,7 +40,8 @@ export const useLoadTokenLogoURL = (): {getImgUrl: any; tokenList: any} => {
         (t: {symbol: string; chainId: number}) =>
           t.symbol === symbol && t.chainId === chainId
       );
-      return matched ? matched[0].logoURI : '';
+      console.log('>>>>> matched :', matched);
+      return matched && matched.length > 0 ? matched[0].logoURI : '';
     },
     [tokenList]
   );

@@ -32,15 +32,26 @@ const ProposalSnapshot: React.FC<Props> = ({
   proposalLength,
 }) => {
   //console.log'ProposalSnapshot');
+  console.log('proposals', proposals);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {address} = useWallet();
   const {network} = useNetwork(); // TODO ensure this is the dao network
 
-  const {data: members, isLoading: areMembersLoading} = useDaoMembers(
-    daoAddressOrEns,
-    ''
-  );
+  // Mock data for useDaoMembers
+  const mockMembers = {
+    data: {
+      members: new Array(10).fill(null).map((_, index) => ({
+        address: `0x${index}`.padEnd(42, '0'),
+        delegatedVotingPower: '1000000000000000000', // 1 token
+        votingPower: '1000000000000000000',
+      }))
+    },
+    isLoading: false
+  };
+
+  // Replace actual hook with mock data
+  const {data: members, isLoading: areMembersLoading} = mockMembers;
 
   const mappedProposals = useMemo(
     () =>

@@ -96,7 +96,6 @@ import {getFormattedUtcOffset, KNOWN_FORMATS} from '../utils/date';
 // import {fetchBalance, getTokenInfo, isNativeToken} from '../utils/tokens';
 // import {constants} from 'ethers';
 import {useWalletCanVote} from '../hooks/useWalletCanVote';
-import {useLoadTokenLogoURL} from '../hooks/useDaoBalances';
 
 // TODO: @Sepehr Please assign proper tags on action decoding
 // const PROPOSAL_TAGS = ['Finance', 'Withdraw'];
@@ -117,23 +116,93 @@ const Proposal: React.FC = () => {
     () => (urlId ? new ProposalId(urlId) : undefined),
     [urlId]
   );
-  const {getImgUrl} = useLoadTokenLogoURL();
-  // console.log('>>>>> tokenList :', tokenList)
 
-  const {data: daoDetails, isLoading: detailsAreLoading} = useDaoDetailsQuery();
+  // Mock useLoadTokenLogoURL hook
+  const mockUseLoadTokenLogoURL = {
+    getImgUrl: (symbol: string, chainId: number) => {
+      // Return a mock URL for token logos
+      return `https://mock-token-logos.com/${symbol}-${chainId}.png`;
+    }
+  };
+
+  // Replace actual hook with mock
+  const {getImgUrl} = mockUseLoadTokenLogoURL;
+
+  // Mock data for daoDetails
+  const mockDaoDetails = {
+    data: {
+      address: '0x1234567890123456789012345678901234567890',
+      ensDomain: 'test-dao.dao.eth',
+      metadata: {
+        name: 'Test DAO',
+        description: 'This is a test DAO',
+        avatar: 'https://example.com/avatar.png',
+        links: []
+      },
+      plugins: {
+        multisig: {
+          id: 'multisig.plugin.dao.eth'
+        }
+      },
+      chain: 1 // Ethereum Mainnet
+    },
+    isLoading: false
+  };
+
+  // Replace actual hook with mock data
+  const {data: daoDetails, isLoading: detailsAreLoading} = mockDaoDetails;
+
+  // Mock data for daoMembers
+  const mockDaoMembers = {
+    data: {
+      members: [
+        {
+          address: '0x1234567890123456789012345678901234567890',
+          role: 'member',
+          delegatedVotingPower: '1000000000000000000',
+          votingPower: '1000000000000000000',
+        },
+        {
+          address: '0x2345678901234567890123456789012345678901',
+          role: 'member',
+          delegatedVotingPower: '2000000000000000000',
+          votingPower: '2000000000000000000',
+        },
+        {
+          address: '0x3456789012345678901234567890123456789012',
+          role: 'member',
+          delegatedVotingPower: '3000000000000000000',
+          votingPower: '3000000000000000000',
+        }
+      ]
+    },
+    isLoading: false
+  };
+
+  // Replace actual hook with mock data
   const {
     data: {members: daoMemebers},
     isLoading,
-  } = useDaoMembers(daoDetails?.address || '', 'multisig.plugin.dao.eth');
+  } = mockDaoMembers;
 
-  const {data: daoSettings} = usePluginSettings(
-    daoDetails?.address as string,
-    'multisig.plugin.dao.eth' as PluginTypes
-  );
-  // const {
-  //   data: {members},
-  // } = useDaoMembers(daoDetails?.address || '', 'multisig.plugin.dao.eth');
-  //
+  // Mock data for plugin settings
+  const mockPluginSettings = {
+    data: {
+      minApprovals: 2,
+      onlyListed: true,
+      votingMode: VotingMode.STANDARD, // assuming VotingMode is imported
+      minDuration: 7200, // 2 hours in seconds
+      minProposerVotingPower: BigInt(1), // minimum voting power required to create proposal
+      multisigSettings: {
+        minApprovals: 2,
+        onlyListed: true
+      }
+    }
+  };
+
+  // Replace actual hook with mock data
+  const {data: daoSettings} = mockPluginSettings;
+
   const multisigDAO = true;
 
   const allowVoteReplacement = false;
@@ -153,6 +222,63 @@ const Proposal: React.FC = () => {
   const [decodedActions, setDecodedActions] =
     useState<(Action | undefined)[]>();
 
+  // Mock data for proposal transaction context
+  const mockProposalTransactionContext = {
+    handleSubmitVote: (voteValue: VoteValues) => {
+      console.log('Mock submit vote:', voteValue);
+      return Promise.resolve();
+    },
+    handleExecuteProposal: () => {
+      console.log('Mock execute proposal');
+      return Promise.resolve();
+    },
+    isLoading: false,
+    pluginAddress: '0x1234567890123456789012345678901234567890',
+    pluginType: 'multisig.plugin.dao.eth' as PluginTypes,
+    voteSubmitted: false,
+    executionFailed: false,
+    transactionHash: '0x0000000000000000000000000000000000000000000000000000000000000000'
+  };
+
+  // Mock data for proposal
+  const mockProposal = {
+    data: {
+      id: proposalId?.toString(),
+      dao: daoDetails?.address,
+      creator: '0x1234567890123456789012345678901234567890',
+      metadata: {
+        title: 'Test Proposal',
+        description: 'This is a test proposal description'
+      },
+      status: ProposalStatus.ACTIVE,
+      startDate: new Date(),
+      endDate: new Date(Date.now() + 86400000), // 24 hours from now
+      createdTime: {
+        toNumber: () => Date.now()
+      },
+      settings: {
+        minApprovals: 2,
+        onlyListed: true
+      },
+      approval: [] as string[],
+      token: {
+        name: 'Test Token',
+        symbol: 'TEST',
+        decimals: 18
+      },
+      amount: BigInt(1000000000000000000), // 1 token
+      to: '0x2345678901234567890123456789012345678901',
+      tokenAddress: '0x3456789012345678901234567890123456789012',
+      executed: false,
+      executionTxHash: null,
+      title: 'Test Proposal',
+      description: 'This is a test proposal description'
+    },
+    error: null,
+    isLoading: false
+  };
+
+  // Replace actual hooks with mock data
   const {
     handleSubmitVote,
     handleExecuteProposal,
@@ -162,35 +288,23 @@ const Proposal: React.FC = () => {
     voteSubmitted,
     executionFailed,
     transactionHash,
-  } = useProposalTransactionContext();
-
-  // console.log('voteSubmitted :', voteSubmitted);
+  } = mockProposalTransactionContext;
 
   const {
     data: proposal,
     error: proposalError,
     isLoading: proposalIsLoading,
-  } = useDaoProposal(
-    daoDetails?.address as string,
-    proposalId!,
-    pluginType,
-    pluginAddress,
-    intervalInMills
-  );
-  // const midday = useMemo(() => {
-  //   const hours = Number(value?.match(/^(\d+)/)?.[1]);
-  //   return hours > 11 ? 'pm' : 'am';
-  // }, [value]);
-  // const proposal = useMemo(() => {
-  //   console.log('tempProposal : ', tempProposal)
-  //   return tempProposal ?  tempProposal.slice(0, 5);
-  // }, [tempProposal]);
-  const {data: canVote} = useWalletCanVote(
-    address,
-    daoMemebers,
-    proposal?.approval,
-    proposal?.executed
-  );
+  } = mockProposal;
+
+  // Mock data for wallet can vote
+  const mockWalletCanVote = {
+    data: true, // 투표 가능한 상태로 설정
+    isLoading: false
+  };
+
+  // Replace actual hook with mock data
+  const {data: canVote} = mockWalletCanVote;
+
   // const canVote = true;
   // console.log('canVote >>>> :', canVote);
 
@@ -220,27 +334,56 @@ const Proposal: React.FC = () => {
    *                     Hooks                     *
    *************************************************/
 
-  // set editor data
+  // proposal status effect
+  useEffect(() => {
+    if (proposal) {
+      // set the very first time
+      setVoteStatus(getVoteStatus(proposal, t));
+    }
+  }, []);
+
+  // editor content effect
   // useEffect(() => {
   //   if (proposal && editor) {
   //     editor.commands.setContent(
-  //       // Default list of allowed tags and attributes - https://www.npmjs.com/package/sanitize-html#default-options
   //       sanitizeHtml(proposal.metadata.description, {
-  //         // the disallowedTagsMode displays the disallowed tags to be rendered as a string
   //         disallowedTagsMode: 'recursiveEscape',
   //       }),
   //       true
   //     );
   //   }
   // }, [editor, proposal]);
-  //
+
+  // proposal status tab effect
   useEffect(() => {
     if (proposal?.status) {
       setTerminalTab(
         proposal.status === ProposalStatus.EXECUTED ? 'breakdown' : 'info'
       );
     }
-  }, [proposal?.status]);
+  }, []);
+
+  // cache status effect
+  useEffect(() => {
+    if (proposal && proposal.status !== get('proposalStatus')) {
+      set('proposalStatus', proposal.status);
+    }
+  }, []);
+
+  // voting process effect
+  useEffect(() => {
+    if (isOnWrongNetwork || !isConnected || !canVote) {
+      setVotingInProcess(false);
+    }
+  }, []);
+
+  // voter tab effect
+  useEffect(() => {
+    if (voteSubmitted) {
+      setTerminalTab('voters');
+      setVotingInProcess(false);
+    }
+  }, [voteSubmitted]);
 
   // decode proposal actions
   useEffect(() => {
@@ -268,14 +411,7 @@ const Proposal: React.FC = () => {
 
     // );
     setDecodedActions([withdrawAction]);
-  }, [client, daoDetails?.chain, getImgUrl, network, proposal, provider, t]);
-
-  // caches the status for breadcrumb
-  useEffect(() => {
-    if (proposal && proposal.status !== get('proposalStatus'))
-      set('proposalStatus', proposal.status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [proposal?.status]);
+  }, []);
 
   // handle can vote and wallet connection status
   useEffect(() => {
@@ -292,7 +428,7 @@ const Proposal: React.FC = () => {
         open('network');
       }
     }
-  }, [isConnected, isOnWrongNetwork, open, getImgUrl]);
+  }, [isConnected, isOnWrongNetwork]);
 
   useEffect(() => {
     // all conditions unmet close voting in process
@@ -322,9 +458,7 @@ const Proposal: React.FC = () => {
     }
   }, [
     canVote,
-    isConnected,
-    isOnWrongNetwork,
-    statusRef.current.wasOnWrongNetwork,
+ 
   ]);
 
   // show voter tab once user has voted
@@ -335,28 +469,6 @@ const Proposal: React.FC = () => {
   //     // console.log('vip false on voteSubmmited');
   //   }
   // }, [voteSubmitted]);
-
-  useEffect(() => {
-    if (proposal) {
-      // set the very first time
-      setVoteStatus(getVoteStatus(proposal, t));
-
-      // const interval = setInterval(async () => {
-      //   const v = getVoteStatus(proposal, t);
-      //
-      //   // remove interval timer once the proposal has started
-      //   if (proposal.startDate.valueOf() <= new Date().valueOf()) {
-      //     clearInterval(interval);
-      //     setIntervalInMills(PROPOSAL_STATUS_INTERVAL);
-      //     setVoteStatus(v);
-      //   } else if (proposal.status === 'Pending') {
-      //     setVoteStatus(v);
-      //   }
-      // }, PENDING_PROPOSAL_STATUS_INTERVAL);
-      //
-      // return () => clearInterval(interval);
-    }
-  }, [proposal, t]);
 
   /*************************************************
    *              Handlers and Callbacks           *
@@ -430,9 +542,7 @@ const Proposal: React.FC = () => {
       daoSettings?.minApprovals,
     [
       daoSettings,
-      mappedProps?.missingParticipation,
-      mappedProps?.results,
-      proposal,
+
     ]
   );
 
@@ -444,7 +554,7 @@ const Proposal: React.FC = () => {
         canExecuteEarly,
         executionFailed
       ),
-    [canExecuteEarly, executionFailed, proposal?.status]
+    []
   );
 
   // whether current user has voted
@@ -465,7 +575,7 @@ const Proposal: React.FC = () => {
     //       voter.vote !== undefined
     //   );
     // }
-  }, [address, proposal]);
+  }, []);
 
   // vote button and status
   const buttonLabel = useMemo(() => {
@@ -522,16 +632,7 @@ const Proposal: React.FC = () => {
       };
     } else return {voteNowDisabled: true};
   }, [
-    address,
-    allowVoteReplacement,
-    canVote,
-    handleSubmitVote,
-    isOnWrongNetwork,
-    multisigDAO,
-    open,
-    proposal?.status,
-    voteSubmitted,
-    voted,
+  
   ]);
 
   // handler for execution
@@ -561,7 +662,7 @@ const Proposal: React.FC = () => {
       // people add types to these things!!
       return t('votingTerminal.status.ineligibleWhitelist');
     }
-  }, [address, canVote, isOnWrongNetwork, proposal, t, voted]);
+  }, []);
 
   // status steps for proposal
   const proposalSteps = useMemo(() => {
@@ -582,7 +683,7 @@ const Proposal: React.FC = () => {
         proposal.executed ? new Date() : undefined
       );
     } else return [];
-  }, [proposal, t, pluginType, executionFailed]);
+  }, []);
 
   /*************************************************
    *                     Render                    *
