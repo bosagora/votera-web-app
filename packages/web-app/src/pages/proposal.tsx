@@ -96,6 +96,8 @@ import {getFormattedUtcOffset, KNOWN_FORMATS} from '../utils/date';
 // import {fetchBalance, getTokenInfo, isNativeToken} from '../utils/tokens';
 // import {constants} from 'ethers';
 import {useWalletCanVote} from '../hooks/useWalletCanVote';
+import { FundVoteWidget } from 'components/fundVoteWidget';
+import { FundAssessmentWidget } from 'components/fundAssessmentWidget';
 
 // TODO: @Sepehr Please assign proper tags on action decoding
 // const PROPOSAL_TAGS = ['Finance', 'Withdraw'];
@@ -785,14 +787,24 @@ const Proposal: React.FC = () => {
             {...mappedProps}
           />
 
-          <ExecutionWidget
+          <FundVoteWidget
             pluginType={pluginType}
             actions={decodedActions}
             status={executionStatus}
             onExecuteClicked={handleExecuteNowClicked}
             txhash={transactionHash || proposal?.executionTxHash || undefined}
           />
+
+          <FundAssessmentWidget
+            pluginType={pluginType}
+            actions={decodedActions}
+            status={executionStatus}
+            onExecuteClicked={handleExecuteNowClicked}
+            txhash={transactionHash || proposal?.executionTxHash || undefined}
+          />
+
         </ProposalContainer>
+
         <AdditionalInfoContainer>
           {/*<ResourceList links={proposal?.metadata.resources} />*/}
           <WidgetStatus steps={proposalSteps} />
