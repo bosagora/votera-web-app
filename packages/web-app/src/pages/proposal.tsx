@@ -787,6 +787,14 @@ const Proposal: React.FC = () => {
             {...mappedProps}
           />
 
+          <FundAssessmentWidget
+            pluginType={pluginType}
+            actions={decodedActions}
+            status={executionStatus}
+            onExecuteClicked={handleExecuteNowClicked}
+            txhash={transactionHash || proposal?.executionTxHash || undefined}
+          />
+
           <FundVoteWidget
             pluginType={pluginType}
             actions={decodedActions}
@@ -795,13 +803,6 @@ const Proposal: React.FC = () => {
             txhash={transactionHash || proposal?.executionTxHash || undefined}
           />
 
-          <FundAssessmentWidget
-            pluginType={pluginType}
-            actions={decodedActions}
-            status={executionStatus}
-            onExecuteClicked={handleExecuteNowClicked}
-            txhash={transactionHash || proposal?.executionTxHash || undefined}
-          />
 
         </ProposalContainer>
 

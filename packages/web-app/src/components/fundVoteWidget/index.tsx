@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
-
+import SelectVoteForm from 'containers/selectVoteForm';
 import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
 // import {PluginTypes} from 'hooks/usePluginClient';
@@ -43,6 +43,7 @@ export const FundVoteWidget: React.FC<ExecutionWidgetProps> = ({
 }) => {
   const {t} = useTranslation();
 
+  status = 'executable'
   return (
     <Card>
       <Header>
@@ -68,9 +69,9 @@ export const FundVoteWidget: React.FC<ExecutionWidgetProps> = ({
           <Content>
           <div className="space-y-3">
           <p className="text-lg font-bold text-ui-800">투표하기</p>
-          <div className="flex gap-x-3">
-            
-          </div>
+          
+          <SelectVoteForm />
+          
         </div>
           </Content>
           <WidgetFooter

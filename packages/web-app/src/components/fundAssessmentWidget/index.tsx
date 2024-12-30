@@ -4,8 +4,9 @@ import {
   ButtonText,
   IconAdd,
   IconLinkExternal,
+  Label,
 } from '@aragon/ui-components';
-import React from 'react';
+import React, { useState } from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
@@ -16,6 +17,7 @@ import {CHAIN_METADATA} from 'utils/constants';
 import {Action} from 'utils/types';
 
 import {PluginTypes} from '../../utils/aragon/types';
+import IncreaseAmount from 'components/increaseAmount';
 
 export type ExecutionStatus =
   | 'defeated'
@@ -33,6 +35,14 @@ type ExecutionWidgetProps = {
   onExecuteClicked?: () => void;
 };
 
+interface Assessment {
+  completeness: number;
+  possibility: number;
+  profitability: number;
+  attractiveness: number;
+  scalability: number;
+}
+
 export const FundAssessmentWidget: React.FC<ExecutionWidgetProps> = ({
   actions = [],
   status,
@@ -42,6 +52,76 @@ export const FundAssessmentWidget: React.FC<ExecutionWidgetProps> = ({
   pluginType,
 }) => {
   const {t} = useTranslation();
+  const [value, setValue] = useState(10);
+  const maxValue = 10;
+  const [assessment, setAssessment] = useState<Assessment>({
+    completeness: 5,
+    possibility: 5,
+    profitability: 5,
+    attractiveness: 5,
+    scalability: 5
+  });
+
+  const handleValueChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const targetValue = Number(event.target.value);
+    console.log('value', targetValue);
+    const CORRECTION_DELAY = 1000;
+
+    if (targetValue > maxValue) {
+      setTimeout(() => {
+        console.log('maxValue', maxValue);
+      }, CORRECTION_DELAY);
+    } else if (targetValue <= 0) {
+      setTimeout(() => {
+        console.log('minValue', targetValue);
+      }, CORRECTION_DELAY);
+    } else {
+      event.target.value = targetValue.toString();
+    }
+
+    setValue(targetValue);
+  };
+
+  const handleCompletenessChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssessment(prev => ({
+      ...prev,
+      completeness: Number(event.target.value)
+    }));
+  };
+
+  const handlePossibilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssessment(prev => ({
+      ...prev,
+      possibility: Number(event.target.value)
+    }));
+  };
+
+  const handleProfitabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssessment(prev => ({
+      ...prev,
+      profitability: Number(event.target.value)
+    }));
+  };
+
+  const handleAttractivenessChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssessment(prev => ({
+      ...prev,
+      attractiveness: Number(event.target.value)
+    }));
+  };
+
+  const handleScalabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAssessment(prev => ({
+      ...prev,
+      scalability: Number(event.target.value)
+    }));
+  };
+
+  // 전체 평가 점수 계산 (필요한 경우)
+  const calculateTotalScore = (): number => {
+    const { completeness, possibility, profitability, attractiveness, scalability } = assessment;
+    return (completeness + possibility + profitability + attractiveness + scalability) / 5;
+  };
 
   return (
     <Card>
@@ -66,12 +146,67 @@ export const FundAssessmentWidget: React.FC<ExecutionWidgetProps> = ({
       ) : (
         <>
           <Content>
-          <div className="space-y-3">
-          <p className="text-lg font-bold text-ui-800">투표하기</p>
-          <div className="flex gap-x-3">
-    
+          <div className="space-y-4">
+            <div>
+              <Label label={'완성도 (Completeness)'} />
+              <IncreaseAmount 
+                max={10}
+                min={1} 
+                value={assessment.completeness}
+                mode="default"
+                placeholder="1-10 사이 값을 입력하세요"
+                onChange={handleCompletenessChange}
+              />
+            </div>
+
+            <div>
+              <Label label={'실현 가능성 (Possibility)'} />
+              <IncreaseAmount 
+                max={10}
+                min={1} 
+                value={assessment.possibility}
+                mode="default"
+                placeholder="1-10 사이 값을 입력하세요"
+                onChange={handlePossibilityChange}
+              />
+            </div>
+
+            <div>
+              <Label label={'수익성 (Profitability)'} />
+              <IncreaseAmount 
+                max={10}
+                min={1} 
+                value={assessment.profitability}
+                mode="default"
+                placeholder="1-10 사이 값을 입력하세요"
+                onChange={handleProfitabilityChange}
+              />
+            </div>
+
+            <div>
+              <Label label={'매력도 (Attractiveness)'} />
+              <IncreaseAmount 
+                max={10}
+                min={1} 
+                value={assessment.attractiveness}
+                mode="default"
+                placeholder="1-10 사이 값을 입력하세요"
+                onChange={handleAttractivenessChange}
+              />
+            </div>
+
+            <div>
+              <Label label={'확장성 (Scalability)'} />
+              <IncreaseAmount 
+                max={10}
+                min={1} 
+                value={assessment.scalability}
+                mode="default"
+                placeholder="1-10 사이 값을 입력하세요"
+                onChange={handleScalabilityChange}
+              />
+            </div>
           </div>
-        </div>
           </Content>
           <WidgetFooter
             pluginType={pluginType}
