@@ -18,6 +18,7 @@ import {Action} from 'utils/types';
 
 import {PluginTypes} from '../../utils/aragon/types';
 import IncreaseAmount from 'components/increaseAmount';
+import AssessmentResult from 'components/assessmentResult';
 
 export type ExecutionStatus =
   | 'defeated'
@@ -146,67 +147,53 @@ export const FundAssessmentWidget: React.FC<ExecutionWidgetProps> = ({
       ) : (
         <>
           <Content>
-          <div className="space-y-4">
-            <div>
-              <Label label={'완성도 (Completeness)'} />
-              <IncreaseAmount 
-                max={10}
-                min={1} 
-                value={assessment.completeness}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleCompletenessChange}
-              />
+            <div className="space-y-1">
+                <IncreaseAmount 
+                  max={10}
+                  min={1} 
+                  value={assessment.completeness}
+                  label={'완성도'}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleCompletenessChange}
+                />
+                <IncreaseAmount 
+                  max={10}
+                  min={1} 
+                  value={assessment.possibility}
+                  label={'실현가능성'}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handlePossibilityChange}
+                />
+                <IncreaseAmount 
+                  max={10}
+                  min={1} 
+                  value={assessment.profitability}
+                  label={'수익성'}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleProfitabilityChange}
+                />
+                <IncreaseAmount 
+                  max={10}
+                  min={1} 
+                  value={assessment.attractiveness}
+                  label={'매력도'}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleAttractivenessChange}
+                />
+                <IncreaseAmount 
+                  max={10}
+                  min={1} 
+                  value={assessment.scalability}
+                  label={'확장성'}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleScalabilityChange}
+                />
             </div>
-
-            <div>
-              <Label label={'실현 가능성 (Possibility)'} />
-              <IncreaseAmount 
-                max={10}
-                min={1} 
-                value={assessment.possibility}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handlePossibilityChange}
-              />
-            </div>
-
-            <div>
-              <Label label={'수익성 (Profitability)'} />
-              <IncreaseAmount 
-                max={10}
-                min={1} 
-                value={assessment.profitability}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleProfitabilityChange}
-              />
-            </div>
-
-            <div>
-              <Label label={'매력도 (Attractiveness)'} />
-              <IncreaseAmount 
-                max={10}
-                min={1} 
-                value={assessment.attractiveness}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleAttractivenessChange}
-              />
-            </div>
-
-            <div>
-              <Label label={'확장성 (Scalability)'} />
-              <IncreaseAmount 
-                max={10}
-                min={1} 
-                value={assessment.scalability}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleScalabilityChange}
-              />
-            </div>
-          </div>
           </Content>
           <WidgetFooter
             pluginType={pluginType}
@@ -214,6 +201,26 @@ export const FundAssessmentWidget: React.FC<ExecutionWidgetProps> = ({
             txhash={txhash}
             onExecuteClicked={onExecuteClicked}
           />
+            <div className="flex justify-center gap-8 my-6">
+              <div className="text-3xl font-bold text-blue-500">제안 통과</div>
+              <div className="text-3xl font-bold text-red-500">제안 탈락</div>
+            </div>
+          <AssessmentResult values={[
+            {
+              completeness: 3,
+              possibility: 7, 
+              profitability: 3,
+              attractiveness: 6,
+              scalability: 3
+            },
+            {
+              completeness: 7,
+              possibility: 8,
+              profitability: 6, 
+              attractiveness: 9,
+              scalability: 7
+            }
+          ]} />
         </>
       )}
     </Card>

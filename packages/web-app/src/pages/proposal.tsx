@@ -18,6 +18,7 @@ import {
   IconChevronUp,
   IconGovernance,
   Link,
+  ListItemLink,
   WidgetStatus,
 } from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
@@ -98,6 +99,9 @@ import {getFormattedUtcOffset, KNOWN_FORMATS} from '../utils/date';
 import {useWalletCanVote} from '../hooks/useWalletCanVote';
 import { FundVoteWidget } from 'components/fundVoteWidget';
 import { FundAssessmentWidget } from 'components/fundAssessmentWidget';
+import ProposalInfo from 'components/proposalInfo';
+import CommentList from 'components/commentList';
+import VoterList from 'components/voterList';
 
 // TODO: @Sepehr Please assign proper tags on action decoding
 // const PROPOSAL_TAGS = ['Finance', 'Withdraw'];
@@ -250,7 +254,7 @@ const Proposal: React.FC = () => {
       creator: '0x1234567890123456789012345678901234567890',
       metadata: {
         title: 'Test Proposal',
-        description: 'This is a test proposal description'
+        description: '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며, 현재 당면한 문제점들을 해결하기 위한 구체적인 실행 계획과 예산 할당 방안을 포함하고 있습니다. 또한 이 제안이 실현되었을 때 기대할 수 있는 긍정적인 효과와 잠재적인 위험 요소에 대한 분석도 함께 담고 있습니다.'
       },
       status: ProposalStatus.ACTIVE,
       startDate: new Date(),
@@ -274,7 +278,7 @@ const Proposal: React.FC = () => {
       executed: false,
       executionTxHash: null,
       title: 'Test Proposal',
-      description: 'This is a test proposal description'
+      description: '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며, 현재 당면한 문제점들을 해결하기 위한 구체적인 실행 계획과 예산 할당 방안을 포함하고 있습니다. 또한 이 제안이 실현되었을 때 기대할 수 있는 긍정적인 효과와 잠재적인 위험 요소에 대한 분석도 함께 담고 있습니다.'
     },
     error: null,
     isLoading: false
@@ -736,18 +740,18 @@ const Proposal: React.FC = () => {
             />
           </ProposerLink>
         </ContentWrapper>
+
+        {[
+          {
+            name: '프로젝트 깃허브',
+            url: 'https://github.com/example/project'
+          },
+        ].map(({name, url}) => (
+          <ListItemLink label={name} href={url} key={url} />
+        ))}
+
         <SummaryText>{proposal?.description}</SummaryText>
-        {/*{proposal.description && !expandedProposal && (*/}
-        {/*  <ButtonText*/}
-        {/*    css={{}}*/}
-        {/*    className="w-full tablet:w-max"*/}
-        {/*    size="large"*/}
-        {/*    label={t('governance.proposals.buttons.readFullProposal')}*/}
-        {/*    mode="secondary"*/}
-        {/*    iconRight={<IconChevronDown />}*/}
-        {/*    onClick={() => setExpandedProposal(true)}*/}
-        {/*  />*/}
-        {/*)}*/}
+ 
       </HeaderContainer>
 
       <ContentContainer expandedProposal={expandedProposal}>
@@ -766,7 +770,7 @@ const Proposal: React.FC = () => {
             </>
           )}
 
-          <VotingTerminal
+          {/* <VotingTerminal
             status={proposal.status}
             statusLabel={voteStatus}
             selectedTab={terminalTab}
@@ -785,6 +789,14 @@ const Proposal: React.FC = () => {
               )
             }
             {...mappedProps}
+          /> */}
+
+          <ProposalInfo
+            currentStage={'ASSESSMENT'} // 또는 'VOTE'
+            assessmentStartDate={new Date('2024-03-01')}
+            assessmentEndDate={new Date('2024-03-15')}
+            voteStartDate={new Date('2024-03-16')}
+            voteEndDate={new Date('2024-03-30')}
           />
 
           <FundAssessmentWidget
@@ -808,7 +820,65 @@ const Proposal: React.FC = () => {
 
         <AdditionalInfoContainer>
           {/*<ResourceList links={proposal?.metadata.resources} />*/}
-          <WidgetStatus steps={proposalSteps} />
+          {/* <WidgetStatus steps={proposalSteps} /> */}
+          <CommentList comments={[
+            {
+              id: '1',
+              author: '0x1234567890123456789012345678901234567890',
+              content: '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
+              createdAt: '2024-03-10 14:23'
+            },
+            {
+              id: '2',
+              author: '0x2345678901234567890123456789012345678901', 
+              content: '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
+              createdAt: '2024-03-10 15:45'
+            },
+            {
+              id: '3',
+              author: '0x3456789012345678901234567890123456789012',
+              content: '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
+              createdAt: '2024-03-11 09:12'
+            },
+            {
+              id: '4',
+              author: '0x4567890123456789012345678901234567890123',
+              content: '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
+              createdAt: '2024-03-11 10:30'
+            }
+          ]} />
+          <VoterList comments={[
+            {
+              id: '1',
+              author: '0x1234567890123456789012345678901234567890',
+              vote: 'yes',
+              createdAt: '2024-03-10 14:23'
+            },
+            {
+              id: '2',
+              author: '0x2345678901234567890123456789012345678901',
+              vote: 'no',
+              createdAt: '2024-03-10 15:45'
+            },
+            {
+              id: '3', 
+              author: '0x3456789012345678901234567890123456789012',
+              vote: 'yes',
+              createdAt: '2024-03-11 09:12'
+            },
+            {
+              id: '4',
+              author: '0x4567890123456789012345678901234567890123',
+              vote: 'yes',
+              createdAt: '2024-03-11 10:30'
+            },
+            {
+              id: '5',
+              author: '0x5678901234567890123456789012345678901234',
+              vote: 'abstain',
+              createdAt: '2024-03-11 11:45'
+            },
+          ]} />
         </AdditionalInfoContainer>
       </ContentContainer>
     </Container>
