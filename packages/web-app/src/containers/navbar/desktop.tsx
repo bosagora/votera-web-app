@@ -20,6 +20,7 @@ import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import {useWallet} from 'hooks/useWallet';
 import {NavlinksDropdown} from './breadcrumbDropdown';
 import NetworkIndicator from './networkIndicator';
+import VoteraLogo from 'public/votera_color_logo.png';
 
 const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
@@ -33,6 +34,7 @@ type DesktopNavProp = {
 };
 
 const DesktopNav: React.FC<DesktopNavProp> = props => {
+  console.log('props', props);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {network} = useNetwork();
@@ -96,7 +98,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
       <NetworkIndicator />
       <Menu>
         <Content>
-          <DaoSelector
+          {/* <DaoSelector
             daoAddress={currentDao.address}
             daoName={currentDao?.metadata.name}
             src={currentDao.address}
@@ -118,7 +120,12 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
                 />
               </>
             )}
-          </LinksWrapper>
+          </LinksWrapper> */}
+          <img
+            src={VoteraLogo}
+            alt="Votera 로고"
+            className="h-4"
+          />
         </Content>
 
         <div className="flex gap-2">

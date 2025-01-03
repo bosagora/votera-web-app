@@ -5,7 +5,7 @@ export const NotFound = '/not-found';
 
 /* DAO-SPECIFIC PAGES ======================================================= */
 
-export const Dashboard = '/multisig-wallets/:network/:dao/dashboard';
+export const Dashboard = '/multisig-wallets/:network/dashboard';
 export const Finance = '/multisig-wallets/:network/:dao/finance';
 export const Governance = '/multisig-wallets/:network/:dao/governance';
 export const Community = '/multisig-wallets/:network/:dao/community';
@@ -21,7 +21,7 @@ export const NewWithDraw =
   '/multisig-wallets/:network/:dao/finance/new-withdrawal';
 
 export const Proposal =
-  '/multisig-wallets/:network/:dao/governance/proposals/:id';
+  '/multisig-wallets/:network/proposals/:id';
 export const NewProposal =
   '/multisig-wallets/:network/:dao/governance/new-proposal';
 export const MintTokensProposal =
