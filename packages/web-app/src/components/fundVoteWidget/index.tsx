@@ -16,6 +16,7 @@ import {CHAIN_METADATA} from 'utils/constants';
 import {Action} from 'utils/types';
 
 import {PluginTypes} from '../../utils/aragon/types';
+import VoteResults from 'components/voteResults';
 
 export type ExecutionStatus =
   | 'defeated'
@@ -68,18 +69,50 @@ export const FundVoteWidget: React.FC<ExecutionWidgetProps> = ({
         <>
           <Content>
           <div className="space-y-3">
-          <p className="text-lg font-bold text-ui-800">투표하기</p>
-          
-          <SelectVoteForm />
-          
-        </div>
+            <p className="text-lg font-bold text-ui-800">투표하기</p>
+            <div className="flex flex-col gap-3">
+              <SelectVoteForm />
+              <WidgetFooter
+                pluginType={pluginType}
+                status={status}
+                txhash={txhash}
+                onExecuteClicked={onExecuteClicked}
+              />
+            </div>
+            <div className="flex justify-center gap-8 my-6">
+              <div className="text-3xl font-bold text-blue-500">투표 통과</div>
+              <div className="text-3xl font-bold text-red-500">탈표 탈락</div>
+            </div>
+            <VoteResults values={[
+              {
+                voter: "0x1234567890abcdef1234567890abcdef12345678",
+                timestamp: 1709251200,
+                choice: 0
+              },
+              {
+                voter: "0xabcdef1234567890abcdef1234567890abcdef12", 
+                timestamp: 1709337600,
+                choice: 1
+              },
+              {
+                voter: "0x7890abcdef1234567890abcdef1234567890abcd",
+                timestamp: 1709424000, 
+                choice: 2
+              },
+              {
+                voter: "0x2468ace02468ace02468ace02468ace02468ace0",
+                timestamp: 1709510400,
+                choice: 1
+              },
+              {
+                voter: "0x1357bdf91357bdf91357bdf91357bdf91357bdf9",
+                timestamp: 1709596800,
+                choice: 0
+              }
+            ]} />
+          </div>
           </Content>
-          <WidgetFooter
-            pluginType={pluginType}
-            status={status}
-            txhash={txhash}
-            onExecuteClicked={onExecuteClicked}
-          />
+
         </>
       )}
     </Card>
@@ -94,94 +127,21 @@ type FooterProps = Pick<
 const WidgetFooter: React.FC<FooterProps> = ({
   status = 'default',
   onExecuteClicked,
-  txhash,
-  pluginType,
 }) => {
   const {t} = useTranslation();
-  const {network} = useNetwork();
 
-  const handleTxViewButtonClick = () => {
-    window.open(CHAIN_METADATA[network].explorer + 'tx/' + txhash, '_blank');
-  };
 
-  switch (status) {
-    case 'defeated': {
-      return pluginType === 'multisig.plugin.dao.eth' ? (
-        <AlertCard
-          mode="info"
-          title={t('governance.executionCard.statusMultisig.expiredTitle')}
-          helpText={t('governance.executionCard.statusMultisig.expiredDesc')}
-        />
-      ) : (
-        <AlertInline
-          label={t('governance.executionCard.status.defeated')}
-          mode={'warning'}
-        />
-      );
-    }
-
-    case 'executable':
-      return (
-        <Footer>
-          <StyledButtonText
-            css={{}}
-            label={t('governance.proposals.buttons.execute')}
-            size="large"
-            onClick={onExecuteClicked}
-          />
-          <AlertInline label={t('governance.executionCard.status.succeeded')} />
-        </Footer>
-      );
-    case 'executable-failed':
-      return (
-        <Footer>
-          <StyledButtonText
-            css={{}}
-            label={t('governance.proposals.buttons.execute')}
-            size="large"
-            onClick={onExecuteClicked}
-          />
-          {txhash && (
-            <StyledButtonText
-              css={{}}
-              label={t('governance.executionCard.seeTransaction')}
-              mode="secondary"
-              iconRight={<IconLinkExternal />}
-              size="large"
-              bgWhite
-              onClick={handleTxViewButtonClick}
-            />
-          )}
-          <AlertInline
-            label={t('governance.executionCard.status.failed')}
-            mode="warning"
-          />
-        </Footer>
-      );
-    case 'executed':
-      return (
-        <Footer>
-          {txhash && (
-            <StyledButtonText
-              css={{}}
-              label={t('governance.executionCard.seeTransaction')}
-              mode="secondary"
-              iconRight={<IconLinkExternal />}
-              size="large"
-              bgWhite
-              onClick={handleTxViewButtonClick}
-            />
-          )}
-
-          <AlertInline
-            label={t('governance.executionCard.status.executed')}
-            mode="success"
-          />
-        </Footer>
-      );
-    default:
-      return null;
-  }
+  return (
+    <Footer>
+      <StyledButtonText
+        css={{}}
+        label={t('governance.proposals.buttons.execute')}
+        size="large"
+        onClick={onExecuteClicked}
+      />
+      <AlertInline label={t('governance.executionCard.status.succeeded')} />
+    </Footer>
+  );
 };
 
 const Card = styled.div.attrs({
