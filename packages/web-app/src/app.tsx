@@ -74,7 +74,7 @@ function App() {
           <Route element={<DaoWrapper />}>
             <Route path="/create" element={<CreateDAO />} />
           </Route>
-          <Route path="/multisig-wallets/:network/:dao">
+          <Route path="/multisig-wallets/:network">
             <Route element={<DaoWrapper />}>
               <Route path="dashboard" element={<DashboardPage />} />
               {/* Redirects the user to the dashboard page by default if no dao-specific page is specified. */}
@@ -87,7 +87,7 @@ function App() {
               </Route>
               <Route path="governance" element={<GovernancePage />} />
               <Route
-                path="governance/proposals/:id"
+                path="proposals/:id"
                 element={<ProposalDetailsWrapper />}
               />
               <Route path="community" element={<CommunityPage />} />

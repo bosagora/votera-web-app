@@ -16,7 +16,7 @@ import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
 import MobileMenu from './mobileMenu';
 import NetworkIndicator from './networkIndicator';
-
+import VoteraLogo from 'public/votera_color_logo.png';
 type MobileNavProps = {
   isProcess?: boolean;
   onDaoSelect: () => void;
@@ -42,7 +42,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
       <Container data-testid="navbar">
         <Menu>
           <FlexOne>
-            {isMobile ? (
+            {/* {isMobile ? (
               <ButtonIcon
                 mode="secondary"
                 size="large"
@@ -57,16 +57,21 @@ const MobileNav: React.FC<MobileNavProps> = props => {
                 iconLeft={<IconMenu />}
                 onClick={() => open('mobileMenu')}
               />
-            )}
+            )} */}
           </FlexOne>
           <FlexOne className="justify-center">
-            <DaoContainer>
+            {/* <DaoContainer>
               <AvatarDao
                 daoName={currentDao.metadata.name}
                 onClick={props.onDaoSelect}
               />
               <DaoName>{currentDao.metadata.name}</DaoName>
-            </DaoContainer>
+            </DaoContainer> */}
+            <img
+              src={VoteraLogo}
+              alt="Votera 로고"
+              className="h-4"
+            />
           </FlexOne>
           <FlexOne className="justify-end">
             <ButtonWallet
@@ -79,7 +84,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
         </Menu>
         <NetworkIndicator />
       </Container>
-      <MobileMenu />
+      {/* <MobileMenu /> */}
     </>
   );
 };
