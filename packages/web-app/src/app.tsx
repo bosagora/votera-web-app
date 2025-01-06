@@ -68,30 +68,21 @@ function App() {
       {/* TODO: replace with loading indicator */}
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route element={<ExploreWrapper />}>
-            <Route path="/" element={<ExplorePage />} />
-          </Route>
-          <Route element={<DaoWrapper />}>
-            <Route path="/create" element={<CreateDAO />} />
-          </Route>
-          <Route path="/multisig-wallets/:network">
+          <Route path="/">
+            <Route index element={<Navigate to="dao/dashboard" replace />} />
+
             <Route element={<DaoWrapper />}>
-              <Route path="dashboard" element={<DashboardPage />} />
-              {/* Redirects the user to the dashboard page by default if no dao-specific page is specified. */}
-              <Route index element={<Navigate to={'dashboard'} replace />} />
+              <Route path="dao/dashboard" element={<DashboardPage />} />
               <Route element={<ProtectedRoute />}>
                 <Route
-                  path="governance/new-proposal"
+                  path="dao/new-proposal/:network"
                   element={<NewProposalPage />}
                 />
               </Route>
-              <Route path="governance" element={<GovernancePage />} />
               <Route
-                path="proposals/:id"
+                path="dao/proposals/:network/:id"
                 element={<ProposalDetailsWrapper />}
               />
-              <Route path="community" element={<CommunityPage />} />
-              <Route path="settings" element={<SettingsPage />} />
             </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />

@@ -1,10 +1,10 @@
 import {
   ButtonText,
-  CardProposal,
   IconChevronRight,
   IconGovernance,
   ListItemHeader,
 } from '@aragon/ui-components';
+import {CardProposal} from 'components/proposalCard';
 import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate} from 'react-router-dom';
