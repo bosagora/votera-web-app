@@ -54,10 +54,10 @@ const Dashboard: React.FC = () => {
       id: BigNumber.from('2'),
       dao: {
         address: daoAddressOrEns,
-        name: '테스트 DAO'
+        name: 'Test DAO'
       },
-      title: '두 번째 제안',
-      description: '이것은 두 번째 테스트 제안입니다.',
+      title: 'Second Proposal for Treasury Management',
+      description: 'This is the second test proposal that aims to improve our treasury management process. The proposal suggests implementing a multi-signature requirement for transactions above 100 ETH and establishing a quarterly audit process. This will help ensure better security and transparency in how we manage our funds.',
       status: 'pending',
       creator: '0x1234...', 
       createdAt: new Date('2024-03-16').getTime(),
@@ -81,10 +81,10 @@ const Dashboard: React.FC = () => {
       id: BigNumber.from('3'),
       dao: {
         address: daoAddressOrEns,
-        name: '테스트 DAO'
+        name: 'Test DAO'
       },
-      title: '세 번째 제안',
-      description: '이것은 세 번째 테스트 제안입니다.',
+      title: 'Third Proposal',
+      description: 'This is the third test proposal.',
       status: 'succeeded',
       creator: '0x1234...', 
       createdAt: new Date('2024-03-17').getTime(),

@@ -29,6 +29,7 @@ import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 import ProtectedRoute from './components/protectedRoute';
 
 import {ProposalTransactionProvider} from 'context/proposalTransaction';
+import CreateProposal from 'pages/createProposal';
 const ProposalPage = lazy(() => import('pages/proposal'));
 const ExplorePage = lazy(() => import('pages/explore'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
@@ -83,6 +84,7 @@ function App() {
                 path="dao/proposals/:network/:id"
                 element={<ProposalDetailsWrapper />}
               />
+              <Route path="/create-proposal" element={<CreateProposal />} />
             </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />

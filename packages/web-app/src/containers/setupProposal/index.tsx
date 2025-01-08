@@ -1,0 +1,173 @@
+import {
+  AlertInline,
+  InputImageSingle,
+  Label,
+  NumberInput,
+  TextareaSimple,
+  TextInput,
+  ValueInput,
+} from '@aragon/ui-components';
+import React, {useCallback} from 'react';
+import {Controller, FieldError, useFormContext} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
+import styled from 'styled-components';
+
+import AddLinks from 'components/addLinks';
+import {URL_PATTERN} from 'utils/constants';
+import {isOnlyWhitespace} from 'utils/library';
+import {isDaoEnsNameValid} from 'utils/validators';
+import {useProviders} from 'context/providers';
+import {useNetwork} from 'context/network';
+import IncreaseAmount from 'components/increaseAmount';
+
+export type SetupProposalProps = {
+  arrayName?: string;
+  isSettingPage?: boolean;
+  bgWhite?: boolean;
+};
+
+const SetupProposal: React.FC<SetupProposalProps> = () => {
+  const {t} = useTranslation();
+  const {control} = useFormContext();
+
+  return (
+    <>
+      {/* Assessment Period */}
+      <FormItem>
+        <Label
+          label={t('labels.assessmentPeriod')}
+          helpText={t('createDAO2.step2.nameSubtitle')}
+        />
+
+        <Controller
+          name="assessmentPeriod"
+          control={control}
+          defaultValue={7}
+          rules={{
+            required: t('errors.required.name'),
+            min: {value: 0, message: t('errors.required.minValue')},
+          }}
+          render={({
+            field: {onBlur, onChange, value, name},
+            fieldState: {error},
+          }) => (
+            <>
+              <IncreaseAmount
+                {...{name, value, onBlur}}
+                onChange={onChange}
+                placeholder={t('placeHolders.assessmentPeriod')}
+                min={7}
+                max={14}
+              />
+              {error?.message && (
+                <AlertInline label={error.message} mode="critical" />
+              )}
+            </>
+          )}
+        />
+      </FormItem>
+
+      {/* Vote Period */}
+      <FormItem>
+        <Label
+          label={t('labels.votePeriod')}
+          helpText={t('createDAO2.step2.descriptionSubtitle')}
+        />
+         <Controller
+          name="votePeriod"
+          control={control}
+          defaultValue={7}
+          rules={{
+            required: t('errors.required.name'),
+            min: {value: 0, message: t('errors.required.minValue')},
+          }}
+          render={({
+            field: {onBlur, onChange, value, name},
+            fieldState: {error},
+          }) => (
+            <>
+              <IncreaseAmount
+                {...{name, value, onBlur}}
+                onChange={onChange}
+                placeholder={t('placeHolders.votePeriod')}
+                min={7}
+                max={14}
+              />
+              {error?.message && (
+                <AlertInline label={error.message} mode="critical" />
+              )}
+            </>
+          )}
+        />
+      </FormItem>
+      {/* Fund Amount */}
+     <FormItem>
+        <Label
+          label={t('labels.amount')}
+          helpText={t('newWithdraw.configureWithdraw.amountSubtitle')}
+        />
+        <Controller
+          name="fundAmount"
+          control={control}
+          defaultValue={0}
+          rules={{
+            required: t('errors.required.amount'),
+            // validate: amountValidator,
+          }}
+          render={({
+            field: {name, onBlur, onChange, value},
+            fieldState: {error},
+          }) => (
+            <>
+              <StyledInput
+                mode={error ? 'critical' : 'default'}
+                name={name}
+                type="number"
+                value={value}
+                placeholder="0"
+                onBlur={onBlur}
+                onChange={onChange}
+                adornmentText={'BOA'}
+                // onAdornmentClick={() => handleMaxClicked(onChange)}
+              />
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  {error?.message && (
+                    <AlertInline label={error.message} mode="critical" />
+                  )}
+                  {/* {renderWarning(value)} */}
+                </div>
+                {/* {tokenBalance && (
+                  <TokenBalance>
+                    {`${t(
+                      'labels.maxBalance'
+                    )}: ${tokenBalance} ${tokenSymbol}`}
+                  </TokenBalance>
+                )} */}
+              </div>
+            </>
+          )}
+        />
+      </FormItem>
+    </>
+  );
+};
+
+export default SetupProposal;
+
+const InputCount = styled.div.attrs({
+  className: 'ft-text-sm mt-1',
+})``;
+
+const FormItem = styled.div.attrs({
+  className: 'space-y-1.5',
+})``;
+
+const StyledInput = styled(ValueInput)`
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
+`;

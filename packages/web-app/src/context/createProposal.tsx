@@ -71,13 +71,14 @@ import {usePollGasFee} from '../hooks/usePollGasfee';
 import {BigNumberish} from '@ethersproject/bignumber';
 import {ABIStorage, BOACoin, NormalSteps} from 'multisig-wallet-sdk-client';
 import {Dashboard} from '../utils/paths';
-import {toDisplayEns} from '../utils/library';
 import {isNativeToken} from 'utils/tokens';
 
 type Props = {
   showTxModal: boolean;
   setShowTxModal: (value: boolean) => void;
 };
+
+
 
 type CreateVotingProposalParams = {
   title: string;
@@ -96,6 +97,20 @@ type CreateVotingProposalEstimationParams = {
   tokenAddress: string;
 };
 
+// Mock 데이터 추가
+const MOCK_DAO_DETAILS = {
+  address: '0x123...abc',
+};
+
+const MOCK_PROPOSAL_ITERATOR = {
+  *[Symbol.asyncIterator]() {
+    yield {key: NormalSteps.SENT, txHash: '0x123'};
+    yield {key: NormalSteps.SUCCESS, transactionId: 1};
+  },
+};
+
+const mockDisplayEns = (addr: string) => addr;
+
 const CreateProposalProvider: React.FC<Props> = ({
   showTxModal,
   setShowTxModal,
@@ -106,13 +121,26 @@ const CreateProposalProvider: React.FC<Props> = ({
   const {open} = useGlobalModalContext();
   const {preferences} = usePrivacyContext();
 
-  const {client} = useClient();
+  const client = {
+    estimation: {
+      submitTransactionNativeTransfer: async (..._args: any[]) => ({average: 1000}),
+      submitTransactionTokenTransfer: async (..._args: any[]) => ({average: 1000})
+    }
+  };
   const navigate = useNavigate();
   const {getValues} = useFormContext();
   const {network} = useNetwork();
-  const {isOnWrongNetwork, provider, address} = useWallet();
+  const mockWalletData = {
+    isOnWrongNetwork: false,
+    provider: null,
+    address: '0x123...abc'
+  };
+  const {isOnWrongNetwork, provider, address} = mockWalletData;
 
-  const {data: daoDetails, isLoading: daoDetailsLoading} = useDaoDetailsQuery();
+  // useDaoDetailsQuery를 mock으로 대체
+  const daoDetails = MOCK_DAO_DETAILS;
+  const daoDetailsLoading = false;
+
   const {
     days: minDays,
     hours: minHours,
@@ -139,7 +167,7 @@ const CreateProposalProvider: React.FC<Props> = ({
         proposalCreationData.title,
         proposalCreationData.description,
         proposalCreationData.destination,
-        proposalCreationData.value
+        BigNumber.from(proposalCreationData.value)
       );
     }
 
@@ -149,7 +177,7 @@ const CreateProposalProvider: React.FC<Props> = ({
       proposalCreationData.description,
       proposalCreationData.tokenAddress,
       proposalCreationData.destination,
-      proposalCreationData.value
+      BigNumber.from(proposalCreationData.value)
     );
   }, [client, proposalCreationData]);
 
@@ -161,12 +189,18 @@ const CreateProposalProvider: React.FC<Props> = ({
   );
 
   const {
-    tokenPrice,
-    maxFee,
-    averageFee,
-    stopPolling,
-    error: gasEstimationError,
-  } = usePollGasFee(estimateCreationFees, shouldPoll);
+    tokenPrice = 1000,
+    maxFee = 100000,
+    averageFee = 50000,
+    stopPolling = () => {},
+    error: gasEstimationError = null,
+  } = {
+    tokenPrice: 1000,
+    maxFee: 100000, 
+    averageFee: 50000,
+    stopPolling: () => {},
+    error: null
+  };
 
   const handleCloseModal = useCallback(() => {
     switch (creationProcessState) {
@@ -221,7 +255,7 @@ const CreateProposalProvider: React.FC<Props> = ({
       const encoded = isNativeToken(action.tokenAddress)
         ? '0x'
         : ABIStorage.encodeFunctionData('MultiSigToken', 'transfer', [
-            address,
+            mockDisplayEns(address),
             BigNumber.from(0),
           ]);
       return {
@@ -236,40 +270,17 @@ const CreateProposalProvider: React.FC<Props> = ({
     }, [getValues]);
 
   const handlePublishProposal = useCallback(async () => {
-    // if (!pluginClient) {
-    //   return new Error('ERC20 SDK client is not initialized correctly');
-    // }
-    //
-    // if no creation data is set, or transaction already running, do nothing.
     if (
       !proposalCreationData ||
       creationProcessState === TransactionState.LOADING
     ) {
-      //console.log('Transaction is running');
       return;
     }
 
-    // trackEvent('newProposal_createNowBtn_clicked', {
-    //   dao_address: daoDetails?.address,
-    //   estimated_gwei_fee: averageFee,
-    //   total_usd_cost: averageFee ? tokenPrice * Number(averageFee) : 0,
-    // });
-    //
     const isNative = isNativeToken(proposalCreationData.tokenAddress || '0x');
-    const proposalIterator = isNative
-      ? client?.multiSigWallet.submitTransactionNativeTransfer(
-          proposalCreationData.title,
-          proposalCreationData.description,
-          proposalCreationData.destination,
-          proposalCreationData.value
-        )
-      : client?.multiSigWallet.submitTransactionTokenTransfer(
-          proposalCreationData.title,
-          proposalCreationData.description,
-          proposalCreationData.tokenAddress,
-          proposalCreationData.destination,
-          proposalCreationData.value
-        );
+    
+    // Mock iterator 사용
+    const proposalIterator = MOCK_PROPOSAL_ITERATOR;
 
     if (creationProcessState === TransactionState.SUCCESS) {
       handleCloseModal();
@@ -284,39 +295,15 @@ const CreateProposalProvider: React.FC<Props> = ({
 
     setCreationProcessState(TransactionState.LOADING);
 
-    // NOTE: quite weird, I've had to wrap the entirety of the generator
-    // in a try-catch because when the user rejects the transaction,
-    // the try-catch block inside the for loop would not catch the error
-    // FF - 11/21/2020
     try {
       for await (const step of proposalIterator) {
         switch (step.key) {
           case NormalSteps.SENT:
-            //console.log(step.txHash);
-            // trackEvent('newProposal_transaction_signed', {
-            //   dao_address: daoDetails?.address,
-            //   network: network,
-            //   wallet_provider: provider?.connection.url,
-            // });
             break;
           case NormalSteps.SUCCESS: {
-            //TODO: replace with step.proposal id when SDK returns proper format
-            // const prefixedId = new ProposalId(
-            //   step.transactionId
-            // ).makeGloballyUnique(pluginAddress);
-            //
-            const prefixedId = step.transactionId.toString();
-            setProposalId(prefixedId);
+            const mockTransactionId = "123"; // mock transaction ID 사용
+            setProposalId(mockTransactionId);
             setCreationProcessState(TransactionState.SUCCESS);
-            // trackEvent('newProposal_transaction_success', {
-            //   dao_address: daoDetails?.address,
-            //   network: network,
-            //   wallet_provider: provider?.connection.url,
-            //   proposalId: prefixedId,
-            // });
-
-            // cache proposal
-            // handleCacheProposal(prefixedId);
             break;
           }
         }
@@ -324,27 +311,13 @@ const CreateProposalProvider: React.FC<Props> = ({
     } catch (error) {
       console.error(error);
       setCreationProcessState(TransactionState.ERROR);
-      // trackEvent('newProposal_transaction_failed', {
-      //   dao_address: daoDetails?.address,
-      //   network: network,
-      //   wallet_provider: provider?.connection.url,
-      //   error,
-      // });
     }
   }, [
-    // averageFee,
     creationProcessState,
-    daoDetails?.address,
-    // handleCacheProposal,
     handleCloseModal,
     isOnWrongNetwork,
-    network,
     open,
-    // pluginAddress,
-    // pluginClient,
     proposalCreationData,
-    provider?.connection.url,
-    // tokenPrice,
   ]);
 
   /*************************************************
@@ -367,7 +340,7 @@ const CreateProposalProvider: React.FC<Props> = ({
   return (
     <>
       {children}
-      <PublishModal
+      {/* <PublishModal
         state={creationProcessState || TransactionState.WAITING}
         isOpen={showTxModal}
         onClose={handleCloseModal}
@@ -381,7 +354,7 @@ const CreateProposalProvider: React.FC<Props> = ({
         buttonLabel={t('TransactionModal.createProposal')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         disabledCallback={disableActionButton}
-      />
+      /> */}
     </>
   );
 };
