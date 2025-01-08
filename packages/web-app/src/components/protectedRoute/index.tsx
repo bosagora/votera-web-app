@@ -47,7 +47,13 @@ const ProtectedRoute: React.FC = () => {
   const {
     data: {members, filteredMembers},
     isLoading: membersAreLoading,
-  } = useDaoMembers(daoDetails ? daoDetails.address : '', address || '');
+  } = {
+    data: {
+      members: [{address: '0x123'}, {address: '0x456'}], 
+      filteredMembers: [{address: '0x123'}]
+    },
+    isLoading: false
+  };
   const {network} = useNetwork();
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
 

@@ -100,64 +100,54 @@ export const CardProposal: React.FC<
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
   return (
     <Card data-testid="cardProposal" onClick={onClick}>
-      <Header>
-        <HeaderOptions
-          process={process}
-          stateLabel={stateLabel}
-          alertMessage={alertMessage}
-          type={type}
-        />
-      </Header>
-      <TextContent>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-        <Publisher>
-          {isExploreProposal(type) ? (
-            <AvatarDao daoName={daoName!} size="small" src={daoLogo} />
-          ) : (
-            <PublisherLabel>{publishLabel}</PublisherLabel>
-          )}
-
-          <Link
-            external
-            href={addressExploreUrl}
-            label={addressLabel}
-            className="text-sm"
+      <TopContent>
+        <Header>
+          <HeaderOptions
+            process={process}
+            stateLabel={stateLabel}
+            alertMessage={alertMessage}
+            type={type}
           />
-        </Publisher>
+        </Header>
+        
+        <TextContent>
+          <Title>{title}</Title>
+          <Description>{description}</Description>
+          <Publisher>
+            {isExploreProposal(type) ? (
+              <AvatarDao daoName={daoName!} size="small" src={daoLogo} />
+            ) : (
+              <PublisherLabel>{publishLabel}</PublisherLabel>
+            )}
 
-        <ProposalMetadataWrapper>
+            <Link
+              external
+              href={addressExploreUrl}
+              label={addressLabel}
+              className="text-sm"
+            />
+          </Publisher>
+
+          <ProposalMetadataWrapper>
             <IconWrapper>
-            <StyledIconBlock />
-            {/* <IconLabel>{getSupportedNetworkByChainId(props.chainId)}</IconLabel> */}
-            <IconLabel>Ethereum</IconLabel>
+              <StyledIconBlock />
+              <IconLabel>Ethereum</IconLabel>
             </IconWrapper>
-        </ProposalMetadataWrapper>
+          </ProposalMetadataWrapper>
+        </TextContent>
+      </TopContent>
 
-      </TextContent>
-    
-          <LoadingContent>
-            <ProgressInfoWrapper>
-              <ProgressTitle>Assessmented by</ProgressTitle>
-              <Amount>
-                1 of 10 members
-                {/* {tokenAmount && tokenSymbol
-                  ? `${tokenAmount} ${tokenSymbol}`
-                  : winningOptionValue} */}
-              </Amount>
-            </ProgressInfoWrapper>
-            {/* <LinearProgress max={100} value={voteProgress} />
-            <ProgressInfoWrapper>
-              <Vote>{voteLabel}</Vote>
-              <Percentage>{voteProgress}%</Percentage>
-            </ProgressInfoWrapper> */}
-          </LoadingContent>
-          {votedAlertLabel && (
-            <VotedAlertWrapper>
-              <AlertInline mode="success" label={votedAlertLabel} />
-            </VotedAlertWrapper>
-          )}
-    
+      <LoadingContent>
+        <ProgressInfoWrapper>
+          <ProgressTitle>Assessmented by</ProgressTitle>
+          <Amount>1 of 10 members</Amount>
+        </ProgressInfoWrapper>
+        {votedAlertLabel && (
+          <VotedAlertWrapper>
+            <AlertInline mode="success" label={votedAlertLabel} />
+          </VotedAlertWrapper>
+        )}
+      </LoadingContent>
     </Card>
   );
 };
@@ -219,11 +209,15 @@ const HeaderOptions: React.VFC<HeaderOptionProps> = ({
 
 const Card = styled.button.attrs({
   className:
-    'w-full bg-white rounded-xl p-2 space-y-3 box-border ' +
+    'w-full bg-white rounded-xl p-2 box-border flex flex-col justify-between ' +
     'hover:border hover:border-ui-100 ' +
     'active:border active:border-ui-200 ' +
     'focus:outline-none focus:ring-2 focus:ring-primary-500',
 })`
+  @media (min-width: 768px) {
+    min-height: 240px;
+  }
+
   &:hover {
     box-shadow: 0px 4px 8px rgba(31, 41, 51, 0.04),
       0px 0px 2px rgba(31, 41, 51, 0.06), 0px 0px 1px rgba(31, 41, 51, 0.04);
@@ -235,11 +229,13 @@ const Header = styled.div.attrs({
 })``;
 
 const Title = styled.p.attrs({
-  className: 'text-ui-800 text-left font-bold ft-text-xl',
+  className: 'text-ui-800 text-left font-bold ft-text-xl line-clamp-1',
 })``;
 
 const Description = styled.p.attrs({
-  className: 'text-ui-600 text-left font-normal ft-text-base line-clamp-2',
+  className: 
+    'text-ui-600 text-left font-normal ft-text-base line-clamp-2 ' +
+    'min-h-[4.5rem]',
 })``;
 
 const Publisher = styled.span.attrs({
@@ -251,7 +247,7 @@ const TextContent = styled.div.attrs({
 })``;
 
 const LoadingContent = styled.div.attrs({
-  className: 'space-y-2 p-2 bg-ui-50 rounded-xl',
+  className: 'space-y-2 p-2 bg-ui-50 rounded-xl mt-auto',
 })``;
 
 const ProgressInfoWrapper = styled.div.attrs({
@@ -281,19 +277,25 @@ const VotedAlertWrapper = styled.div.attrs({
 })``;
 
 const ProposalMetadataWrapper = styled.div`
-  flex flex-row space-x-3
+  flex: flex-row space-x-3;
 `;
+
 const IconLabel = styled.p.attrs({
-    className: 'text-ui-600 ft-text-sm capitalize',
-  })``;
-  const IconWrapper = styled.div.attrs({
-    className: 'flex flex-row space-x-1',
-  })``;
-  
-  const DaoDataWrapper = styled.div.attrs({
-    className: 'flex flex-col grow space-y-1.5 flex-1',
-  })``;
-  
-  const StyledIconBlock = styled(IconBlock).attrs({
-    className: 'text-ui-600',
-  })``;
+  className: 'text-ui-600 ft-text-sm capitalize',
+})``;
+
+const IconWrapper = styled.div.attrs({
+  className: 'flex flex-row space-x-1',
+})``;
+
+const DaoDataWrapper = styled.div.attrs({
+  className: 'flex flex-col grow space-y-1.5 flex-1',
+})``;
+
+const StyledIconBlock = styled(IconBlock).attrs({
+  className: 'text-ui-600',
+})``;
+
+const TopContent = styled.div.attrs({
+  className: 'flex flex-col space-y-3',
+})``;

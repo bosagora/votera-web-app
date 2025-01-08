@@ -35,6 +35,14 @@
     "giveFeedback": "Give feedback"
   },
   "labels": {
+    "title": "Title",
+    "fund": "Fund",
+    "system": "System",
+    "proposalType": "Type",
+    "assessmentPeriod": "Assessment period",
+    "votePeriod": "Vote period",
+    "fundAmount": "Fund amount",
+    "document": "Upload document",
     "approvals": "Approvals",
     "loading": "Loading …",
     "members": "Members",
@@ -93,7 +101,7 @@
     "networkCost": "Network cost",
     "security": "Security",
     "popularity": "Popularity",
-    "daoName": "Multisig wallet name",
+    "daoName": "Proposal name",
     "summary": "Description",
     "description": "Description",
     "addLink": "Add link",
@@ -241,7 +249,7 @@
     "selectToken": "Select a token …",
     "walletOrEns": "Type wallet address …",
     "searchTokens": "Type to search …",
-    "daoName": "Type your Multisig wallet's name …",
+    "daoName": "Type your proposal's name …",
     "ensName": "aragon",
     "daoDescription": "Type your summary …",
     "addResource": "Lens, Discord, etc."
@@ -1247,5 +1255,80 @@
     "modalHeaderSearch": {
       "placeholder": "Type to find any action …"
     }
+  },
+  "createProposal": {
+    "title": "Create Proposal",
+    "overview": {
+      "title": "Build your Multisig wallet",
+      "description": "You can easily create them as you go step by step.",
+      "button": "Build"
+    },
+    "step1": {
+      "label": "Step 1",
+      "title": "Select Blockchain",
+      "description": "Select the blockchain you want to create a proposal on."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Define Metadata",
+      "description": "Define the metadata for your proposal."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Authorised Wallets",
+      "description": "Define the authorised wallets for your proposal."
+    },
+    "step4": {
+      "label": "Step 4",
+      "title": "Fund Proposal",
+      "description": "Fund the proposal with BOA."
+    },
+    "review": {
+      "title": "Deploy your Multisig wallet",
+      "description": "Double-check that everything is correct before launching your organization.",
+      "network": "{{network}} net",
+      "distributionLink": "See {{count}} addresses",
+      "days": "{{days}} days",
+      "hours": "{{hours}} hours",
+      "minutes": "{{minutes}} minutes",
+      "daoUpdates": "For the chain you choose and the members you add, you can't change all these values later in your Multisig wallet.",
+      "acceptContent": "Accept proposed content.",
+      "valuesCorrect": "These values are correct",
+      "proposalCreation": "Token holders with ≥{{token}} {{symbol}}"
+    }
+  }, 
+  "createDAO2": {
+    "title": "Create your proposal",
+    "overview": {
+      "title": "Build your proposal",
+      "description": "You can easily create them as you go step by step.",
+      "button": "Build"
+    },
+    "step1": {
+      "label": "Step 1",
+      "title": "Select blockchain",
+      "description": "The chain you choose is where your tokens and assets are stored. If you already have a token, choose the chain your token is minted on. This cannot be changed later.",
+      "descriptionLinkLabel": "blockchain for your DAO",
+      "descriptionLinkURL": "https://aragon.org/how-to/choose-the-right-blockchain-for-your-dao"
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Describe your proposal",
+      "description": "Name and define your proposal so new contributors know they've come to the right place. This information is displayed on the dashboard page.",
+      "nameSubtitle": "Maximum of 128 characters",
+      "logoSubtitle": "JPG, PNG, GIF, or SVG of no more than 3MB. We recommend 1024x1024px.",
+      "descriptionSubtitle": "Describe your proposal's purpose in a few sentences. This is listed on the dashboard page so new contributors can find you.",
+      "linksSubtitle": "Links to your DAO's website, social media profiles, Discord, or other places your community gathers.",
+      "metadataOverviewGuide": "read our guide",
+      "descriptionLinkLabel": "read our guide",
+      "descriptionLinkURL": "https://aragon.org/how-to/build-a-dao-brand-identity",
+      "ensNameSubtitle": "This will be your DAO’s unique ENS subdomain, created automatically for you. Lowercase letters, numbers, and the dash '-' are all acceptable characters; ideally, the character count should be under 128."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Setup your proposal",
+      "description": "Setup your proposal so new contributors know they've come to the right place. This information is displayed on the proposal detail page."
+    }
   }
 }
+

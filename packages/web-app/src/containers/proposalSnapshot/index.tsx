@@ -16,7 +16,7 @@ import {useNetwork} from 'context/network';
 import {useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {htmlIn} from 'utils/htmlIn';
-import {Governance, NewProposal} from 'utils/paths';
+import {CreateProposal, Governance, NewProposal} from 'utils/paths';
 import {ProposalListItem} from 'utils/types';
 import {useWallet} from 'hooks/useWallet';
 
@@ -93,7 +93,7 @@ const ProposalSnapshot: React.FC<Props> = ({
           label: t('TransactionModal.createProposal'),
           onClick: () =>
             navigate(
-              generatePath(NewProposal, {network, dao: daoAddressOrEns})
+              generatePath(CreateProposal, {network, dao: daoAddressOrEns})
             ),
         }}
         renderHtml
@@ -110,7 +110,7 @@ const ProposalSnapshot: React.FC<Props> = ({
         buttonText={t('newProposal.title')}
         orientation="horizontal"
         onClick={() =>
-          navigate(generatePath(NewProposal, {network, dao: daoAddressOrEns}))
+          navigate(generatePath(CreateProposal, {network, dao: daoAddressOrEns}))
         }
       />
 
