@@ -170,15 +170,18 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
         control={control}
         render={({field: {onChange}, fieldState: {error}}) => (
           <InputPdfSingle
-            onChange={async (file: File) => {
+            onChange={async (file: File | null) => {
               if (file) {
                 await handleFileUpload(file);
-                // onChange(file);
+                formMethods.setValue('file', file);
+              } else {
+                formMethods.setValue('file', null);
+                formMethods.setValue('documentId', '');
               }
             }}
-            {error?.message && (
-              <AlertInline label={error.message} mode="critical" />
-            )}
+            onError={(error) => {
+              console.error(error);
+            }}
           />
         )}
       />
