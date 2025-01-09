@@ -111,7 +111,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
           control={control}
           defaultValue=""
           rules={{
-            required: t('errors.required.name'),
+            required: t('errors.required.title'),
           }}
           render={({
             field: {onBlur, onChange, value, name},

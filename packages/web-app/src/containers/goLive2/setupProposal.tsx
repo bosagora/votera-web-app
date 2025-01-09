@@ -4,12 +4,14 @@ import {useTranslation} from 'react-i18next';
 
 import {useFormStep} from 'components/fullScreenStepper';
 import {DescriptionListContainer, Dl, Dt, Dd} from 'components/descriptionList';
+import { ProposalType } from 'votera-sdk-client';
 
 const SetupProposal: React.FC = () => {
   const {control, getValues} = useFormContext();
   const {setStep} = useFormStep();
   const {t} = useTranslation();
   const {
+    proposalType,
     assessmentPeriod, 
     votePeriod, 
     fundAmount,
@@ -26,7 +28,7 @@ const SetupProposal: React.FC = () => {
       }}
       render={({field: {onChange, value}}) => (
         <DescriptionListContainer
-          title={t('labels.review.proposalSetup')}
+          title={t('labels.review.setupProposal')}
           onEditClick={() => setStep(4)}
           checkBoxErrorMessage={t('createDAO.review.acceptContent')}
           checkedState={
@@ -35,18 +37,22 @@ const SetupProposal: React.FC = () => {
           tagLabel={t('labels.notChangeable')}
           onChecked={() => onChange(!value)}
         >
-          <Dl>
-            <Dt>{t('labels.assessmentPeriod')}</Dt>
-            <Dd>{assessmentPeriod}</Dd>
-          </Dl>
+          {proposalType === ProposalType.FUND && (
+            <Dl>
+              <Dt>{t('labels.assessmentPeriod')}</Dt>
+              <Dd>{assessmentPeriod} days ({new Date().toISOString().slice(0,10)} ~ {new Date(Date.now() + assessmentPeriod * 24 * 60 * 60 * 1000).toISOString().slice(0,10)})</Dd>
+            </Dl>
+          )}
           <Dl>
             <Dt>{t('labels.votePeriod')}</Dt>
-            <Dd>{votePeriod}</Dd>
+            <Dd>{votePeriod} days ({new Date(Date.now() + assessmentPeriod * 24 * 60 * 60 * 1000).toISOString().slice(0,10)} ~ {new Date(Date.now() + (assessmentPeriod + votePeriod) * 24 * 60 * 60 * 1000).toISOString().slice(0,10)})</Dd>
           </Dl>
-          <Dl>
-            <Dt>{t('labels.fundAmount')}</Dt>
-            <Dd>{fundAmount} BOA</Dd>
-          </Dl>
+          {proposalType === ProposalType.FUND && (
+            <Dl>
+              <Dt>{t('labels.fundAmount')}</Dt>
+              <Dd>{typeof fundAmount === 'object' && 'toString' in fundAmount ? fundAmount.toString() : fundAmount} BOA</Dd>
+            </Dl>
+          )}
         </DescriptionListContainer>
       )}
     />

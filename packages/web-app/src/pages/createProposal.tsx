@@ -61,7 +61,7 @@ export type CreateProposalFormData = {
   assessmentPeriod: number;
   votePeriod: number;
   documentId: string;
-  file: File;
+  file: File | null;
   systemType: SystemProposalType;
   params: any[];
 };
@@ -77,8 +77,8 @@ const CreateProposal: React.FC = () => {
 
   const defaultValues: CreateProposalFormData = {
     blockchain: {
-      id: 1,
-      label: 'BOSAGORA',
+      id: 2151,
+      label: 'bosagora_mainnet',
       network: 'main',
     },
     proposalType: ProposalType.FUND,
@@ -90,6 +90,7 @@ const CreateProposal: React.FC = () => {
     assessmentPeriod: 7,
     votePeriod: 14, 
     documentId: '',
+    file: null,
     systemType: SystemProposalType.NORMAL,
     params: []
   };
@@ -202,10 +203,9 @@ const CreateProposal: React.FC = () => {
             wizardTitle={t('createProposal.step2.title')}
             wizardDescription={htmlIn(t)('createProposal.step2.description')}
             isNextButtonDisabled={
-              !formMethods.getValues('proposalType')
-              || !formMethods.getValues('title') 
+              !formMethods.getValues('title') 
               || !formMethods.getValues('description')
-              // || !formMethods.getValues('documentId')
+              || !formMethods.getValues('documentId')
             }
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '2_define_metadata', {
@@ -221,9 +221,11 @@ const CreateProposal: React.FC = () => {
           <Step
             wizardTitle={t('createDAO2.step3.title')}
             wizardDescription={htmlIn(t)('createDAO2.step3.description')}
-            isNextButtonDisabled={!formMethods.getValues('assessmentPeriod') || 
+            isNextButtonDisabled={
               !formMethods.getValues('votePeriod') || 
-              !BigNumber.from(formMethods.getValues('fundAmount')).gt(0)}
+              (formMethods.getValues('proposalType') === ProposalType.FUND && 
+                (!formMethods.getValues('assessmentPeriod') || 
+                !BigNumber.from(formMethods.getValues('fundAmount')).gt(0)))}
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '3_setup_proposal', {
                 assessmentPeriod: formMethods.getValues('assessmentPeriod'),

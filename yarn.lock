@@ -2077,7 +2077,7 @@
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/providers@5.7.2", "@ethersproject/providers@^5.0.0", "@ethersproject/providers@^5.5.0", "@ethersproject/providers@^5.7.2":
+"@ethersproject/providers@5.7.2", "@ethersproject/providers@^5.0.0", "@ethersproject/providers@^5.5.0", "@ethersproject/providers@^5.7.0", "@ethersproject/providers@^5.7.2":
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.7.2.tgz#f8b1a4f275d7ce58cf0a2eec222269a08beb18cb"
   integrity sha512-g34EWZ1WWAVgr4aptGlVBF8mhl3VWjv+8hoAnzStu8Ah22VHBsuGzP17eb6xDVRzw895G4W7vvx60lFFur/1Rg==
@@ -26386,7 +26386,7 @@ underscore@1.9.1:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
   integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
 
-unfetch@^4.2.0:
+unfetch@^4.2.0, unfetch@~4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
   integrity sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
@@ -26937,6 +26937,41 @@ void-elements@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
+
+votera-contracts-lib@~1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/votera-contracts-lib/-/votera-contracts-lib-1.2.1.tgz#bd66c4c20d8495c37385301469c66cf951d58a73"
+  integrity sha512-KFuiVLy5sh57iRHBEEXrHlO8ptXD/lZ6mAehg7EHd5DYf5T4VXzbppCyXifmbaj2ptNJelmt4wXpoSWQQtx/gg==
+  dependencies:
+    ethers "^5.7.0"
+
+votera-sdk-client@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/votera-sdk-client/-/votera-sdk-client-1.3.0.tgz#782e49dfaf33016f44a59b2c36ebd8418f0cbc3b"
+  integrity sha512-7mMGxu1o/2Trhun2PSIBFryOEUn+QujHJFs3ObtfhkGMfNoOUuCAx4SaU1E/Nu8NgUiTKrkmPQmIwrhBUQqkYQ==
+  dependencies:
+    "@ethersproject/abi" "^5.7.0"
+    "@ethersproject/abstract-signer" "^5.7.0"
+    "@ethersproject/bignumber" "^5.7.0"
+    "@ethersproject/bytes" "^5.7.0"
+    "@ethersproject/constants" "^5.7.0"
+    "@ethersproject/contracts" "^5.7.0"
+    "@ethersproject/hash" "^5.7.0"
+    "@ethersproject/keccak256" "^5.7.0"
+    "@ethersproject/networks" "^5.7.0"
+    "@ethersproject/providers" "^5.7.0"
+    "@ethersproject/random" "^5.7.0"
+    "@ethersproject/wallet" "^5.7.0"
+    unfetch "~4.2.0"
+    votera-contracts-lib "~1.2.1"
+    votera-sdk-common "~1.0.0"
+
+votera-sdk-common@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/votera-sdk-common/-/votera-sdk-common-1.0.0.tgz#7f30012621b075fa15d701db9f6c0745c6774ae6"
+  integrity sha512-RQhH3g3IwUnN+uiUe7URAHIDIoIEmXB+UW2uvjSakDSzKXc3YTPwSaI0x6AYVtDI7XnUBHdXA5zZEJqtoLsGAA==
+  dependencies:
+    ethers "^5.7.0"
 
 w3c-hr-time@^1.0.1, w3c-hr-time@^1.0.2:
   version "1.0.2"

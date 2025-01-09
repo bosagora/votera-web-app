@@ -1,8 +1,9 @@
 // Library utils / Ethers for now
 import {
+  Client,
   Context as SdkContext,
   SupportedNetwork as SdkSupportedNetworks,
-} from 'multisig-wallet-sdk-client';
+} from 'votera-sdk-client';
 import {fetchEnsAvatar} from '@wagmi/core';
 
 import {BigNumber, BigNumberish, constants, ethers, providers} from 'ethers';
@@ -249,24 +250,12 @@ export const translateToAppNetwork = (
   sdkNetwork: SdkContext['network']
 ): SupportedNetworks => {
   switch (sdkNetwork.name) {
-    case 'homestead':
-      return 'ethereum';
-    case 'goerli':
-      return 'goerli';
-    case 'sepolia':
-      return 'sepolia';
     case 'bosagora_mainnet':
       return 'bosagora_mainnet';
     case 'bosagora_testnet':
       return 'bosagora_testnet';
     case 'bosagora_devnet':
       return 'bosagora_devnet';
-    case 'acc_sidechain_mainnet':
-      return 'acc_sidechain_mainnet';
-    case 'acc_sidechain_testnet':
-      return 'acc_sidechain_testnet';
-    case 'acc_sidechain_devnet':
-      return 'acc_sidechain_devnet';
   }
   return 'unsupported';
 };
@@ -284,24 +273,14 @@ export function translateToNetworkishName(
   }
 
   switch (appNetwork) {
-    case 'ethereum':
-      return SdkSupportedNetworks.ETHEREUM_MAINNET;
-    case 'goerli':
-      return SdkSupportedNetworks.ETHEREUM_GOERLI;
-    case 'sepolia':
-      return SdkSupportedNetworks.ETHEREUM_SEPOLIA;
+
     case 'bosagora_mainnet':
-      return SdkSupportedNetworks.BOSAGORA_MAINNET;
+      return SdkSupportedNetworks.MAINNET;
     case 'bosagora_testnet':
-      return SdkSupportedNetworks.BOSAGORA_TESTNET;
+      return SdkSupportedNetworks.TESTNET;
     case 'bosagora_devnet':
-      return SdkSupportedNetworks.BOSAGORA_DEVNET;
-    case 'acc_sidechain_mainnet':
-      return SdkSupportedNetworks.ACC_SIDECHAIN_MAINNET;
-    case 'acc_sidechain_testnet':
-      return SdkSupportedNetworks.ACC_SIDECHAIN_TESTNET;
-    case 'acc_sidechain_devnet':
-      return SdkSupportedNetworks.ACC_SIDECHAIN_DEVNET;
+      return SdkSupportedNetworks.DEVNET;
+
   }
 
   return 'unsupported';

@@ -107,7 +107,7 @@ const networks: SelectableNetworks = {
   main: {
     cost: [
       'bosagora_mainnet',
-      'ethereum',
+      // 'ethereum',
       // 'acc_sidechain_mainnet'
     ],
     popularity: ['bosagora_mainnet', 'acc_sidechain_mainnet', 'ethereum'],
