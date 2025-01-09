@@ -62,12 +62,14 @@ export const InputPdfSingle: React.FC<InputPdfSingleProps> = ({
   const {
     getRootProps,
     getInputProps,
-    isDragActive: isdragactive,
+    isDragActive,
   } = useDropzone({
     onDrop,
     ...(maxFileSize && {maxSize: maxFileSize}),
     accept: 'application/pdf',
   });
+
+  const isdragactiveStr = isDragActive.toString();
 
   if (loading) {
     return (
@@ -81,6 +83,7 @@ export const InputPdfSingle: React.FC<InputPdfSingleProps> = ({
     <PreviewContainer>
       <PreviewText>{preview}</PreviewText>
       <StyledButton
+        css={{}}
         icon={<IconClose />}
         size="small"
         mode="secondary"
@@ -92,25 +95,25 @@ export const InputPdfSingle: React.FC<InputPdfSingleProps> = ({
     </PreviewContainer>
   ) : (
     <DefaultContainer
-      {...{isdragactive}}
       data-testid="input-pdf"
       {...getRootProps()}
+      $isdragactive={isdragactiveStr}
     >
-      <StyledIconAdd {...{isdragactive}} />
+      <StyledIconAdd $isdragactive={isdragactiveStr} />
       <input {...getInputProps()} />
     </DefaultContainer>
   );
 };
 
 type DefaultContainerProps = {
-  isdragactive: boolean;
+  $isdragactive: string;
 };
 
 const DefaultContainer = styled.div.attrs(
-  ({isdragactive}: DefaultContainerProps) => ({
+  ({$isdragactive}: DefaultContainerProps) => ({
     className: `flex items-center justify-center bg-ui-0
     h-8 w-8 border-dashed ${
-      isdragactive ? 'border-primary-500' : 'border-ui-100'
+      $isdragactive === 'true' ? 'border-primary-500' : 'border-ui-100'
     } border-2 rounded-xl cursor-pointer`,
   })
 )<DefaultContainerProps>``;
@@ -136,8 +139,8 @@ const StyledButton = styled(ButtonIcon).attrs({
 `;
 
 const StyledIconAdd = styled(IconAdd).attrs(
-  ({isdragactive}: DefaultContainerProps) => ({
-    className: `${isdragactive ? 'text-primary-500' : 'text-ui-600'}`,
+  ({$isdragactive}: DefaultContainerProps) => ({
+    className: `${$isdragactive === 'true' ? 'text-primary-500' : 'text-ui-600'}`,
   })
 )<DefaultContainerProps>``;
 

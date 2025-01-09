@@ -8,7 +8,7 @@ import {MultisigWalletField} from 'components/multisigWallets/row';
 import ConfigureCommunity from 'containers/configureCommunity';
 import {OverviewDAOHeader, OverviewDAOStep} from 'containers/daoOverview';
 import DefineMetadata from 'containers/defineMetadata';
-import GoLive, {GoLiveFooter, GoLiveHeader} from 'containers/goLive';
+import GoLive, {GoLiveFooter, GoLiveHeader} from 'containers/goLive2';
 import SelectChain from 'containers/selectChainForm';
 import SetupCommunity from 'containers/setupCommunity';
 import {CreateDaoProvider} from 'context/createDao';
@@ -24,8 +24,17 @@ import { BOACoin } from 'multisig-wallet-sdk-client';
 import { CreateProposalProvider } from 'context/createProposal';
 import ConfigureActions from 'containers/configureActions';
 import SetupProposal from 'containers/setupProposal';
+import {defaultAbiCoder} from '@ethersproject/abi';
+import {keccak256} from '@ethersproject/keccak256';
+import {randomBytes} from '@ethersproject/random';
 
-const getRandomId = () => BigNumber.from(Math.floor(Math.random() * 1000000)).toString();
+const getRandomId = () => {
+  const encodedResult = defaultAbiCoder.encode(
+    ["bytes32", "bytes32"], 
+    [randomBytes(32), randomBytes(32)]
+  );
+  return keccak256(encodedResult);
+};
 
 export enum ProposalType {
   SYSTEM,
@@ -52,34 +61,40 @@ export type CreateProposalFormData = {
   assessmentPeriod: number;
   votePeriod: number;
   documentId: string;
+  file: File;
   systemType: SystemProposalType;
   params: any[];
 };
 
-const defaultValues: CreateProposalFormData = {
-  blockchain: {
-    id: 1,
-    label: 'BOSAGORA',
-    network: 'main',
-  },
-  proposalType: ProposalType.FUND,
-  proposer: '0x1234567890',
-  title: 'test',
-  description: 'test',
-  proposalId: getRandomId(),
-  fundAmount: BOACoin.make(100).value,
-  assessmentPeriod: 7,
-  votePeriod: 14, 
-  documentId: getRandomId(),
-  systemType: SystemProposalType.NORMAL,
-  params: []
-};
 
 
 const CreateProposal: React.FC = () => {
   const {t} = useTranslation();
   const {chainId = 1} = {chainId: 1}; // mock data
   const {network, setNetwork} = useNetwork();
+  const {address} = useWallet();
+
+
+  const defaultValues: CreateProposalFormData = {
+    blockchain: {
+      id: 1,
+      label: 'BOSAGORA',
+      network: 'main',
+    },
+    proposalType: ProposalType.FUND,
+    proposer: address || '',
+    title: 'test',
+    description: 'test',
+    proposalId: getRandomId(),
+    fundAmount: BOACoin.make(0).value,
+    assessmentPeriod: 7,
+    votePeriod: 14, 
+    documentId: '',
+    systemType: SystemProposalType.NORMAL,
+    params: []
+  };
+  
+
   const formMethods = useForm<CreateProposalFormData>({
     mode: 'onChange',
     defaultValues,
@@ -190,7 +205,8 @@ const CreateProposal: React.FC = () => {
               !formMethods.getValues('proposalType')
               || !formMethods.getValues('title') 
               || !formMethods.getValues('description')
-              || !formMethods.getValues('documentId')}
+              // || !formMethods.getValues('documentId')
+            }
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '2_define_metadata', {
                 proposalType: formMethods.getValues('proposalType'),
@@ -207,7 +223,7 @@ const CreateProposal: React.FC = () => {
             wizardDescription={htmlIn(t)('createDAO2.step3.description')}
             isNextButtonDisabled={!formMethods.getValues('assessmentPeriod') || 
               !formMethods.getValues('votePeriod') || 
-              !formMethods.getValues('fundAmount')}
+              !BigNumber.from(formMethods.getValues('fundAmount')).gt(0)}
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '3_setup_proposal', {
                 assessmentPeriod: formMethods.getValues('assessmentPeriod'),
