@@ -37,10 +37,10 @@ export const GoLiveHeader: React.FC = () => {
       <div className="flex justify-between">
         <div className="pt-3 w-full">
           <h1 className="text-3xl font-bold text-ui-800">
-            {t('createDAO.setup.title')}
+            {t('createDAO2.deploy.title')}
           </h1>
           <p className="mt-2 text-lg text-ui-600">
-            {t('createDAO.setup.description')}
+            {t('createDAO2.deploy.description')}
           </p>
         </div>
         <ImageContainer src={goLive} />
@@ -96,7 +96,7 @@ export const GoLiveFooter: React.FC = () => {
         <ButtonText
           size="large"
           iconRight={<IconChevronRight />}
-          label={t('createDAO.review.title')}
+          label={t('createDAO2.deploy.title')}
           onClick={publishDao}
           disabled={IsButtonDisabled()}
         />

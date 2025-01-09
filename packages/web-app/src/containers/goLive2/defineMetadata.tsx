@@ -21,7 +21,7 @@ const DefineMetadata: React.FC = () => {
       }}
       render={({field: {onChange, value}}) => (
         <DescriptionListContainer
-          title={t('labels.review.daoMetadata')}
+          title={t('labels.review.proposalMetadata')}
           onEditClick={() => setStep(3)}
           checkBoxErrorMessage={t('createDAO.review.acceptContent')}
           checkedState={
