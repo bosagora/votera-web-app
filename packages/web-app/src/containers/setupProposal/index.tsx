@@ -90,8 +90,8 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                 {...{name, value, onBlur}}
                 onChange={onChange}
                 placeholder={t('placeHolders.votePeriod')}
-                min={7}
-                max={14}
+                min={14}
+                max={28}
               />
               {error?.message && (
                 <AlertInline label={error.message} mode="critical" />
@@ -103,7 +103,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
       {/* Fund Amount */}
      <FormItem>
         <Label
-          label={t('labels.amount')}
+          label={t('labels.fundAmount')}
           helpText={t('newWithdraw.configureWithdraw.amountSubtitle')}
         />
         <Controller

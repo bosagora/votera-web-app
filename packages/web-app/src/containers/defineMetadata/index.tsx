@@ -22,6 +22,8 @@ import {useProviders} from 'context/providers';
 import {useNetwork} from 'context/network';
 import { ProposalType } from 'pages/createProposal';
 import useScreen from 'hooks/useScreen';
+import { useFileUpload } from 'hooks/useFileUpload';
+import { InputPdfSingle } from 'components/uploadFile';
 export type DefineMetadataProps = {
   arrayName?: string;
   isSettingPage?: boolean;
@@ -34,6 +36,20 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
   const {control} = useFormContext();
   const [proposalType, setProposalType] = useState<ProposalType>(ProposalType.FUND);
   const formMethods = useFormContext();
+
+  const {uploadFile, isUploading} = useFileUpload();
+  
+  const handleFileUpload = async (file: File) => {
+    try {
+      const cid = await uploadFile(file);
+      console.log('File uploaded with CID:', cid);
+      formMethods.setValue('documentId', cid);  
+      // CID를 폼 상태에 저장하거나 다른 처리
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
+  };
+
   return (
     <>
       {/* Proposal Type */}
@@ -143,49 +159,30 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
         />
       </FormItem>
 
-      {/* Upload Document */}
-      <FormItem>
-        <Label label={t('labels.document')} />
-        <InputImageSingle 
-          onChange={() => {}}
-          onError={() => {}}
+    {/* Upload Document */}
+    <FormItem>
+    <Label
+          label={t('labels.uploadDocument')}
+          helpText={t('createDAO2.step2.documentSubtitle')}
         />
       <Controller
-        name="document"
+        name="documentId"
         control={control}
-        render={({field: {value, onChange}}) => (
-          <div className="flex flex-col gap-2">
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  onChange(file);
-                }
-              }}
-              className="block w-full text-sm text-ui-600
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-primary-50 file:text-primary-500
-                hover:file:bg-primary-100"
-            />
-            {value && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-ui-600">{value.name}</span>
-                <button
-                  onClick={() => onChange(null)}
-                  className="text-ui-500 hover:text-ui-600"
-                >
-                  {t('labels.clear')}
-                </button>
-              </div>
+        render={({field: {onChange}, fieldState: {error}}) => (
+          <InputPdfSingle
+            onChange={async (file: File) => {
+              if (file) {
+                await handleFileUpload(file);
+                // onChange(file);
+              }
+            }}
+            {error?.message && (
+              <AlertInline label={error.message} mode="critical" />
             )}
-          </div>
+          />
         )}
       />
-      </FormItem>
+    </FormItem>
     </>
   );
 };
