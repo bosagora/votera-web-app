@@ -72,10 +72,6 @@ export const GoLiveFooter: React.FC = () => {
 
   const publishDao = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // isConnected &&
-    // trackEvent('daoCreation_publishYourDAO_clicked', {
-    //   network: getValues('blockchain')?.network,
-    // });
 
     if (isConnected) {
       if (isOnWrongNetwork) {
