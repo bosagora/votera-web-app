@@ -363,9 +363,7 @@
     "votePeriod": "Vote period is required",
     "fundAmount": "Fund amount is required",
     "proposalType": "Proposal type is required",
-    
 
-    
     "amountWithInvalidToken": "Cannot validate amount with invalid token address",
     "defaultAmountValidationError": "Error validating amount",
     "durationTooShort": "Duration too short",
@@ -410,7 +408,6 @@
       "acceptContent": "Please accept all the content",
       "proposalType": "Proposal type is required",
       "minValue": "Minimum value is required",
-
 
       "tokenAddress": "Token address is required",
       "tokenName": "Token name is required",
@@ -545,6 +542,7 @@
     "noAddresses": "No address found"
   },
   "TransactionModal": {
+    "createProposalSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
     "approveSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
     "approveToken": "Approve token",
     "depositTitle": "Sign deposit",
@@ -1319,7 +1317,7 @@
       "valuesCorrect": "These values are correct",
       "proposalCreation": "Token holders with ≥{{token}} {{symbol}}"
     }
-  }, 
+  },
   "createDAO2": {
     "title": "Create your proposal",
     "overview": {
@@ -1358,4 +1356,3 @@
     }
   }
 }
-

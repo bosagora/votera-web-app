@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
-import {
-  Breadcrumb,
-  ButtonText,
-  IconChevronRight,
-} from '@aragon/ui-components';
+import {Breadcrumb, ButtonText, IconChevronRight} from '@aragon/ui-components';
 import {useNavigate} from 'react-router-dom';
 
 import SelectChain from './selectChain';
@@ -13,10 +9,10 @@ import DefineMetadata from './defineMetadata';
 import SetupProposal from './setupProposal';
 import goLive from 'public/goLive.svg';
 import {Landing} from 'utils/paths';
-import {useCreateDaoContext} from 'context/createDao';
+import {useCreateProposalContext} from 'context/createProposal';
 import {useWallet} from 'hooks/useWallet';
 import {useGlobalModalContext} from 'context/globalModals';
-import { useFormContext } from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 
 export const GoLiveHeader: React.FC = () => {
   const {t} = useTranslation();
@@ -63,7 +59,7 @@ export const GoLiveFooter: React.FC = () => {
   const {watch, setValue, getValues} = useFormContext();
   const {reviewCheck} = watch();
   const {t} = useTranslation();
-  // const {handlePublishDao} = useCreateDaoContext();
+  const {handlePublishProposal} = useCreateProposalContext();
   const {open} = useGlobalModalContext();
   const {isConnected, isOnWrongNetwork} = useWallet();
 
@@ -77,7 +73,7 @@ export const GoLiveFooter: React.FC = () => {
       if (isOnWrongNetwork) {
         open('network');
       } else {
-        // handlePublishDao();
+        handlePublishProposal();
       }
     } else {
       open('wallet');
