@@ -20,8 +20,8 @@ import {htmlIn} from 'utils/htmlIn';
 import {Landing} from 'utils/paths';
 
 import {BigNumber} from 'ethers';
-import { BOACoin } from 'multisig-wallet-sdk-client';
-import { CreateProposalProvider } from 'context/createProposal';
+import {BOACoin} from 'multisig-wallet-sdk-client';
+import {CreateProposalProvider} from 'context/createProposal';
 import ConfigureActions from 'containers/configureActions';
 import SetupProposal from 'containers/setupProposal';
 import {defaultAbiCoder} from '@ethersproject/abi';
@@ -30,7 +30,7 @@ import {randomBytes} from '@ethersproject/random';
 
 const getRandomId = () => {
   const encodedResult = defaultAbiCoder.encode(
-    ["bytes32", "bytes32"], 
+    ['bytes32', 'bytes32'],
     [randomBytes(32), randomBytes(32)]
   );
   return keccak256(encodedResult);
@@ -38,7 +38,7 @@ const getRandomId = () => {
 
 export enum ProposalType {
   SYSTEM,
-  FUND
+  FUND,
 }
 
 export enum SystemProposalType {
@@ -54,7 +54,7 @@ export type CreateProposalFormData = {
   };
   proposalType: ProposalType;
   proposer: string;
-  title: string; 
+  title: string;
   description: string;
   proposalId: string;
   fundAmount: BigNumber;
@@ -66,20 +66,16 @@ export type CreateProposalFormData = {
   params: any[];
 };
 
-
-
 const CreateProposal: React.FC = () => {
   const {t} = useTranslation();
-  const {chainId = 1} = {chainId: 1}; // mock data
   const {network, setNetwork} = useNetwork();
-  const {address} = useWallet();
-
+  const {address, chainId} = useWallet();
 
   const defaultValues: CreateProposalFormData = {
     blockchain: {
-      id: 2151,
-      label: 'bosagora_mainnet',
-      network: 'main',
+      id: CHAIN_METADATA[network].id,
+      label: CHAIN_METADATA[network].name,
+      network: CHAIN_METADATA[network].testnet ? 'test' : 'main',
     },
     proposalType: ProposalType.FUND,
     proposer: address || '',
@@ -88,13 +84,12 @@ const CreateProposal: React.FC = () => {
     proposalId: getRandomId(),
     fundAmount: BOACoin.make(0).value,
     assessmentPeriod: 7,
-    votePeriod: 14, 
+    votePeriod: 14,
     documentId: '',
     file: null,
     systemType: SystemProposalType.NORMAL,
-    params: []
+    params: [],
   };
-  
 
   const formMethods = useForm<CreateProposalFormData>({
     mode: 'onChange',
@@ -103,7 +98,7 @@ const CreateProposal: React.FC = () => {
   const {errors, dirtyFields} = useFormState({control: formMethods.control});
   const [title, proposalId] = useWatch({
     control: formMethods.control,
-    name: ['title', 'proposalId']
+    name: ['title', 'proposalId'],
   });
   const watchedValues = useWatch({control: formMethods.control});
   // Note: The wallet network determines the expected network when entering
@@ -128,9 +123,8 @@ const CreateProposal: React.FC = () => {
   }, [chainId, formMethods, setNetwork]);
 
   useEffect(() => {
-    console.log("Form values changed:", watchedValues);
+    console.log('Form values changed:', watchedValues);
   }, [watchedValues]); // watchedValues가 변경될 때마다 실행
-
 
   /*************************************************
    *             Step Validation States            *
@@ -140,7 +134,7 @@ const CreateProposal: React.FC = () => {
     // required fields not dirty
     if (!title) return false;
 
-    return !(errors.title);
+    return !errors.title;
   }, [title, dirtyFields.title, errors.title]);
 
   const daoSetupCommunityIsValid = useMemo(() => {
@@ -168,7 +162,7 @@ const CreateProposal: React.FC = () => {
    *************************************************/
   return (
     <FormProvider {...formMethods}>
-      <CreateProposalProvider showTxModal={false} setShowTxModal={() => {}}>
+      <CreateProposalProvider>
         <FullScreenStepper
           wizardProcessName={t('createProposal.title') as string}
           navLabel={t('createProposal.title') as string}
@@ -203,9 +197,9 @@ const CreateProposal: React.FC = () => {
             wizardTitle={t('createProposal.step2.title')}
             wizardDescription={htmlIn(t)('createProposal.step2.description')}
             isNextButtonDisabled={
-              !formMethods.getValues('title') 
-              || !formMethods.getValues('description')
-              || !formMethods.getValues('documentId')
+              !formMethods.getValues('title') ||
+              !formMethods.getValues('description') ||
+              !formMethods.getValues('documentId')
             }
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '2_define_metadata', {
@@ -222,10 +216,11 @@ const CreateProposal: React.FC = () => {
             wizardTitle={t('createDAO2.step3.title')}
             wizardDescription={htmlIn(t)('createDAO2.step3.description')}
             isNextButtonDisabled={
-              !formMethods.getValues('votePeriod') || 
-              (formMethods.getValues('proposalType') === ProposalType.FUND && 
-                (!formMethods.getValues('assessmentPeriod') || 
-                !BigNumber.from(formMethods.getValues('fundAmount')).gt(0)))}
+              !formMethods.getValues('votePeriod') ||
+              (formMethods.getValues('proposalType') === ProposalType.FUND &&
+                (!formMethods.getValues('assessmentPeriod') ||
+                  !BigNumber.from(formMethods.getValues('fundAmount')).gt(0)))
+            }
             onNextButtonClicked={next =>
               handleNextButtonTracking(next, '3_setup_proposal', {
                 assessmentPeriod: formMethods.getValues('assessmentPeriod'),

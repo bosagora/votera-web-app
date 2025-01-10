@@ -61,7 +61,6 @@ export const UseClientProvider: React.FC = ({children}) => {
     };
 
     const sdkContext = new SdkContext(contextParams);
-
     setClient(new Client(sdkContext));
     setContext(sdkContext);
   }, [network, signer]);

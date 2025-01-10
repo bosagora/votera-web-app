@@ -23,6 +23,7 @@ import {Web3Modal} from '@web3modal/react';
 import {configureChains, createConfig, WagmiConfig} from 'wagmi';
 import {mainnet, goerli, polygon, polygonMumbai} from 'wagmi/chains';
 import {infuraProvider} from 'wagmi/providers/infura';
+import {UseClient2Provider} from 'hooks/useClient2';
 
 const chains = [mainnet, goerli, polygon, polygonMumbai];
 
@@ -75,7 +76,7 @@ ReactDOM.render(
             <AlertProvider>
               <WagmiConfig config={wagmiConfig}>
                 <NetworkProvider>
-                  <UseClientProvider>
+                  <UseClient2Provider>
                     <UseCacheProvider>
                       <ProvidersProvider>
                         <TransactionDetailProvider>
@@ -88,7 +89,7 @@ ReactDOM.render(
                         </TransactionDetailProvider>
                       </ProvidersProvider>
                     </UseCacheProvider>
-                  </UseClientProvider>
+                  </UseClient2Provider>
                 </NetworkProvider>
               </WagmiConfig>
             </AlertProvider>

@@ -34,7 +34,6 @@ type DesktopNavProp = {
 };
 
 const DesktopNav: React.FC<DesktopNavProp> = props => {
-  console.log('props', props);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {network} = useNetwork();
@@ -121,11 +120,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
               </>
             )}
           </LinksWrapper> */}
-          <img
-            src={VoteraLogo}
-            alt="Votera 로고"
-            className="h-4"
-          />
+          <img src={VoteraLogo} alt="Votera 로고" className="h-4" />
         </Content>
 
         <div className="flex gap-2">

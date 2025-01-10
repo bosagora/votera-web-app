@@ -25,7 +25,7 @@ export const useClient2 = () => {
   const client = useContext(UseClient2Context);
   if (client === null) {
     throw new Error(
-      'useClient() can only be used on the descendants of <UseClientProvider />'
+      'useClient() can only be used on the descendants of <UseClient2Provider />'
     );
   }
   if (client.context) {
@@ -34,40 +34,38 @@ export const useClient2 = () => {
   return client;
 };
 
-export const UseClient2Provider: React.FC = ({children}) => {
+export const UseClient2Provider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
+  const {network} = useNetwork();
   const {signer} = useWallet();
   const [client, setClient] = useState<Client>();
-  const {network} = useNetwork();
   const [context, setContext] = useState<SdkContext>();
 
   useEffect(() => {
+    if (!network || !signer) return;
+
     const translatedNetwork = translateToNetworkishName(network);
+    if (translatedNetwork === 'unsupported') return;
 
-    // when network not supported by the SDK, don't set network
-    if (
-      translatedNetwork === 'unsupported' ||
-      !SupportedNetworksArray.includes(translatedNetwork)
-    ) {
-      return;
-    }
+    const contracts = LIVE_CONTRACTS[translatedNetwork];
 
-    //console.log('signer :', signer);
     const contextParams: ContextParams = {
       network: translatedNetwork,
-      signer: signer ?? undefined,
+      signer,
       web3Providers: CHAIN_METADATA[network].rpc[0],
-      AddressStorage: LIVE_CONTRACTS[translatedNetwork].AddressStorage,
-      BudgetManager: LIVE_CONTRACTS[translatedNetwork].BudgetManager,
-      ParamStorage: LIVE_CONTRACTS[translatedNetwork].ParamStorage,
-      ParticipantStorage: LIVE_CONTRACTS[translatedNetwork].ParticipantStorage,
-      ProposalStorage: LIVE_CONTRACTS[translatedNetwork].ProposalStorage,
-      AssessmentStorage: LIVE_CONTRACTS[translatedNetwork].AssessmentStorage,
-      VoteStorage: LIVE_CONTRACTS[translatedNetwork].VoteStorage,
-      ReceptionController: LIVE_CONTRACTS[translatedNetwork].ReceptionController,
-      AssessmentController: LIVE_CONTRACTS[translatedNetwork].AssessmentController,
-      VoteController: LIVE_CONTRACTS[translatedNetwork].VoteController,
-      ParticipantManager: LIVE_CONTRACTS[translatedNetwork].ParticipantManager,
-      ExecutionManager: LIVE_CONTRACTS[translatedNetwork].ExecutionManager
+      AddressStorage: contracts.AddressStorage,
+      BudgetManager: contracts.BudgetManager,
+      ParamStorage: contracts.ParamStorage,
+      ParticipantStorage: contracts.ParticipantStorage,
+      ProposalStorage: contracts.ProposalStorage,
+      AssessmentStorage: contracts.AssessmentStorage,
+      VoteStorage: contracts.VoteStorage,
+      ReceptionController: contracts.ReceptionController,
+      AssessmentController: contracts.AssessmentController,
+      VoteController: contracts.VoteController,
+      ParticipantManager: contracts.ParticipantManager,
+      ExecutionManager: contracts.ExecutionManager,
     };
 
     const sdkContext = new SdkContext(contextParams);
