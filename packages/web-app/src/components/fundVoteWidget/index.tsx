@@ -13,123 +13,103 @@ import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {CHAIN_METADATA} from 'utils/constants';
-import {Action} from 'utils/types';
-
-import {PluginTypes} from '../../utils/aragon/types';
+import {Action, ProposalPhase} from 'utils/types';
+import {ProposalPhaseExtended} from 'pages/proposal';
 import VoteResults from 'components/voteResults';
+import {BigNumber} from 'ethers';
 
-export type ExecutionStatus =
-  | 'defeated'
-  | 'executed'
-  | 'executable'
-  | 'executable-failed'
-  | 'default';
-
-type ExecutionWidgetProps = {
-  pluginType?: PluginTypes;
+type VoteWidgetProps = {
   txhash?: string;
-  actions?: Array<Action | undefined>;
-  status?: ExecutionStatus;
-  onAddAction?: () => void;
+  phase?: ProposalPhase;
   onExecuteClicked?: () => void;
+  canVote?: boolean;
+  exPhase?: ProposalPhaseExtended;
+  exPhaseMessage?: string;
+  proposalId: BigNumber;
 };
 
-export const FundVoteWidget: React.FC<ExecutionWidgetProps> = ({
-  actions = [],
-  status,
+export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
+  phase,
   txhash,
-  onAddAction,
   onExecuteClicked,
-  pluginType,
+  canVote,
+  exPhase,
+  exPhaseMessage,
+  proposalId,
 }) => {
   const {t} = useTranslation();
 
-  status = 'executable'
   return (
     <Card>
       <Header>
         <Title>{t('governance.executionCard.title')}</Title>
         <Description>{t('governance.executionCard.description')}</Description>
       </Header>
-      {actions.length === 0 ? (
-        <StateEmpty
-          mode="inline"
-          type="Object"
-          object="smart_contract"
-          title="No actions were added"
-          secondaryButton={
-            onAddAction && {
-              label: t('governance.executionCard.addAction'),
-              onClick: onAddAction,
-              iconLeft: <IconAdd />,
-            }
-          }
-        />
-      ) : (
-        <>
-          <Content>
-          <div className="space-y-3">
-            <p className="text-lg font-bold text-ui-800">투표하기</p>
-            <div className="flex flex-col gap-3">
-              <SelectVoteForm />
-              <WidgetFooter
-                pluginType={pluginType}
-                status={status}
-                txhash={txhash}
-                onExecuteClicked={onExecuteClicked}
-              />
-            </div>
-            <div className="flex justify-center gap-8 my-6">
-              <div className="text-3xl font-bold text-blue-500">투표 통과</div>
-              <div className="text-3xl font-bold text-red-500">탈표 탈락</div>
-            </div>
-            <VoteResults values={[
-              {
-                voter: "0x1234567890abcdef1234567890abcdef12345678",
-                timestamp: 1709251200,
-                choice: 0
-              },
-              {
-                voter: "0xabcdef1234567890abcdef1234567890abcdef12", 
-                timestamp: 1709337600,
-                choice: 1
-              },
-              {
-                voter: "0x7890abcdef1234567890abcdef1234567890abcd",
-                timestamp: 1709424000, 
-                choice: 2
-              },
-              {
-                voter: "0x2468ace02468ace02468ace02468ace02468ace0",
-                timestamp: 1709510400,
-                choice: 1
-              },
-              {
-                voter: "0x1357bdf91357bdf91357bdf91357bdf91357bdf9",
-                timestamp: 1709596800,
-                choice: 0
-              }
-            ]} />
-          </div>
-          </Content>
 
-        </>
-      )}
+      <Content>
+        <div className="space-y-3">
+          <p className="text-lg font-bold text-ui-800">투표하기</p>
+          <div className="flex flex-col gap-3">
+            <SelectVoteForm />
+            <WidgetFooter
+              phase={phase}
+              txhash={txhash}
+              onExecuteClicked={onExecuteClicked}
+              canVote={canVote}
+            />
+          </div>
+          <div className="flex justify-center gap-8 my-6">
+            <div className="text-3xl font-bold text-blue-500">
+              {exPhaseMessage}
+            </div>
+            {/* <div className="text-3xl font-bold text-red-500">탈표 탈락</div> */}
+          </div>
+          <VoteResults
+            values={[
+              {
+                voter: '0x1234567890abcdef1234567890abcdef12345678',
+                timestamp: 1709251200,
+                choice: 0,
+              },
+              {
+                voter: '0xabcdef1234567890abcdef1234567890abcdef12',
+                timestamp: 1709337600,
+                choice: 1,
+              },
+              {
+                voter: '0x7890abcdef1234567890abcdef1234567890abcd',
+                timestamp: 1709424000,
+                choice: 2,
+              },
+              {
+                voter: '0x2468ace02468ace02468ace02468ace02468ace0',
+                timestamp: 1709510400,
+                choice: 1,
+              },
+              {
+                voter: '0x1357bdf91357bdf91357bdf91357bdf91357bdf9',
+                timestamp: 1709596800,
+                choice: 0,
+              },
+            ]}
+          />
+        </div>
+      </Content>
     </Card>
   );
 };
 
 type FooterProps = Pick<
-  ExecutionWidgetProps,
-  'status' | 'txhash' | 'onExecuteClicked' | 'pluginType'
+  VoteWidgetProps,
+  'phase' | 'txhash' | 'onExecuteClicked' | 'canVote'
 >;
 
 const WidgetFooter: React.FC<FooterProps> = ({
-  status = 'default',
+  phase = ProposalPhase.VOTE,
   onExecuteClicked,
+  canVote,
 }) => {
   const {t} = useTranslation();
-
 
   return (
     <Footer>
@@ -138,6 +118,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
         label={t('governance.proposals.buttons.execute')}
         size="large"
         onClick={onExecuteClicked}
+        disabled={!canVote}
       />
       <AlertInline label={t('governance.executionCard.status.succeeded')} />
     </Footer>

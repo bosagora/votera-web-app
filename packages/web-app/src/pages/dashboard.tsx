@@ -1,6 +1,6 @@
 import {HeaderDao} from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,7 +11,9 @@ import {useNetwork} from 'context/network';
 import useScreen from 'hooks/useScreen';
 import {useGlobalModalContext} from 'context/globalModals';
 import ProposalSnapshot from 'containers/proposalSnapshot';
-import { ProposalListItem } from 'utils/types';
+import {ProposalListItem, ProposalPhase} from 'utils/types';
+import {useClient2} from 'hooks/useClient2';
+import {SortType} from 'votera-sdk-client';
 
 const Dashboard: React.FC = () => {
   const {t} = useTranslation();
@@ -21,25 +23,43 @@ const Dashboard: React.FC = () => {
   const {network} = useNetwork();
   const daoAddressOrEns = '0x1234567890abcdef1234567890abcdef12345678';
   const {open} = useGlobalModalContext();
+  const {client} = useClient2();
+
+  useEffect(() => {
+    const fetchProposals = async () => {
+      const proposalCount = await client?.methods.getProposalLength();
+      console.log('fetched proposal count :', proposalCount);
+
+      const proposals = await client?.methods.getProposalList(
+        0,
+        10,
+        SortType.ASC
+      );
+      console.log('fetched proposals :', proposals);
+    };
+
+    fetchProposals();
+  }, [client]);
 
   const mockProposals = [
     {
-      id: BigNumber.from('1'),
+      id: '0xd000322295848b860447b090b2a1e5e9e26f398304ed6a96dd787c36bc397655',
       dao: {
         address: daoAddressOrEns,
-        name: '테스트 DAO'
+        name: '테스트 DAO',
       },
       title: '첫 번째 제안',
       description: '이것은 첫 번째 테스트 제안입니다.',
-      status: 'active',
-      creator: '0x1234...', 
-      createdAt: new Date('2024-03-15').getTime(),
-      creationDate: new Date('2024-03-15'),
-      endDate: new Date('2024-03-22'),
+      phase: ProposalPhase.VOTE,
+      creator: '0x1234...',
+      beginAssess: new Date('2024-03-15').getTime(),
+      endAssess: new Date('2024-03-22').getTime(),
+      beginVote: new Date('2024-03-22').getTime(),
+      endVote: new Date('2024-03-29').getTime(),
       votes: {
         yes: 10,
         no: 2,
-        abstain: 1
+        abstain: 1,
       },
       executionTxHash: '0x...',
       approval: ['0x...'],
@@ -48,25 +68,27 @@ const Dashboard: React.FC = () => {
       destination: '0x...',
       value: '0',
       data: '0x',
-      executed: false
+      executed: false,
     },
     {
       id: BigNumber.from('2'),
       dao: {
         address: daoAddressOrEns,
-        name: 'Test DAO'
+        name: 'Test DAO',
       },
       title: 'Second Proposal for Treasury Management',
-      description: 'This is the second test proposal that aims to improve our treasury management process. The proposal suggests implementing a multi-signature requirement for transactions above 100 ETH and establishing a quarterly audit process. This will help ensure better security and transparency in how we manage our funds.',
-      status: 'pending',
-      creator: '0x1234...', 
-      createdAt: new Date('2024-03-16').getTime(),
-      creationDate: new Date('2024-03-16'),
-      endDate: new Date('2024-03-23'),
+      description:
+        'This is the second test proposal that aims to improve our treasury management process.',
+      phase: ProposalPhase.ASSESSMENT,
+      creator: '0x1234...',
+      beginAssess: new Date('2024-03-16').getTime(),
+      endAssess: new Date('2024-03-23').getTime(),
+      beginVote: new Date('2024-03-23').getTime(),
+      endVote: new Date('2024-03-30').getTime(),
       votes: {
         yes: 5,
         no: 3,
-        abstain: 0
+        abstain: 0,
       },
       executionTxHash: '0x...',
       approval: ['0x...'],
@@ -75,25 +97,26 @@ const Dashboard: React.FC = () => {
       destination: '0x...',
       value: '0',
       data: '0x',
-      executed: false
+      executed: false,
     },
     {
       id: BigNumber.from('3'),
       dao: {
         address: daoAddressOrEns,
-        name: 'Test DAO'
+        name: 'Test DAO',
       },
       title: 'Third Proposal',
       description: 'This is the third test proposal.',
-      status: 'succeeded',
-      creator: '0x1234...', 
-      createdAt: new Date('2024-03-17').getTime(),
-      creationDate: new Date('2024-03-17'),
-      endDate: new Date('2024-03-24'),
+      phase: ProposalPhase.EXECUTION,
+      creator: '0x1234...',
+      beginAssess: new Date('2024-03-17').getTime(),
+      endAssess: new Date('2024-03-24').getTime(),
+      beginVote: new Date('2024-03-24').getTime(),
+      endVote: new Date('2024-03-31').getTime(),
       votes: {
         yes: 15,
         no: 1,
-        abstain: 2
+        abstain: 2,
       },
       executionTxHash: '0x...',
       approval: ['0x...'],
@@ -102,25 +125,26 @@ const Dashboard: React.FC = () => {
       destination: '0x...',
       value: '0',
       data: '0x',
-      executed: false
+      executed: false,
     },
     {
       id: BigNumber.from('4'),
       dao: {
         address: daoAddressOrEns,
-        name: '테스트 DAO'
+        name: '테스트 DAO',
       },
       title: '네 번째 제안',
       description: '이것은 네 번째 테스트 제안입니다.',
-      status: 'defeated',
-      creator: '0x1234...', 
-      createdAt: new Date('2024-03-18').getTime(),
-      creationDate: new Date('2024-03-18'),
-      endDate: new Date('2024-03-25'),
+      phase: ProposalPhase.FINISHED,
+      creator: '0x1234...',
+      beginAssess: new Date('2024-03-18').getTime(),
+      endAssess: new Date('2024-03-25').getTime(),
+      beginVote: new Date('2024-03-25').getTime(),
+      endVote: new Date('2024-04-01').getTime(),
       votes: {
         yes: 8,
         no: 14,
-        abstain: 1
+        abstain: 1,
       },
       executionTxHash: '0x...',
       approval: ['0x...'],
@@ -129,14 +153,13 @@ const Dashboard: React.FC = () => {
       destination: '0x...',
       value: '0',
       data: '0x',
-      executed: false
-    }
+      executed: false,
+    },
   ];
 
   return (
     <>
-      <HeaderWrapper>
-      </HeaderWrapper>
+      <HeaderWrapper></HeaderWrapper>
 
       {isDesktop ? (
         <DashboardContent proposals={mockProposals} />
@@ -158,9 +181,7 @@ type DashboardContentProps = {
   proposals: Array<ProposalListItem>;
 };
 
-const DashboardContent: React.FC<DashboardContentProps> = ({
-  proposals,
-}) => {
+const DashboardContent: React.FC<DashboardContentProps> = ({proposals}) => {
   return (
     <>
       <CenterWideContent>
@@ -180,7 +201,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 const CenterWideContent = styled.div.attrs({
   className: 'desktop:space-y-5 desktop:col-start-2 desktop:col-span-10',
 })``;
-
 
 /* MOBILE DASHBOARD CONTENT ================================================= */
 

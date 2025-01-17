@@ -1,16 +1,8 @@
-// import {useApolloClient} from '@apollo/client';
-// import {
-//   // MultisigClient,
-//   // MultisigProposal,
-//   // TokenVotingClient,
-//   // TokenVotingProposal,
-//   // VoteValues,
-//   // VotingMode,
-// } from '@aragon/sdk-client';
 import {MultisigProposal} from '../utils/aragon/sdk-client-multisig-types';
 import {VoteValues} from '../utils/aragon/sdk-client-multisig-types';
 import {VotingMode} from '../utils/aragon/sdk-client-multisig-types';
-import {DaoAction, ProposalStatus} from 'utils/aragon/sdk-client-common-types';
+import {DaoAction} from 'utils/aragon/sdk-client-common-types';
+import {ProposalPhase} from '../utils/types';
 import {
   Breadcrumb,
   ButtonText,
@@ -22,9 +14,7 @@ import {
   WidgetStatus,
 } from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
-// import TipTapLink from '@tiptap/extension-link';
-// import {useEditor} from '@tiptap/react';
-// import StarterKit from '@tiptap/starter-kit';
+
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate, useParams} from 'react-router-dom';
@@ -97,11 +87,23 @@ import {getFormattedUtcOffset, KNOWN_FORMATS} from '../utils/date';
 // import {fetchBalance, getTokenInfo, isNativeToken} from '../utils/tokens';
 // import {constants} from 'ethers';
 import {useWalletCanVote} from '../hooks/useWalletCanVote';
-import { FundVoteWidget } from 'components/fundVoteWidget';
-import { FundAssessmentWidget } from 'components/fundAssessmentWidget';
+import {FundVoteWidget} from 'components/fundVoteWidget';
+import {FundAssessmentWidget} from 'components/fundAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
 import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
+import {
+  IVoteBallotData,
+  IScoreData,
+  AssessmentResult,
+  ExecutionStates,
+  IProposalData,
+  ProposalPeriod,
+  ProposalStates,
+  SortType,
+  VoteResult,
+} from 'votera-sdk-client';
+import {useClient2} from 'hooks/useClient2';
 
 // TODO: @Sepehr Please assign proper tags on action decoding
 // const PROPOSAL_TAGS = ['Finance', 'Withdraw'];
@@ -110,120 +112,270 @@ const PENDING_PROPOSAL_STATUS_INTERVAL = 1000 * 10;
 const PROPOSAL_STATUS_INTERVAL = 1000 * 60;
 const NumberFormatter = new Intl.NumberFormat('en-US');
 
+enum ProposalStatus {
+  OPENED = 'OPENED', // 시작
+  CLOSED = 'CLOSED', // 종료
+  INVALID = 'INVALID', // 탈락
+  EXPIRED = 'EXPIRED', // 기간 만료
+}
+
+enum AssessmentStatus {
+  NONE = 'NONE', // 평가 없음
+  NOT_STARTED = 'NOT_STARTED', // 시작 전
+  IN_PROGRESS = 'IN_PROGRESS', // 진행 중
+  APPROVED = 'APPROVED', // 승인됨
+  REJECTED = 'REJECTED', // 탈락됨
+  EXPIRED = 'EXPIRED', // 기간 만료
+}
+
+enum VoteStatus {
+  NONE = 'NONE', // 투표 없음
+  NOT_STARTED = 'NOT_STARTED', // 시작 전
+  IN_PROGRESS = 'IN_PROGRESS', // 진행 중
+  APPROVED = 'APPROVED', // 승인됨
+  REJECTED = 'REJECTED', // 부결됨
+  EXPIRED = 'EXPIRED', // 기간 만료
+}
+
+enum ExecutionStatus {
+  NONE = 'NONE', // 실행 없음
+  IN_PROGRESS = 'IN_PROGRESS', // 실행 중
+  FINISHED = 'FINISHED', // 완료됨
+}
+
+export enum ProposalPhaseExtended {
+  UNDEFINED = 'UNDEFINED', // 정의되지 않은 상태
+  UNKNOWN = 'UNKNOWN', // 알 수 없는 상태
+  ERROR = 'ERROR', // 오류 상태
+  OPENED_ASSESSMENT = 'OPENED_ASSESSMENT', // 평가가 진행중
+  OPENED_VOTE = 'OPENED_VOTE', // 투표가 진행중
+  OPENED_EXECUTION = 'OPENED_EXECUTION', // 실행이 진행중
+  CLOSED_EXPIRED_ASSESSMENT = 'CLOSED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
+  CLOSED_EXPIRED_VOTE = 'CLOSED_EXPIRED_VOTE', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
+  CLOSED_REJECTED_ASSESSMENT = 'CLOSED_REJECTED_ASSESSMENT', // 평가에서 거절되어 종료된 상태
+  CLOSED_REJECTED_VOTE = 'CLOSED_REJECTED_VOTE', // 투표에서 거절되어 종료된 상태
+  CLOSED_FINISHED = 'CLOSED_FINISHED', // 모든 단계가 정상적으로 종료되어 실행까지 완료된 상태
+}
+
+const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
+  try {
+    // 제안서가 없는 경우
+    if (!proposal) return ProposalPhaseExtended.UNDEFINED;
+
+    const assessStatus = checkAssessmentStatus(proposal);
+    const voteStatus = checkVoteStatus(proposal);
+    const execStatus = checkExecutionStatus(proposal);
+
+    // 평가 단계 확인
+    if (assessStatus === AssessmentStatus.IN_PROGRESS) {
+      return ProposalPhaseExtended.OPENED_ASSESSMENT;
+    }
+
+    // 평가 탈락
+    if (assessStatus === AssessmentStatus.REJECTED) {
+      return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
+    }
+
+    // 평가 만료
+    if (assessStatus === AssessmentStatus.EXPIRED) {
+      return ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT;
+    }
+
+    // 투표 단계 확인
+    if (
+      assessStatus === AssessmentStatus.APPROVED &&
+      voteStatus === VoteStatus.IN_PROGRESS
+    ) {
+      return ProposalPhaseExtended.OPENED_VOTE;
+    }
+
+    // 투표 탈락
+    if (voteStatus === VoteStatus.REJECTED) {
+      return ProposalPhaseExtended.CLOSED_REJECTED_VOTE;
+    }
+
+    // 투표 만료
+    if (voteStatus === VoteStatus.EXPIRED) {
+      return ProposalPhaseExtended.CLOSED_EXPIRED_VOTE;
+    }
+
+    // 실행이 진행 중인 경우
+    if (execStatus === ExecutionStatus.IN_PROGRESS) {
+      return ProposalPhaseExtended.OPENED_EXECUTION;
+    }
+
+    // 실행이 완료된 경우
+    if (execStatus === ExecutionStatus.FINISHED) {
+      return ProposalPhaseExtended.CLOSED_FINISHED;
+    }
+
+    // 그 외의 경우는 만료된 것으로 처리
+    return ProposalPhaseExtended.UNKNOWN;
+  } catch (error) {
+    console.error('Error in getExtendedPhase:', error);
+    return ProposalPhaseExtended.ERROR;
+  }
+};
+
+const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
+  try {
+    const now = Date.now();
+
+    if (now < proposal.beginAssess) {
+      return AssessmentStatus.NOT_STARTED;
+    }
+
+    // 평가 결과가 이미 있는 경우
+    if (proposal.assessmentResult === AssessmentResult.APPROVED) {
+      return AssessmentStatus.APPROVED;
+    }
+
+    if (proposal.assessmentResult === AssessmentResult.REJECTED) {
+      return AssessmentStatus.REJECTED;
+    }
+
+    // 평가 기간이 지난 경우
+    if (now > proposal.endAssess) {
+      return proposal.assessmentResult === AssessmentResult.NONE
+        ? AssessmentStatus.EXPIRED
+        : proposal.assessmentResult === AssessmentResult.APPROVED
+        ? AssessmentStatus.APPROVED
+        : AssessmentStatus.REJECTED;
+    }
+
+    return AssessmentStatus.IN_PROGRESS;
+  } catch (error) {
+    console.error('Error in checkAssessmentStatus:', error);
+    return AssessmentStatus.NONE;
+  }
+};
+
+const checkVoteStatus = (proposal: any): VoteStatus => {
+  try {
+    const now = Date.now();
+
+    if (!proposal || proposal.state !== ProposalStates.OPENED) {
+      return VoteStatus.NONE;
+    }
+
+    if (now < proposal.beginVote) {
+      return VoteStatus.NOT_STARTED;
+    }
+
+    // 투표 결과가 이미 있는 경우
+    if (proposal.voteResult === VoteResult.APPROVED) {
+      return VoteStatus.APPROVED;
+    }
+
+    if (proposal.voteResult === VoteResult.REJECTED) {
+      return VoteStatus.REJECTED;
+    }
+
+    // 투표 기간이 지난 경우
+    if (now > proposal.endVote) {
+      if (proposal.voteResult === VoteResult.NONE) {
+        return VoteStatus.EXPIRED;
+      }
+      return proposal.voteResult === VoteResult.APPROVED
+        ? VoteStatus.APPROVED
+        : VoteStatus.REJECTED;
+    }
+
+    return VoteStatus.IN_PROGRESS;
+  } catch (error) {
+    console.error('Error in checkVoteStatus:', error);
+    return VoteStatus.NONE;
+  }
+};
+
+const checkExecutionStatus = (proposal: any): ExecutionStatus => {
+  try {
+    if (!proposal || proposal.state !== ProposalStates.OPENED) {
+      return ExecutionStatus.NONE;
+    }
+
+    if (proposal.executed) {
+      return ExecutionStatus.FINISHED;
+    }
+
+    if (proposal.executionTxHash) {
+      return ExecutionStatus.IN_PROGRESS;
+    }
+
+    // 투표가 승인되었고 실행 가능한 상태
+    if (
+      proposal.voteResult === VoteResult.APPROVED &&
+      proposal.executionState === ExecutionStates.NONE
+    ) {
+      return ExecutionStatus.IN_PROGRESS;
+    }
+
+    return ExecutionStatus.NONE;
+  } catch (error) {
+    console.error('Error in checkExecutionStatus:', error);
+    return ExecutionStatus.NONE;
+  }
+};
+
+// 제안서의 상태(proposal.checkStatus) : 시작(OPENED), 종료(CLOSED), 탈락(INVALID)
+// 제안서의 단계(proposal.checkPhase) : 평가 단계(ASSESSMENT), 투표 단계(VOTE), 실행 단계(EXECUTION), 가 있다.
+// 평가 단계, 투표 단계는 완료(FINISHED)되거나 만료(EXPIRED)되지 않늗다면 APPROVED, REJECTED 상태가 된다.
+// 실행 단계가 완료되지 않았다면 IN_PROCESS 상태가 된다.
+// 만료(EXPIRED)란 각 단계의 기간내에 APPROVED, REJECTED 상태가 되지 않았음을 의미한다.
+
+// UI에서 상태에 따른 메시지를 표시하기 위한 헬퍼 함수
+const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
+  switch (phase) {
+    case ProposalPhaseExtended.OPENED_ASSESSMENT:
+      return '평가가 진행 중입니다.';
+    case ProposalPhaseExtended.OPENED_VOTE:
+      return '투표가 진행 중입니다.';
+    case ProposalPhaseExtended.OPENED_EXECUTION:
+      return '실행이 진행 중입니다.';
+    case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
+      return '평가 기간이 만료되었습니다.';
+    case ProposalPhaseExtended.CLOSED_EXPIRED_VOTE:
+      return '투표 기간이 만료되었습니다.';
+    case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
+      return '평가 단계에서 탈락되었습니다.';
+    case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
+      return '투표 결과 부결되었습니다.';
+    case ProposalPhaseExtended.CLOSED_FINISHED:
+      return '제안이 성공적으로 완료되었습니다.';
+    case ProposalPhaseExtended.ERROR:
+      return '오류가 발생했습니다.';
+    case ProposalPhaseExtended.UNDEFINED:
+    case ProposalPhaseExtended.UNKNOWN:
+    default:
+      return '알 수 없는 상태입니다.';
+  }
+};
+
 const Proposal: React.FC = () => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {isDesktop} = useScreen();
   const {breadcrumbs, tag} = useMappedBreadcrumbs();
   const navigate = useNavigate();
-
+  const {client} = useClient2();
   const {dao, id: urlId} = useParams();
   const proposalId = useMemo(
     () => (urlId ? new ProposalId(urlId) : undefined),
     [urlId]
   );
 
-  // Mock useLoadTokenLogoURL hook
-  const mockUseLoadTokenLogoURL = {
-    getImgUrl: (symbol: string, chainId: number) => {
-      // Return a mock URL for token logos
-      return `https://mock-token-logos.com/${symbol}-${chainId}.png`;
-    }
-  };
+  console.log('proposalId :', proposalId);
 
-  // Replace actual hook with mock
-  const {getImgUrl} = mockUseLoadTokenLogoURL;
-
-  // Mock data for daoDetails
-  const mockDaoDetails = {
-    data: {
-      address: '0x1234567890123456789012345678901234567890',
-      ensDomain: 'test-dao.dao.eth',
-      metadata: {
-        name: 'Test DAO',
-        description: 'This is a test DAO',
-        avatar: 'https://example.com/avatar.png',
-        links: []
-      },
-      plugins: {
-        multisig: {
-          id: 'multisig.plugin.dao.eth'
-        }
-      },
-      chain: 1 // Ethereum Mainnet
-    },
-    isLoading: false
-  };
-
-  // Replace actual hook with mock data
-  const {data: daoDetails, isLoading: detailsAreLoading} = mockDaoDetails;
-
-  // Mock data for daoMembers
-  const mockDaoMembers = {
-    data: {
-      members: [
-        {
-          address: '0x1234567890123456789012345678901234567890',
-          role: 'member',
-          delegatedVotingPower: '1000000000000000000',
-          votingPower: '1000000000000000000',
-        },
-        {
-          address: '0x2345678901234567890123456789012345678901',
-          role: 'member',
-          delegatedVotingPower: '2000000000000000000',
-          votingPower: '2000000000000000000',
-        },
-        {
-          address: '0x3456789012345678901234567890123456789012',
-          role: 'member',
-          delegatedVotingPower: '3000000000000000000',
-          votingPower: '3000000000000000000',
-        }
-      ]
-    },
-    isLoading: false
-  };
-
-  // Replace actual hook with mock data
-  const {
-    data: {members: daoMemebers},
-    isLoading,
-  } = mockDaoMembers;
-
-  // Mock data for plugin settings
-  const mockPluginSettings = {
-    data: {
-      minApprovals: 2,
-      onlyListed: true,
-      votingMode: VotingMode.STANDARD, // assuming VotingMode is imported
-      minDuration: 7200, // 2 hours in seconds
-      minProposerVotingPower: BigInt(1), // minimum voting power required to create proposal
-      multisigSettings: {
-        minApprovals: 2,
-        onlyListed: true
-      }
-    }
-  };
-
-  // Replace actual hook with mock data
-  const {data: daoSettings} = mockPluginSettings;
-
-  const multisigDAO = true;
-
-  const allowVoteReplacement = false;
-  // isTokenVotingSettings(daoSettings) &&
-  // daoSettings.votingMode === VotingMode.VOTE_REPLACEMENT;
-
-  const {client} = useClient();
   const {set, get} = useCache();
   // const apolloClient = useApolloClient();
 
   const {network} = useNetwork();
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
+  const statusRef = useRef({wasNotLoggedIn: false, wasOnWrongNetwork: false});
+
   const {address, isConnected, isOnWrongNetwork} = useWallet();
 
-  const [voteStatus, setVoteStatus] = useState('');
+  // const [voteStatus, setVoteStatus] = useState('');
   const [intervalInMills, setIntervalInMills] = useState(0);
   const [decodedActions, setDecodedActions] =
     useState<(Action | undefined)[]>();
@@ -243,136 +395,171 @@ const Proposal: React.FC = () => {
     pluginType: 'multisig.plugin.dao.eth' as PluginTypes,
     voteSubmitted: false,
     executionFailed: false,
-    transactionHash: '0x0000000000000000000000000000000000000000000000000000000000000000'
+    transactionHash:
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
   };
 
-  // Mock data for proposal
-  const mockProposal = {
-    data: {
-      id: proposalId?.toString(),
-      dao: daoDetails?.address,
-      creator: '0x1234567890123456789012345678901234567890',
-      metadata: {
-        title: 'Test Proposal',
-        description: '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며, 현재 당면한 문제점들을 해결하기 위한 구체적인 실행 계획과 예산 할당 방안을 포함하고 있습니다. 또한 이 제안이 실현되었을 때 기대할 수 있는 긍정적인 효과와 잠재적인 위험 요소에 대한 분석도 함께 담고 있습니다.'
-      },
-      status: ProposalStatus.ACTIVE,
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 86400000), // 24 hours from now
-      createdTime: {
-        toNumber: () => Date.now()
-      },
-      settings: {
-        minApprovals: 2,
-        onlyListed: true
-      },
-      approval: [] as string[],
-      token: {
-        name: 'Test Token',
-        symbol: 'TEST',
-        decimals: 18
-      },
-      amount: BigInt(1000000000000000000), // 1 token
-      to: '0x2345678901234567890123456789012345678901',
-      tokenAddress: '0x3456789012345678901234567890123456789012',
-      executed: false,
-      executionTxHash: null,
-      title: 'Test Proposal',
-      description: '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며, 현재 당면한 문제점들을 해결하기 위한 구체적인 실행 계획과 예산 할당 방안을 포함하고 있습니다. 또한 이 제안이 실현되었을 때 기대할 수 있는 긍정적인 효과와 잠재적인 위험 요소에 대한 분석도 함께 담고 있습니다.'
-    },
-    error: null,
-    isLoading: false
-  };
-
-  // Replace actual hooks with mock data
-  const {
-    handleSubmitVote,
-    handleExecuteProposal,
-    isLoading: paramsAreLoading,
-    pluginAddress,
-    pluginType,
-    voteSubmitted,
-    executionFailed,
-    transactionHash,
-  } = mockProposalTransactionContext;
-
-  const {
-    data: proposal,
-    error: proposalError,
-    isLoading: proposalIsLoading,
-  } = mockProposal;
-
-  // Mock data for wallet can vote
-  const mockWalletCanVote = {
-    data: true, // 투표 가능한 상태로 설정
-    isLoading: false
-  };
-
-  // Replace actual hook with mock data
-  const {data: canVote} = mockWalletCanVote;
-
-  // const canVote = true;
-  // console.log('canVote >>>> :', canVote);
-
-  // const pluginClient = usePluginClient(pluginType);
-
-  // ref used to hold "memories" of previous "state"
-  // across renders in order to automate the following states:
-  // loggedOut -> login modal => switch network modal -> vote options selection;
-  const statusRef = useRef({wasNotLoggedIn: false, wasOnWrongNetwork: false});
-
-  // voting
-  const [terminalTab, setTerminalTab] = useState<TerminalTabs>('info');
+  // 상태 관리를 위한 상태들
+  const [proposal, setProposal] = useState<any | null>(null);
+  const [proposalError, setProposalError] = useState<Error | null>(null);
+  const [proposalIsLoading, setProposalIsLoading] = useState(true);
+  const [myScore, setMyScore] = useState<IScoreData | null>(null);
+  const [myBallot, setMyBallot] = useState<IVoteBallotData | null>(null);
   const [votingInProcess, setVotingInProcess] = useState(false);
+  const [terminalTab, setTerminalTab] = useState<TerminalTabs>('info');
   const [expandedProposal, setExpandedProposal] = useState(false);
+  const [paramsAreLoading, setParamsAreLoading] = useState(true);
+  const [voteSubmitted, setVoteSubmitted] = useState(false);
+  const [transactionHash, setTransactionHash] = useState<string | null>(null);
+  const [extendedPhase, setExtendedPhase] = useState<ProposalPhaseExtended>(
+    ProposalPhaseExtended.UNKNOWN
+  );
 
-  // const editor = useEditor({
-  //   editable: false,
-  //   extensions: [
-  //     StarterKit,
-  //     TipTapLink.configure({
-  //       openOnClick: false,
-  //     }),
-  //   ],
-  // });
+  // Mock proposal transaction context
+  const {handleSubmitVote, handleExecuteProposal} =
+    mockProposalTransactionContext;
 
-  /*************************************************
-   *                     Hooks                     *
-   *************************************************/
-
-  // proposal status effect
+  // proposal 데이터를 가져오는 useEffect 수정
   useEffect(() => {
-    if (proposal) {
-      // set the very first time
-      setVoteStatus(getVoteStatus(proposal, t));
-    }
-  }, []);
+    const fetchProposalData = async () => {
+      try {
+        setParamsAreLoading(true);
 
-  // editor content effect
-  // useEffect(() => {
-  //   if (proposal && editor) {
-  //     editor.commands.setContent(
-  //       sanitizeHtml(proposal.metadata.description, {
-  //         disallowedTagsMode: 'recursiveEscape',
-  //       }),
-  //       true
-  //     );
-  //   }
-  // }, [editor, proposal]);
+        const proposalCount = await client?.methods.getProposalLength();
+        console.log('fetched proposal count :', proposalCount);
 
-  // proposal status tab effect
-  useEffect(() => {
-    if (proposal?.status) {
-      setTerminalTab(
-        proposal.status === ProposalStatus.EXECUTED ? 'breakdown' : 'info'
-      );
-    }
-  }, []);
+        const proposals = await client?.methods.getProposalList(
+          0,
+          10,
+          SortType.ASC
+        );
+        console.log('fetched proposals :', proposals);
+
+        let fetchedProposal = null;
+        if (proposalId?.toString()) {
+          fetchedProposal = await client?.methods.getProposal(
+            proposalId.toString()
+          );
+          console.log('fetched proposal :', fetchedProposal);
+        }
+        // 제안서가 없거나 proposals 배열이 있는 경우
+        if (fetchedProposal === null && proposals && proposals.length > 0) {
+          fetchedProposal = proposals[0];
+        }
+
+        // 제안서가 있는 경우에만 점수와 투표 정보 조회
+        if (fetchedProposal) {
+          // 평가 점수 조회
+          const score = await client?.methods.getScore(
+            fetchedProposal.proposalId,
+            address || ''
+          );
+          console.log('fetched myScore :', score);
+          setMyScore(score || null);
+
+          // 투표 정보 조회
+          const ballot = await client?.methods.getBallot(
+            fetchedProposal.proposalId,
+            address || ''
+          );
+          console.log('fetched myBallot :', ballot);
+          setMyBallot(ballot || null);
+        }
+
+        // Mock 데이터와 실제 데이터를 결합
+        const mockProposalData = fetchedProposal
+          ? {
+              id: fetchedProposal?.proposalId || 'default-id',
+
+              creator: '0x1234567890123456789012345678901234567890',
+              metadata: {
+                title: fetchedProposal.title || 'Test Proposal',
+                description:
+                  fetchedProposal.description ||
+                  '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며...',
+              },
+              phase: fetchedProposal.period,
+
+              beginAssess: fetchedProposal?.beginAssess || 0,
+              endAssess: fetchedProposal?.endAssess || 0,
+              beginVote: fetchedProposal?.beginVote || 0,
+              endVote: fetchedProposal?.endVote || 0,
+              settings: {
+                minApprovals: 2,
+                onlyListed: true,
+              },
+              approval: [] as string[],
+              token: {
+                name: 'Test Token',
+                symbol: 'TEST',
+                decimals: 18,
+              },
+              amount: BigInt(1000000000000000000),
+              to: '0x2345678901234567890123456789012345678901',
+              tokenAddress: '0x3456789012345678901234567890123456789012',
+              executed: false,
+              executionTxHash: null,
+              title: fetchedProposal?.title || 'Test Proposal',
+              description:
+                fetchedProposal?.description ||
+                '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며...',
+              state: fetchedProposal?.states || ProposalStates.INVALID,
+              period: fetchedProposal?.period || ProposalPeriod.NONE,
+              assessmentResult:
+                fetchedProposal?.assessmentResult || AssessmentResult.NONE,
+              voteResult: fetchedProposal?.voteResult || VoteResult.NONE,
+              executionState:
+                fetchedProposal?.executionStates || ExecutionStates.NONE,
+            }
+          : null;
+
+        setProposal(mockProposalData);
+        setExtendedPhase(getExtendedPhase(mockProposalData));
+        setProposalError(null);
+      } catch (error) {
+        setProposalError(error as Error);
+        setProposal(null);
+      } finally {
+        setParamsAreLoading(false);
+        setProposalIsLoading(false);
+      }
+    };
+
+    fetchProposalData();
+  }, [client, address]);
+
+  // 투표와 평가 가능 여부를 확인하는 함수들
+  const canAssess = useMemo(() => {
+    console.log('canAssess');
+    if (!proposal || !myScore || !address) return false;
+    console.log('canAssess 2');
+    const assessStatus = checkAssessmentStatus(proposal);
+    console.log('assessStatus :', assessStatus);
+    if (assessStatus !== AssessmentStatus.IN_PROGRESS) return false;
+    console.log('canAssess 4');
+    // 내가 이미 점수를 평가했는지 확인
+    const didAssessed = myScore.voter === address && myScore.timestamp > 0;
+    console.log('didAssessed :', didAssessed);
+    return !didAssessed;
+  }, [proposal, myScore, address]);
+
+  const canVote = useMemo(() => {
+    console.log('canVote');
+    if (!proposal || !myBallot || !address) return false;
+    console.log('canVote 2');
+    const voteStatus = checkVoteStatus(proposal);
+    if (voteStatus !== VoteStatus.IN_PROGRESS) return false;
+
+    // 내가 이미 투표했는지 확인
+    const didVote = myBallot.voter === address && myBallot.timestamp > 0;
+    console.log('didVote :', didVote);
+    return !didVote;
+  }, [proposal, myBallot, address]);
 
   // cache status effect
   useEffect(() => {
-    if (proposal && proposal.status !== get('proposalStatus')) {
-      set('proposalStatus', proposal.status);
+    if (proposal && proposal.phase !== get('proposalStatus')) {
+      set('proposalStatus', proposal.phase);
     }
   }, []);
 
@@ -390,34 +577,6 @@ const Proposal: React.FC = () => {
       setVotingInProcess(false);
     }
   }, [voteSubmitted]);
-
-  // decode proposal actions
-  useEffect(() => {
-    if (!proposal) return;
-
-    const mintTokenActions: {
-      actions: Uint8Array[];
-      index: number;
-    } = {actions: [], index: 0};
-
-    const withdrawAction = {
-      // amount: Number(formatUnits(decoded.amount, tokenInfo.decimals)),
-      amount: proposal.amount,
-      name: 'withdraw_assets',
-      to: {address: proposal.to || ''},
-      tokenBalance: 0,
-      tokenAddress: proposal.tokenAddress,
-      tokenImgUrl: getImgUrl(proposal.token.symbol, daoDetails?.chain || 1),
-      tokenName: proposal.token.name,
-      tokenPrice: 0,
-      tokenSymbol: proposal.token.symbol,
-      tokenDecimals: proposal.token.decimals,
-      isCustomToken: false,
-    } as unknown as ActionWithdraw;
-
-    // );
-    setDecodedActions([withdrawAction]);
-  }, []);
 
   // handle can vote and wallet connection status
   useEffect(() => {
@@ -462,10 +621,7 @@ const Proposal: React.FC = () => {
         setVotingInProcess(true);
       }
     }
-  }, [
-    canVote,
- 
-  ]);
+  }, [canVote]);
 
   // show voter tab once user has voted
   // useEffect(() => {
@@ -480,88 +636,85 @@ const Proposal: React.FC = () => {
    *              Handlers and Callbacks           *
    *************************************************/
   // terminal props
-  const mappedProps = useMemo(() => {
-    if (proposal && daoMemebers) {
-      const data = {
-        approvals: proposal.approval,
-        minApproval: proposal.settings.minApprovals,
-        voters: [
-          ...daoMemebers.map(m => {
-            m.wallet = m.address;
-            m.option = proposal.approval.some(
-              a =>
-                // remove the call to strip plugin address when sdk returns proper plugin address
-                stripPlgnAdrFromProposalId(a).toLowerCase() ===
-                m.address.toLowerCase()
-            )
-              ? 'approved'
-              : 'none';
-            return m;
-          }),
-        ],
-        isMember:
-          address &&
-          daoMemebers.some(
-            a =>
-              // remove the call to strip plugin address when sdk returns proper plugin address
-              stripPlgnAdrFromProposalId(a.address).toLowerCase() ===
-              address.toLowerCase()
-          ),
-        strategy: t('votingTerminal.multisig'),
-        voteOptions: t('votingTerminal.approve'),
-        startDate: `${format(
-          new Date(),
-          KNOWN_FORMATS.proposals
-        )}  ${getFormattedUtcOffset()}`,
+  // const mappedProps = useMemo(() => {
+  //   if (proposal && daoMemebers) {
+  //     const data = {
+  //       approvals: proposal.approval,
+  //       minApproval: proposal.settings.minApprovals,
+  //       voters: [
+  //         ...daoMemebers.map(m => {
+  //           m.wallet = m.address;
+  //           m.option = proposal.approval.some(
+  //             a =>
+  //               // remove the call to strip plugin address when sdk returns proper plugin address
+  //               stripPlgnAdrFromProposalId(a).toLowerCase() ===
+  //               m.address.toLowerCase()
+  //           )
+  //             ? 'approved'
+  //             : 'none';
+  //           return m;
+  //         }),
+  //       ],
+  //       isMember:
+  //         address &&
+  //         daoMemebers.some(
+  //           a =>
+  //             // remove the call to strip plugin address when sdk returns proper plugin address
+  //             stripPlgnAdrFromProposalId(a.address).toLowerCase() ===
+  //             address.toLowerCase()
+  //         ),
+  //       strategy: t('votingTerminal.multisig'),
+  //       voteOptions: t('votingTerminal.approve'),
+  //       startDate: `${format(
+  //         new Date(),
+  //         KNOWN_FORMATS.proposals
+  //       )}  ${getFormattedUtcOffset()}`,
 
-        endDate: `${format(
-          new Date(),
-          KNOWN_FORMATS.proposals
-        )}  ${getFormattedUtcOffset()}`,
-      };
-      // console.log('data :', data);
-      return data;
-    }
+  //       endDate: `${format(
+  //         new Date(),
+  //         KNOWN_FORMATS.proposals
+  //       )}  ${getFormattedUtcOffset()}`,
+  //     };
+  //     // console.log('data :', data);
+  //     return data;
+  //   }
 
-    // return getLiveProposalTerminalProps(
-    //   t,
-    //   proposal,
-    //   address,
-    //   daoSettings,
-    //   isMultisigProposal(proposal) ? (members as MultisigMember[]) : undefined
-    // );
-    // }
-  }, [address, daoMemebers, proposal, t]);
+  //   // return getLiveProposalTerminalProps(
+  //   //   t,
+  //   //   proposal,
+  //   //   address,
+  //   //   daoSettings,
+  //   //   isMultisigProposal(proposal) ? (members as MultisigMember[]) : undefined
+  //   // );
+  //   // }
+  // }, [address, daoMemebers, proposal, t]);
 
   // get early execution status
-  const canExecuteEarly = useMemo(
-    () =>
-      // isTokenVotingSettings(daoSettings)
-      //   ? isEarlyExecutable(
-      //       mappedProps?.missingParticipation,
-      //       proposal,
-      //       mappedProps?.results,
-      //       daoSettings.votingMode
-      //     )
-      //   :
-      (proposal as DetailedProposal)?.approval?.length >=
-      daoSettings?.minApprovals,
-    [
-      daoSettings,
-
-    ]
-  );
+  // const canExecuteEarly = useMemo(
+  //   () =>
+  //     // isTokenVotingSettings(daoSettings)
+  //     //   ? isEarlyExecutable(
+  //     //       mappedProps?.missingParticipation,
+  //     //       proposal,
+  //     //       mappedProps?.results,
+  //     //       daoSettings.votingMode
+  //     //     )
+  //     //   :
+  //     (proposal as IProposalData)?.approval?.length >=
+  //     daoSettings?.minApprovals,
+  //   [daoSettings]
+  // );
 
   // proposal execution status
-  const executionStatus = useMemo(
-    () =>
-      getProposalExecutionStatus(
-        proposal?.status,
-        canExecuteEarly,
-        executionFailed
-      ),
-    []
-  );
+  // const executionStatus = useMemo(
+  //   () =>
+  //     getProposalExecutionStatus(
+  //       proposal?.phase,
+  //       canExecuteEarly,
+  //       executionFailed
+  //     ),
+  //   []
+  // );
 
   // whether current user has voted
   const voted = useMemo(() => {
@@ -570,9 +723,9 @@ const Proposal: React.FC = () => {
 
     // if (isMultisigProposal(proposal)) {
     return proposal.approval.some(
-      a =>
-        // remove the call to strip plugin address when sdk returns proper plugin address
-        stripPlgnAdrFromProposalId(a).toLowerCase() === address.toLowerCase()
+      (approvalAddress: string) =>
+        stripPlgnAdrFromProposalId(approvalAddress).toLowerCase() ===
+        address.toLowerCase()
     );
     // } else {
     //   return proposal.votes.some(
@@ -593,14 +746,10 @@ const Proposal: React.FC = () => {
   // vote button state and handler
   const {voteNowDisabled, onClick} = useMemo(() => {
     // disable voting on non-active proposals
-    if (proposal?.status !== 'Active') return {voteNowDisabled: true};
+    if (proposal?.phase !== ProposalPhase.VOTE) return {voteNowDisabled: true};
 
     // disable approval on multisig when wallet has voted
-    if (multisigDAO && (voted || voteSubmitted)) return {voteNowDisabled: true};
-
-    // disable voting on mv with no vote replacement when wallet has voted
-    if (!allowVoteReplacement && (voted || voteSubmitted))
-      return {voteNowDisabled: true};
+    if (voted || voteSubmitted) return {voteNowDisabled: true};
 
     // not logged in
     if (!address) {
@@ -629,17 +778,11 @@ const Proposal: React.FC = () => {
       return {
         voteNowDisabled: false,
         onClick: () => {
-          if (multisigDAO) {
-            handleSubmitVote(VoteValues.YES);
-          } else {
-            setVotingInProcess(true);
-          }
+          handleSubmitVote(VoteValues.YES);
         },
       };
     } else return {voteNowDisabled: true};
-  }, [
-  
-  ]);
+  }, []);
 
   // handler for execution
   const handleExecuteNowClicked = () => {
@@ -658,7 +801,7 @@ const Proposal: React.FC = () => {
   const alertMessage = useMemo(() => {
     if (
       proposal &&
-      proposal.status === 'Active' && // active proposal
+      proposal.phase === ProposalPhase.VOTE && // active proposal
       address && // logged in
       !isOnWrongNetwork && // on proper network
       !voted && // haven't voted
@@ -670,26 +813,26 @@ const Proposal: React.FC = () => {
     }
   }, []);
 
-  // status steps for proposal
-  const proposalSteps = useMemo(() => {
-    if (proposal) {
-      return getProposalStatusSteps(
-        t,
-        proposal.status,
-        pluginType,
-        new Date(proposal.createdTime.toNumber()),
-        new Date(proposal.createdTime.toNumber()),
-        new Date(proposal.createdTime.toNumber()),
-        // proposal.startDate,
-        // proposal.endDate,
-        // proposal.creationDate,
-        '',
-        false, //executionFailed,
-        '',
-        proposal.executed ? new Date() : undefined
-      );
-    } else return [];
-  }, []);
+  // // status steps for proposal
+  // const proposalSteps = useMemo(() => {
+  //   if (proposal) {
+  //     return getProposalStatusSteps(
+  //       t,
+  //       proposal.phase,
+  //       pluginType,
+  //       new Date(proposal.createdTime.toNumber()),
+  //       new Date(proposal.createdTime.toNumber()),
+  //       new Date(proposal.createdTime.toNumber()),
+  //       // proposal.startDate,
+  //       // proposal.endDate,
+  //       // proposal.creationDate,
+  //       '',
+  //       false, //executionFailed,
+  //       '',
+  //       proposal.executed ? new Date() : undefined
+  //     );
+  //   } else return [];
+  // }, []);
 
   /*************************************************
    *                     Render                    *
@@ -698,7 +841,7 @@ const Proposal: React.FC = () => {
     navigate(NotFound, {replace: true, state: {invalidProposal: proposalId}});
   }
 
-  if (paramsAreLoading || proposalIsLoading || detailsAreLoading || !proposal) {
+  if (paramsAreLoading || proposalIsLoading || !proposal) {
     return <Loading />;
   }
 
@@ -711,7 +854,7 @@ const Proposal: React.FC = () => {
               navigate(
                 generatePath(path, {
                   network,
-                  dao: daoDetails?.address,
+                  dao: '',
                 })
               )
             }
@@ -744,14 +887,13 @@ const Proposal: React.FC = () => {
         {[
           {
             name: '프로젝트 깃허브',
-            url: 'https://github.com/example/project'
+            url: 'https://github.com/example/project',
           },
         ].map(({name, url}) => (
           <ListItemLink label={name} href={url} key={url} />
         ))}
 
         <SummaryText>{proposal?.description}</SummaryText>
- 
       </HeaderContainer>
 
       <ContentContainer expandedProposal={expandedProposal}>
@@ -769,116 +911,105 @@ const Proposal: React.FC = () => {
               />
             </>
           )}
-
-          {/* <VotingTerminal
-            status={proposal.status}
-            statusLabel={voteStatus}
-            selectedTab={terminalTab}
-            alertMessage={alertMessage}
-            onTabSelected={setTerminalTab}
-            onVoteClicked={onClick}
-            onCancelClicked={() => setVotingInProcess(false)}
-            voteButtonLabel={buttonLabel}
-            voteNowDisabled={voteNowDisabled}
-            votingInProcess={votingInProcess}
-            onVoteSubmitClicked={vote =>
-              handleSubmitVote(
-                vote,
-                address || ''
-                // (proposal as TokenVotingProposal).token?.address
-              )
-            }
-            {...mappedProps}
-          /> */}
-
           <ProposalInfo
-            currentStage={'ASSESSMENT'} // 또는 'VOTE'
-            assessmentStartDate={new Date('2024-03-01')}
-            assessmentEndDate={new Date('2024-03-15')}
-            voteStartDate={new Date('2024-03-16')}
-            voteEndDate={new Date('2024-03-30')}
+            phase={proposal.phase}
+            assessmentStartDate={new Date(proposal.beginAssess)}
+            assessmentEndDate={new Date(proposal.endAssess)}
+            voteStartDate={new Date(proposal.beginVote)}
+            voteEndDate={new Date(proposal.endVote)}
           />
-
-          <FundAssessmentWidget
-            pluginType={pluginType}
-            actions={decodedActions}
-            status={executionStatus}
-            onExecuteClicked={handleExecuteNowClicked}
-            txhash={transactionHash || proposal?.executionTxHash || undefined}
-          />
-
-          <FundVoteWidget
-            pluginType={pluginType}
-            actions={decodedActions}
-            status={executionStatus}
-            onExecuteClicked={handleExecuteNowClicked}
-            txhash={transactionHash || proposal?.executionTxHash || undefined}
-          />
-
-
+          {proposal.phase === ProposalPeriod.ASSESSMENT ? (
+            <FundAssessmentWidget
+              phase={proposal.phase}
+              onExecuteClicked={handleExecuteNowClicked}
+              txhash={transactionHash || proposal?.executionTxHash || undefined}
+              canAssess={canAssess}
+              exPhase={extendedPhase}
+              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+              proposalId={proposal.id}
+            />
+          ) : (
+            <FundVoteWidget
+              phase={proposal.phase}
+              onExecuteClicked={handleExecuteNowClicked}
+              txhash={transactionHash || proposal?.executionTxHash || undefined}
+              canVote={canVote}
+              exPhase={extendedPhase}
+              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+              proposalId={proposal.id}
+            />
+          )}
         </ProposalContainer>
 
         <AdditionalInfoContainer>
           {/*<ResourceList links={proposal?.metadata.resources} />*/}
           {/* <WidgetStatus steps={proposalSteps} /> */}
-          <CommentList comments={[
-            {
-              id: '1',
-              author: '0x1234567890123456789012345678901234567890',
-              content: '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
-              createdAt: '2024-03-10 14:23'
-            },
-            {
-              id: '2',
-              author: '0x2345678901234567890123456789012345678901', 
-              content: '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
-              createdAt: '2024-03-10 15:45'
-            },
-            {
-              id: '3',
-              author: '0x3456789012345678901234567890123456789012',
-              content: '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
-              createdAt: '2024-03-11 09:12'
-            },
-            {
-              id: '4',
-              author: '0x4567890123456789012345678901234567890123',
-              content: '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
-              createdAt: '2024-03-11 10:30'
-            }
-          ]} />
-          <VoterList comments={[
-            {
-              id: '1',
-              author: '0x1234567890123456789012345678901234567890',
-              vote: 'yes',
-              createdAt: '2024-03-10 14:23'
-            },
-            {
-              id: '2',
-              author: '0x2345678901234567890123456789012345678901',
-              vote: 'no',
-              createdAt: '2024-03-10 15:45'
-            },
-            {
-              id: '3', 
-              author: '0x3456789012345678901234567890123456789012',
-              vote: 'yes',
-              createdAt: '2024-03-11 09:12'
-            },
-            {
-              id: '4',
-              author: '0x4567890123456789012345678901234567890123',
-              vote: 'yes',
-              createdAt: '2024-03-11 10:30'
-            },
-            {
-              id: '5',
-              author: '0x5678901234567890123456789012345678901234',
-              vote: 'abstain',
-              createdAt: '2024-03-11 11:45'
-            },
-          ]} />
+          <CommentList
+            comments={[
+              {
+                id: '1',
+                author: '0x1234567890123456789012345678901234567890',
+                content:
+                  '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
+                createdAt: '2024-03-10 14:23',
+              },
+              {
+                id: '2',
+                author: '0x2345678901234567890123456789012345678901',
+                content:
+                  '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
+                createdAt: '2024-03-10 15:45',
+              },
+              {
+                id: '3',
+                author: '0x3456789012345678901234567890123456789012',
+                content:
+                  '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
+                createdAt: '2024-03-11 09:12',
+              },
+              {
+                id: '4',
+                author: '0x4567890123456789012345678901234567890123',
+                content:
+                  '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
+                createdAt: '2024-03-11 10:30',
+              },
+            ]}
+          />
+          <VoterList
+            comments={[
+              {
+                id: '1',
+                author: '0x1234567890123456789012345678901234567890',
+                vote: 'yes',
+                createdAt: '2024-03-10 14:23',
+              },
+              {
+                id: '2',
+                author: '0x2345678901234567890123456789012345678901',
+                vote: 'no',
+                createdAt: '2024-03-10 15:45',
+              },
+              {
+                id: '3',
+                author: '0x3456789012345678901234567890123456789012',
+                vote: 'yes',
+                createdAt: '2024-03-11 09:12',
+              },
+              {
+                id: '4',
+                author: '0x4567890123456789012345678901234567890123',
+                vote: 'yes',
+                createdAt: '2024-03-11 10:30',
+              },
+              {
+                id: '5',
+                author: '0x5678901234567890123456789012345678901234',
+                vote: 'abstain',
+                createdAt: '2024-03-11 11:45',
+              },
+            ]}
+          />
         </AdditionalInfoContainer>
       </ContentContainer>
     </Container>
