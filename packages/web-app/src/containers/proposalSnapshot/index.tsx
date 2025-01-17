@@ -4,7 +4,7 @@ import {
   IconGovernance,
   ListItemHeader,
 } from '@aragon/ui-components';
-import {CardProposal} from 'components/proposalCard';
+import {CardProposal} from 'components/cards/cardProposal';
 import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate} from 'react-router-dom';
@@ -45,9 +45,9 @@ const ProposalSnapshot: React.FC<Props> = ({
         address: `0x${index}`.padEnd(42, '0'),
         delegatedVotingPower: '1000000000000000000', // 1 token
         votingPower: '1000000000000000000',
-      }))
+      })),
     },
-    isLoading: false
+    isLoading: false,
   };
 
   // Replace actual hook with mock data
@@ -110,7 +110,9 @@ const ProposalSnapshot: React.FC<Props> = ({
         buttonText={t('newProposal.title')}
         orientation="horizontal"
         onClick={() =>
-          navigate(generatePath(CreateProposal, {network, dao: daoAddressOrEns}))
+          navigate(
+            generatePath(CreateProposal, {network, dao: daoAddressOrEns})
+          )
         }
       />
 
@@ -145,11 +147,11 @@ const ProposalGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   width: 100%;
-  
+
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }

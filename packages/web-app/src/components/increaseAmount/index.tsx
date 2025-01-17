@@ -14,6 +14,7 @@ type Props = NumberInputProps & {
   max: number;
   min: number;
   value: number | string;
+  label: string;
   error?: AlertInlineProps;
 };
 const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
@@ -54,7 +55,6 @@ const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
             </ProgressInfo>
           </LinearProgressContainer>
         </ProgressWrapper>
-
       </Container>
       {rest.error && <AlertInline {...rest.error} />}
     </>

@@ -36,7 +36,7 @@ type CreateProposalParams = {
   title: string;
   description: string;
   proposalId: string;
-  fundAmount: BigNumberish;
+  fundAmount: BigNumber;
   assessmentPeriod: number;
   votePeriod: number;
   documentId: string;
@@ -78,15 +78,26 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
     }
 
     try {
-      // 기본 가스 한도 설정 - 제안서 종류에 따라 다르게 설정
-      let baseGasLimit = BigInt(300000); // 기본 제안서
+      // 기본 가스 한도 설정
+      let baseGasLimit = BigInt(21000); // 기본 이더리움 트랜잭션
 
       // 제안서 타입에 따른 가스 한도 조정
-      if (proposalCreationData.fundAmount) {
-        baseGasLimit = BigInt(400000); // 펀딩 제안서는 더 높은 가스 필요
+      if (proposalCreationData.proposalType === ProposalType.FUND) {
+        baseGasLimit = BigInt(100000); // 펀딩 제안서는 더 높은 가스 필요
+      } else if (proposalCreationData.proposalType === ProposalType.SYSTEM) {
+        baseGasLimit = BigInt(80000); // 시스템 제안서에 대한 가스 설정
       }
 
-      // 파라미터가 있는 경우 추가 가스 계산
+      // 펀딩 금액에 따른 가스 조정
+      if (proposalCreationData.fundAmount) {
+        const fundAmountBigNumber = BigNumber.from(
+          proposalCreationData.fundAmount
+        );
+        const fundAmountFactor = fundAmountBigNumber.toBigInt() / BigInt(1e18);
+        baseGasLimit += fundAmountFactor * BigInt(1000); // 펀딩 금액에 따른 추가 가스
+      }
+
+      // 파라미터가 있는 경우 추가 가스 계산ㅂ
       if (
         proposalCreationData.params &&
         proposalCreationData.params.length > 0
@@ -136,7 +147,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       return {
         average: BigInt(1500000000),
         max: BigInt(1500000000),
-        gasLimit: BigInt(300000),
+        gasLimit: BigInt(21000),
         maxFeePerGas: BigInt(0),
         maxPriorityFeePerGas: BigInt(0),
         baseFee: BigInt(0),
@@ -171,9 +182,9 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       description,
       proposer: address,
       proposalId: proposalId,
-      fundAmount: Amount.make(1000000).value,
-      assessmentPeriod: assessmentPeriod,
-      votePeriod,
+      fundAmount: Amount.make(Number(fundAmount), 18).value,
+      assessmentPeriod: Number(assessmentPeriod),
+      votePeriod: Number(votePeriod),
       documentId,
       systemType: SystemProposalType.NORMAL,
       params: [],

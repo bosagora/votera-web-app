@@ -165,7 +165,45 @@ export type Erc20ProposalVote = {
 };
 
 export type DetailedProposal = MultisigProposal;
-export type ProposalListItem = MultisigProposalListItem;
+
+export enum ProposalPhase {
+  NONE = 'NONE',
+  ASSESSMENT = 'ASSESSMENT', // 평가 단계
+  VOTE = 'VOTE', // 투표 단계
+  EXECUTION = 'EXECUTION', // 실행 단계
+  FINISHED = 'FINISHED', // 종료 단계
+  EXPIRED = 'EXPIRED', // 만료 단계
+}
+
+export interface ProposalListItem {
+  id: BigNumber;
+  dao: {
+    address: string;
+    name: string;
+  };
+  title: string;
+  description: string;
+  phase: ProposalPhase; // period 대신 phase 사용
+  creator: string;
+  beginAssess: number;
+  endAssess: number;
+  beginVote: number;
+  endVote: number;
+  votes: {
+    yes: number;
+    no: number;
+    abstain: number;
+  };
+  executionTxHash: string;
+  approval: string[];
+  minApprovals: number;
+  createdTime: number;
+  destination: string;
+  value: string;
+  data: string;
+  executed: boolean;
+}
+
 export type SupportedProposals = DetailedProposal | ProposalListItem;
 
 export type SupportedVotingSettings = MultisigVotingSettings | VotingSettings;

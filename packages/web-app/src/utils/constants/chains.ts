@@ -183,13 +183,13 @@ export const CHAIN_METADATA: ChainList = {
     ipfs: '',
   },
   bosagora_devnet: {
-    id: 24600,
+    id: 24680,
     name: 'bosagora_devnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
     explorer: 'https://testnet.boascan.io/',
     testnet: true,
-    rpc: ['http://localhost:8540'],
+    rpc: ['http://localhost:8545'],
     nativeCurrency: {
       name: 'BOA',
       symbol: 'BOA',

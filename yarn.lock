@@ -26938,17 +26938,17 @@ void-elements@3.1.0:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
-votera-contracts-lib@~1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/votera-contracts-lib/-/votera-contracts-lib-1.2.1.tgz#bd66c4c20d8495c37385301469c66cf951d58a73"
-  integrity sha512-KFuiVLy5sh57iRHBEEXrHlO8ptXD/lZ6mAehg7EHd5DYf5T4VXzbppCyXifmbaj2ptNJelmt4wXpoSWQQtx/gg==
+votera-contracts-lib@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/votera-contracts-lib/-/votera-contracts-lib-1.3.0.tgz#ce5564e9fb725880d24a49cd1f60c49fdc7639ba"
+  integrity sha512-PuTzYFOkBY7RAt3nDuXCuJDsLNPFGtdapsZqMqsve9v3/xY0aMei30EcPVSQEqkpFg1YhpKgJzo4Scwmxw+jJw==
   dependencies:
     ethers "^5.7.0"
 
-votera-sdk-client@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/votera-sdk-client/-/votera-sdk-client-1.3.0.tgz#782e49dfaf33016f44a59b2c36ebd8418f0cbc3b"
-  integrity sha512-7mMGxu1o/2Trhun2PSIBFryOEUn+QujHJFs3ObtfhkGMfNoOUuCAx4SaU1E/Nu8NgUiTKrkmPQmIwrhBUQqkYQ==
+votera-sdk-client@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/votera-sdk-client/-/votera-sdk-client-1.4.0.tgz#691492a15e3eddd21e0d205732a936b070e542ba"
+  integrity sha512-QQ1Pi+1sxlAg1sxlYQZ8aT9OUVr36nEBY4/T7n0FddE3M/2RHkf0cUZumJXK1NXsXTgE5saCNZyvw4I3UnasWQ==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-signer" "^5.7.0"
@@ -26963,7 +26963,7 @@ votera-sdk-client@^1.3.0:
     "@ethersproject/random" "^5.7.0"
     "@ethersproject/wallet" "^5.7.0"
     unfetch "~4.2.0"
-    votera-contracts-lib "~1.2.1"
+    votera-contracts-lib "~1.3.0"
     votera-sdk-common "~1.0.0"
 
 votera-sdk-common@~1.0.0:

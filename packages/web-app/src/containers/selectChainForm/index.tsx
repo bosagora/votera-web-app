@@ -14,7 +14,7 @@ const SelectChainForm: React.FC = () => {
   const {t} = useTranslation();
   const {isMobile} = useScreen();
   const {setNetwork, network} = useNetwork();
-  const {control, resetField } = useFormContext();
+  const {control, resetField} = useFormContext();
 
   const [networkType, setNetworkType] = useState<NetworkType>(
     CHAIN_METADATA[network].testnet ? 'test' : 'main'
@@ -116,7 +116,7 @@ const networks: SelectableNetworks = {
   test: {
     cost: [
       'bosagora_testnet',
-      // 'bosagora_devnet',
+      'bosagora_devnet',
       // 'acc_sidechain_testnet',
       // 'acc_sidechain_devnet',
       // 'sepolia',
