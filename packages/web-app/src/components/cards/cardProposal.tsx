@@ -8,6 +8,8 @@ import {Link} from '@aragon/ui-components';
 import {LinearProgress} from '@aragon/ui-components';
 import {Tag} from '@aragon/ui-components';
 import {ProposalPhase} from 'utils/types';
+import {CardProposalDataProps} from 'components/proposalList';
+import {ProposalPeriod} from 'votera-sdk-client';
 
 type ProposalUseCase = 'list' | 'explore';
 
@@ -31,7 +33,7 @@ export type CardProposalProps = {
    * the headers & buttons wil change to proper format also the progress
    * section only available on active state.
    * */
-  phase: ProposalPhase;
+  phase: ProposalPeriod;
   /** Indicates whether the proposal is in being used in list or in its special form (see explore page) */
   type?: ProposalUseCase;
   /** Url for the dao avatar */
@@ -67,66 +69,53 @@ export type CardProposalProps = {
   stateLabel: string[];
 };
 
-export const CardProposal: React.FC<
-  CardProposalProps & {addressLabel: string}
-> = ({
+const getPhaseColor = (phase: ProposalPeriod) => {
+  switch (phase) {
+    case ProposalPeriod.ASSESSMENT:
+      return 'text-primary-500';
+    case ProposalPeriod.VOTE:
+      return 'text-info-500';
+    case ProposalPeriod.EXECUTION:
+      return 'text-success-500';
+    case ProposalPeriod.FINISHED:
+      return 'text-neutral-500';
+    default:
+      return 'text-neutral-500';
+  }
+};
+
+const getPhaseLabel = (phase: ProposalPeriod) => {
+  switch (phase) {
+    case ProposalPeriod.ASSESSMENT:
+      return '평가 단계';
+    case ProposalPeriod.VOTE:
+      return '투표 단계';
+    case ProposalPeriod.EXECUTION:
+      return '실행 단계';
+    case ProposalPeriod.FINISHED:
+      return '종료';
+    default:
+      return '';
+  }
+};
+
+export const CardProposal: React.FC<CardProposalDataProps> = ({
   phase,
   title,
   description,
-  voteTitle,
-  voteProgress,
-  voteLabel,
-  votedAlertLabel,
-  tokenAmount,
-  tokenSymbol,
-  winningOptionValue,
-  publishLabel,
+  explorer,
   publisherAddress,
-  explorer = 'https://etherscan.io/',
-  alertMessage,
-  stateLabel,
-  type = 'list',
-  daoLogo,
-  daoName,
-  onClick,
+  publishLabel,
   addressLabel,
-}: CardProposalProps & {addressLabel: string}) => {
+  onClick,
+  type,
+}) => {
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
-
-  const getPhaseColor = (phase: ProposalPhase) => {
-    switch (phase) {
-      case ProposalPhase.ASSESSMENT:
-        return 'text-primary-500';
-      case ProposalPhase.VOTE:
-        return 'text-info-500';
-      case ProposalPhase.EXECUTION:
-        return 'text-success-500';
-      case ProposalPhase.FINISHED:
-        return 'text-neutral-500';
-      default:
-        return 'text-neutral-500';
-    }
-  };
-
-  const getPhaseLabel = (phase: ProposalPhase) => {
-    switch (phase) {
-      case ProposalPhase.ASSESSMENT:
-        return '평가 단계';
-      case ProposalPhase.VOTE:
-        return '투표 단계';
-      case ProposalPhase.EXECUTION:
-        return '실행 단계';
-      case ProposalPhase.FINISHED:
-        return '종료';
-      default:
-        return '';
-    }
-  };
 
   return (
     <Card data-testid="cardProposal" onClick={onClick}>
       <Header>
-        <HeaderOptions phase={phase} type={type} />
+        <HeaderOptions phase={phase} type={type || ''} />
       </Header>
       <TextContent>
         <TitleWrapper>
@@ -136,12 +125,7 @@ export const CardProposal: React.FC<
           <Description>{description}</Description>
         </DescriptionWrapper>
         <Publisher>
-          {isExploreProposal(type) ? (
-            <AvatarDao daoName={daoName!} size="small" src={daoLogo} />
-          ) : (
-            <PublisherLabel>{publishLabel}</PublisherLabel>
-          )}
-
+          <PublisherLabel>{publishLabel}</PublisherLabel>
           <Link
             external
             href={addressExploreUrl}
@@ -178,20 +162,20 @@ export const CardProposal: React.FC<
   );
 };
 
-type HeaderOptionProps = Pick<CardProposalProps, 'phase'> & {
-  type: NonNullable<CardProposalProps['type']>;
+type HeaderOptionProps = Pick<CardProposalDataProps, 'phase'> & {
+  type: string;
 };
 
 const HeaderOptions: React.VFC<HeaderOptionProps> = ({phase, type}) => {
   switch (phase) {
-    case ProposalPhase.ASSESSMENT:
-      return <Tag label={phase} colorScheme={'info'} />;
-    case ProposalPhase.VOTE:
-      return <Tag label={phase} colorScheme={'primary'} />;
-    case ProposalPhase.EXECUTION:
-      return <Tag label={phase} colorScheme={'success'} />;
-    case ProposalPhase.FINISHED:
-      return <Tag label={phase} colorScheme={'critical'} />;
+    case ProposalPeriod.ASSESSMENT:
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'info'} />;
+    case ProposalPeriod.VOTE:
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'primary'} />;
+    case ProposalPeriod.EXECUTION:
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'success'} />;
+    case ProposalPeriod.FINISHED:
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'critical'} />;
     default:
       return null;
   }

@@ -17,9 +17,14 @@ import {Action, ProposalPhase} from 'utils/types';
 import IncreaseAmount from 'components/increaseAmount';
 import AssessmentResult from 'components/assessmentResult';
 import {ProposalPhaseExtended} from 'pages/proposal';
-import {Client} from 'votera-sdk-client';
+import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {BigNumber} from 'ethers';
+import {
+  CreateAssessProvider,
+  useCreateAssessContext,
+} from 'context/createAssess';
+import {useForm} from 'react-hook-form';
 
 const Card = styled.div.attrs({
   className:
@@ -52,13 +57,11 @@ const StyledButtonText = styled(ButtonText).attrs({
 })``;
 
 type AssessmentProps = {
-  txhash?: string;
-  phase?: ProposalPhase;
-  onExecuteClicked?: () => void;
-  canAssess?: boolean;
-  exPhase?: ProposalPhaseExtended;
-  exPhaseMessage?: string;
-  proposalId: BigNumber;
+  proposalId: string;
+  phase: ProposalPhase;
+  canAssess: boolean;
+  exPhase: ProposalPhaseExtended;
+  exPhaseMessage: string;
 };
 
 interface Assessment {
@@ -69,10 +72,16 @@ interface Assessment {
   scalability: number;
 }
 
+export type AssessmentFormData = {
+  completeness: number;
+  possibility: number;
+  profitability: number;
+  attractiveness: number;
+  scalability: number;
+};
+
 export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
   phase,
-  txhash,
-  onExecuteClicked,
   canAssess,
   exPhase,
   exPhaseMessage,
@@ -97,6 +106,14 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
     scalability: 0,
   });
 
+  const defaultValues: AssessmentFormData = {
+    completeness: 1,
+    possibility: 1,
+    profitability: 1,
+    attractiveness: 1,
+    scalability: 1,
+  };
+
   const [assessmentLength, setAssessmentLength] = useState(0);
 
   const {client} = useClient2();
@@ -117,7 +134,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
           attractiveness: assessments[3],
           scalability: assessments[4],
         });
-        console.log('assessments', assessments);
+        console.log('assessments summary', assessments);
       }
       const assessmentLength = await client?.methods.getScoreLength(
         proposalId.toString()
@@ -215,167 +232,118 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
   };
 
   return (
-    <Card>
-      {/* <Header>
+    <CreateAssessProvider>
+      <Card>
+        {/* <Header>
         <Title>{t('governance.executionCard.title')}</Title>
         <Description>{t('governance.executionCard.description')}</Description>
       </Header> */}
-      {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT ? (
-        <Content>
-          <div className="p-4 border rounded-lg bg-white">
-            <div className="space-y-1">
-              <IncreaseAmount
-                max={10}
-                min={1}
-                label={'완성도'}
-                value={assessment.completeness.toString()}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleCompletenessChange}
-              />
-              <IncreaseAmount
-                max={10}
-                min={1}
-                label={'실현가능성'}
-                value={assessment.possibility.toString()}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handlePossibilityChange}
-              />
-              <IncreaseAmount
-                max={10}
-                min={1}
-                label={'수익성'}
-                value={assessment.profitability.toString()}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleProfitabilityChange}
-              />
-              <IncreaseAmount
-                max={10}
-                min={1}
-                label={'매력도'}
-                value={assessment.attractiveness.toString()}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleAttractivenessChange}
-              />
-              <IncreaseAmount
-                max={10}
-                min={1}
-                label={'확장성'}
-                value={assessment.scalability.toString()}
-                mode="default"
-                placeholder="1-10 사이 값을 입력하세요"
-                onChange={handleScalabilityChange}
+        {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess ? (
+          <Content>
+            <div className="p-4 border rounded-lg bg-white">
+              <div className="space-y-1">
+                <IncreaseAmount
+                  max={10}
+                  min={1}
+                  label={'완성도'}
+                  value={assessment.completeness.toString()}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleCompletenessChange}
+                />
+                <IncreaseAmount
+                  max={10}
+                  min={1}
+                  label={'실현가능성'}
+                  value={assessment.possibility.toString()}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handlePossibilityChange}
+                />
+                <IncreaseAmount
+                  max={10}
+                  min={1}
+                  label={'수익성'}
+                  value={assessment.profitability.toString()}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleProfitabilityChange}
+                />
+                <IncreaseAmount
+                  max={10}
+                  min={1}
+                  label={'매력도'}
+                  value={assessment.attractiveness.toString()}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleAttractivenessChange}
+                />
+                <IncreaseAmount
+                  max={10}
+                  min={1}
+                  label={'확장성'}
+                  value={assessment.scalability.toString()}
+                  mode="default"
+                  placeholder="1-10 사이 값을 입력하세요"
+                  onChange={handleScalabilityChange}
+                />
+              </div>
+              <WidgetFooter
+                proposalId={proposalId}
+                assessment={assessment}
+                canAssess={canAssess}
               />
             </div>
-            <WidgetFooter
-              phase={phase}
-              txhash={txhash}
-              onExecuteClicked={onExecuteClicked}
+          </Content>
+        ) : (
+          <Content>
+            <div className="flex justify-center gap-8 my-6">
+              <div className="text-xl font-bold text-blue-500">
+                {exPhaseMessage}
+              </div>
+              {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+            </div>
+            <AssessmentResult
+              values={[assessmentSummary]}
+              assessmentLength={assessmentLength}
             />
-          </div>
-        </Content>
-      ) : (
-        <Content>
-          <div className="flex justify-center gap-8 my-6">
-            <div className="text-xl font-bold text-blue-500">
-              {exPhaseMessage}
-            </div>
-            {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
-          </div>
-          <AssessmentResult
-            values={[assessmentSummary]}
-            assessmentLength={assessmentLength}
-          />
-        </Content>
-      )}
-    </Card>
+          </Content>
+        )}
+      </Card>
+    </CreateAssessProvider>
   );
 };
 
-type FooterProps = Pick<
-  AssessmentProps,
-  'phase' | 'txhash' | 'onExecuteClicked' | 'canAssess'
->;
+type FooterProps = {
+  proposalId?: string;
+  assessment: Assessment;
+  canAssess?: boolean;
+};
 
 const WidgetFooter: React.FC<FooterProps> = ({
-  phase = 'default',
-  onExecuteClicked,
-  txhash,
+  proposalId,
+  assessment,
   canAssess,
 }) => {
   const {t} = useTranslation();
-  const {network} = useNetwork();
+  const {handlePublishAssessment} = useCreateAssessContext();
 
-  const handleTxViewButtonClick = () => {
-    window.open(CHAIN_METADATA[network].explorer + 'tx/' + txhash, '_blank');
+  const handleAssessSubmit = async () => {
+    if (!canAssess || !proposalId || !assessment) return;
+
+    console.log('assessment', assessment);
+    await handlePublishAssessment({proposalId, assessment});
   };
 
-  switch (phase) {
-    case ProposalPhase.ASSESSMENT:
-      return (
-        <Footer>
-          <StyledButtonText
-            css={{}}
-            label={t('governance.proposals.buttons.execute')}
-            size="large"
-            onClick={onExecuteClicked}
-            disabled={!canAssess}
-          />
-          <AlertInline label={t('governance.executionCard.status.succeeded')} />
-        </Footer>
-      );
-    case ProposalPhase.VOTE:
-      return (
-        <Footer>
-          <StyledButtonText
-            css={{}}
-            label={t('governance.proposals.buttons.execute')}
-            size="large"
-            onClick={onExecuteClicked}
-            disabled={!canAssess}
-          />
-          {txhash && (
-            <StyledButtonText
-              css={{}}
-              label={t('governance.executionCard.seeTransaction')}
-              mode="secondary"
-              iconRight={<IconLinkExternal />}
-              size="large"
-              bgWhite
-              onClick={handleTxViewButtonClick}
-            />
-          )}
-          <AlertInline
-            label={t('governance.executionCard.status.failed')}
-            mode="warning"
-          />
-        </Footer>
-      );
-    case ProposalPhase.EXECUTION:
-      return (
-        <Footer>
-          {txhash && (
-            <StyledButtonText
-              css={{}}
-              label={t('governance.executionCard.seeTransaction')}
-              mode="secondary"
-              iconRight={<IconLinkExternal />}
-              size="large"
-              bgWhite
-              onClick={handleTxViewButtonClick}
-            />
-          )}
-
-          <AlertInline
-            label={t('governance.executionCard.status.executed')}
-            mode="success"
-          />
-        </Footer>
-      );
-    default:
-      return null;
-  }
+  return (
+    <Footer>
+      <StyledButtonText
+        css={{}}
+        label={'평가하기'}
+        size="large"
+        onClick={handleAssessSubmit}
+        disabled={!canAssess}
+      />
+    </Footer>
+  );
 };

@@ -1,15 +1,21 @@
 import {AlertInline, ButtonText, Tag} from '@aragon/ui-components';
+import {BigNumber} from 'ethers';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import {ProposalPhase} from 'utils/types';
+import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
 
 const NumberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 });
 
 interface ProposalInfoProps {
-  phase: ProposalPhase;
+  phase: ProposalPeriod;
+  proposalType: ProposalType;
+  fundAmount: BigNumber;
+  extendedPhase: string;
+  exPhaseMessage: string;
   assessmentStartDate: Date;
   assessmentEndDate: Date;
   voteStartDate: Date;
@@ -33,6 +39,10 @@ interface StageStatus {
 
 const ProposalInfo: React.FC<ProposalInfoProps> = ({
   phase,
+  proposalType,
+  fundAmount,
+  extendedPhase,
+  exPhaseMessage,
   assessmentStartDate,
   assessmentEndDate,
   voteStartDate,
@@ -41,104 +51,35 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   const {t} = useTranslation();
 
   const averageRating = 5.0;
-  const [stageStatus, setStageStatus] = useState<StageStatus>({
-    isActive: false,
-    availableTransitionToVote: false,
-    availableTransitionToExecute: false,
-    message: '',
-  });
-
-  useEffect(() => {
-    const checkStageStatus = () => {
-      const now = new Date();
-      const isAssessmentPeriod =
-        now >= assessmentStartDate && now <= assessmentEndDate;
-      const isVotePeriod = now >= voteStartDate && now <= voteEndDate;
-
-      const isAssessmentEnded = now > assessmentEndDate;
-      const hasPassingGrade = averageRating >= 5.0;
-
-      let newStatus: StageStatus;
-
-      switch (phase) {
-        case ProposalPhase.ASSESSMENT:
-          newStatus = {
-            isActive: isAssessmentPeriod,
-            availableTransitionToVote: isAssessmentEnded && hasPassingGrade,
-            message: isAssessmentPeriod
-              ? '평가 진행 중'
-              : '평가 기간이 아닙니다',
-          };
-          break;
-        case ProposalPhase.VOTE:
-          if (isAssessmentEnded && hasPassingGrade) {
-            newStatus = {
-              isActive: isVotePeriod,
-              availableTransitionToExecute:
-                isAssessmentEnded && hasPassingGrade,
-              message: isVotePeriod ? '투표 진행 중' : '투표 기간이 아닙니다',
-            };
-          } else {
-            newStatus = {
-              isActive: false,
-              message: '평가 기준을 충족하지 못했습니다',
-            };
-          }
-          break;
-        case ProposalPhase.EXECUTION:
-          newStatus = {
-            isActive: true,
-            message: '실행 단계',
-          };
-          break;
-        case ProposalPhase.FINISHED:
-          newStatus = {
-            isActive: false,
-            message: '종료됨',
-          };
-          break;
-        default:
-          newStatus = {
-            isActive: false,
-            message: '유효하지 않은 단계입니다',
-          };
-      }
-
-      setStageStatus(newStatus);
-    };
-
-    checkStageStatus();
-  }, [
-    phase,
-    assessmentStartDate,
-    assessmentEndDate,
-    voteStartDate,
-    voteEndDate,
-    averageRating,
-  ]);
 
   return (
     <Container>
       <VStackSection>
-        <Header>
-          <Heading1>제안 단계 정보</Heading1>
-        </Header>
+        {/* <Header style={{borderBottom: '1px solid #E0E0E0'}}>
+          <Heading1>단계 정보</Heading1>
+        </Header> */}
 
-        {/* 현재 단계 */}
+        {/* 현재 상태 */}
         <InfoLine>
-          <p>현재 단계</p>
+          <p>현재 상태</p>
+          <Strong>{exPhaseMessage}</Strong>
+        </InfoLine>
+
+        {/* 제안 유형 */}
+        <InfoLine>
+          <p>제안 유형</p>
           <Strong>
-            {phase === ProposalPhase.ASSESSMENT
-              ? '평가 단계'
-              : phase === ProposalPhase.VOTE
-              ? '투표 단계'
-              : phase === ProposalPhase.EXECUTION
-              ? '실행 단계'
-              : phase === ProposalPhase.FINISHED
-              ? '종료 단계'
-              : '알 수 없음'}
+            {proposalType === ProposalType.SYSTEM ? '시스템 제안' : '펀딩 제안'}
           </Strong>
         </InfoLine>
+
+        {/* 펀딩 금액 */}
+        {proposalType === ProposalType.FUND && (
+          <InfoLine>
+            <p>펀딩 금액</p>
+            <Strong>{new Amount(fundAmount, 18).toBOAString()} BOA</Strong>
+          </InfoLine>
+        )}
 
         {/* Assessment 기간 */}
         <InfoLine>
@@ -147,6 +88,23 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {`${formatDate(assessmentStartDate)} ~ ${formatDate(
               assessmentEndDate
             )}`}
+            {phase === ProposalPeriod.ASSESSMENT && (
+              <div className="text-sm text-ui-500">
+                {(() => {
+                  const now = new Date();
+                  const diff = assessmentEndDate.getTime() - now.getTime();
+                  console.log('diff', diff);
+                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                  const hours = Math.floor(
+                    (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                  );
+                  const minutes = Math.floor(
+                    (diff % (1000 * 60 * 60)) / (1000 * 60)
+                  );
+                  return `(${days}일 ${hours}시간 ${minutes}분 남음)`;
+                })()}
+              </div>
+            )}
           </Strong>
         </InfoLine>
 
@@ -155,25 +113,20 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           <p>투표 기간</p>
           <Strong>
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
+            {phase === ProposalPeriod.VOTE ||
+              (phase === ProposalPeriod.ASSESSMENT && (
+                <div className="text-sm text-ui-500">
+                  {(() => {
+                    const now = new Date();
+                    const diff = voteEndDate.getTime() - now.getTime();
+                    const minutes = Math.floor(diff / (1000 * 60));
+                    return `(${minutes}분 남음)`;
+                  })()}
+                </div>
+              ))}
           </Strong>
         </InfoLine>
-
-        {/* 현재 상태 */}
-        <InfoLine>
-          <p>현재 상태</p>
-          <Strong>{stageStatus.message}</Strong>
-        </InfoLine>
       </VStackSection>
-
-      {stageStatus.availableTransitionToVote ? (
-        <WidgetFooter
-          status={'executable'}
-          onTransitionClicked={() => {
-            console.log('실행 버튼이 클릭되었습니다');
-            // 실행 로직 추가
-          }}
-        />
-      ) : null}
     </Container>
   );
 };
@@ -226,11 +179,9 @@ const CurrentParticipationWrapper = styled.div.attrs({
   className: 'space-y-0.5 text-right',
 })``;
 
-const VStackSection = styled.div.attrs(({isLast}: {isLast?: boolean}) => ({
-  className: `space-y-1.5 p-2 tablet:p-3 -mx-2 tablet:-mx-3 ${
-    isLast ? 'pb-0 border-b-0' : 'border-b border-ui-100'
-  }`,
-}))<{isLast?: boolean}>``;
+const VStackSection = styled.div.attrs({
+  className: 'space-y-1.5 p-2 tablet:p-3 -mx-2 tablet:-mx-3',
+})``;
 
 const InfoLine = styled.div.attrs({
   className: 'flex justify-between text-ui-600',

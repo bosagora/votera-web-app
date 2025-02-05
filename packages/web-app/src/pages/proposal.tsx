@@ -1,7 +1,4 @@
-import {MultisigProposal} from '../utils/aragon/sdk-client-multisig-types';
 import {VoteValues} from '../utils/aragon/sdk-client-multisig-types';
-import {VotingMode} from '../utils/aragon/sdk-client-multisig-types';
-import {DaoAction} from 'utils/aragon/sdk-client-common-types';
 import {ProposalPhase} from '../utils/types';
 import {
   Breadcrumb,
@@ -10,63 +7,29 @@ import {
   IconChevronUp,
   IconGovernance,
   Link,
-  ListItemLink,
   WidgetStatus,
 } from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
-
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate, useParams} from 'react-router-dom';
-// import sanitizeHtml from 'sanitize-html';
 import styled from 'styled-components';
 
-import {ExecutionWidget} from 'components/executionWidget';
-import ResourceList from 'components/resourceList';
 import {Loading} from 'components/temporary';
-import {StyledEditorContent} from 'containers/reviewProposal';
 import {TerminalTabs, VotingTerminal} from 'containers/votingTerminal';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useProposalTransactionContext} from 'context/proposalTransaction';
 import {useSpecificProvider} from 'context/providers';
 import {useCache} from 'hooks/useCache';
-import {useClient} from 'hooks/useClient';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
-import {MultisigMember, useDaoMembers} from 'hooks/useDaoMembers';
-import {useDaoProposal} from 'hooks/useDaoProposal';
 import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
-// import {PluginTypes, usePluginClient} from 'hooks/usePluginClient';
-import {
-  isTokenVotingSettings,
-  usePluginSettings,
-} from 'hooks/usePluginSettings';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
-// import {useWalletCanVote} from 'hooks/useWalletCanVote';
 import {CHAIN_METADATA} from 'utils/constants';
-import {
-  // decodeAddMembersToAction,
-  // decodeMetadataToAction,
-  // decodeMintTokensToAction,
-  // decodeMultisigSettingsToAction,
-  // decodePluginSettingsToAction,
-  // decodeRemoveMembersToAction,
-  // decodeToExternalAction,
-  decodeWithdrawToAction,
-  formatUnits,
-  shortenAddress,
-  toDisplayEns,
-} from 'utils/library';
+import {formatUnits, shortenAddress, toDisplayEns} from 'utils/library';
 import {NotFound} from 'utils/paths';
 import {
-  // getLiveProposalTerminalProps,
-  getProposalExecutionStatus,
-  getProposalStatusSteps,
   getVoteButtonLabel,
-  getVoteStatus,
-  // isEarlyExecutable,
-  // isErc20VotingProposal,
   isMultisigProposal,
   stripPlgnAdrFromProposalId,
 } from 'utils/proposals';
@@ -77,21 +40,13 @@ import {
   ProposalId,
 } from 'utils/types';
 import {PluginTypes} from '../utils/aragon/types';
-// import {wallet} from '@aragon/ui-components/dist/components/illustrations/object';
-import {format} from 'date-fns';
-import {getFormattedUtcOffset, KNOWN_FORMATS} from '../utils/date';
-// import {
-//   ABIStorage,
-//   ISmartContractFunctionData,
-// } from 'multisig-wallet-sdk-client';
-// import {fetchBalance, getTokenInfo, isNativeToken} from '../utils/tokens';
-// import {constants} from 'ethers';
-import {useWalletCanVote} from '../hooks/useWalletCanVote';
+
 import {FundVoteWidget} from 'components/fundVoteWidget';
 import {FundAssessmentWidget} from 'components/fundAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
 import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
+import {ListItemLink} from 'components/listItem/link';
 import {
   IVoteBallotData,
   IScoreData,
@@ -104,13 +59,6 @@ import {
   VoteResult,
 } from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
-
-// TODO: @Sepehr Please assign proper tags on action decoding
-// const PROPOSAL_TAGS = ['Finance', 'Withdraw'];
-
-const PENDING_PROPOSAL_STATUS_INTERVAL = 1000 * 10;
-const PROPOSAL_STATUS_INTERVAL = 1000 * 60;
-const NumberFormatter = new Intl.NumberFormat('en-US');
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -166,11 +114,6 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     const voteStatus = checkVoteStatus(proposal);
     const execStatus = checkExecutionStatus(proposal);
 
-    // 평가 단계 확인
-    if (assessStatus === AssessmentStatus.IN_PROGRESS) {
-      return ProposalPhaseExtended.OPENED_ASSESSMENT;
-    }
-
     // 평가 탈락
     if (assessStatus === AssessmentStatus.REJECTED) {
       return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
@@ -179,6 +122,11 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     // 평가 만료
     if (assessStatus === AssessmentStatus.EXPIRED) {
       return ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT;
+    }
+
+    // 평가 단계 확인
+    if (assessStatus === AssessmentStatus.IN_PROGRESS) {
+      return ProposalPhaseExtended.OPENED_ASSESSMENT;
     }
 
     // 투표 단계 확인
@@ -221,7 +169,9 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
   try {
     const now = Date.now();
 
-    if (now < proposal.beginAssess) {
+    console.log('now :', now);
+    console.log('beginAssess :', proposal.beginAssess);
+    if (now < new Date(proposal.beginAssess * 1000).getTime()) {
       return AssessmentStatus.NOT_STARTED;
     }
 
@@ -234,13 +184,16 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
       return AssessmentStatus.REJECTED;
     }
 
+    console.log('diff ', now, new Date(proposal.endAssess * 1000).getTime());
     // 평가 기간이 지난 경우
-    if (now > proposal.endAssess) {
+    if (now < new Date(proposal.endAssess * 1000).getTime()) {
       return proposal.assessmentResult === AssessmentResult.NONE
-        ? AssessmentStatus.EXPIRED
+        ? AssessmentStatus.IN_PROGRESS
         : proposal.assessmentResult === AssessmentResult.APPROVED
         ? AssessmentStatus.APPROVED
         : AssessmentStatus.REJECTED;
+    } else {
+      return AssessmentStatus.EXPIRED;
     }
 
     return AssessmentStatus.IN_PROGRESS;
@@ -258,7 +211,7 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
       return VoteStatus.NONE;
     }
 
-    if (now < proposal.beginVote) {
+    if (now < new Date(proposal.beginVote * 1000).getTime()) {
       return VoteStatus.NOT_STARTED;
     }
 
@@ -272,7 +225,7 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
     }
 
     // 투표 기간이 지난 경우
-    if (now > proposal.endVote) {
+    if (now > new Date(proposal.endVote * 1000).getTime()) {
       if (proposal.voteResult === VoteResult.NONE) {
         return VoteStatus.EXPIRED;
       }
@@ -375,11 +328,6 @@ const Proposal: React.FC = () => {
 
   const {address, isConnected, isOnWrongNetwork} = useWallet();
 
-  // const [voteStatus, setVoteStatus] = useState('');
-  const [intervalInMills, setIntervalInMills] = useState(0);
-  const [decodedActions, setDecodedActions] =
-    useState<(Action | undefined)[]>();
-
   // Mock data for proposal transaction context
   const mockProposalTransactionContext = {
     handleSubmitVote: (voteValue: VoteValues) => {
@@ -414,7 +362,7 @@ const Proposal: React.FC = () => {
   const [extendedPhase, setExtendedPhase] = useState<ProposalPhaseExtended>(
     ProposalPhaseExtended.UNKNOWN
   );
-
+  const [isVoter, setIsVoter] = useState(false);
   // Mock proposal transaction context
   const {handleSubmitVote, handleExecuteProposal} =
     mockProposalTransactionContext;
@@ -447,6 +395,12 @@ const Proposal: React.FC = () => {
           fetchedProposal = proposals[0];
         }
 
+        const isVoterTmp = await client?.methods.isVoter(
+          fetchedProposal?.proposalId || '',
+          address || ''
+        );
+        console.log('isVoterTmp :', isVoterTmp);
+        setIsVoter(isVoterTmp || false);
         // 제안서가 있는 경우에만 점수와 투표 정보 조회
         if (fetchedProposal) {
           // 평가 점수 조회
@@ -454,6 +408,7 @@ const Proposal: React.FC = () => {
             fetchedProposal.proposalId,
             address || ''
           );
+          console.log('address for score :', address);
           console.log('fetched myScore :', score);
           setMyScore(score || null);
 
@@ -464,6 +419,12 @@ const Proposal: React.FC = () => {
           );
           console.log('fetched myBallot :', ballot);
           setMyBallot(ballot || null);
+        } else {
+          console.log('no proposal data');
+          navigate(NotFound, {
+            replace: true,
+            state: {invalidProposal: proposalId},
+          });
         }
 
         // Mock 데이터와 실제 데이터를 결합
@@ -479,7 +440,7 @@ const Proposal: React.FC = () => {
                   '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며...',
               },
               phase: fetchedProposal.period,
-
+              proposalType: fetchedProposal.proposalType,
               beginAssess: fetchedProposal?.beginAssess || 0,
               endAssess: fetchedProposal?.endAssess || 0,
               beginVote: fetchedProposal?.beginVote || 0,
@@ -494,7 +455,7 @@ const Proposal: React.FC = () => {
                 symbol: 'TEST',
                 decimals: 18,
               },
-              amount: BigInt(1000000000000000000),
+              fundAmount: fetchedProposal?.fundAmount || BigInt(0),
               to: '0x2345678901234567890123456789012345678901',
               tokenAddress: '0x3456789012345678901234567890123456789012',
               executed: false,
@@ -513,6 +474,7 @@ const Proposal: React.FC = () => {
             }
           : null;
 
+        console.log('mockProposalData :', mockProposalData);
         setProposal(mockProposalData);
         setExtendedPhase(getExtendedPhase(mockProposalData));
         setProposalError(null);
@@ -526,35 +488,27 @@ const Proposal: React.FC = () => {
     };
 
     fetchProposalData();
-  }, [client, address]);
+  }, [client, address, proposalId]);
 
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
-    console.log('canAssess');
-    if (!proposal || !myScore || !address) return false;
-    console.log('canAssess 2');
+    if (!proposal || !myScore || !address || !isVoter) return false;
     const assessStatus = checkAssessmentStatus(proposal);
-    console.log('assessStatus :', assessStatus);
     if (assessStatus !== AssessmentStatus.IN_PROGRESS) return false;
-    console.log('canAssess 4');
     // 내가 이미 점수를 평가했는지 확인
     const didAssessed = myScore.voter === address && myScore.timestamp > 0;
-    console.log('didAssessed :', didAssessed);
     return !didAssessed;
-  }, [proposal, myScore, address]);
+  }, [proposal, myScore, address, isVoter]);
 
   const canVote = useMemo(() => {
-    console.log('canVote');
-    if (!proposal || !myBallot || !address) return false;
-    console.log('canVote 2');
+    if (!proposal || !myBallot || !address || !isVoter) return false;
     const voteStatus = checkVoteStatus(proposal);
     if (voteStatus !== VoteStatus.IN_PROGRESS) return false;
 
     // 내가 이미 투표했는지 확인
     const didVote = myBallot.voter === address && myBallot.timestamp > 0;
-    console.log('didVote :', didVote);
     return !didVote;
-  }, [proposal, myBallot, address]);
+  }, [proposal, myBallot, address, isVoter]);
 
   // cache status effect
   useEffect(() => {
@@ -596,21 +550,13 @@ const Proposal: React.FC = () => {
   }, [isConnected, isOnWrongNetwork]);
 
   useEffect(() => {
-    // all conditions unmet close voting in process
-    // console.log('isOnWrongNetwork :', isOnWrongNetwork);
-    // console.log('isConnected :', isConnected);
-    // console.log('canVote :', canVote);
     if (isOnWrongNetwork || !isConnected || !canVote) {
       // console.log('vip false on wrongnetwork');
       setVotingInProcess(false);
     } else {
       setVotingInProcess(true);
     }
-    // if (canVote) {
-    //   // console.log('set vip true');
-    //   setVotingInProcess(true);
-    // }
-    // was on the wrong network but now on the right one
+
     if (statusRef.current.wasOnWrongNetwork && !isOnWrongNetwork) {
       // reset ref
       statusRef.current.wasOnWrongNetwork = false;
@@ -623,117 +569,14 @@ const Proposal: React.FC = () => {
     }
   }, [canVote]);
 
-  // show voter tab once user has voted
-  // useEffect(() => {
-  //   if (voteSubmitted) {
-  //     setTerminalTab('voters');
-  //     setVotingInProcess(false);
-  //     // console.log('vip false on voteSubmmited');
-  //   }
-  // }, [voteSubmitted]);
-
-  /*************************************************
-   *              Handlers and Callbacks           *
-   *************************************************/
-  // terminal props
-  // const mappedProps = useMemo(() => {
-  //   if (proposal && daoMemebers) {
-  //     const data = {
-  //       approvals: proposal.approval,
-  //       minApproval: proposal.settings.minApprovals,
-  //       voters: [
-  //         ...daoMemebers.map(m => {
-  //           m.wallet = m.address;
-  //           m.option = proposal.approval.some(
-  //             a =>
-  //               // remove the call to strip plugin address when sdk returns proper plugin address
-  //               stripPlgnAdrFromProposalId(a).toLowerCase() ===
-  //               m.address.toLowerCase()
-  //           )
-  //             ? 'approved'
-  //             : 'none';
-  //           return m;
-  //         }),
-  //       ],
-  //       isMember:
-  //         address &&
-  //         daoMemebers.some(
-  //           a =>
-  //             // remove the call to strip plugin address when sdk returns proper plugin address
-  //             stripPlgnAdrFromProposalId(a.address).toLowerCase() ===
-  //             address.toLowerCase()
-  //         ),
-  //       strategy: t('votingTerminal.multisig'),
-  //       voteOptions: t('votingTerminal.approve'),
-  //       startDate: `${format(
-  //         new Date(),
-  //         KNOWN_FORMATS.proposals
-  //       )}  ${getFormattedUtcOffset()}`,
-
-  //       endDate: `${format(
-  //         new Date(),
-  //         KNOWN_FORMATS.proposals
-  //       )}  ${getFormattedUtcOffset()}`,
-  //     };
-  //     // console.log('data :', data);
-  //     return data;
-  //   }
-
-  //   // return getLiveProposalTerminalProps(
-  //   //   t,
-  //   //   proposal,
-  //   //   address,
-  //   //   daoSettings,
-  //   //   isMultisigProposal(proposal) ? (members as MultisigMember[]) : undefined
-  //   // );
-  //   // }
-  // }, [address, daoMemebers, proposal, t]);
-
-  // get early execution status
-  // const canExecuteEarly = useMemo(
-  //   () =>
-  //     // isTokenVotingSettings(daoSettings)
-  //     //   ? isEarlyExecutable(
-  //     //       mappedProps?.missingParticipation,
-  //     //       proposal,
-  //     //       mappedProps?.results,
-  //     //       daoSettings.votingMode
-  //     //     )
-  //     //   :
-  //     (proposal as IProposalData)?.approval?.length >=
-  //     daoSettings?.minApprovals,
-  //   [daoSettings]
-  // );
-
-  // proposal execution status
-  // const executionStatus = useMemo(
-  //   () =>
-  //     getProposalExecutionStatus(
-  //       proposal?.phase,
-  //       canExecuteEarly,
-  //       executionFailed
-  //     ),
-  //   []
-  // );
-
-  // whether current user has voted
   const voted = useMemo(() => {
     if (!address || !proposal) return false;
-    // console.log('voted > proposal :', proposal);
 
-    // if (isMultisigProposal(proposal)) {
     return proposal.approval.some(
       (approvalAddress: string) =>
         stripPlgnAdrFromProposalId(approvalAddress).toLowerCase() ===
         address.toLowerCase()
     );
-    // } else {
-    //   return proposal.votes.some(
-    //     voter =>
-    //       voter.address.toLowerCase() === address.toLowerCase() &&
-    //       voter.vote !== undefined
-    //   );
-    // }
   }, []);
 
   // vote button and status
@@ -807,32 +650,9 @@ const Proposal: React.FC = () => {
       !voted && // haven't voted
       !canVote // cannot vote
     ) {
-      // presence of token delineates token voting proposal
-      // people add types to these things!!
       return t('votingTerminal.status.ineligibleWhitelist');
     }
   }, []);
-
-  // // status steps for proposal
-  // const proposalSteps = useMemo(() => {
-  //   if (proposal) {
-  //     return getProposalStatusSteps(
-  //       t,
-  //       proposal.phase,
-  //       pluginType,
-  //       new Date(proposal.createdTime.toNumber()),
-  //       new Date(proposal.createdTime.toNumber()),
-  //       new Date(proposal.createdTime.toNumber()),
-  //       // proposal.startDate,
-  //       // proposal.endDate,
-  //       // proposal.creationDate,
-  //       '',
-  //       false, //executionFailed,
-  //       '',
-  //       proposal.executed ? new Date() : undefined
-  //     );
-  //   } else return [];
-  // }, []);
 
   /*************************************************
    *                     Render                    *
@@ -865,11 +685,6 @@ const Proposal: React.FC = () => {
         )}
         <ProposalTitle>{proposal?.title}</ProposalTitle>
         <ContentWrapper>
-          {/* <BadgeContainer>
-            {PROPOSAL_TAGS.map((tag: string) => (
-              <Tag label={tag} key={tag} />
-            ))}
-          </BadgeContainer> */}
           <ProposerLink>
             {t('governance.proposals.publishedBy')}{' '}
             <Link
@@ -884,6 +699,7 @@ const Proposal: React.FC = () => {
           </ProposerLink>
         </ContentWrapper>
 
+        <SummaryText>{proposal?.description}</SummaryText>
         {[
           {
             name: '프로젝트 깃허브',
@@ -892,8 +708,6 @@ const Proposal: React.FC = () => {
         ].map(({name, url}) => (
           <ListItemLink label={name} href={url} key={url} />
         ))}
-
-        <SummaryText>{proposal?.description}</SummaryText>
       </HeaderContainer>
 
       <ContentContainer expandedProposal={expandedProposal}>
@@ -913,16 +727,18 @@ const Proposal: React.FC = () => {
           )}
           <ProposalInfo
             phase={proposal.phase}
-            assessmentStartDate={new Date(proposal.beginAssess)}
-            assessmentEndDate={new Date(proposal.endAssess)}
-            voteStartDate={new Date(proposal.beginVote)}
-            voteEndDate={new Date(proposal.endVote)}
+            proposalType={proposal.proposalType}
+            fundAmount={proposal.fundAmount}
+            extendedPhase={extendedPhase}
+            exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+            assessmentStartDate={new Date(proposal.beginAssess * 1000)}
+            assessmentEndDate={new Date(proposal.endAssess * 1000)}
+            voteStartDate={new Date(proposal.beginVote * 1000)}
+            voteEndDate={new Date(proposal.endVote * 1000)}
           />
           {proposal.phase === ProposalPeriod.ASSESSMENT ? (
             <FundAssessmentWidget
               phase={proposal.phase}
-              onExecuteClicked={handleExecuteNowClicked}
-              txhash={transactionHash || proposal?.executionTxHash || undefined}
               canAssess={canAssess}
               exPhase={extendedPhase}
               exPhaseMessage={getProposalStatusMessage(extendedPhase)}
@@ -944,72 +760,79 @@ const Proposal: React.FC = () => {
         <AdditionalInfoContainer>
           {/*<ResourceList links={proposal?.metadata.resources} />*/}
           {/* <WidgetStatus steps={proposalSteps} /> */}
-          <CommentList
-            comments={[
-              {
-                id: '1',
-                author: '0x1234567890123456789012345678901234567890',
-                content:
-                  '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
-                createdAt: '2024-03-10 14:23',
-              },
-              {
-                id: '2',
-                author: '0x2345678901234567890123456789012345678901',
-                content:
-                  '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
-                createdAt: '2024-03-10 15:45',
-              },
-              {
-                id: '3',
-                author: '0x3456789012345678901234567890123456789012',
-                content:
-                  '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
-                createdAt: '2024-03-11 09:12',
-              },
-              {
-                id: '4',
-                author: '0x4567890123456789012345678901234567890123',
-                content:
-                  '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
-                createdAt: '2024-03-11 10:30',
-              },
-            ]}
-          />
-          <VoterList
-            comments={[
-              {
-                id: '1',
-                author: '0x1234567890123456789012345678901234567890',
-                vote: 'yes',
-                createdAt: '2024-03-10 14:23',
-              },
-              {
-                id: '2',
-                author: '0x2345678901234567890123456789012345678901',
-                vote: 'no',
-                createdAt: '2024-03-10 15:45',
-              },
-              {
-                id: '3',
-                author: '0x3456789012345678901234567890123456789012',
-                vote: 'yes',
-                createdAt: '2024-03-11 09:12',
-              },
-              {
-                id: '4',
-                author: '0x4567890123456789012345678901234567890123',
-                vote: 'yes',
-                createdAt: '2024-03-11 10:30',
-              },
-              {
-                id: '5',
-                author: '0x5678901234567890123456789012345678901234',
-                vote: 'abstain',
-                createdAt: '2024-03-11 11:45',
-              },
-            ]}
-          />
+          {extendedPhase === ProposalPhaseExtended.OPENED_ASSESSMENT &&
+            proposal && (
+              <CommentList
+                proposalId={proposal.id}
+                isVoter={isVoter}
+                comments={[
+                  {
+                    id: '1',
+                    author: '0x1234567890123456789012345678901234567890',
+                    content:
+                      '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
+                    createdAt: '2024-03-10 14:23',
+                  },
+                  {
+                    id: '2',
+                    author: '0x2345678901234567890123456789012345678901',
+                    content:
+                      '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
+                    createdAt: '2024-03-10 15:45',
+                  },
+                  {
+                    id: '3',
+                    author: '0x3456789012345678901234567890123456789012',
+                    content:
+                      '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
+                    createdAt: '2024-03-11 09:12',
+                  },
+                  {
+                    id: '4',
+                    author: '0x4567890123456789012345678901234567890123',
+                    content:
+                      '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
+                    createdAt: '2024-03-11 10:30',
+                  },
+                ]}
+              />
+            )}
+          {extendedPhase === ProposalPhaseExtended.OPENED_VOTE && proposal && (
+            <VoterList
+              comments={[
+                {
+                  id: '1',
+                  author: '0x1234567890123456789012345678901234567890',
+                  vote: 'yes',
+                  createdAt: '2024-03-10 14:23',
+                },
+                {
+                  id: '2',
+                  author: '0x2345678901234567890123456789012345678901',
+                  vote: 'no',
+                  createdAt: '2024-03-10 15:45',
+                },
+                {
+                  id: '3',
+                  author: '0x3456789012345678901234567890123456789012',
+                  vote: 'yes',
+                  createdAt: '2024-03-11 09:12',
+                },
+                {
+                  id: '4',
+                  author: '0x4567890123456789012345678901234567890123',
+                  vote: 'yes',
+                  createdAt: '2024-03-11 10:30',
+                },
+                {
+                  id: '5',
+                  author: '0x5678901234567890123456789012345678901234',
+                  vote: 'abstain',
+                  createdAt: '2024-03-11 11:45',
+                },
+              ]}
+            />
+          )}
         </AdditionalInfoContainer>
       </ContentContainer>
     </Container>

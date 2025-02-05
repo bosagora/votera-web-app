@@ -17,6 +17,7 @@ import {PluginTypes} from 'utils/aragon/types';
 import {useWallet} from 'hooks/useWallet';
 import {stripPlgnAdrFromProposalId} from '../../utils/proposals';
 import {shortenAddress} from '../../utils/library';
+import {IProposalData, ProposalPeriod} from 'votera-sdk-client';
 
 type ProposalListProps = {
   proposals: Array<ProposalListItem>;
@@ -25,12 +26,24 @@ type ProposalListProps = {
   pluginType: PluginTypes;
   isLoading?: boolean;
 };
-
-const ProposalList: React.FC<ProposalListProps> = ({
+export type CardProposalDataProps = {
+  id: string;
+  title: string;
+  description: string;
+  explorer: string;
+  publisherAddress: string;
+  publishLabel: string;
+  addressLabel: string;
+  phase: ProposalPeriod;
+  onClick: () => void;
+  type?: string;
+};
+type ProposalDataListProps = {
+  proposals: Array<IProposalData>;
+  isLoading: boolean;
+};
+const ProposalList: React.FC<ProposalDataListProps> = ({
   proposals,
-  daoAddressOrEns,
-  pluginAddress,
-  pluginType,
   isLoading,
 }) => {
   const {t} = useTranslation();
@@ -38,36 +51,15 @@ const ProposalList: React.FC<ProposalListProps> = ({
   const {address} = useWallet();
   const navigate = useNavigate();
 
-  const {data: members, isLoading: areMembersLoading} = useDaoMembers(
-    pluginAddress,
-    pluginType
-  );
-
-  const mappedProposals: ({id: string} & CardProposalProps)[] = useMemo(
+  const mappedProposals: CardProposalDataProps[] = useMemo(
     () =>
       proposals.map(p =>
-        proposal2CardProps(
-          p,
-          members.members.length,
-          network,
-          navigate,
-          t,
-          daoAddressOrEns,
-          address
-        )
+        proposal2CardDataProps(p, network, navigate, t, address)
       ),
-    [
-      proposals,
-      members.members.length,
-      network,
-      navigate,
-      t,
-      daoAddressOrEns,
-      address,
-    ]
+    [proposals, network, navigate, t, address]
   );
 
-  if (isLoading || areMembersLoading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-7">
         <Spinner size="default" />
@@ -85,8 +77,8 @@ const ProposalList: React.FC<ProposalListProps> = ({
 
   return (
     <div className="space-y-3" data-testid="proposalList">
-      {mappedProposals.map(({id, ...p}) => (
-        <CardProposal {...p} key={id} />
+      {mappedProposals.map(proposal => (
+        <CardProposal {...proposal} key={proposal.id} />
       ))}
     </div>
   );
@@ -109,64 +101,63 @@ export type CardViewProposal = Omit<CardProposalProps, 'onClick'> & {
  * @param network supported network name
  * @returns list of proposals ready to be display as CardProposals
  */
-export function proposal2CardProps(
-  proposal: ProposalListItem,
-  memberCount: number,
+export function proposal2CardDataProps(
+  proposal: IProposalData,
   network: SupportedNetworks,
   navigate: NavigateFunction,
   t: TFunction,
-  daoAddressOrEns: string,
   address: string | null
-): {id: string; addressLabel: string} & CardProposalProps {
-  const props = {
-    id: proposal.id.toString(),
+): CardProposalDataProps {
+  const props: CardProposalDataProps = {
+    id: proposal.proposalId,
     title: proposal.title,
     description: proposal.description,
     explorer: CHAIN_METADATA[network].explorer,
-    publisherAddress: proposal.creator,
+    publisherAddress: proposal.proposer,
     publishLabel: t('governance.proposals.publishedBy'),
     addressLabel:
-      proposal?.creator.toLowerCase() === address?.toLowerCase()
+      proposal?.proposer.toLowerCase() === address?.toLowerCase()
         ? t('labels.you')
-        : shortenAddress(proposal?.creator || ''),
-    phase: proposal.phase,
+        : shortenAddress(proposal?.proposer || ''),
+    phase: proposal.period,
     onClick: () => {
       navigate(
         generatePath(Proposal, {
           network,
-          dao: daoAddressOrEns,
-          id: proposal.id.toString(),
+          id: proposal.proposalId,
         })
       );
     },
   };
 
-  const specificProps = {
-    voteTitle: t('votingTerminal.approvedBy'),
-    stateLabel: PROPOSAL_STATE_LABELS,
-    alertMessage: 'alert message',
-  };
+  return props;
 
-  if (proposal.phase === ProposalPhase.VOTE) {
-    const votedAlertLabel = proposal.approval?.some(
-      v =>
-        stripPlgnAdrFromProposalId(v).toLowerCase() === address?.toLowerCase()
-    )
-      ? t('governance.proposals.alert.voted')
-      : undefined;
+  // const specificProps = {
+  //   voteTitle: t('votingTerminal.approvedBy'),
+  //   stateLabel: PROPOSAL_STATE_LABELS,
+  //   alertMessage: 'alert message',
+  // };
 
-    const activeProps = {
-      votedAlertLabel,
-      voteProgress: relativeVoteCount(proposal.approval.length, memberCount),
-      winningOptionValue: `${proposal.approval.length} ${t(
-        'votingTerminal.ofMemberCount',
-        {memberCount}
-      )}`,
-    };
-    return {...props, ...specificProps, ...activeProps};
-  } else {
-    return {...props, ...specificProps};
-  }
+  // if (proposal.phase === ProposalPhase.VOTE) {
+  //   const votedAlertLabel = proposal.approval?.some(
+  //     v =>
+  //       stripPlgnAdrFromProposalId(v).toLowerCase() === address?.toLowerCase()
+  //   )
+  //     ? t('governance.proposals.alert.voted')
+  //     : undefined;
+
+  //   const activeProps = {
+  //     votedAlertLabel,
+  //     voteProgress: relativeVoteCount(proposal.approval.length, memberCount),
+  //     winningOptionValue: `${proposal.approval.length} ${t(
+  //       'votingTerminal.ofMemberCount',
+  //       {memberCount}
+  //     )}`,
+  //   };
+  //   return {...props, ...specificProps, ...activeProps};
+  // } else {
+  //   return {...props, ...specificProps};
+  // }
 }
 
 export default ProposalList;
