@@ -10,19 +10,19 @@ import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
-import {proposal2CardProps} from 'components/proposalList';
+import {proposal2CardDataProps} from 'components/proposalList';
 import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
 import {useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {htmlIn} from 'utils/htmlIn';
 import {CreateProposal, Governance, NewProposal} from 'utils/paths';
-import {ProposalListItem} from 'utils/types';
+import {IProposalData} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
 
 type Props = {
   daoAddressOrEns: string;
-  proposals: ProposalListItem[];
+  proposals: IProposalData[];
   proposalLength: number;
 };
 
@@ -56,28 +56,12 @@ const ProposalSnapshot: React.FC<Props> = ({
   const mappedProposals = useMemo(
     () =>
       proposals.map(p => {
-        return proposal2CardProps(
-          p,
-          members.members.length,
-          network,
-          navigate,
-          t,
-          daoAddressOrEns,
-          address
-        );
+        return proposal2CardDataProps(p, network, navigate, t, address);
       }),
-    [
-      proposals,
-      members.members.length,
-      network,
-      navigate,
-      t,
-      daoAddressOrEns,
-      address,
-    ]
+    [proposals, network, navigate, t, address]
   );
   //console.log'mappedProposals : ', mappedProposals);
-  if (proposalLength === 0 || areMembersLoading) {
+  if (proposalLength === 0) {
     return (
       <StateEmpty
         type="Human"
@@ -117,8 +101,8 @@ const ProposalSnapshot: React.FC<Props> = ({
       />
 
       <ProposalGrid>
-        {mappedProposals.map(({id, ...p}) => (
-          <CardProposal {...p} key={id} type="list" />
+        {mappedProposals.map(proposal => (
+          <CardProposal {...proposal} key={proposal.id} />
         ))}
       </ProposalGrid>
 
