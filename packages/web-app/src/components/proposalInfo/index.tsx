@@ -52,6 +52,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
   const averageRating = 5.0;
 
+  console.log('ProposalInfo phase', phase);
+
   return (
     <Container>
       <VStackSection>
@@ -93,15 +95,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 {(() => {
                   const now = new Date();
                   const diff = assessmentEndDate.getTime() - now.getTime();
-                  console.log('diff', diff);
-                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                  const hours = Math.floor(
-                    (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                  );
-                  const minutes = Math.floor(
-                    (diff % (1000 * 60 * 60)) / (1000 * 60)
-                  );
-                  return `(${days}일 ${hours}시간 ${minutes}분 남음)`;
+                  const minutes = Math.floor(diff / (1000 * 60));
+                  return `(${minutes}분 남음)`;
                 })()}
               </div>
             )}
@@ -113,17 +108,16 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           <p>투표 기간</p>
           <Strong>
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
-            {phase === ProposalPeriod.VOTE ||
-              (phase === ProposalPeriod.ASSESSMENT && (
-                <div className="text-sm text-ui-500">
-                  {(() => {
-                    const now = new Date();
-                    const diff = voteEndDate.getTime() - now.getTime();
-                    const minutes = Math.floor(diff / (1000 * 60));
-                    return `(${minutes}분 남음)`;
-                  })()}
-                </div>
-              ))}
+            {phase === ProposalPeriod.VOTE && (
+              <div className="text-sm text-ui-500">
+                {(() => {
+                  const now = new Date();
+                  const diff = voteEndDate.getTime() - now.getTime();
+                  const minutes = Math.floor(diff / (1000 * 60));
+                  return `(${minutes}분 남음)`;
+                })()}
+              </div>
+            )}
           </Strong>
         </InfoLine>
       </VStackSection>

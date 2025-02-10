@@ -23,6 +23,7 @@ type Assessment = {
 type AssessmentParams = {
   proposalId: string;
   assessment: Assessment;
+  open_expired_assessment: boolean;
 };
 
 type CreateAssessContextType = {
@@ -109,39 +110,64 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
 
     setAssessmentProcessState(TransactionState.LOADING);
 
-    try {
-      const scores = [
-        assessmentCreationData.assessment.completeness,
-        assessmentCreationData.assessment.possibility,
-        assessmentCreationData.assessment.profitability,
-        assessmentCreationData.assessment.attractiveness,
-        assessmentCreationData.assessment.scalability,
-      ] as const;
-
-      const assessIterator = await client.methods.postScore(
-        assessmentCreationData.proposalId,
-        scores as [number, number, number, number, number]
+    if (assessmentCreationData.open_expired_assessment) {
+      const assessIterator = await client.methods.transition(
+        assessmentCreationData.proposalId
       );
 
-      for await (const step of assessIterator) {
-        switch (step.key) {
-          case NormalSteps.SENT:
-            console.log('Assessment submission sent:', step);
-            break;
-          case NormalSteps.PREPARED:
-            console.log('Assessment submission prepared:', step);
-            break;
-          case NormalSteps.DONE: {
-            console.log('Assessment submitted successfully');
-            setAssessmentCreationData(undefined);
-            setAssessmentProcessState(TransactionState.SUCCESS);
-            break;
+      try {
+        for await (const step of assessIterator) {
+          switch (step.key) {
+            case NormalSteps.SENT:
+              console.log('Assessment submission sent:', step);
+              break;
+            case NormalSteps.PREPARED:
+              console.log('Assessment submission prepared:', step);
+              break;
+            case NormalSteps.DONE:
+              console.log('Assessment submitted successfully');
+              break;
           }
         }
+      } catch (error) {
+        console.error('Error submitting assessment:', error);
+        setAssessmentProcessState(TransactionState.ERROR);
       }
-    } catch (error) {
-      console.error('Error submitting assessment:', error);
-      setAssessmentProcessState(TransactionState.ERROR);
+    } else {
+      try {
+        const scores = [
+          assessmentCreationData.assessment.completeness,
+          assessmentCreationData.assessment.possibility,
+          assessmentCreationData.assessment.profitability,
+          assessmentCreationData.assessment.attractiveness,
+          assessmentCreationData.assessment.scalability,
+        ] as const;
+
+        const assessIterator = await client.methods.postScore(
+          assessmentCreationData.proposalId,
+          scores as [number, number, number, number, number]
+        );
+
+        for await (const step of assessIterator) {
+          switch (step.key) {
+            case NormalSteps.SENT:
+              console.log('Assessment submission sent:', step);
+              break;
+            case NormalSteps.PREPARED:
+              console.log('Assessment submission prepared:', step);
+              break;
+            case NormalSteps.DONE: {
+              console.log('Assessment submitted successfully');
+              setAssessmentCreationData(undefined);
+              setAssessmentProcessState(TransactionState.SUCCESS);
+              break;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error submitting assessment:', error);
+        setAssessmentProcessState(TransactionState.ERROR);
+      }
     }
   };
 

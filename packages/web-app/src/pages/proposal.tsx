@@ -25,9 +25,9 @@ import {useCache} from 'hooks/useCache';
 import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
-import {CHAIN_METADATA} from 'utils/constants';
+import {CHAIN_METADATA, getSupportedNetworkByChainId} from 'utils/constants';
 import {formatUnits, shortenAddress, toDisplayEns} from 'utils/library';
-import {NotFound} from 'utils/paths';
+import {Dashboard, NotFound} from 'utils/paths';
 import {
   getVoteButtonLabel,
   isMultisigProposal,
@@ -59,6 +59,7 @@ import {
   VoteResult,
 } from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
+import {useProposalQuery} from 'hooks/useProposalQuery';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -98,6 +99,7 @@ export enum ProposalPhaseExtended {
   OPENED_ASSESSMENT = 'OPENED_ASSESSMENT', // 평가가 진행중
   OPENED_VOTE = 'OPENED_VOTE', // 투표가 진행중
   OPENED_EXECUTION = 'OPENED_EXECUTION', // 실행이 진행중
+  OPENED_EXPIRED_ASSESSMENT = 'OPENED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_EXPIRED_ASSESSMENT = 'CLOSED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_EXPIRED_VOTE = 'CLOSED_EXPIRED_VOTE', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_REJECTED_ASSESSMENT = 'CLOSED_REJECTED_ASSESSMENT', // 평가에서 거절되어 종료된 상태
@@ -110,23 +112,22 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     // 제안서가 없는 경우
     if (!proposal) return ProposalPhaseExtended.UNDEFINED;
 
-    const assessStatus = checkAssessmentStatus(proposal);
-    const voteStatus = checkVoteStatus(proposal);
     const execStatus = checkExecutionStatus(proposal);
+    const voteStatus = checkVoteStatus(proposal);
+    const assessStatus = checkAssessmentStatus(proposal);
 
-    // 평가 탈락
-    if (assessStatus === AssessmentStatus.REJECTED) {
-      return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
+    console.log('assessStatus :', assessStatus);
+    console.log('voteStatus :', voteStatus);
+    console.log('execStatus :', execStatus);
+
+    // 실행이 진행 중인 경우
+    if (execStatus === ExecutionStatus.IN_PROGRESS) {
+      return ProposalPhaseExtended.OPENED_EXECUTION;
     }
 
-    // 평가 만료
-    if (assessStatus === AssessmentStatus.EXPIRED) {
-      return ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT;
-    }
-
-    // 평가 단계 확인
-    if (assessStatus === AssessmentStatus.IN_PROGRESS) {
-      return ProposalPhaseExtended.OPENED_ASSESSMENT;
+    // 실행이 완료된 경우
+    if (execStatus === ExecutionStatus.FINISHED) {
+      return ProposalPhaseExtended.CLOSED_FINISHED;
     }
 
     // 투표 단계 확인
@@ -142,19 +143,28 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
       return ProposalPhaseExtended.CLOSED_REJECTED_VOTE;
     }
 
+    // 평가 만료
+    if (assessStatus === AssessmentStatus.EXPIRED) {
+      if (voteStatus === VoteStatus.EXPIRED) {
+        return ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT;
+      } else {
+        return ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT;
+      }
+    }
+
     // 투표 만료
     if (voteStatus === VoteStatus.EXPIRED) {
       return ProposalPhaseExtended.CLOSED_EXPIRED_VOTE;
     }
 
-    // 실행이 진행 중인 경우
-    if (execStatus === ExecutionStatus.IN_PROGRESS) {
-      return ProposalPhaseExtended.OPENED_EXECUTION;
+    // 평가 탈락
+    if (assessStatus === AssessmentStatus.REJECTED) {
+      return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
     }
 
-    // 실행이 완료된 경우
-    if (execStatus === ExecutionStatus.FINISHED) {
-      return ProposalPhaseExtended.CLOSED_FINISHED;
+    // 평가 단계 확인
+    if (assessStatus === AssessmentStatus.IN_PROGRESS) {
+      return ProposalPhaseExtended.OPENED_ASSESSMENT;
     }
 
     // 그 외의 경우는 만료된 것으로 처리
@@ -184,7 +194,11 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
       return AssessmentStatus.REJECTED;
     }
 
-    console.log('diff ', now, new Date(proposal.endAssess * 1000).getTime());
+    console.log(
+      'diff  endAssess ',
+      now,
+      new Date(proposal.endAssess * 1000).getTime()
+    );
     // 평가 기간이 지난 경우
     if (now < new Date(proposal.endAssess * 1000).getTime()) {
       return proposal.assessmentResult === AssessmentResult.NONE
@@ -207,7 +221,7 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
   try {
     const now = Date.now();
 
-    if (!proposal || proposal.state !== ProposalStates.OPENED) {
+    if (!proposal || proposal.state === ProposalStates.INVALID) {
       return VoteStatus.NONE;
     }
 
@@ -243,15 +257,15 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
 
 const checkExecutionStatus = (proposal: any): ExecutionStatus => {
   try {
-    if (!proposal || proposal.state !== ProposalStates.OPENED) {
+    if (!proposal) {
       return ExecutionStatus.NONE;
     }
 
-    if (proposal.executed) {
+    if (proposal.executionState === ExecutionStates.FINISHED) {
       return ExecutionStatus.FINISHED;
     }
 
-    if (proposal.executionTxHash) {
+    if (proposal.executionState === ExecutionStates.IN_PROCESS) {
       return ExecutionStatus.IN_PROGRESS;
     }
 
@@ -285,6 +299,8 @@ const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
       return '투표가 진행 중입니다.';
     case ProposalPhaseExtended.OPENED_EXECUTION:
       return '실행이 진행 중입니다.';
+    case ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT:
+      return '평가 기간이 만료되었고 투표단계로 전환되어야 합니ㅏ다.';
     case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
       return '평가 기간이 만료되었습니다.';
     case ProposalPhaseExtended.CLOSED_EXPIRED_VOTE:
@@ -316,13 +332,12 @@ const Proposal: React.FC = () => {
     () => (urlId ? new ProposalId(urlId) : undefined),
     [urlId]
   );
+  const {network} = useNetwork();
 
   console.log('proposalId :', proposalId);
 
   const {set, get} = useCache();
-  // const apolloClient = useApolloClient();
 
-  const {network} = useNetwork();
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
   const statusRef = useRef({wasNotLoggedIn: false, wasOnWrongNetwork: false});
 
@@ -367,33 +382,54 @@ const Proposal: React.FC = () => {
   const {handleSubmitVote, handleExecuteProposal} =
     mockProposalTransactionContext;
 
-  // proposal 데이터를 가져오는 useEffect 수정
+  const [fetchedProposal, setFetchedProposal] = useState<
+    IProposalData | null | undefined
+  >(null);
+
+  // useProposalQuery를 컴포넌트 최상위 레벨에서 호출
+  const {data: queryResult} = useProposalQuery(proposalId?.toString() || '');
+
+  // queryResult를 처리하는 useEffect
+  useEffect(() => {
+    if (queryResult) {
+      console.log('queryResult :', queryResult);
+      setFetchedProposal(
+        Array.isArray(queryResult) ? queryResult[0] : queryResult
+      );
+    }
+  }, [queryResult]);
+
+  // proposal 데이터를 가져오는 useEffect
   useEffect(() => {
     const fetchProposalData = async () => {
       try {
         setParamsAreLoading(true);
 
-        const proposalCount = await client?.methods.getProposalLength();
-        console.log('fetched proposal count :', proposalCount);
+        console.log('client', client);
+        // // const apolloClient = useApolloClient();
+        // const dashboardPath = generatePath(Dashboard);
+        // console.log('dashboardPath :', dashboardPath);
+        // if (!client) return navigate(dashboardPath);
 
-        const proposals = await client?.methods.getProposalList(
-          0,
-          10,
-          SortType.ASC
-        );
-        console.log('fetched proposals :', proposals);
+        // const proposalCount = await client?.methods.getProposalLength();
+        // console.log('fetched proposal count :', proposalCount);
 
-        let fetchedProposal = null;
-        if (proposalId?.toString()) {
-          fetchedProposal = await client?.methods.getProposal(
-            proposalId.toString()
-          );
-          console.log('fetched proposal :', fetchedProposal);
-        }
+        // const proposals = await client?.methods.getProposalList(
+        //   0,
+        //   10,
+        //   SortType.ASC
+        // );
+        // console.log('fetched proposals :', proposals);
+
         // 제안서가 없거나 proposals 배열이 있는 경우
-        if (fetchedProposal === null && proposals && proposals.length > 0) {
-          fetchedProposal = proposals[0];
-        }
+        // if (fetchedProposal === null && proposals && proposals.length > 0) {
+        //   fetchedProposal = proposals[0];
+        // }
+
+        const voterLength = await client?.methods.getVoterLength(
+          fetchedProposal?.proposalId || ''
+        );
+        console.log('voterLength :', voterLength);
 
         const isVoterTmp = await client?.methods.isVoter(
           fetchedProposal?.proposalId || '',
@@ -432,7 +468,9 @@ const Proposal: React.FC = () => {
           ? {
               id: fetchedProposal?.proposalId || 'default-id',
 
-              creator: '0x1234567890123456789012345678901234567890',
+              creator:
+                fetchedProposal?.proposer ||
+                '0x1234567890123456789012345678901234567890',
               metadata: {
                 title: fetchedProposal.title || 'Test Proposal',
                 description:
@@ -476,7 +514,9 @@ const Proposal: React.FC = () => {
 
         console.log('mockProposalData :', mockProposalData);
         setProposal(mockProposalData);
-        setExtendedPhase(getExtendedPhase(mockProposalData));
+        const extendedPhaseTmp = getExtendedPhase(mockProposalData);
+        console.log('extendedPhaseTmp :', extendedPhaseTmp);
+        setExtendedPhase(extendedPhaseTmp);
         setProposalError(null);
       } catch (error) {
         setProposalError(error as Error);
@@ -487,14 +527,21 @@ const Proposal: React.FC = () => {
       }
     };
 
-    fetchProposalData();
-  }, [client, address, proposalId]);
+    if (client && address && proposalId && fetchedProposal) {
+      fetchProposalData();
+    }
+  }, [client, address, proposalId, fetchedProposal]);
 
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
     if (!proposal || !myScore || !address || !isVoter) return false;
-    const assessStatus = checkAssessmentStatus(proposal);
-    if (assessStatus !== AssessmentStatus.IN_PROGRESS) return false;
+    // const assessStatus = checkAssessmentStatus(proposal);
+    // if (
+    //   assessStatus !== AssessmentStatus.IN_PROGRESS &&
+    //   assessStatus !== AssessmentStatus.
+    // )
+    //   return false;
+
     // 내가 이미 점수를 평가했는지 확인
     const didAssessed = myScore.voter === address && myScore.timestamp > 0;
     return !didAssessed;
@@ -502,8 +549,8 @@ const Proposal: React.FC = () => {
 
   const canVote = useMemo(() => {
     if (!proposal || !myBallot || !address || !isVoter) return false;
-    const voteStatus = checkVoteStatus(proposal);
-    if (voteStatus !== VoteStatus.IN_PROGRESS) return false;
+    // const voteStatus = checkVoteStatus(proposal);
+    // if (voteStatus !== VoteStatus.IN_PROGRESS) return false;
 
     // 내가 이미 투표했는지 확인
     const didVote = myBallot.voter === address && myBallot.timestamp > 0;
@@ -654,12 +701,11 @@ const Proposal: React.FC = () => {
     }
   }, []);
 
-  /*************************************************
-   *                     Render                    *
-   *************************************************/
-  if (proposalError) {
-    navigate(NotFound, {replace: true, state: {invalidProposal: proposalId}});
-  }
+  // useEffect(() => {
+  //   if (proposalError) {
+  //     navigate(NotFound, {replace: true, state: {invalidProposal: proposalId}});
+  //   }
+  // }, [proposalError, proposalId]);
 
   if (paramsAreLoading || proposalIsLoading || !proposal) {
     return <Loading />;
@@ -760,45 +806,13 @@ const Proposal: React.FC = () => {
         <AdditionalInfoContainer>
           {/*<ResourceList links={proposal?.metadata.resources} />*/}
           {/* <WidgetStatus steps={proposalSteps} /> */}
-          {extendedPhase === ProposalPhaseExtended.OPENED_ASSESSMENT &&
-            proposal && (
-              <CommentList
-                proposalId={proposal.id}
-                isVoter={isVoter}
-                comments={[
-                  {
-                    id: '1',
-                    author: '0x1234567890123456789012345678901234567890',
-                    content:
-                      '이 제안은 매우 혁신적인 아이디어를 담고 있습니다. 특히 기술적 완성도가 인상적입니다.',
-                    createdAt: '2024-03-10 14:23',
-                  },
-                  {
-                    id: '2',
-                    author: '0x2345678901234567890123456789012345678901',
-                    content:
-                      '실현 가능성에 대해 좀 더 구체적인 계획이 필요해 보입니다.',
-                    createdAt: '2024-03-10 15:45',
-                  },
-                  {
-                    id: '3',
-                    author: '0x3456789012345678901234567890123456789012',
-                    content:
-                      '시장성과 수익성이 매우 긍정적으로 보입니다. 지지합니다.',
-                    createdAt: '2024-03-11 09:12',
-                  },
-                  {
-                    id: '4',
-                    author: '0x4567890123456789012345678901234567890123',
-                    content:
-                      '확장 가능성이 높아 보이며, 커뮤니티에도 긍정적인 영향을 줄 것 같습니다.',
-                    createdAt: '2024-03-11 10:30',
-                  },
-                ]}
-              />
+          {proposal &&
+            extendedPhase.toLocaleLowerCase().includes('assessment') && (
+              <CommentList proposalId={proposal.id} isVoter={isVoter} />
             )}
-          {extendedPhase === ProposalPhaseExtended.OPENED_VOTE && proposal && (
+          {proposal && extendedPhase.toLocaleLowerCase().includes('vote') && (
             <VoterList
+              proposalId={proposal.id}
               comments={[
                 {
                   id: '1',

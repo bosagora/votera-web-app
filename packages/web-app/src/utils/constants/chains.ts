@@ -187,7 +187,7 @@ export const CHAIN_METADATA: ChainList = {
     name: 'bosagora_devnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'https://testnet.boascan.io/',
+    explorer: 'http://localhost:14000/',
     testnet: true,
     rpc: ['http://localhost:8545'],
     nativeCurrency: {

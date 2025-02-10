@@ -50,6 +50,8 @@ export const UseClient2Provider: React.FC<{children: React.ReactNode}> = ({
 
     const contracts = LIVE_CONTRACTS[translatedNetwork];
 
+    console.log('contracts :', contracts);
+
     const contextParams: ContextParams = {
       network: translatedNetwork,
       signer,
