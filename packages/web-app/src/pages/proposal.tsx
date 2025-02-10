@@ -101,7 +101,7 @@ export enum ProposalPhaseExtended {
   OPENED_EXECUTION = 'OPENED_EXECUTION', // 실행이 진행중
   OPENED_EXPIRED_ASSESSMENT = 'OPENED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_EXPIRED_ASSESSMENT = 'CLOSED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
-  CLOSED_EXPIRED_VOTE = 'CLOSED_EXPIRED_VOTE', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
+  OPENED_EXPIRED_VOTE = 'OPENED_EXPIRED_VOTE', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_REJECTED_ASSESSMENT = 'CLOSED_REJECTED_ASSESSMENT', // 평가에서 거절되어 종료된 상태
   CLOSED_REJECTED_VOTE = 'CLOSED_REJECTED_VOTE', // 투표에서 거절되어 종료된 상태
   CLOSED_FINISHED = 'CLOSED_FINISHED', // 모든 단계가 정상적으로 종료되어 실행까지 완료된 상태
@@ -154,7 +154,7 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
 
     // 투표 만료
     if (voteStatus === VoteStatus.EXPIRED) {
-      return ProposalPhaseExtended.CLOSED_EXPIRED_VOTE;
+      return ProposalPhaseExtended.OPENED_EXPIRED_VOTE;
     }
 
     // 평가 탈락
@@ -300,11 +300,11 @@ const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
     case ProposalPhaseExtended.OPENED_EXECUTION:
       return '실행이 진행 중입니다.';
     case ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT:
-      return '평가 기간이 만료되었고 투표단계로 전환되어야 합니ㅏ다.';
+      return '평가 기간이 만료되었습니다. 투표단계로 전환되어야 합니다.';
     case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
       return '평가 기간이 만료되었습니다.';
-    case ProposalPhaseExtended.CLOSED_EXPIRED_VOTE:
-      return '투표 기간이 만료되었습니다.';
+    case ProposalPhaseExtended.OPENED_EXPIRED_VOTE:
+      return '투표 기간이 만료되었습니다. 평가 단계로 전환되어야 합니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
       return '평가 단계에서 탈락되었습니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
@@ -483,6 +483,7 @@ const Proposal: React.FC = () => {
               endAssess: fetchedProposal?.endAssess || 0,
               beginVote: fetchedProposal?.beginVote || 0,
               endVote: fetchedProposal?.endVote || 0,
+              documentId: fetchedProposal?.documentId || '',
               settings: {
                 minApprovals: 2,
                 onlyListed: true,
@@ -749,7 +750,10 @@ const Proposal: React.FC = () => {
         {[
           {
             name: '프로젝트 깃허브',
-            url: 'https://github.com/example/project',
+            url:
+              'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/' +
+              proposal.documentId +
+              '.pdf',
           },
         ].map(({name, url}) => (
           <ListItemLink label={name} href={url} key={url} />
@@ -793,7 +797,6 @@ const Proposal: React.FC = () => {
           ) : (
             <FundVoteWidget
               phase={proposal.phase}
-              onExecuteClicked={handleExecuteNowClicked}
               txhash={transactionHash || proposal?.executionTxHash || undefined}
               canVote={canVote}
               exPhase={extendedPhase}
@@ -810,7 +813,7 @@ const Proposal: React.FC = () => {
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
               <CommentList proposalId={proposal.id} isVoter={isVoter} />
             )}
-          {proposal && extendedPhase.toLocaleLowerCase().includes('vote') && (
+          {proposal && proposal.period >= ProposalPeriod.VOTE && (
             <VoterList
               proposalId={proposal.id}
               comments={[

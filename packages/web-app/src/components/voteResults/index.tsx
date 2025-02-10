@@ -16,46 +16,50 @@ interface Vote {
 }
 
 type Props = {
-  values: Vote[];
+  voteSummary: Array<number>;
 };
 
-const VoteResults: React.FC<Props> = ({values}) => {
+const VoteResults: React.FC<Props> = ({voteSummary}) => {
   const {t} = useTranslation();
-  const max = values.length;
-  
+
   // 초기 상태값 설정
   const [voteCounts, setVoteCounts] = useState<{[key: string]: number}>({
     yes: 0,
     no: 0,
-    abstain: 0
+    abstain: 0,
   });
-  
-  const [votePercentages, setVotePercentages] = useState<{[key: string]: number}>({
+
+  const [votePercentages, setVotePercentages] = useState<{
+    [key: string]: number;
+  }>({
     yes: 0,
     no: 0,
-    abstain: 0
+    abstain: 0,
   });
 
   const voteTypes = [
     {key: 'yes', label: '찬성', value: 1},
-    {key: 'no', label: '반대', value: 0},
-    {key: 'abstain', label: '기권', value: 2}
+    {key: 'no', label: '반대', value: 2},
+    {key: 'abstain', label: '기권', value: 0},
   ] as const;
 
   useEffect(() => {
-    const counts = voteTypes.reduce((acc, {key, value}) => {
-      acc[key] = values.filter(vote => vote.choice === value).length;
-      return acc;
-    }, {} as {[key: string]: number});
+    const counts = {
+      yes: voteSummary[1] || 0,
+      no: voteSummary[2] || 0,
+      abstain: voteSummary[0] || 0,
+    };
+
+    const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
 
     const percentages = voteTypes.reduce((acc, {key}) => {
-      acc[key] = max === 0 ? 0 : (counts[key] / max) * 100;
+      acc[key] = total === 0 ? 0 : (counts[key] / total) * 100;
       return acc;
     }, {} as {[key: string]: number});
 
     setVoteCounts(counts);
     setVotePercentages(percentages);
-  }, [values, max]);
+  }, [voteSummary]);
 
   return (
     <>
@@ -65,20 +69,17 @@ const VoteResults: React.FC<Props> = ({values}) => {
             <ProgressInfoWrapper key={key}>
               <AssessmentLabel>{label}</AssessmentLabel>
               <LinearProgressContainer>
-                <LinearProgress 
-                  max={100} 
-                  value={votePercentages[key] || 0} 
-                />
+                <LinearProgress max={100} value={votePercentages[key] || 0} />
                 <ProgressInfo>
                   <ApprovalAddresses
                     style={{
                       flexBasis: `${votePercentages[key] || 0}%`,
                     }}
                   >
-                    {voteCounts[key] || 0} 
+                    {voteCounts[key] || 0}
                   </ApprovalAddresses>
                   <TotalAddresses>
-                  ({(votePercentages[key] || 0).toFixed(1)}%)
+                    ({(votePercentages[key] || 0).toFixed(1)}%)
                   </TotalAddresses>
                 </ProgressInfo>
               </LinearProgressContainer>
@@ -113,17 +114,18 @@ const ApprovalAddresses = styled.p.attrs({
 const TotalAddresses = styled.p.attrs({className: 'text-ui-600 ft-text-sm'})``;
 
 const ProgressWrapper = styled.div.attrs({
-  className: 'flex flex-col w-full gap-y-2'
+  className: 'flex flex-col w-full gap-y-2',
 })``;
 
 const ProgressInfoWrapper = styled.div.attrs({
-  className: 'flex w-full items-center gap-x-4'
+  className: 'flex w-full items-center gap-x-4',
 })``;
 
 const AverageWrapper = styled.div.attrs({
-  className: 'flex w-full justify-center items-center text-3xl font-bold text-ui-800'
+  className:
+    'flex w-full justify-center items-center text-3xl font-bold text-ui-800',
 })``;
 
 const AssessmentLabel = styled.div.attrs({
-  className: 'text-ui-800 font-bold w-32 desktop:w-24 flex-shrink-0'
+  className: 'text-ui-800 font-bold w-32 desktop:w-24 flex-shrink-0',
 })``;

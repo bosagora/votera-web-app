@@ -9,7 +9,9 @@ import {ListItemVote} from '../../components/listItem/vote';
 
 type VoteType = 'yes' | 'no' | 'abstain';
 
-const SelectVoteForm: React.FC = () => {
+const SelectVoteForm: React.FC<{onSelect: (choice: number) => void}> = ({
+  onSelect,
+}) => {
   const {t} = useTranslation();
   const {isMobile} = useScreen();
 
@@ -21,29 +23,33 @@ const SelectVoteForm: React.FC = () => {
       title: '찬성',
       description: '이 제안에 동의합니다',
       icon: '👍',
+      value: 1,
     },
     {
       id: 'no',
       title: '반대',
       description: '이 제안에 반대합니다',
       icon: '👎',
+      value: 2,
     },
     {
       id: 'abstain',
       title: '기권',
       description: '투표를 보류합니다',
       icon: '🤔',
+      value: 0,
     },
   ];
 
   return (
     <>
       <FormItem>
-        {voteOptions.map((option) => (
+        {voteOptions.map(option => (
           <ListItemVote
             key={option.id}
             onClick={() => {
               setSelectedVote(option.id as VoteType);
+              onSelect(option.value);
             }}
             selected={selectedVote === option.id}
             title={option.title}

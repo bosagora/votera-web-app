@@ -29,9 +29,9 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
 
   const [voters, setVoters] = useState<string[]>([]);
   const [ballotLength, setBallotLength] = useState<number>(0);
-  const [voteSummary, setVoteSummary] = useState<Array<number> | null>([
-    0, 0, 0,
-  ]);
+  // const [voteSummary, setVoteSummary] = useState<Array<number> | null>([
+  //   0, 0, 0,
+  // ]);
   const [ballots, setBallots] = useState<IVoteBallotData[]>([]);
 
   useEffect(() => {
@@ -39,9 +39,9 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
       const ballotLength = await client?.methods.getBallotLength(proposalId);
       setBallotLength(ballotLength || 0);
       console.log('ballotLength', ballotLength);
-      const voteSummary = await client?.methods.getVoteSummary(proposalId);
-      console.log('voteSummary', voteSummary);
-      setVoteSummary(voteSummary || [0, 0, 0]);
+      // const voteSummary = await client?.methods.getVoteSummary(proposalId);
+      // console.log('voteSummary', voteSummary);
+      // setVoteSummary(voteSummary || [0, 0, 0]);
       if (ballotLength && ballotLength > 0) {
         fetchBallots(ballotLength);
       }
@@ -51,7 +51,7 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
         proposalId,
         0,
         pageSize,
-        SortType.ASC
+        SortType.DSC
       );
       console.log('ballots', ballots);
       setBallots(ballots || []);
@@ -91,7 +91,7 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
         <VoterCount>{ballotLength}명 참여</VoterCount>
       </Header>
 
-      <VoteStatsContainer>
+      {/* <VoteStatsContainer>
         <VoteStatItem>
           <VoteLabel vote="yes">찬성</VoteLabel>
           <VoteCount>{voteSummary?.[1] || 0}명</VoteCount>
@@ -104,7 +104,7 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
           <VoteLabel vote="abstain">기권</VoteLabel>
           <VoteCount>{voteSummary?.[0] || 0}명</VoteCount>
         </VoteStatItem>
-      </VoteStatsContainer>
+      </VoteStatsContainer> */}
 
       {ballots.map(ballot => (
         <CommentItem key={ballot.voter}>
