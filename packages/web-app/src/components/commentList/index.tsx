@@ -58,7 +58,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
         proposalId.toString(),
         0,
         length,
-        SortType.ASC
+        SortType.DSC
       );
       console.log('fetched comments', comments);
       if (comments) {

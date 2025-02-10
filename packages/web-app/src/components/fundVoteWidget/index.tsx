@@ -5,7 +5,7 @@ import {
   IconAdd,
   IconLinkExternal,
 } from '@aragon/ui-components';
-import React from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import SelectVoteForm from 'containers/selectVoteForm';
@@ -17,11 +17,14 @@ import {Action, ProposalPhase} from 'utils/types';
 import {ProposalPhaseExtended} from 'pages/proposal';
 import VoteResults from 'components/voteResults';
 import {BigNumber} from 'ethers';
+import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';
+import {Candidate} from 'votera-sdk-client';
+import {useClient2} from 'hooks/useClient2';
+import {useEffect} from 'react';
 
 type VoteWidgetProps = {
   txhash?: string;
   phase?: ProposalPhase;
-  onExecuteClicked?: () => void;
   canVote?: boolean;
   exPhase?: ProposalPhaseExtended;
   exPhaseMessage?: string;
@@ -31,93 +34,109 @@ type VoteWidgetProps = {
 export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
   phase,
   txhash,
-  onExecuteClicked,
   canVote,
   exPhase,
   exPhaseMessage,
   proposalId,
 }) => {
   const {t} = useTranslation();
+  const [selectedVote, setSelectedVote] = useState<Candidate>(Candidate.BLANK);
+  const {client} = useClient2();
+  const [voteSummary, setVoteSummary] = useState<Array<number>>([0, 0, 0]);
+
+  console.log('canVote', canVote);
+  useEffect(() => {
+    console.log('proposalId', proposalId);
+    const fetchVoteSummary = async () => {
+      const voteSummary = await client?.methods.getVoteSummary(
+        proposalId.toString()
+      );
+      console.log('voteSummary', voteSummary);
+      setVoteSummary(voteSummary || [0, 0, 0]);
+    };
+    fetchVoteSummary();
+  }, [proposalId]);
+
+  const selectVote = (choice: Candidate) => {
+    setSelectedVote(choice);
+  };
 
   return (
-    <Card>
-      <Header>
-        <Title>{t('governance.executionCard.title')}</Title>
-        <Description>{t('governance.executionCard.description')}</Description>
-      </Header>
+    <CreateVoteProvider>
+      <Card>
+        <Header>
+          <Title>{t('governance.executionCard.title')}</Title>
+          <Description>{t('governance.executionCard.description')}</Description>
+        </Header>
 
-      <Content>
-        <div className="space-y-3">
-          <p className="text-lg font-bold text-ui-800">투표하기</p>
-          <div className="flex flex-col gap-3">
-            <SelectVoteForm />
-            <WidgetFooter
-              phase={phase}
-              txhash={txhash}
-              onExecuteClicked={onExecuteClicked}
-              canVote={canVote}
-            />
-          </div>
-          <div className="flex justify-center gap-8 my-6">
-            <div className="text-3xl font-bold text-blue-500">
-              {exPhaseMessage}
+        <Content>
+          {(exPhase === ProposalPhaseExtended.OPENED_VOTE ||
+            exPhase === ProposalPhaseExtended.OPENED_EXPIRED_VOTE) &&
+          canVote ? (
+            <div className="space-y-3">
+              {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
+              <div className="flex flex-col gap-3">
+                {exPhase === ProposalPhaseExtended.OPENED_VOTE && (
+                  <SelectVoteForm onSelect={selectVote} />
+                )}
+                <WidgetFooter
+                  phase={phase}
+                  exPhase={exPhase}
+                  proposalId={proposalId}
+                  choice={selectedVote}
+                  canVote={canVote}
+                />
+              </div>
             </div>
-            {/* <div className="text-3xl font-bold text-red-500">탈표 탈락</div> */}
-          </div>
-          <VoteResults
-            values={[
-              {
-                voter: '0x1234567890abcdef1234567890abcdef12345678',
-                timestamp: 1709251200,
-                choice: 0,
-              },
-              {
-                voter: '0xabcdef1234567890abcdef1234567890abcdef12',
-                timestamp: 1709337600,
-                choice: 1,
-              },
-              {
-                voter: '0x7890abcdef1234567890abcdef1234567890abcd',
-                timestamp: 1709424000,
-                choice: 2,
-              },
-              {
-                voter: '0x2468ace02468ace02468ace02468ace02468ace0',
-                timestamp: 1709510400,
-                choice: 1,
-              },
-              {
-                voter: '0x1357bdf91357bdf91357bdf91357bdf91357bdf9',
-                timestamp: 1709596800,
-                choice: 0,
-              },
-            ]}
-          />
-        </div>
-      </Content>
-    </Card>
+          ) : (
+            <VoteResults voteSummary={voteSummary} />
+          )}
+        </Content>
+      </Card>
+    </CreateVoteProvider>
   );
 };
 
-type FooterProps = Pick<
-  VoteWidgetProps,
-  'phase' | 'txhash' | 'onExecuteClicked' | 'canVote'
->;
+type FooterProps = Pick<VoteWidgetProps, 'phase' | 'exPhase' | 'canVote'> & {
+  proposalId: BigNumber;
+  choice: Candidate;
+};
 
 const WidgetFooter: React.FC<FooterProps> = ({
   phase = ProposalPhase.VOTE,
-  onExecuteClicked,
   canVote,
+  proposalId,
+  choice,
+  exPhase,
 }) => {
   const {t} = useTranslation();
+  const btnLabel =
+    exPhase === ProposalPhaseExtended.OPENED_VOTE
+      ? t('governance.proposals.buttons.vote')
+      : 'Transition to Execution';
+
+  const {handlePublishVote} = useCreateVoteContext();
+
+  const handleVoteSubmit = async (
+    choice: Candidate,
+    openExpiredVote: boolean
+  ) => {
+    await handlePublishVote({
+      proposalId: proposalId.toString(),
+      choice: choice,
+      openExpiredVote,
+    });
+  };
+
+  const openExpiredVote = exPhase === ProposalPhaseExtended.OPENED_EXPIRED_VOTE;
 
   return (
     <Footer>
       <StyledButtonText
         css={{}}
-        label={t('governance.proposals.buttons.execute')}
+        label={btnLabel}
         size="large"
-        onClick={onExecuteClicked}
+        onClick={() => handleVoteSubmit(choice, openExpiredVote)}
         disabled={!canVote}
       />
       <AlertInline label={t('governance.executionCard.status.succeeded')} />
