@@ -35,11 +35,14 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
         assessment.profitability +
         assessment.attractiveness +
         assessment.scalability) /
-      5
+      5 /
+      assessmentLength
     );
   };
 
   useEffect(() => {
+    console.log('assement values', values);
+    console.log('assement length', assessmentLength);
     if (values?.length > 0) {
       const totalAverage = values.reduce(
         (sum, assessment) => sum + calculateAssessmentAverage(assessment),
@@ -80,14 +83,20 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
             <ProgressInfoWrapper key={key}>
               <AssessmentLabel>{label}</AssessmentLabel>
               <LinearProgressContainer>
-                <LinearProgress max={max} value={calculateItemAverage(key)} />
+                <LinearProgress
+                  max={max}
+                  value={values[0][key] / assessmentLength}
+                />
                 <ProgressInfo>
                   <ApprovalAddresses
                     style={{
-                      flexBasis: `${(calculateItemAverage(key) / max) * 100}%`,
+                      flexBasis: `${
+                        (calculateItemAverage(key) / assessmentLength / max) *
+                        100
+                      }%`,
                     }}
                   >
-                    {calculateItemAverage(key).toFixed(1)}
+                    {values[0][key] / assessmentLength}
                   </ApprovalAddresses>
                   <TotalAddresses>{t(` of ${max}`)}</TotalAddresses>
                 </ProgressInfo>

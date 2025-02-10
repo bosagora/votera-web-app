@@ -16,9 +16,9 @@ async function fetchProposals(
 
   if (!client) return Promise.reject(new Error('client must be defined'));
 
-  console.log('fetching proposals');
+  console.log('fetching proposals list > ');
   try {
-    return await client.methods.getProposalList(0, 100, SortType.ASC);
+    return await client.methods.getProposalList(0, 100, SortType.DSC);
   } catch (e) {
     return Promise.reject(new Error('getWalletDetail failed'));
   }
@@ -28,10 +28,11 @@ async function fetchProposal(
   client: Client | undefined,
   proposalId: string
 ): Promise<IProposalData | null> {
+  console.log('client 4444 :', client?.web3.getProvider()?.network.name);
   if (!client) return Promise.reject(new Error('client must be defined'));
 
   if (!client) return Promise.reject(new Error('client must be defined'));
-  console.log('fetching proposal', proposalId);
+  console.log('fetching proposal single > ', proposalId);
 
   try {
     return await client.methods.getProposal(proposalId);

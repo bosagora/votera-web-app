@@ -22,14 +22,12 @@ interface Comment {
 interface CommentListProps {
   proposalId: string;
   isVoter: boolean;
-  comments: Comment[];
   onSubmit?: (content: string) => void;
 }
 
 const CommentListContent: React.FC<CommentListProps> = ({
   proposalId,
   isVoter,
-  comments: initialComments,
   onSubmit,
 }) => {
   const {network} = useNetwork();
@@ -37,11 +35,12 @@ const CommentListContent: React.FC<CommentListProps> = ({
   const {handlePublishComment} = useCreateCommentContext();
 
   const [comments, setComments] = React.useState<ICommentData[]>();
-  const [commentLength, setCommentLength] = React.useState(1);
+  const [commentLength, setCommentLength] = React.useState(0);
 
   const {client} = useClient2();
 
   useEffect(() => {
+    console.log('commentList >>>>>>>>>>>>');
     const getCommentLength = async () => {
       const commentLength = await client?.methods.getCommentLength(
         proposalId.toString()
@@ -50,13 +49,15 @@ const CommentListContent: React.FC<CommentListProps> = ({
       if (commentLength) {
         setCommentLength(commentLength);
       }
+      return commentLength;
     };
-    getCommentLength();
-    const getCommentList = async () => {
+
+    const getCommentList = async (length: number) => {
+      if (length === 0) return;
       const comments = await client?.methods.getCommentList(
         proposalId.toString(),
         0,
-        commentLength,
+        length,
         SortType.ASC
       );
       console.log('fetched comments', comments);
@@ -64,7 +65,11 @@ const CommentListContent: React.FC<CommentListProps> = ({
         setComments(comments);
       }
     };
-    getCommentList();
+
+    getCommentLength().then(length => {
+      console.log('commentLength', length);
+      getCommentList(length ?? 0);
+    });
   }, [proposalId, client]);
 
   const handleSubmit = async () => {
@@ -105,7 +110,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
             <Link
               external
               label={shortenAddress(comment.writer)}
-              href={`${CHAIN_METADATA[network].explorer}/address/${comment.author}`}
+              href={`${CHAIN_METADATA[network].explorer}/address/${comment.writer}`}
             />
             <CreatedAt>{comment.timestamp}</CreatedAt>
           </CommentHeader>
@@ -121,6 +126,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
 };
 
 const CommentList: React.FC<CommentListProps> = props => {
+  console.log('commentList >>>>>>>>>>>>');
   return (
     <CreateCommentProvider>
       <CommentListContent {...props} />

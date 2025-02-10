@@ -123,10 +123,17 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
     console.log('exPhaseMessage', exPhaseMessage);
 
     const getAssessmentList = async () => {
+      const assessmentLength = await client?.methods.getScoreLength(
+        proposalId.toString()
+      );
+      console.log('assessmentLength', assessmentLength);
+      if (assessmentLength) {
+        setAssessmentLength(assessmentLength);
+      }
       const assessments = await client?.methods.getAssessmentSummary(
         proposalId.toString()
       );
-      if (assessments) {
+      if (assessments && assessmentLength) {
         setAssessmentSummary({
           completeness: assessments[0],
           possibility: assessments[1],
@@ -135,13 +142,6 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
           scalability: assessments[4],
         });
         console.log('assessments summary', assessments);
-      }
-      const assessmentLength = await client?.methods.getScoreLength(
-        proposalId.toString()
-      );
-      console.log('assessmentLength', assessmentLength);
-      if (assessmentLength) {
-        setAssessmentLength(assessmentLength);
       }
     };
     getAssessmentList();
@@ -238,7 +238,9 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
         <Title>{t('governance.executionCard.title')}</Title>
         <Description>{t('governance.executionCard.description')}</Description>
       </Header> */}
-        {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess ? (
+        {(exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT ||
+          exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT) &&
+        canAssess ? (
           <Content>
             <div className="p-4 border rounded-lg bg-white">
               <div className="space-y-1">
@@ -292,6 +294,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                 proposalId={proposalId}
                 assessment={assessment}
                 canAssess={canAssess}
+                exPhase={exPhase}
               />
             </div>
           </Content>
@@ -318,12 +321,14 @@ type FooterProps = {
   proposalId?: string;
   assessment: Assessment;
   canAssess?: boolean;
+  exPhase: ProposalPhaseExtended;
 };
 
 const WidgetFooter: React.FC<FooterProps> = ({
   proposalId,
   assessment,
   canAssess,
+  exPhase,
 }) => {
   const {t} = useTranslation();
   const {handlePublishAssessment} = useCreateAssessContext();
@@ -332,7 +337,13 @@ const WidgetFooter: React.FC<FooterProps> = ({
     if (!canAssess || !proposalId || !assessment) return;
 
     console.log('assessment', assessment);
-    await handlePublishAssessment({proposalId, assessment});
+    const open_expired_assessment =
+      exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT;
+    await handlePublishAssessment({
+      proposalId,
+      assessment,
+      open_expired_assessment,
+    });
   };
 
   return (
