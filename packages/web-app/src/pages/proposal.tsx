@@ -101,15 +101,16 @@ export enum ProposalPhaseExtended {
   OPENED_ASSESSMENT = 'OPENED_ASSESSMENT', // 평가가 진행중
   OPENED_VOTE = 'OPENED_VOTE', // 투표가 진행중
   OPENED_EXECUTION = 'OPENED_EXECUTION', // 실행이 진행중
-  OPENED_EXPIRED_ASSESSMENT = 'OPENED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
-  CLOSED_EXPIRED_ASSESSMENT = 'CLOSED_EXPIRED_ASSESSMENT', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
-  OPENED_EXPIRED_VOTE = 'OPENED_EXPIRED_VOTE', // OPENED 상태이지만, 평가/투표 기간이 지나 더이상 진행할 수 없는 상태
+  OPENED_EXPIRED_ASSESSMENT = 'OPENED_EXPIRED_ASSESSMENT', // 투표 기간이 지나 더이상 진행할 수 없는 상태
+  CLOSED_EXPIRED_ASSESSMENT = 'CLOSED_EXPIRED_ASSESSMENT', // 투표 기간 내에 투표로 전환할 수 있는 상태
+  OPENED_EXPIRED_VOTE = 'OPENED_EXPIRED_VOTE', //  평가/투표 기간내에 다음 단계로 전활 할 수 있는 상태
+  CLOSED_EXPIRED_VOTE = 'CLOSED_EXPIRED_VOTE', //  기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_REJECTED_ASSESSMENT = 'CLOSED_REJECTED_ASSESSMENT', // 평가에서 거절되어 종료된 상태
   CLOSED_REJECTED_VOTE = 'CLOSED_REJECTED_VOTE', // 투표에서 거절되어 종료된 상태
   CLOSED_FINISHED = 'CLOSED_FINISHED', // 모든 단계가 정상적으로 종료되어 실행까지 완료된 상태
 }
 
-const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
+export const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
   try {
     // 제안서가 없는 경우
     if (!proposal) return ProposalPhaseExtended.UNDEFINED;
@@ -121,6 +122,16 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     console.log('assessStatus :', assessStatus);
     console.log('voteStatus :', voteStatus);
     console.log('execStatus :', execStatus);
+
+    // 평가 탈락
+    if (assessStatus === AssessmentStatus.REJECTED) {
+      return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
+    }
+
+    // 투표 탈락
+    if (voteStatus === VoteStatus.REJECTED) {
+      return ProposalPhaseExtended.CLOSED_REJECTED_VOTE;
+    }
 
     // 실행이 진행 중인 경우
     if (execStatus === ExecutionStatus.IN_PROGRESS) {
@@ -140,11 +151,6 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
       return ProposalPhaseExtended.OPENED_VOTE;
     }
 
-    // 투표 탈락
-    if (voteStatus === VoteStatus.REJECTED) {
-      return ProposalPhaseExtended.CLOSED_REJECTED_VOTE;
-    }
-
     // 평가 만료
     if (assessStatus === AssessmentStatus.EXPIRED) {
       if (voteStatus === VoteStatus.EXPIRED) {
@@ -157,11 +163,6 @@ const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     // 투표 만료
     if (voteStatus === VoteStatus.EXPIRED) {
       return ProposalPhaseExtended.OPENED_EXPIRED_VOTE;
-    }
-
-    // 평가 탈락
-    if (assessStatus === AssessmentStatus.REJECTED) {
-      return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
     }
 
     // 평가 단계 확인
@@ -263,18 +264,18 @@ const checkExecutionStatus = (proposal: any): ExecutionStatus => {
       return ExecutionStatus.NONE;
     }
 
-    if (proposal.executionState === ExecutionStates.FINISHED) {
+    if (proposal.executionStates === ExecutionStates.FINISHED) {
       return ExecutionStatus.FINISHED;
     }
 
-    if (proposal.executionState === ExecutionStates.IN_PROCESS) {
+    if (proposal.executionStates === ExecutionStates.IN_PROCESS) {
       return ExecutionStatus.IN_PROGRESS;
     }
 
     // 투표가 승인되었고 실행 가능한 상태
     if (
       proposal.voteResult === VoteResult.APPROVED &&
-      proposal.executionState === ExecutionStates.NONE
+      proposal.executionStates === ExecutionStates.NONE
     ) {
       return ExecutionStatus.IN_PROGRESS;
     }
@@ -304,9 +305,11 @@ const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
     case ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT:
       return '평가 기간이 만료되었습니다. 투표단계로 전환되어야 합니다.';
     case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
-      return '평가 기간이 만료되었습니다.';
+      return '평가 기간이 만료되었습니다. 투표 단계로 전환되지 않았습니다.';
     case ProposalPhaseExtended.OPENED_EXPIRED_VOTE:
       return '투표 기간이 만료되었습니다. 실행 단계로 전환되어야 합니다.';
+    case ProposalPhaseExtended.CLOSED_EXPIRED_VOTE:
+      return '투표 기간이 만료되었습니다. 실행 단계로 전환되지 않았습니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
       return '평가 단계에서 탈락되었습니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
@@ -401,6 +404,19 @@ const Proposal: React.FC = () => {
     }
   }, [queryResult]);
 
+  const getStepTitle = (period: ProposalPeriod) => {
+    switch (period) {
+      case ProposalPeriod.ASSESSMENT:
+        return '평가 단계';
+      case ProposalPeriod.VOTE:
+        return '투표 단계';
+      case ProposalPeriod.EXECUTION:
+        return '실행 단계';
+      default:
+        return '종료';
+    }
+  };
+
   // proposal 데이터를 가져오는 useEffect
   useEffect(() => {
     const fetchProposalData = async () => {
@@ -479,7 +495,7 @@ const Proposal: React.FC = () => {
                   fetchedProposal.description ||
                   '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며...',
               },
-              phase: fetchedProposal.period,
+              phase: getStepTitle(fetchedProposal.period),
               proposalType: fetchedProposal.proposalType,
               beginAssess: fetchedProposal?.beginAssess || 0,
               endAssess: fetchedProposal?.endAssess || 0,
@@ -510,7 +526,7 @@ const Proposal: React.FC = () => {
               assessmentResult:
                 fetchedProposal?.assessmentResult || AssessmentResult.NONE,
               voteResult: fetchedProposal?.voteResult || VoteResult.NONE,
-              executionState:
+              executionStates:
                 fetchedProposal?.executionStates || ExecutionStates.NONE,
             }
           : null;
@@ -561,11 +577,11 @@ const Proposal: React.FC = () => {
   }, [proposal, myBallot, address, isVoter]);
 
   // cache status effect
-  useEffect(() => {
-    if (proposal && proposal.phase !== get('proposalStatus')) {
-      set('proposalStatus', proposal.phase);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (proposal && proposal.phase !== get('proposalStatus')) {
+  //     set('proposalStatus', proposal.phase);
+  //   }
+  // }, []);
 
   // voting process effect
   useEffect(() => {
@@ -690,26 +706,6 @@ const Proposal: React.FC = () => {
     }
   };
 
-  // alert message, only shown when not eligible to vote
-  const alertMessage = useMemo(() => {
-    if (
-      proposal &&
-      proposal.phase === ProposalPhase.VOTE && // active proposal
-      address && // logged in
-      !isOnWrongNetwork && // on proper network
-      !voted && // haven't voted
-      !canVote // cannot vote
-    ) {
-      return t('votingTerminal.status.ineligibleWhitelist');
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   if (proposalError) {
-  //     navigate(NotFound, {replace: true, state: {invalidProposal: proposalId}});
-  //   }
-  // }, [proposalError, proposalId]);
-
   if (paramsAreLoading || proposalIsLoading || !proposal) {
     return <Loading />;
   }
@@ -778,6 +774,7 @@ const Proposal: React.FC = () => {
             </>
           )}
           <ProposalInfo
+            period={proposal.period}
             phase={proposal.phase}
             proposalType={proposal.proposalType}
             fundAmount={proposal.fundAmount}
@@ -788,8 +785,9 @@ const Proposal: React.FC = () => {
             voteStartDate={new Date(proposal.beginVote * 1000)}
             voteEndDate={new Date(proposal.endVote * 1000)}
           />
-          {proposal.phase === ProposalPeriod.ASSESSMENT ? (
+          {proposal.period === ProposalPeriod.ASSESSMENT ? (
             <FundAssessmentWidget
+              period={proposal.period}
               phase={proposal.phase}
               canAssess={canAssess}
               exPhase={extendedPhase}
@@ -798,6 +796,7 @@ const Proposal: React.FC = () => {
             />
           ) : (
             <FundVoteWidget
+              period={proposal.period}
               phase={proposal.phase}
               txhash={transactionHash || proposal?.executionTxHash || undefined}
               canVote={canVote}
@@ -808,6 +807,7 @@ const Proposal: React.FC = () => {
           )}
           {extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
             <FundTransitionWidget
+              period={proposal.period}
               phase={proposal.phase}
               exPhase={extendedPhase}
               exPhaseMessage={getProposalStatusMessage(extendedPhase)}
@@ -817,6 +817,7 @@ const Proposal: React.FC = () => {
           {extendedPhase.toLocaleLowerCase().includes('opened_execution') &&
             proposal.proposer === address && (
               <FundExecutionWidget
+                period={proposal.period}
                 phase={proposal.phase}
                 exPhase={extendedPhase}
                 exPhaseMessage={getProposalStatusMessage(extendedPhase)}

@@ -16,7 +16,7 @@ import {CHAIN_METADATA} from 'utils/constants';
 import {Action, ProposalPhase} from 'utils/types';
 import IncreaseAmount from 'components/increaseAmount';
 import AssessmentResult from 'components/assessmentResult';
-import {ProposalPhaseExtended} from 'pages/proposal';
+import {ProposalPhaseExtended, ProposalPeriod} from 'pages/proposal';
 import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {BigNumber} from 'ethers';
@@ -59,9 +59,11 @@ type TransitionProps = {
   phase: ProposalPhase;
   exPhase: ProposalPhaseExtended;
   exPhaseMessage: string;
+  period: ProposalPeriod;
 };
 
 export const FundTransitionWidget: React.FC<TransitionProps> = ({
+  period,
   phase,
   exPhase,
   exPhaseMessage,

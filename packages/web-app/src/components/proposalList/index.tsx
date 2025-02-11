@@ -18,6 +18,7 @@ import {useWallet} from 'hooks/useWallet';
 import {stripPlgnAdrFromProposalId} from '../../utils/proposals';
 import {shortenAddress} from '../../utils/library';
 import {IProposalData, ProposalPeriod} from 'votera-sdk-client';
+import {getExtendedPhase} from 'pages/proposal';
 
 type ProposalListProps = {
   proposals: Array<ProposalListItem>;
@@ -37,6 +38,7 @@ export type CardProposalDataProps = {
   phase: ProposalPeriod;
   onClick: () => void;
   type?: string;
+  progressLabel?: string;
 };
 type ProposalDataListProps = {
   proposals: Array<IProposalData>;
@@ -95,6 +97,18 @@ export type CardViewProposal = Omit<CardProposalProps, 'onClick'> & {
   id: string;
 };
 
+const getInProgressPhase = (proposal: any) => {
+  console.log('--------------------------------');
+  console.log('proposal', proposal);
+  const extendedPhase = getExtendedPhase(proposal);
+  console.log('getInProgressPhase > extendedPhase', extendedPhase);
+  if (extendedPhase.toLowerCase().includes('opened')) {
+    return '진행중';
+  } else if (extendedPhase.toLowerCase().includes('closed')) {
+    return '종료';
+  }
+};
+
 /**
  * Map SDK proposals to proposals to be displayed as CardProposals
  * @param proposals proposal list from SDK
@@ -128,6 +142,7 @@ export function proposal2CardDataProps(
         })
       );
     },
+    progressLabel: getInProgressPhase(proposal),
   };
 
   return props;

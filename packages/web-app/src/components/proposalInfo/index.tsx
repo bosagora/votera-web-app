@@ -11,6 +11,7 @@ const NumberFormatter = new Intl.NumberFormat('en-US', {
 });
 
 interface ProposalInfoProps {
+  period: ProposalPeriod;
   phase: ProposalPeriod;
   proposalType: ProposalType;
   fundAmount: BigNumber;
@@ -38,6 +39,7 @@ interface StageStatus {
 }
 
 const ProposalInfo: React.FC<ProposalInfoProps> = ({
+  period,
   phase,
   proposalType,
   fundAmount,
@@ -64,7 +66,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* 현재 상태 */}
         <InfoLine>
           <p>현재 상태</p>
-          <Strong>{exPhaseMessage}</Strong>
+          <Strong>{phase}</Strong>
         </InfoLine>
 
         {/* 제안 유형 */}
@@ -79,7 +81,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposalType === ProposalType.FUND && (
           <InfoLine>
             <p>펀딩 금액</p>
-            <Strong>{new Amount(fundAmount, 18).toBOAString()} BOA</Strong>
+            <Strong>
+              {new Amount(fundAmount, 18).toDisplayString(true, 2)} BOA
+            </Strong>
           </InfoLine>
         )}
 
@@ -90,7 +94,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {`${formatDate(assessmentStartDate)} ~ ${formatDate(
               assessmentEndDate
             )}`}
-            {phase === ProposalPeriod.ASSESSMENT && (
+            {period === ProposalPeriod.ASSESSMENT && (
               <div className="text-sm text-ui-500">
                 {(() => {
                   const now = new Date();
@@ -108,7 +112,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           <p>투표 기간</p>
           <Strong>
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
-            {phase === ProposalPeriod.VOTE && (
+            {period === ProposalPeriod.VOTE && (
               <div className="text-sm text-ui-500">
                 {(() => {
                   const now = new Date();
