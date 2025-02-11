@@ -60,6 +60,8 @@ import {
 } from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {useProposalQuery} from 'hooks/useProposalQuery';
+import {FundTransitionWidget} from 'components/fundTransitionWidget';
+import {FundExecutionWidget} from 'components/fundExecutionWidget';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -304,7 +306,7 @@ const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
     case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
       return '평가 기간이 만료되었습니다.';
     case ProposalPhaseExtended.OPENED_EXPIRED_VOTE:
-      return '투표 기간이 만료되었습니다. 평가 단계로 전환되어야 합니다.';
+      return '투표 기간이 만료되었습니다. 실행 단계로 전환되어야 합니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
       return '평가 단계에서 탈락되었습니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
@@ -804,6 +806,23 @@ const Proposal: React.FC = () => {
               proposalId={proposal.id}
             />
           )}
+          {extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
+            <FundTransitionWidget
+              phase={proposal.phase}
+              exPhase={extendedPhase}
+              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+              proposalId={proposal.id}
+            />
+          )}
+          {extendedPhase.toLocaleLowerCase().includes('opened_execution') &&
+            proposal.proposer === address && (
+              <FundExecutionWidget
+                phase={proposal.phase}
+                exPhase={extendedPhase}
+                exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+                proposalId={proposal.id}
+              />
+            )}
         </ProposalContainer>
 
         <AdditionalInfoContainer>
