@@ -10,7 +10,7 @@ import {Tag} from '@aragon/ui-components';
 import {ProposalPhase} from 'utils/types';
 import {CardProposalDataProps} from 'components/proposalList';
 import {ProposalPeriod} from 'votera-sdk-client';
-
+import {getExtendedPhase} from 'pages/proposal';
 type ProposalUseCase = 'list' | 'explore';
 
 export function isExploreProposal(
@@ -72,13 +72,13 @@ export type CardProposalProps = {
 const getPhaseColor = (phase: ProposalPeriod) => {
   switch (phase) {
     case ProposalPeriod.ASSESSMENT:
-      return 'text-primary-500';
-    case ProposalPeriod.VOTE:
       return 'text-info-500';
+    case ProposalPeriod.VOTE:
+      return 'text-info-800';
     case ProposalPeriod.EXECUTION:
-      return 'text-success-500';
+      return 'text-warning-500';
     case ProposalPeriod.FINISHED:
-      return 'text-neutral-500';
+      return 'text-success-500';
     default:
       return 'text-neutral-500';
   }
@@ -93,7 +93,7 @@ const getPhaseLabel = (phase: ProposalPeriod) => {
     case ProposalPeriod.EXECUTION:
       return '실행 단계';
     case ProposalPeriod.FINISHED:
-      return '종료';
+      return '실행 단계';
     default:
       return '';
   }
@@ -109,13 +109,18 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
   addressLabel,
   onClick,
   type,
+  progressLabel,
 }) => {
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
-
+  console.log('progressLabel', progressLabel);
   return (
     <Card data-testid="cardProposal" onClick={onClick}>
       <Header>
         <HeaderOptions phase={phase} type={type || ''} />
+        <HeaderProgressOptions
+          progressLabel={progressLabel}
+          type={type || ''}
+        />
       </Header>
       <TextContent>
         <TitleWrapper>
@@ -176,6 +181,27 @@ const HeaderOptions: React.VFC<HeaderOptionProps> = ({phase, type}) => {
       return <Tag label={getPhaseLabel(phase)} colorScheme={'success'} />;
     case ProposalPeriod.FINISHED:
       return <Tag label={getPhaseLabel(phase)} colorScheme={'critical'} />;
+    default:
+      return null;
+  }
+};
+
+type HeaderProgressOptionProps = Pick<
+  CardProposalDataProps,
+  'progressLabel'
+> & {
+  type: string;
+};
+
+const HeaderProgressOptions: React.VFC<HeaderProgressOptionProps> = ({
+  progressLabel,
+  type,
+}) => {
+  switch (progressLabel) {
+    case '진행중':
+      return <Tag label={progressLabel} colorScheme={'info'} />;
+    case '종료':
+      return <Tag label={progressLabel} colorScheme={'critical'} />;
     default:
       return null;
   }

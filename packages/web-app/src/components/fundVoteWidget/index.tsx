@@ -18,7 +18,7 @@ import {ProposalPhaseExtended} from 'pages/proposal';
 import VoteResults from 'components/voteResults';
 import {BigNumber} from 'ethers';
 import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';
-import {Candidate} from 'votera-sdk-client';
+import {Candidate, ProposalPeriod} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {useEffect} from 'react';
 
@@ -29,9 +29,11 @@ type VoteWidgetProps = {
   exPhase?: ProposalPhaseExtended;
   exPhaseMessage?: string;
   proposalId: BigNumber;
+  period: ProposalPeriod;
 };
 
 export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
+  period,
   phase,
   txhash,
   canVote,
@@ -89,7 +91,15 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
               </div>
             </div>
           ) : (
-            <VoteResults voteSummary={voteSummary} />
+            <div>
+              <div className="flex justify-center gap-8 my-6">
+                <div className="text-xl font-bold text-blue-500">
+                  {exPhaseMessage}
+                </div>
+                {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+              </div>
+              <VoteResults voteSummary={voteSummary} />
+            </div>
           )}
         </Content>
       </Card>

@@ -17,13 +17,12 @@ import {Action, ProposalPhase} from 'utils/types';
 import IncreaseAmount from 'components/increaseAmount';
 import AssessmentResult from 'components/assessmentResult';
 import {ProposalPhaseExtended} from 'pages/proposal';
+import {ProposalPeriod} from 'votera-sdk-client';
 import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {BigNumber} from 'ethers';
 
 import {useForm} from 'react-hook-form';
-import {useCreateExecutionContext} from 'context/createExecution';
-import {CreateExecutionProvider} from 'context/createExecution';
 import {useCreateExecuteContext} from 'context/createExecute';
 import {CreateExecuteProvider} from 'context/createExecute';
 const Card = styled.div.attrs({
@@ -57,6 +56,7 @@ const StyledButtonText = styled(ButtonText).attrs({
 })``;
 
 type ExecutionProps = {
+  period: ProposalPeriod;
   proposalId: string;
   phase: ProposalPhase;
   exPhase: ProposalPhaseExtended;
@@ -64,6 +64,7 @@ type ExecutionProps = {
 };
 
 export const FundExecutionWidget: React.FC<ExecutionProps> = ({
+  period,
   phase,
   exPhase,
   exPhaseMessage,

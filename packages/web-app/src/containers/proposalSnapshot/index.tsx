@@ -19,6 +19,7 @@ import {htmlIn} from 'utils/htmlIn';
 import {CreateProposal, Governance, NewProposal} from 'utils/paths';
 import {IProposalData} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
+import {getExtendedPhase} from 'pages/proposal';
 
 type Props = {
   daoAddressOrEns: string;
@@ -49,9 +50,6 @@ const ProposalSnapshot: React.FC<Props> = ({
     },
     isLoading: false,
   };
-
-  // Replace actual hook with mock data
-  const {data: members, isLoading: areMembersLoading} = mockMembers;
 
   const mappedProposals = useMemo(
     () =>

@@ -85,7 +85,7 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
               <LinearProgressContainer>
                 <LinearProgress
                   max={max}
-                  value={values[0][key] / assessmentLength}
+                  value={(values[0][key] / assessmentLength).toFixed(1)}
                 />
                 <ProgressInfo>
                   <ApprovalAddresses
@@ -96,7 +96,7 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
                       }%`,
                     }}
                   >
-                    {values[0][key] / assessmentLength}
+                    {(values[0][key] / assessmentLength).toFixed(1)}
                   </ApprovalAddresses>
                   <TotalAddresses>{t(` of ${max}`)}</TotalAddresses>
                 </ProgressInfo>

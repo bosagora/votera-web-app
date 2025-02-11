@@ -17,7 +17,11 @@ import {Action, ProposalPhase} from 'utils/types';
 import IncreaseAmount from 'components/increaseAmount';
 import AssessmentResult from 'components/assessmentResult';
 import {ProposalPhaseExtended} from 'pages/proposal';
-import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
+import {
+  Client,
+  NoAssessmentControllerAddress,
+  ProposalPeriod,
+} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {BigNumber} from 'ethers';
 import {
@@ -62,6 +66,7 @@ type AssessmentProps = {
   canAssess: boolean;
   exPhase: ProposalPhaseExtended;
   exPhaseMessage: string;
+  period: ProposalPeriod;
 };
 
 interface Assessment {
@@ -81,6 +86,7 @@ export type AssessmentFormData = {
 };
 
 export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
+  period,
   phase,
   canAssess,
   exPhase,

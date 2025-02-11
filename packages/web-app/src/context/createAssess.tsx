@@ -172,16 +172,12 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
   };
 
   const handleCloseModal = () => {
+    console.log('assessmentProcessState', assessmentProcessState);
     switch (assessmentProcessState) {
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        navigate(
-          generatePath(Dashboard, {
-            network,
-            id: assessmentCreationData?.proposalId,
-          })
-        );
+        navigate(generatePath(Dashboard));
         break;
       default: {
         setShowModal(false);
