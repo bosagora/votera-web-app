@@ -25,12 +25,18 @@ type Props = {
   daoAddressOrEns: string;
   proposals: IProposalData[];
   proposalLength: number;
+  hasMore: boolean;
+  onLoadMore: () => void;
+  isLoading: boolean;
 };
 
 const ProposalSnapshot: React.FC<Props> = ({
   daoAddressOrEns,
   proposals,
   proposalLength,
+  hasMore,
+  onLoadMore,
+  isLoading,
 }) => {
   //console.log'ProposalSnapshot');
   console.log('proposals', proposals);
@@ -39,18 +45,6 @@ const ProposalSnapshot: React.FC<Props> = ({
   const {address} = useWallet();
   const {network} = useNetwork(); // TODO ensure this is the dao network
 
-  // Mock data for useDaoMembers
-  const mockMembers = {
-    data: {
-      members: new Array(10).fill(null).map((_, index) => ({
-        address: `0x${index}`.padEnd(42, '0'),
-        delegatedVotingPower: '1000000000000000000', // 1 token
-        votingPower: '1000000000000000000',
-      })),
-    },
-    isLoading: false,
-  };
-
   const mappedProposals = useMemo(
     () =>
       proposals.map(p => {
@@ -58,6 +52,7 @@ const ProposalSnapshot: React.FC<Props> = ({
       }),
     [proposals, network, navigate, t, address]
   );
+  console.log('hasMore', hasMore);
   //console.log'mappedProposals : ', mappedProposals);
   if (proposalLength === 0) {
     return (
@@ -104,16 +99,17 @@ const ProposalSnapshot: React.FC<Props> = ({
         ))}
       </ProposalGrid>
 
-      <ButtonText
-        css={{}}
-        mode="secondary"
-        size="large"
-        iconRight={<IconChevronRight />}
-        label={t('labels.seeAll')}
-        onClick={() =>
-          navigate(generatePath(Governance, {network, dao: daoAddressOrEns}))
-        }
-      />
+      {hasMore && (
+        <ButtonText
+          css={{}}
+          mode="secondary"
+          size="large"
+          iconRight={<IconChevronRight />}
+          label={t('labels.more')}
+          onClick={onLoadMore}
+          disabled={isLoading}
+        />
+      )}
     </Container>
   );
 };

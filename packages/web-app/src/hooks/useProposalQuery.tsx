@@ -9,16 +9,30 @@ import {Client, IProposalData, SortType} from 'votera-sdk-client';
 import {useClient2} from './useClient2';
 import {useQuery} from '@tanstack/react-query';
 
+export const PROPOSALS_PER_PAGE = 6;
+
 async function fetchProposals(
-  client: Client | undefined
+  client: Client | undefined,
+  page: number
 ): Promise<Array<IProposalData> | null> {
   if (!client) return Promise.reject(new Error('client must be defined'));
 
-  if (!client) return Promise.reject(new Error('client must be defined'));
-
-  console.log('fetching proposals list > ');
+  const startIndex = (page - 1) * PROPOSALS_PER_PAGE;
+  const endIndex = startIndex + PROPOSALS_PER_PAGE;
+  console.log(
+    'fetching proposals list > page:',
+    page,
+    'startIndex:',
+    startIndex,
+    'endIndex:',
+    endIndex
+  );
   try {
-    return await client.methods.getProposalList(0, 12, SortType.DSC);
+    return await client.methods.getProposalList(
+      startIndex,
+      endIndex,
+      SortType.DSC
+    );
   } catch (e) {
     return Promise.reject(new Error('getWalletDetail failed'));
   }
@@ -43,6 +57,7 @@ async function fetchProposal(
 
 export const useProposalWithUseQuery = (
   proposalId?: string,
+  page: number = 1,
   refetchInterval = 0
 ) => {
   const {network, networkUrlSegment} = useNetwork();
@@ -58,13 +73,13 @@ export const useProposalWithUseQuery = (
   const queryFn = useCallback(() => {
     return proposalId
       ? fetchProposal(client, proposalId)
-      : fetchProposals(client);
-  }, [client, proposalId]);
+      : fetchProposals(client, page);
+  }, [client, proposalId, page]);
 
   return useQuery<IProposalData | Array<IProposalData> | null>({
     queryKey: proposalId
       ? ['proposal', queryNetwork, proposalId]
-      : ['proposals', queryNetwork],
+      : ['proposals', queryNetwork, page],
     queryFn,
     enabled,
     refetchOnWindowFocus: false,
@@ -89,9 +104,9 @@ export const useProposalsQuery = () => {
   return apiResponse;
 };
 
-export const useProposalQuery = (proposalId?: string) => {
+export const useProposalQuery = (proposalId?: string, page?: number) => {
   const navigate = useNavigate();
-  const apiResponse = useProposalWithUseQuery(proposalId);
+  const apiResponse = useProposalWithUseQuery(proposalId, page);
 
   useEffect(() => {
     if (apiResponse.isFetched) {
