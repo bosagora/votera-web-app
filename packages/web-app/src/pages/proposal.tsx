@@ -85,6 +85,7 @@ enum VoteStatus {
   IN_PROGRESS = 'IN_PROGRESS', // 진행 중
   APPROVED = 'APPROVED', // 승인됨
   REJECTED = 'REJECTED', // 부결됨
+  INVALID_QUORUM = 'INVALID_QUORUM', // 정족수 미달로 부결됨
   EXPIRED = 'EXPIRED', // 기간 만료
 }
 
@@ -107,6 +108,7 @@ export enum ProposalPhaseExtended {
   CLOSED_EXPIRED_VOTE = 'CLOSED_EXPIRED_VOTE', //  기간이 지나 더이상 진행할 수 없는 상태
   CLOSED_REJECTED_ASSESSMENT = 'CLOSED_REJECTED_ASSESSMENT', // 평가에서 거절되어 종료된 상태
   CLOSED_REJECTED_VOTE = 'CLOSED_REJECTED_VOTE', // 투표에서 거절되어 종료된 상태
+  CLOSED_INVALID_QUORUM_VOTE = 'CLOSED_INVALID_QUORUM_VOTE', // 정족수 미달로 투표 결과 부결되어 종료된 상태
   CLOSED_FINISHED = 'CLOSED_FINISHED', // 모든 단계가 정상적으로 종료되어 실행까지 완료된 상태
 }
 
@@ -123,9 +125,19 @@ export const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     console.log('voteStatus :', voteStatus);
     console.log('execStatus :', execStatus);
 
+    // 평가 없음
+    if (assessStatus === AssessmentStatus.NONE) {
+      return ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT;
+    }
+
     // 평가 탈락
     if (assessStatus === AssessmentStatus.REJECTED) {
       return ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT;
+    }
+
+    // 정족수 미달로 투표 결과 부결되어 종료된 경우
+    if (voteStatus === VoteStatus.INVALID_QUORUM) {
+      return ProposalPhaseExtended.CLOSED_INVALID_QUORUM_VOTE;
     }
 
     // 투표 탈락
@@ -182,8 +194,6 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
   try {
     const now = Date.now();
 
-    console.log('now :', now);
-    console.log('beginAssess :', proposal.beginAssess);
     if (now < new Date(proposal.beginAssess * 1000).getTime()) {
       return AssessmentStatus.NOT_STARTED;
     }
@@ -197,11 +207,6 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
       return AssessmentStatus.REJECTED;
     }
 
-    console.log(
-      'diff  endAssess ',
-      now,
-      new Date(proposal.endAssess * 1000).getTime()
-    );
     // 평가 기간이 지난 경우
     if (now < new Date(proposal.endAssess * 1000).getTime()) {
       return proposal.assessmentResult === AssessmentResult.NONE
@@ -210,7 +215,9 @@ const checkAssessmentStatus = (proposal: any): AssessmentStatus => {
         ? AssessmentStatus.APPROVED
         : AssessmentStatus.REJECTED;
     } else {
-      return AssessmentStatus.EXPIRED;
+      return proposal.assessmentResult !== AssessmentResult.REJECTED
+        ? AssessmentStatus.EXPIRED
+        : AssessmentStatus.NONE;
     }
 
     return AssessmentStatus.IN_PROGRESS;
@@ -230,6 +237,11 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
 
     if (now < new Date(proposal.beginVote * 1000).getTime()) {
       return VoteStatus.NOT_STARTED;
+    }
+    console.log('proposal.voteResult :', proposal.voteResult);
+    // 정족수 미달로 투표 결과 부결되어 종료된 경우
+    if (proposal.voteResult === VoteResult.INVALID_QUORUM) {
+      return VoteStatus.INVALID_QUORUM;
     }
 
     // 투표 결과가 이미 있는 경우
@@ -287,12 +299,6 @@ const checkExecutionStatus = (proposal: any): ExecutionStatus => {
   }
 };
 
-// 제안서의 상태(proposal.checkStatus) : 시작(OPENED), 종료(CLOSED), 탈락(INVALID)
-// 제안서의 단계(proposal.checkPhase) : 평가 단계(ASSESSMENT), 투표 단계(VOTE), 실행 단계(EXECUTION), 가 있다.
-// 평가 단계, 투표 단계는 완료(FINISHED)되거나 만료(EXPIRED)되지 않늗다면 APPROVED, REJECTED 상태가 된다.
-// 실행 단계가 완료되지 않았다면 IN_PROCESS 상태가 된다.
-// 만료(EXPIRED)란 각 단계의 기간내에 APPROVED, REJECTED 상태가 되지 않았음을 의미한다.
-
 // UI에서 상태에 따른 메시지를 표시하기 위한 헬퍼 함수
 const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
   switch (phase) {
@@ -313,7 +319,9 @@ const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
     case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
       return '평가 단계에서 탈락되었습니다.';
     case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
-      return '투표 결과 부결되었습니다.';
+      return '투표가 부결되었습니다.';
+    case ProposalPhaseExtended.CLOSED_INVALID_QUORUM_VOTE:
+      return '정족수 미달로 투표가 부결되었습니다.';
     case ProposalPhaseExtended.CLOSED_FINISHED:
       return '제안이 성공적으로 완료되었습니다.';
     case ProposalPhaseExtended.ERROR:
@@ -339,33 +347,10 @@ const Proposal: React.FC = () => {
   );
   const {network} = useNetwork();
 
-  console.log('proposalId :', proposalId);
-
-  const {set, get} = useCache();
-
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
   const statusRef = useRef({wasNotLoggedIn: false, wasOnWrongNetwork: false});
 
   const {address, isConnected, isOnWrongNetwork} = useWallet();
-
-  // Mock data for proposal transaction context
-  const mockProposalTransactionContext = {
-    handleSubmitVote: (voteValue: VoteValues) => {
-      console.log('Mock submit vote:', voteValue);
-      return Promise.resolve();
-    },
-    handleExecuteProposal: () => {
-      console.log('Mock execute proposal');
-      return Promise.resolve();
-    },
-    isLoading: false,
-    pluginAddress: '0x1234567890123456789012345678901234567890',
-    pluginType: 'multisig.plugin.dao.eth' as PluginTypes,
-    voteSubmitted: false,
-    executionFailed: false,
-    transactionHash:
-      '0x0000000000000000000000000000000000000000000000000000000000000000',
-  };
 
   // 상태 관리를 위한 상태들
   const [proposal, setProposal] = useState<any | null>(null);
@@ -383,9 +368,6 @@ const Proposal: React.FC = () => {
     ProposalPhaseExtended.UNKNOWN
   );
   const [isVoter, setIsVoter] = useState(false);
-  // Mock proposal transaction context
-  const {handleSubmitVote, handleExecuteProposal} =
-    mockProposalTransactionContext;
 
   const [fetchedProposal, setFetchedProposal] = useState<
     IProposalData | null | undefined
@@ -422,27 +404,6 @@ const Proposal: React.FC = () => {
     const fetchProposalData = async () => {
       try {
         setParamsAreLoading(true);
-
-        console.log('client', client);
-        // // const apolloClient = useApolloClient();
-        // const dashboardPath = generatePath(Dashboard);
-        // console.log('dashboardPath :', dashboardPath);
-        // if (!client) return navigate(dashboardPath);
-
-        // const proposalCount = await client?.methods.getProposalLength();
-        // console.log('fetched proposal count :', proposalCount);
-
-        // const proposals = await client?.methods.getProposalList(
-        //   0,
-        //   10,
-        //   SortType.ASC
-        // );
-        // console.log('fetched proposals :', proposals);
-
-        // 제안서가 없거나 proposals 배열이 있는 경우
-        // if (fetchedProposal === null && proposals && proposals.length > 0) {
-        //   fetchedProposal = proposals[0];
-        // }
 
         const voterLength = await client?.methods.getVoterLength(
           fetchedProposal?.proposalId || ''
@@ -554,12 +515,6 @@ const Proposal: React.FC = () => {
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
     if (!proposal || !myScore || !address || !isVoter) return false;
-    // const assessStatus = checkAssessmentStatus(proposal);
-    // if (
-    //   assessStatus !== AssessmentStatus.IN_PROGRESS &&
-    //   assessStatus !== AssessmentStatus.
-    // )
-    //   return false;
 
     // 내가 이미 점수를 평가했는지 확인
     const didAssessed = myScore.voter === address && myScore.timestamp > 0;
@@ -568,20 +523,11 @@ const Proposal: React.FC = () => {
 
   const canVote = useMemo(() => {
     if (!proposal || !myBallot || !address || !isVoter) return false;
-    // const voteStatus = checkVoteStatus(proposal);
-    // if (voteStatus !== VoteStatus.IN_PROGRESS) return false;
 
     // 내가 이미 투표했는지 확인
     const didVote = myBallot.voter === address && myBallot.timestamp > 0;
     return !didVote;
   }, [proposal, myBallot, address, isVoter]);
-
-  // cache status effect
-  // useEffect(() => {
-  //   if (proposal && proposal.phase !== get('proposalStatus')) {
-  //     set('proposalStatus', proposal.phase);
-  //   }
-  // }, []);
 
   // voting process effect
   useEffect(() => {
@@ -634,77 +580,6 @@ const Proposal: React.FC = () => {
       }
     }
   }, [canVote]);
-
-  const voted = useMemo(() => {
-    if (!address || !proposal) return false;
-
-    return proposal.approval.some(
-      (approvalAddress: string) =>
-        stripPlgnAdrFromProposalId(approvalAddress).toLowerCase() ===
-        address.toLowerCase()
-    );
-  }, []);
-
-  // vote button and status
-  const buttonLabel = useMemo(() => {
-    if (proposal) {
-      return getVoteButtonLabel(proposal, canVote, voted, t);
-    }
-  }, [proposal, voted, canVote, t]);
-
-  // vote button state and handler
-  const {voteNowDisabled, onClick} = useMemo(() => {
-    // disable voting on non-active proposals
-    if (proposal?.phase !== ProposalPhase.VOTE) return {voteNowDisabled: true};
-
-    // disable approval on multisig when wallet has voted
-    if (voted || voteSubmitted) return {voteNowDisabled: true};
-
-    // not logged in
-    if (!address) {
-      return {
-        voteNowDisabled: false,
-        onClick: () => {
-          open('wallet');
-          statusRef.current.wasNotLoggedIn = true;
-        },
-      };
-    }
-
-    // wrong network
-    else if (isOnWrongNetwork) {
-      return {
-        voteNowDisabled: false,
-        onClick: () => {
-          open('network');
-          statusRef.current.wasOnWrongNetwork = true;
-        },
-      };
-    }
-
-    // member, not yet voted
-    else if (canVote) {
-      return {
-        voteNowDisabled: false,
-        onClick: () => {
-          handleSubmitVote(VoteValues.YES);
-        },
-      };
-    } else return {voteNowDisabled: true};
-  }, []);
-
-  // handler for execution
-  const handleExecuteNowClicked = () => {
-    if (!address) {
-      open('wallet');
-      statusRef.current.wasNotLoggedIn = true;
-    } else if (isOnWrongNetwork) {
-      // don't allow execution on wrong network
-      open('network');
-    } else {
-      handleExecuteProposal();
-    }
-  };
 
   if (paramsAreLoading || proposalIsLoading || !proposal) {
     return <Loading />;

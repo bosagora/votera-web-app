@@ -21,6 +21,7 @@ import {useWallet} from 'hooks/useWallet';
 import {NavlinksDropdown} from './breadcrumbDropdown';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
+import {Landing} from 'utils/paths';
 
 const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
@@ -120,7 +121,12 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
               </>
             )}
           </LinksWrapper> */}
-          <img src={VoteraLogo} alt="Votera 로고" className="h-4" />
+          <img
+            src={VoteraLogo}
+            alt="Votera 로고"
+            className="h-4"
+            onClick={() => navigate(Landing)}
+          />
         </Content>
 
         <div className="flex gap-2">

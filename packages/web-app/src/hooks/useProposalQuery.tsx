@@ -18,7 +18,7 @@ async function fetchProposals(
 
   console.log('fetching proposals list > ');
   try {
-    return await client.methods.getProposalList(0, 100, SortType.DSC);
+    return await client.methods.getProposalList(0, 12, SortType.DSC);
   } catch (e) {
     return Promise.reject(new Error('getWalletDetail failed'));
   }
@@ -67,7 +67,7 @@ export const useProposalWithUseQuery = (
       : ['proposals', queryNetwork],
     queryFn,
     enabled,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval,
   });
 };

@@ -68,13 +68,11 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
       <Card>
         <Header>
           <Title>{t('governance.executionCard.title')}</Title>
-          <Description>{t('governance.executionCard.description')}</Description>
+          {/* <Description>{t('governance.executionCard.description')}</Description> */}
         </Header>
 
         <Content>
-          {(exPhase === ProposalPhaseExtended.OPENED_VOTE ||
-            exPhase === ProposalPhaseExtended.OPENED_EXPIRED_VOTE) &&
-          canVote ? (
+          {exPhase === ProposalPhaseExtended.OPENED_VOTE && canVote && (
             <div className="space-y-3">
               {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
               <div className="flex flex-col gap-3">
@@ -90,17 +88,17 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
                 />
               </div>
             </div>
-          ) : (
-            <div>
-              <div className="flex justify-center gap-8 my-6">
-                <div className="text-xl font-bold text-blue-500">
-                  {exPhaseMessage}
-                </div>
-                {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
-              </div>
-              <VoteResults voteSummary={voteSummary} />
-            </div>
           )}
+
+          <div>
+            <div className="flex justify-center gap-8 my-6">
+              <div className="text-xl font-bold text-blue-500">
+                {exPhaseMessage}
+              </div>
+              {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+            </div>
+            <VoteResults voteSummary={voteSummary} />
+          </div>
         </Content>
       </Card>
     </CreateVoteProvider>

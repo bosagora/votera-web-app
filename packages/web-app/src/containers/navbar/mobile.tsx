@@ -17,6 +17,9 @@ import {useWallet} from 'hooks/useWallet';
 import MobileMenu from './mobileMenu';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
+import {Landing} from 'utils/paths';
+import {useNavigate} from 'react-router-dom';
+
 type MobileNavProps = {
   isProcess?: boolean;
   onDaoSelect: () => void;
@@ -29,6 +32,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
   const {isMobile} = useScreen();
   const currentDao = useReactiveVar(selectedDaoVar);
   const {isConnected, address} = useWallet();
+  const navigate = useNavigate();
 
   if (props.isProcess)
     return (
@@ -67,10 +71,12 @@ const MobileNav: React.FC<MobileNavProps> = props => {
               />
               <DaoName>{currentDao.metadata.name}</DaoName>
             </DaoContainer> */}
+
             <img
               src={VoteraLogo}
               alt="Votera 로고"
               className="h-4"
+              onClick={() => navigate(Landing)}
             />
           </FlexOne>
           <FlexOne className="justify-end">
