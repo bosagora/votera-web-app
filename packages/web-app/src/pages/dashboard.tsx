@@ -14,7 +14,7 @@ import ProposalSnapshot from 'containers/proposalSnapshot';
 import {ProposalListItem, ProposalPhase} from 'utils/types';
 import {useClient2} from 'hooks/useClient2';
 import {IProposalData, SortType} from 'votera-sdk-client';
-import {useProposalQuery} from 'hooks/useProposalQuery';
+import {useProposalQuery, PROPOSALS_PER_PAGE} from 'hooks/useProposalQuery';
 
 const Dashboard: React.FC = () => {
   const {t} = useTranslation();
@@ -25,33 +25,47 @@ const Dashboard: React.FC = () => {
   const daoAddressOrEns = '0x1234567890abcdef1234567890abcdef12345678';
   const {open} = useGlobalModalContext();
   const {client} = useClient2();
-  const [proposalCount, setProposalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [proposals, setProposals] = useState<Array<IProposalData>>([]);
-  const proposalQuery = useProposalQuery();
+  const proposalQuery = useProposalQuery(undefined, page);
 
   useEffect(() => {
-    const fetchProposals = async () => {
-      const count = await client?.methods.getProposalLength();
-      console.log('fetched proposal count :', count);
-      setProposalCount(count ?? 0);
-
-      if (proposalQuery.data) {
-        console.log('fetched proposals :', proposalQuery.data);
-        setProposals((proposalQuery.data as Array<IProposalData>) ?? []);
+    if (proposalQuery.data) {
+      const newProposals = proposalQuery.data as Array<IProposalData>;
+      if (newProposals.length < PROPOSALS_PER_PAGE) {
+        setHasMore(false);
       }
-    };
+      if (page === 1) {
+        setProposals(newProposals);
+      } else {
+        setProposals(prev => [...prev, ...newProposals]);
+      }
+    }
+  }, [proposalQuery.data, page]);
 
-    fetchProposals();
-  }, [client, proposalQuery.data]);
+  const handleLoadMore = () => {
+    setPage(prev => prev + 1);
+  };
 
   return (
     <>
       <HeaderWrapper></HeaderWrapper>
 
       {isDesktop ? (
-        <DashboardContent proposals={proposals} />
+        <DashboardContent
+          proposals={proposals}
+          hasMore={hasMore}
+          onLoadMore={handleLoadMore}
+          isLoading={proposalQuery.isLoading}
+        />
       ) : (
-        <MobileDashboardContent proposals={proposals} />
+        <MobileDashboardContent
+          proposals={proposals}
+          hasMore={hasMore}
+          onLoadMore={handleLoadMore}
+          isLoading={proposalQuery.isLoading}
+        />
       )}
     </>
   );
@@ -66,9 +80,17 @@ const HeaderWrapper = styled.div.attrs({
 
 type DashboardContentProps = {
   proposals: Array<IProposalData>;
+  hasMore: boolean;
+  onLoadMore: () => void;
+  isLoading: boolean;
 };
 
-const DashboardContent: React.FC<DashboardContentProps> = ({proposals}) => {
+const DashboardContent: React.FC<DashboardContentProps> = ({
+  proposals,
+  hasMore,
+  onLoadMore,
+  isLoading,
+}) => {
   return (
     <>
       <CenterWideContent>
@@ -76,6 +98,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({proposals}) => {
           daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
           proposals={proposals}
           proposalLength={proposals.length}
+          hasMore={hasMore}
+          onLoadMore={onLoadMore}
+          isLoading={isLoading}
         />
       </CenterWideContent>
     </>
@@ -93,6 +118,9 @@ const CenterWideContent = styled.div.attrs({
 
 const MobileDashboardContent: React.FC<DashboardContentProps> = ({
   proposals,
+  hasMore,
+  onLoadMore,
+  isLoading,
 }) => {
   return (
     <MobileLayout>
@@ -100,6 +128,9 @@ const MobileDashboardContent: React.FC<DashboardContentProps> = ({
         daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
         proposals={proposals}
         proposalLength={proposals.length}
+        hasMore={hasMore}
+        onLoadMore={onLoadMore}
+        isLoading={isLoading}
       />
     </MobileLayout>
   );
