@@ -6,7 +6,7 @@ import {AvatarDao} from '@aragon/ui-components';
 import {IconClock} from '@aragon/ui-components';
 import {Link} from '@aragon/ui-components';
 import {LinearProgress} from '@aragon/ui-components';
-import {Tag} from '@aragon/ui-components';
+import {Tag} from 'components/tag/tag';
 import {ProposalPhase} from 'utils/types';
 import {CardProposalDataProps} from 'components/proposalList';
 import {ProposalPeriod} from 'votera-sdk-client';
@@ -114,7 +114,11 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
   console.log('progressLabel', progressLabel);
   return (
-    <Card data-testid="cardProposal" onClick={onClick}>
+    <Card
+      data-testid="cardProposal"
+      onClick={onClick}
+      className={progressLabel === '종료' && 'bg-gray-200'}
+    >
       <Header>
         <HeaderOptions phase={phase} type={type || ''} />
         <HeaderProgressOptions
@@ -174,13 +178,13 @@ type HeaderOptionProps = Pick<CardProposalDataProps, 'phase'> & {
 const HeaderOptions: React.VFC<HeaderOptionProps> = ({phase, type}) => {
   switch (phase) {
     case ProposalPeriod.ASSESSMENT:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'info'} />;
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'assessment'} />;
     case ProposalPeriod.VOTE:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'primary'} />;
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'vote'} />;
     case ProposalPeriod.EXECUTION:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'success'} />;
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'execution'} />;
     case ProposalPeriod.FINISHED:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'critical'} />;
+      return <Tag label={getPhaseLabel(phase)} colorScheme={'execution'} />;
     default:
       return null;
   }
@@ -199,9 +203,9 @@ const HeaderProgressOptions: React.VFC<HeaderProgressOptionProps> = ({
 }) => {
   switch (progressLabel) {
     case '진행중':
-      return <Tag label={progressLabel} colorScheme={'info'} />;
+      return <Tag label={progressLabel} colorScheme={'inprogress'} />;
     case '종료':
-      return <Tag label={progressLabel} colorScheme={'critical'} />;
+      return <Tag label={progressLabel} colorScheme={'finished'} />;
     default:
       return null;
   }

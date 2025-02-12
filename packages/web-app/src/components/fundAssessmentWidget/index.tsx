@@ -243,81 +243,88 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
         {/* <Header>
         <Title>{t('governance.executionCard.title')}</Title>
         <Description>{t('governance.executionCard.description')}</Description>
-      </Header> */}
-        {(exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT ||
-          exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT) &&
-        canAssess ? (
-          <Content>
-            <div className="p-4 border rounded-lg bg-white">
-              <div className="space-y-1">
-                <IncreaseAmount
-                  max={10}
-                  min={1}
-                  label={'완성도'}
-                  value={assessment.completeness.toString()}
-                  mode="default"
-                  placeholder="1-10 사이 값을 입력하세요"
-                  onChange={handleCompletenessChange}
-                />
-                <IncreaseAmount
-                  max={10}
-                  min={1}
-                  label={'실현가능성'}
-                  value={assessment.possibility.toString()}
-                  mode="default"
-                  placeholder="1-10 사이 값을 입력하세요"
-                  onChange={handlePossibilityChange}
-                />
-                <IncreaseAmount
-                  max={10}
-                  min={1}
-                  label={'수익성'}
-                  value={assessment.profitability.toString()}
-                  mode="default"
-                  placeholder="1-10 사이 값을 입력하세요"
-                  onChange={handleProfitabilityChange}
-                />
-                <IncreaseAmount
-                  max={10}
-                  min={1}
-                  label={'매력도'}
-                  value={assessment.attractiveness.toString()}
-                  mode="default"
-                  placeholder="1-10 사이 값을 입력하세요"
-                  onChange={handleAttractivenessChange}
-                />
-                <IncreaseAmount
-                  max={10}
-                  min={1}
-                  label={'확장성'}
-                  value={assessment.scalability.toString()}
-                  mode="default"
-                  placeholder="1-10 사이 값을 입력하세요"
-                  onChange={handleScalabilityChange}
+      </Header> 
+      ||
+          exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT
+      
+      */}
+        <Content>
+          {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess && (
+            <div>
+              <div className="flex justify-center gap-8 my-6">
+                <div className="text-xl font-bold text-blue-500">
+                  통과 기준 : 각 항목 5점 이상, 평균 7점 이상 통과
+                </div>
+              </div>
+              <div className="p-4 border rounded-lg bg-white">
+                <div className="space-y-1">
+                  <IncreaseAmount
+                    max={10}
+                    min={1}
+                    label={'완성도'}
+                    value={assessment.completeness.toString()}
+                    mode="default"
+                    placeholder="1-10 사이 값을 입력하세요"
+                    onChange={handleCompletenessChange}
+                  />
+                  <IncreaseAmount
+                    max={10}
+                    min={1}
+                    label={'가능성'}
+                    value={assessment.possibility.toString()}
+                    mode="default"
+                    placeholder="1-10 사이 값을 입력하세요"
+                    onChange={handlePossibilityChange}
+                  />
+                  <IncreaseAmount
+                    max={10}
+                    min={1}
+                    label={'수익성'}
+                    value={assessment.profitability.toString()}
+                    mode="default"
+                    placeholder="1-10 사이 값을 입력하세요"
+                    onChange={handleProfitabilityChange}
+                  />
+                  <IncreaseAmount
+                    max={10}
+                    min={1}
+                    label={'매력도'}
+                    value={assessment.attractiveness.toString()}
+                    mode="default"
+                    placeholder="1-10 사이 값을 입력하세요"
+                    onChange={handleAttractivenessChange}
+                  />
+                  <IncreaseAmount
+                    max={10}
+                    min={1}
+                    label={'확장성'}
+                    value={assessment.scalability.toString()}
+                    mode="default"
+                    placeholder="1-10 사이 값을 입력하세요"
+                    onChange={handleScalabilityChange}
+                  />
+                </div>
+                <WidgetFooter
+                  proposalId={proposalId}
+                  assessment={assessment}
+                  canAssess={canAssess}
+                  exPhase={exPhase}
                 />
               </div>
-              <WidgetFooter
-                proposalId={proposalId}
-                assessment={assessment}
-                canAssess={canAssess}
-                exPhase={exPhase}
-              />
             </div>
-          </Content>
-        ) : (
-          <Content>
-            <div className="flex justify-center gap-8 my-6">
-              <div className="text-xl font-bold text-blue-500">
-                {exPhaseMessage}
-              </div>
-              {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+          )}
+
+          <div className="flex justify-center gap-8 my-6">
+            <div className="text-xl font-bold text-blue-500">
+              {exPhaseMessage}
             </div>
-            <AssessmentResult
-              values={[assessmentSummary]}
-              assessmentLength={assessmentLength}
-            />
-          </Content>
-        )}
+            {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+          </div>
+          <AssessmentResult
+            values={[assessmentSummary]}
+            assessmentLength={assessmentLength}
+          />
+        </Content>
       </Card>
     </CreateAssessProvider>
   );

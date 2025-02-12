@@ -35,8 +35,8 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
         assessment.profitability +
         assessment.attractiveness +
         assessment.scalability) /
-      5 /
-      assessmentLength
+        5 /
+        assessmentLength || 0
     );
   };
 
@@ -85,18 +85,24 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
               <LinearProgressContainer>
                 <LinearProgress
                   max={max}
-                  value={(values[0][key] / assessmentLength).toFixed(1)}
+                  value={
+                    isNaN(values[0][key] / assessmentLength)
+                      ? 0
+                      : (values[0][key] / assessmentLength) * 100
+                  }
                 />
                 <ProgressInfo>
                   <ApprovalAddresses
                     style={{
                       flexBasis: `${
                         (calculateItemAverage(key) / assessmentLength / max) *
-                        100
+                          100 || 0
                       }%`,
                     }}
                   >
-                    {(values[0][key] / assessmentLength).toFixed(1)}
+                    {isNaN(values[0][key] / assessmentLength)
+                      ? 0
+                      : (values[0][key] / assessmentLength).toFixed(1)}
                   </ApprovalAddresses>
                   <TotalAddresses>{t(` of ${max}`)}</TotalAddresses>
                 </ProgressInfo>
