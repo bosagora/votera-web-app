@@ -11,6 +11,8 @@ import {
 } from 'context/createComment';
 import {useClient2} from 'hooks/useClient2';
 import {ICommentData, SortType} from 'votera-sdk-client';
+import {useWaitForTransaction} from 'wagmi';
+import {useWallet} from 'hooks/useWallet';
 
 interface Comment {
   id: string;
@@ -22,66 +24,96 @@ interface Comment {
 interface CommentListProps {
   proposalId: string;
   isVoter: boolean;
-  onSubmit?: (content: string) => void;
 }
+
+const COMMENTS_PER_PAGE = 6;
 
 const CommentListContent: React.FC<CommentListProps> = ({
   proposalId,
   isVoter,
-  onSubmit,
 }) => {
   const {network} = useNetwork();
   const [newComment, setNewComment] = React.useState('');
   const {handlePublishComment} = useCreateCommentContext();
 
-  const [comments, setComments] = React.useState<ICommentData[]>();
+  const [comments, setComments] = React.useState<ICommentData[]>([]);
   const [commentLength, setCommentLength] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [hasMore, setHasMore] = React.useState(true);
+  const {address} = useWallet();
 
   const {client} = useClient2();
 
+  const fetchComments = async (page: number) => {
+    if (!client) return;
+
+    const startIndex = page * COMMENTS_PER_PAGE;
+    const endIndex = startIndex + COMMENTS_PER_PAGE;
+
+    const comments = await client.methods.getCommentList(
+      proposalId.toString(),
+      startIndex,
+      endIndex,
+      SortType.DSC
+    );
+
+    if (comments) {
+      if (page === 0) {
+        setComments(comments);
+      } else {
+        setComments(prev => [...prev, ...comments]);
+      }
+
+      setHasMore(comments.length === COMMENTS_PER_PAGE);
+    }
+  };
+
   useEffect(() => {
-    console.log('commentList >>>>>>>>>>>>');
-    const getCommentLength = async () => {
-      const commentLength = await client?.methods.getCommentLength(
+    const initializeComments = async () => {
+      if (!client) return;
+
+      const length = await client.methods.getCommentLength(
         proposalId.toString()
       );
-      console.log('commentLength', commentLength);
-      if (commentLength) {
-        setCommentLength(commentLength);
-      }
-      return commentLength;
-    };
-
-    const getCommentList = async (length: number) => {
-      if (length === 0) return;
-      const comments = await client?.methods.getCommentList(
-        proposalId.toString(),
-        0,
-        length,
-        SortType.DSC
-      );
-      console.log('fetched comments', comments);
-      if (comments) {
-        setComments(comments);
+      if (length) {
+        setCommentLength(length);
+        await fetchComments(0);
       }
     };
 
-    getCommentLength().then(length => {
-      console.log('commentLength', length);
-      getCommentList(length ?? 0);
-    });
+    initializeComments();
   }, [proposalId, client]);
+
+  const handleLoadMore = async () => {
+    const nextPage = currentPage + 1;
+    await fetchComments(nextPage);
+    setCurrentPage(nextPage);
+  };
 
   const handleSubmit = async () => {
     if (!newComment.trim() || !proposalId || !isVoter) return;
 
     try {
-      await handlePublishComment({
+      // 새 댓글 등록
+      const result = await handlePublishComment({
         proposalId,
         message: newComment,
       });
 
-      onSubmit?.(newComment);
+      // 새로운 댓글 객체 생성
+      const newCommentData: ICommentData = {
+        message: newComment,
+        writer: address || '',
+        timestamp: Math.floor(Date.now() / 1000),
+      };
+
+      // 새 댓글을 목록 맨 앞에 추가
+      setComments(prevComments => [newCommentData, ...prevComments]);
+
+      // 전체 댓글 수 증가
+      setCommentLength(prev => prev + 1);
+
+      // 입력창 초기화
       setNewComment('');
     } catch (error) {
       console.error('댓글 등록 중 오류 발생:', error);
@@ -104,7 +136,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
         </InputWrapper>
       </CommentInput>
 
-      {comments?.map(comment => (
+      {comments.map(comment => (
         <CommentItem key={comment.timestamp}>
           <CommentHeader>
             <Link
@@ -112,15 +144,24 @@ const CommentListContent: React.FC<CommentListProps> = ({
               label={shortenAddress(comment.writer)}
               href={`${CHAIN_METADATA[network].explorer}/address/${comment.writer}`}
             />
-            <CreatedAt>{comment.timestamp}</CreatedAt>
+            <CreatedAt>
+              {
+                new Date(Number(comment.timestamp) * 1000)
+                  .toISOString()
+                  .split('T')[0]
+              }
+            </CreatedAt>
           </CommentHeader>
           <Content>{comment.message}</Content>
           <Divider />
         </CommentItem>
       ))}
-      <ShowMoreButton>
-        <FiChevronDown size={20} />더 보기
-      </ShowMoreButton>
+
+      {hasMore && (
+        <ShowMoreButton onClick={handleLoadMore}>
+          <FiChevronDown size={20} />더 보기
+        </ShowMoreButton>
+      )}
     </Container>
   );
 };
