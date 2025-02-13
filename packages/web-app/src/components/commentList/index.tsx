@@ -122,45 +122,53 @@ const CommentListContent: React.FC<CommentListProps> = ({
 
   return (
     <Container>
-      <CommentInput>
-        <InputWrapper>
-          <StyledTextarea
-            value={newComment}
-            onChange={e => setNewComment(e.target.value)}
-            placeholder="댓글을 입력하세요"
-            rows={3}
-          />
-          <SubmitButton onClick={handleSubmit}>
-            <FiSend size={20} />
-          </SubmitButton>
-        </InputWrapper>
-      </CommentInput>
-
-      {comments.map(comment => (
-        <CommentItem key={comment.timestamp}>
-          <CommentHeader>
-            <Link
-              external
-              label={shortenAddress(comment.writer)}
-              href={`${CHAIN_METADATA[network].explorer}/address/${comment.writer}`}
+      {isVoter && (
+        <CommentInput>
+          <InputWrapper>
+            <StyledTextarea
+              value={newComment}
+              onChange={e => setNewComment(e.target.value)}
+              placeholder="댓글을 입력하세요"
+              rows={3}
             />
-            <CreatedAt>
-              {
-                new Date(Number(comment.timestamp) * 1000)
-                  .toISOString()
-                  .split('T')[0]
-              }
-            </CreatedAt>
-          </CommentHeader>
-          <Content>{comment.message}</Content>
-          <Divider />
-        </CommentItem>
-      ))}
+            <SubmitButton onClick={handleSubmit}>
+              <FiSend size={20} />
+            </SubmitButton>
+          </InputWrapper>
+        </CommentInput>
+      )}
 
-      {hasMore && (
-        <ShowMoreButton onClick={handleLoadMore}>
-          <FiChevronDown size={20} />더 보기
-        </ShowMoreButton>
+      {comments.length === 0 ? (
+        <NoComments>등록된 댓글이 없습니다</NoComments>
+      ) : (
+        <>
+          {comments.map(comment => (
+            <CommentItem key={comment.timestamp}>
+              <CommentHeader>
+                <Link
+                  external
+                  label={shortenAddress(comment.writer)}
+                  href={`${CHAIN_METADATA[network].explorer}/address/${comment.writer}`}
+                />
+                <CreatedAt>
+                  {
+                    new Date(Number(comment.timestamp) * 1000)
+                      .toISOString()
+                      .split('T')[0]
+                  }
+                </CreatedAt>
+              </CommentHeader>
+              <Content>{comment.message}</Content>
+              <Divider />
+            </CommentItem>
+          ))}
+
+          {hasMore && (
+            <ShowMoreButton onClick={handleLoadMore}>
+              <FiChevronDown size={20} />더 보기
+            </ShowMoreButton>
+          )}
+        </>
       )}
     </Container>
   );
@@ -220,6 +228,10 @@ const StyledTextarea = styled.textarea.attrs({
 const SubmitButton = styled.button.attrs({
   className:
     'absolute right-2 bottom-2 text-blue-500 hover:text-blue-600 transition-colors',
+})``;
+
+const NoComments = styled.div.attrs({
+  className: 'text-center text-[#666] py-4',
 })``;
 
 export default CommentList;
