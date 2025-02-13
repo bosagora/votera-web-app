@@ -25,41 +25,60 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
 
   const {client} = useClient2();
 
-  const pageSize = 10;
+  const PAGE_SIZE = 10;
 
   const [voters, setVoters] = useState<string[]>([]);
   const [ballotLength, setBallotLength] = useState<number>(0);
-  // const [voteSummary, setVoteSummary] = useState<Array<number> | null>([
-  //   0, 0, 0,
-  // ]);
   const [ballots, setBallots] = useState<IVoteBallotData[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+
+  const fetchBallots = async (page: number) => {
+    if (!client) return;
+
+    const startIndex = page * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+
+    const newBallots = await client.methods.getBallotList(
+      proposalId,
+      startIndex,
+      endIndex,
+      SortType.DSC
+    );
+
+    console.log('newBallots >>>>>>>>>>>>', newBallots);
+    if (newBallots) {
+      if (page === 0) {
+        setBallots(newBallots);
+      } else {
+        setBallots(prev => [...prev, ...newBallots]);
+      }
+
+      setHasMore(newBallots.length === PAGE_SIZE);
+    }
+  };
 
   useEffect(() => {
-    const fetchVoters = async () => {
-      const ballotLength = await client?.methods.getBallotLength(proposalId);
-      setBallotLength(ballotLength || 0);
-      console.log('ballotLength', ballotLength);
-      // const voteSummary = await client?.methods.getVoteSummary(proposalId);
-      // console.log('voteSummary', voteSummary);
-      // setVoteSummary(voteSummary || [0, 0, 0]);
-      if (ballotLength && ballotLength > 0) {
-        fetchBallots(ballotLength);
+    const initializeBallots = async () => {
+      if (!client || !proposalId) return;
+
+      const length = await client.methods.getBallotLength(proposalId);
+      setBallotLength(length || 0);
+
+      if (length && length > 0) {
+        await fetchBallots(0);
       }
     };
-    const fetchBallots = async (ballotLength: number) => {
-      const ballots = await client?.methods.getBallotList(
-        proposalId,
-        0,
-        pageSize,
-        SortType.DSC
-      );
-      console.log('ballots', ballots);
-      setBallots(ballots || []);
-    };
-    if (proposalId) {
-      fetchVoters();
-    }
-  }, [proposalId]);
+
+    initializeBallots();
+  }, [proposalId, client]);
+
+  const handleLoadMore = async () => {
+    console.log('handleLoadMore >>>>>>>>>>>>');
+    const nextPage = currentPage + 1;
+    await fetchBallots(nextPage);
+    setCurrentPage(nextPage);
+  };
 
   const getVoteText = (vote: Candidate) => {
     switch (vote) {
@@ -119,14 +138,23 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
                 {getVoteText(ballot.choice)}
               </VoteChoice>
             </HeaderLeft>
-            <CreatedAt>{ballot.timestamp}</CreatedAt>
+            <CreatedAt>
+              {
+                new Date(Number(ballot.timestamp) * 1000)
+                  .toISOString()
+                  .split('T')[0]
+              }
+            </CreatedAt>
           </CommentHeader>
           <Divider />
         </CommentItem>
       ))}
-      <ShowMoreButton>
-        <FiChevronDown size={20} />더 보기
-      </ShowMoreButton>
+
+      {hasMore && (
+        <ShowMoreButton onClick={handleLoadMore}>
+          <FiChevronDown size={20} />더 보기
+        </ShowMoreButton>
+      )}
     </Container>
   );
 };
