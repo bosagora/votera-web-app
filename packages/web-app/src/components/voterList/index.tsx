@@ -125,35 +125,40 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
         </VoteStatItem>
       </VoteStatsContainer> */}
 
-      {ballots.map(ballot => (
-        <CommentItem key={ballot.voter}>
-          <CommentHeader>
-            <HeaderLeft>
-              <Link
-                external
-                label={shortenAddress(ballot.voter)}
-                href={`${CHAIN_METADATA[network].explorer}/address/${ballot.voter}`}
-              />
-              <VoteChoice vote={ballot.choice}>
-                {getVoteText(ballot.choice)}
-              </VoteChoice>
-            </HeaderLeft>
-            <CreatedAt>
-              {
-                new Date(Number(ballot.timestamp) * 1000)
-                  .toISOString()
-                  .split('T')[0]
-              }
-            </CreatedAt>
-          </CommentHeader>
-          <Divider />
-        </CommentItem>
-      ))}
-
-      {hasMore && (
-        <ShowMoreButton onClick={handleLoadMore}>
-          <FiChevronDown size={20} />더 보기
-        </ShowMoreButton>
+      {ballots.length > 0 ? (
+        <>
+          {ballots.map(ballot => (
+            <CommentItem key={ballot.voter}>
+              <CommentHeader>
+                <HeaderLeft>
+                  <Link
+                    external
+                    label={shortenAddress(ballot.voter)}
+                    href={`${CHAIN_METADATA[network].explorer}/address/${ballot.voter}`}
+                  />
+                  <VoteChoice vote={ballot.choice}>
+                    {getVoteText(ballot.choice)}
+                  </VoteChoice>
+                </HeaderLeft>
+                <CreatedAt>
+                  {
+                    new Date(Number(ballot.timestamp) * 1000)
+                      .toISOString()
+                      .split('T')[0]
+                  }
+                </CreatedAt>
+              </CommentHeader>
+              <Divider />
+            </CommentItem>
+          ))}
+          {hasMore && (
+            <ShowMoreButton onClick={handleLoadMore}>
+              <FiChevronDown size={20} />더 보기
+            </ShowMoreButton>
+          )}
+        </>
+      ) : (
+        <EmptyMessage>투표 참여자가 없습니다</EmptyMessage>
       )}
     </Container>
   );
@@ -278,6 +283,12 @@ const VoteCount = styled.span.attrs({
   className: 'text-sm text-[#666] font-medium',
 })`
   font-size: 16px;
+`;
+
+const EmptyMessage = styled.div`
+  text-align: center;
+  padding: 20px;
+  color: #666;
 `;
 
 export default VoterList;

@@ -622,7 +622,7 @@ const Proposal: React.FC = () => {
         <SummaryText>{proposal?.description}</SummaryText>
         {[
           {
-            name: '프로젝트 깃허브',
+            name: '제안 문서',
             url:
               'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/' +
               proposal.documentId +
@@ -680,17 +680,18 @@ const Proposal: React.FC = () => {
               proposalId={proposal.id}
             />
           )}
-          {extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
-            <FundTransitionWidget
-              period={proposal.period}
-              phase={proposal.phase}
-              exPhase={extendedPhase}
-              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
-              proposalId={proposal.id}
-            />
-          )}
+          {isVoter &&
+            extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
+              <FundTransitionWidget
+                period={proposal.period}
+                phase={proposal.phase}
+                exPhase={extendedPhase}
+                exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+                proposalId={proposal.id}
+              />
+            )}
           {extendedPhase.toLocaleLowerCase().includes('opened_execution') &&
-            proposal.proposer === address && (
+            proposal.creator === address && (
               <FundExecutionWidget
                 period={proposal.period}
                 phase={proposal.phase}
