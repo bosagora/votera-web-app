@@ -27,6 +27,10 @@ async function fetchProposals(
     'endIndex:',
     endIndex
   );
+  if (page === 0) {
+    return [];
+  }
+
   try {
     return await client.methods.getProposalList(
       startIndex,
@@ -34,7 +38,8 @@ async function fetchProposals(
       SortType.DSC
     );
   } catch (e) {
-    return Promise.reject(new Error('getWalletDetail failed'));
+    console.log('fetchProposals error', e);
+    return Promise.reject(new Error('getProposalList failed'));
   }
 }
 
@@ -93,6 +98,7 @@ export const useProposalsQuery = () => {
 
   useEffect(() => {
     if (apiResponse.isFetched) {
+      console.log('apiResponse.error', apiResponse.error);
       if (apiResponse.error || apiResponse.data === null) {
         navigate(NotFound, {
           replace: true,

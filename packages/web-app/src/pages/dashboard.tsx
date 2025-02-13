@@ -25,10 +25,35 @@ const Dashboard: React.FC = () => {
   const daoAddressOrEns = '0x1234567890abcdef1234567890abcdef12345678';
   const {open} = useGlobalModalContext();
   const {client} = useClient2();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [proposals, setProposals] = useState<Array<IProposalData>>([]);
-  const proposalQuery = useProposalQuery(undefined, page);
+  const proposalQuery = useProposalQuery(undefined, page) || {
+    data: [],
+    error: null,
+    isLoading: false,
+  };
+
+  const [proposalLength, setProposalLength] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchProposalLength = async () => {
+      if (client) {
+        try {
+          const length = await client.methods.getProposalLength();
+          setProposalLength(length);
+          if (length > 0) {
+            setPage(1);
+          }
+        } catch (error) {
+          console.error('제안서 개수 조회 중 오류 발생:', error);
+          setProposalLength(0);
+        }
+      }
+    };
+
+    fetchProposalLength();
+  }, [client]);
 
   useEffect(() => {
     if (proposalQuery.data) {
