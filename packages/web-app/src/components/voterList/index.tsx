@@ -254,13 +254,13 @@ const VoteLabel = styled.span<{vote: Comment['vote']}>`
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 16px;
+    min-width: 80px;
+    text-align: center;
     ${
       vote === 'yes' &&
       `
       background-color: #E8FFF1;
       color: #16A34A;
-      min-width: 80px;
-      text-align: center;
     `
     }
     ${
@@ -268,8 +268,6 @@ const VoteLabel = styled.span<{vote: Comment['vote']}>`
       `
       background-color: #FFE8E8;
       color: #DC2626;
-      min-width: 80px;
-      text-align: center;
     `
     }
     ${
@@ -277,8 +275,6 @@ const VoteLabel = styled.span<{vote: Comment['vote']}>`
       `
       background-color: #F3F4F6;
       color: #6B7280;
-      min-width: 80px;
-      text-align: center;
     `
     }
   `}
