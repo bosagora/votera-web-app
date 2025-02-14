@@ -7,7 +7,6 @@ import {
   Label,
   TextareaSimple,
   TextInput,
-
 } from '@aragon/ui-components';
 import React, {useCallback, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
@@ -20,10 +19,10 @@ import {isOnlyWhitespace} from 'utils/library';
 import {isDaoEnsNameValid} from 'utils/validators';
 import {useProviders} from 'context/providers';
 import {useNetwork} from 'context/network';
-import { ProposalType } from 'pages/createProposal';
+import {ProposalType} from 'pages/createProposal';
 import useScreen from 'hooks/useScreen';
-import { useFileUpload } from 'hooks/useFileUpload';
-import { InputPdfSingle } from 'components/uploadFile';
+import {useFileUpload} from 'hooks/useFileUpload';
+import {InputPdfSingle} from 'components/uploadFile';
 export type DefineMetadataProps = {
   arrayName?: string;
   isSettingPage?: boolean;
@@ -34,16 +33,18 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
   const {t} = useTranslation();
   const {isMobile} = useScreen();
   const {control} = useFormContext();
-  const [proposalType, setProposalType] = useState<ProposalType>(ProposalType.FUND);
+  const [proposalType, setProposalType] = useState<ProposalType>(
+    ProposalType.FUND
+  );
   const formMethods = useFormContext();
 
   const {uploadFile, isUploading} = useFileUpload();
-  
+
   const handleFileUpload = async (file: File) => {
     try {
       const cid = await uploadFile(file);
       console.log('File uploaded with CID:', cid);
-      formMethods.setValue('documentId', cid);  
+      formMethods.setValue('documentId', cid);
       // CID를 폼 상태에 저장하거나 다른 처리
     } catch (error) {
       console.error('Upload failed:', error);
@@ -56,7 +57,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.proposalType')}
-          helpText={t('createDAO2.step2.nameSubtitle')}
+          helpText={t('select.your.proposal.type')}
         />
         <Controller
           name="proposalType"
@@ -101,10 +102,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
 
       {/* Title */}
       <FormItem>
-        <Label
-          label={t('labels.title')}
-          helpText={t('createDAO2.step2.nameSubtitle')}
-        />
+        <Label label={t('labels.title')} />
 
         <Controller
           name="title"
@@ -151,6 +149,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
                 {...field}
                 placeholder={t('placeHolders.daoDescription')}
               />
+              <InputCount>{`${field.value.length}/1024`}</InputCount>
               {error?.message && (
                 <AlertInline label={error.message} mode="critical" />
               )}
@@ -159,33 +158,33 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
         />
       </FormItem>
 
-    {/* Upload Document */}
-    <FormItem>
-    <Label
+      {/* Upload Document */}
+      <FormItem>
+        <Label
           label={t('labels.uploadDocument')}
           helpText={t('createDAO2.step2.documentSubtitle')}
         />
-      <Controller
-        name="documentId"
-        control={control}
-        render={({field: {onChange}, fieldState: {error}}) => (
-          <InputPdfSingle
-            onChange={async (file: File | null) => {
-              if (file) {
-                await handleFileUpload(file);
-                formMethods.setValue('file', file);
-              } else {
-                formMethods.setValue('file', null);
-                formMethods.setValue('documentId', '');
-              }
-            }}
-            onError={(error) => {
-              console.error(error);
-            }}
-          />
-        )}
-      />
-    </FormItem>
+        <Controller
+          name="documentId"
+          control={control}
+          render={({field: {onChange}, fieldState: {error}}) => (
+            <InputPdfSingle
+              onChange={async (file: File | null) => {
+                if (file) {
+                  await handleFileUpload(file);
+                  formMethods.setValue('file', file);
+                } else {
+                  formMethods.setValue('file', null);
+                  formMethods.setValue('documentId', '');
+                }
+              }}
+              onError={error => {
+                console.error(error);
+              }}
+            />
+          )}
+        />
+      </FormItem>
     </>
   );
 };
@@ -208,13 +207,13 @@ const ProposalTypeSwitcher = styled.div.attrs({
   className: 'flex w-full gap-x-2 p-1 bg-ui-0 rounded-xl',
 })``;
 
-const StyledButtonText = styled(ButtonText).attrs(({isActive}: {isActive: boolean}) => ({
-  className: `flex-1 ${
-    isActive 
-      ? 'bg-primary-400 text-ui-0'
-      : 'text-ui-600'
-  }`,
-}))`
+const StyledButtonText = styled(ButtonText).attrs(
+  ({isActive}: {isActive: boolean}) => ({
+    className: `flex-1 ${
+      isActive ? 'bg-primary-400 text-ui-0' : 'text-ui-600'
+    }`,
+  })
+)`
   &:hover {
     ${({isActive}) => !isActive && 'background-color: rgba(71, 123, 238, 0.1);'}
   }
