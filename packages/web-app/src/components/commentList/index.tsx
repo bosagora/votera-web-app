@@ -135,6 +135,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
               <FiSend size={20} />
             </SubmitButton>
           </InputWrapper>
+          <InputCount>{`${newComment.length}/1000`}</InputCount>
         </CommentInput>
       )}
 
@@ -232,6 +233,10 @@ const SubmitButton = styled.button.attrs({
 
 const NoComments = styled.div.attrs({
   className: 'text-center text-[#666] py-4',
+})``;
+
+const InputCount = styled.div.attrs({
+  className: 'ft-text-sm mt-1',
 })``;
 
 export default CommentList;
