@@ -58,13 +58,23 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (proposalQuery.data) {
       const newProposals = proposalQuery.data as Array<IProposalData>;
+
       if (newProposals.length < PROPOSALS_PER_PAGE) {
         setHasMore(false);
+      } else {
+        setHasMore(true);
       }
+
       if (page === 1) {
         setProposals(newProposals);
       } else {
-        setProposals(prev => [...prev, ...newProposals]);
+        setProposals(prev => {
+          const uniqueProposals = newProposals.filter(
+            newProposal =>
+              !prev.some(p => p.proposalId === newProposal.proposalId)
+          );
+          return [...prev, ...uniqueProposals];
+        });
       }
     }
   }, [proposalQuery.data, page]);
@@ -80,6 +90,7 @@ const Dashboard: React.FC = () => {
       {isDesktop ? (
         <DashboardContent
           proposals={proposals}
+          proposalLength={proposalLength}
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           isLoading={proposalQuery.isLoading}
@@ -87,6 +98,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <MobileDashboardContent
           proposals={proposals}
+          proposalLength={proposalLength}
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           isLoading={proposalQuery.isLoading}
@@ -105,6 +117,7 @@ const HeaderWrapper = styled.div.attrs({
 
 type DashboardContentProps = {
   proposals: Array<IProposalData>;
+  proposalLength: number;
   hasMore: boolean;
   onLoadMore: () => void;
   isLoading: boolean;
@@ -112,6 +125,7 @@ type DashboardContentProps = {
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   proposals,
+  proposalLength,
   hasMore,
   onLoadMore,
   isLoading,
@@ -122,7 +136,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         <ProposalSnapshot
           daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
           proposals={proposals}
-          proposalLength={proposals.length}
+          proposalLength={proposalLength}
           hasMore={hasMore}
           onLoadMore={onLoadMore}
           isLoading={isLoading}
@@ -132,9 +146,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   );
 };
 
-// NOTE: These Containers are built SPECIFICALLY FOR >= DESKTOP SCREENS. Since
-// the mobile layout is much simpler, it has it's own component.
-
 const CenterWideContent = styled.div.attrs({
   className: 'desktop:space-y-5 desktop:col-start-2 desktop:col-span-10',
 })``;
@@ -143,6 +154,7 @@ const CenterWideContent = styled.div.attrs({
 
 const MobileDashboardContent: React.FC<DashboardContentProps> = ({
   proposals,
+  proposalLength,
   hasMore,
   onLoadMore,
   isLoading,
@@ -152,7 +164,7 @@ const MobileDashboardContent: React.FC<DashboardContentProps> = ({
       <ProposalSnapshot
         daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
         proposals={proposals}
-        proposalLength={proposals.length}
+        proposalLength={proposalLength}
         hasMore={hasMore}
         onLoadMore={onLoadMore}
         isLoading={isLoading}

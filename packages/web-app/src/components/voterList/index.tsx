@@ -51,7 +51,12 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
       if (page === 0) {
         setBallots(newBallots);
       } else {
-        setBallots(prev => [...prev, ...newBallots]);
+        setBallots(prev => {
+          const uniqueBallots = newBallots.filter(
+            newBallot => !prev.some(p => p.voter === newBallot.voter)
+          );
+          return [...prev, ...uniqueBallots];
+        });
       }
 
       setHasMore(newBallots.length === PAGE_SIZE);

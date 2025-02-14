@@ -128,10 +128,16 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
       </Header>
       <TextContent>
         <TitleWrapper>
-          <Title>{title}</Title>
+          <Title>
+            {title.length > 20 ? `${title.substring(0, 20)}...` : title}
+          </Title>
         </TitleWrapper>
         <DescriptionWrapper>
-          <Description>{description}</Description>
+          <Description>
+            {description.length > 30
+              ? `${description.substring(0, 30)}...`
+              : description}
+          </Description>
         </DescriptionWrapper>
         <Publisher>
           <PublisherLabel>{publishLabel}</PublisherLabel>
@@ -229,11 +235,11 @@ const Header = styled.div.attrs({
 })``;
 
 const Title = styled.h1.attrs({
-  className: 'font-bold text-neutral-800 text-left line-clamp-1',
+  className: 'font-bold text-neutral-800 text-left  ',
 })``;
 
 const Description = styled.p.attrs({
-  className: 'text-neutral-600 text-left line-clamp-2',
+  className: 'text-neutral-600 text-left line-clamp-2 text-ellipsis',
 })``;
 
 const Publisher = styled.span.attrs({
@@ -275,7 +281,7 @@ const VotedAlertWrapper = styled.div.attrs({
 })``;
 
 const TitleWrapper = styled.div.attrs({
-  className: 'h-[24px] flex items-center',
+  className: 'h-[24px] flex items-center overflow-hidden text-ellipsis',
 })``;
 
 const DescriptionWrapper = styled.div.attrs({

@@ -176,15 +176,19 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       'fundAmount',
     ]);
 
+    console.log('fundAmount', fundAmount);
     return {
-      proposalType: ProposalType.FUND,
+      proposalType: proposalType,
       title,
       description,
       proposer: address,
       proposalId: proposalId,
-      fundAmount: Amount.make(Number(fundAmount), 18).value,
-      assessmentPeriod: Number(assessmentPeriod),
-      votePeriod: Number(votePeriod),
+      fundAmount:
+        proposalType === ProposalType.FUND
+          ? Amount.make(Number(fundAmount), 18).value
+          : Amount.make(Number(0), 18).value,
+      assessmentPeriod: Number(assessmentPeriod || 7),
+      votePeriod: Number(votePeriod || 14),
       documentId,
       systemType: SystemProposalType.NORMAL,
       params: [],

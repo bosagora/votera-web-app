@@ -1,4 +1,5 @@
 import {AlertInline, ButtonText, Tag} from '@aragon/ui-components';
+import {ListItemLink} from 'components/listItem/link';
 import {BigNumber} from 'ethers';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -21,6 +22,7 @@ interface ProposalInfoProps {
   assessmentEndDate: Date;
   voteStartDate: Date;
   voteEndDate: Date;
+  documentId: string;
 }
 
 const formatDate = (date: Date) => {
@@ -49,6 +51,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   assessmentEndDate,
   voteStartDate,
   voteEndDate,
+  documentId,
 }) => {
   const {t} = useTranslation();
 
@@ -69,6 +72,24 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           <Strong>{phase}</Strong>
         </InfoLine>
 
+        {/* 참고 문서 */}
+        <InfoLine>
+          <p>제안서</p>
+          <Strong>
+            {[
+              {
+                name: '다운로드',
+                url:
+                  'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/' +
+                  documentId +
+                  '.pdf',
+              },
+            ].map(({name, url}) => (
+              <ListItemLink label={name} href={url} key={url} />
+            ))}
+          </Strong>
+        </InfoLine>
+
         {/* 제안 유형 */}
         <InfoLine>
           <p>제안 유형</p>
@@ -79,33 +100,33 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* 펀딩 금액 */}
         {proposalType === ProposalType.FUND && (
-          <InfoLine>
-            <p>펀딩 금액</p>
-            <Strong>
-              {new Amount(fundAmount, 18).toDisplayString(true, 2)} BOA
-            </Strong>
-          </InfoLine>
+          <>
+            <InfoLine>
+              <p>펀딩 금액</p>
+              <Strong>
+                {new Amount(fundAmount, 18).toDisplayString(true, 2)} BOA
+              </Strong>
+            </InfoLine>
+            <InfoLine>
+              <p>평가 기간</p>
+              <Strong>
+                {`${formatDate(assessmentStartDate)} ~ ${formatDate(
+                  assessmentEndDate
+                )}`}
+                {period === ProposalPeriod.ASSESSMENT && (
+                  <div className="text-sm text-ui-500">
+                    {(() => {
+                      const now = new Date();
+                      const diff = assessmentEndDate.getTime() - now.getTime();
+                      const minutes = Math.floor(diff / (1000 * 60));
+                      return `(${minutes}분 남음)`;
+                    })()}
+                  </div>
+                )}
+              </Strong>
+            </InfoLine>
+          </>
         )}
-
-        {/* Assessment 기간 */}
-        <InfoLine>
-          <p>평가 기간</p>
-          <Strong>
-            {`${formatDate(assessmentStartDate)} ~ ${formatDate(
-              assessmentEndDate
-            )}`}
-            {period === ProposalPeriod.ASSESSMENT && (
-              <div className="text-sm text-ui-500">
-                {(() => {
-                  const now = new Date();
-                  const diff = assessmentEndDate.getTime() - now.getTime();
-                  const minutes = Math.floor(diff / (1000 * 60));
-                  return `(${minutes}분 남음)`;
-                })()}
-              </div>
-            )}
-          </Strong>
-        </InfoLine>
 
         {/* Vote 기간 */}
         <InfoLine>

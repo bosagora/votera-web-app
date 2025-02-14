@@ -620,17 +620,6 @@ const Proposal: React.FC = () => {
         </ContentWrapper>
 
         <SummaryText>{proposal?.description}</SummaryText>
-        {[
-          {
-            name: '제안 문서',
-            url:
-              'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/' +
-              proposal.documentId +
-              '.pdf',
-          },
-        ].map(({name, url}) => (
-          <ListItemLink label={name} href={url} key={url} />
-        ))}
       </HeaderContainer>
 
       <ContentContainer expandedProposal={expandedProposal}>
@@ -651,6 +640,7 @@ const Proposal: React.FC = () => {
           <ProposalInfo
             period={proposal.period}
             phase={proposal.phase}
+            documentId={proposal.documentId}
             proposalType={proposal.proposalType}
             fundAmount={proposal.fundAmount}
             extendedPhase={extendedPhase}
