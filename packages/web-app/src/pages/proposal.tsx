@@ -588,7 +588,7 @@ const Proposal: React.FC = () => {
   return (
     <Container>
       <HeaderContainer>
-        {!isDesktop && (
+        {/* {!isDesktop && (
           <Breadcrumb
             onClick={(path: string) =>
               navigate(
@@ -602,7 +602,7 @@ const Proposal: React.FC = () => {
             icon={<IconGovernance />}
             tag={tag}
           />
-        )}
+        )} */}
         <ProposalTitle>{proposal?.title}</ProposalTitle>
         <ContentWrapper>
           <ProposerLink>
