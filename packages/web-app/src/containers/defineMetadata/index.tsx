@@ -180,6 +180,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
               }}
               onError={error => {
                 console.error(error);
+                alert('Please provide a PDF file');
               }}
             />
           )}
