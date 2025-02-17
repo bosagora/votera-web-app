@@ -28,6 +28,9 @@ export const ARAGON_RPC = 'mainnet.eth.aragon.network';
 export const IPFS_ENDPOINT =
   import.meta.env.VITE_APP_IPFS_ENDPOINT ||
   'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/';
+export const IPFS_ENDPOINT_UPLOAD =
+  import.meta.env.VITE_APP_IPFS_ENDPOINT_UPLOAD ||
+  'https://votera-api.testnet.bosagora.org/upload';
 type AlchemyApiKeys = Record<SupportedNetworks, string | undefined>;
 export const alchemyApiKeys: AlchemyApiKeys = {
   ethereum: import.meta.env.VITE_ALCHEMY_KEY_MAINNET as string,

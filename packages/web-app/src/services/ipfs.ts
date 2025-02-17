@@ -1,4 +1,4 @@
-import {IPFS_ENDPOINT} from 'utils/constants';
+import {IPFS_ENDPOINT, IPFS_ENDPOINT_UPLOAD} from 'utils/constants';
 
 /**
  * Upload file to IPFS
@@ -7,12 +7,12 @@ import {IPFS_ENDPOINT} from 'utils/constants';
  */
 export const uploadToIPFS = async (file: File | Blob): Promise<string> => {
   try {
-    console.log('IPFS_ENDPOINT', IPFS_ENDPOINT);
+    console.log('IPFS_ENDPOINT', IPFS_ENDPOINT_UPLOAD);
     console.log('file', file);
     const formData = new FormData();
     formData.append('proposal', file);
 
-    const response = await fetch(IPFS_ENDPOINT, {
+    const response = await fetch(IPFS_ENDPOINT_UPLOAD, {
       method: 'POST',
       body: formData,
     });
@@ -26,7 +26,7 @@ export const uploadToIPFS = async (file: File | Blob): Promise<string> => {
     console.log('responseClone', responseClone);
     // 디버깅을 위해 원본 response 출력
     console.log('original response', response);
-    
+
     try {
       const data = await responseClone.json();
       console.log('parsed response data:', data);
@@ -60,4 +60,4 @@ export const getFromIPFS = async (cid: string): Promise<Response> => {
     console.error('Error getting file from IPFS:', error);
     throw error;
   }
-}; 
+};
