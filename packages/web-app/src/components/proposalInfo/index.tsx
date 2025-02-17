@@ -4,6 +4,7 @@ import {BigNumber} from 'ethers';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
+import {IPFS_ENDPOINT} from 'utils/constants';
 import {ProposalPhase} from 'utils/types';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
 
@@ -79,10 +80,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {[
               {
                 name: '다운로드',
-                url:
-                  'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/' +
-                  documentId +
-                  '.pdf',
+                url: IPFS_ENDPOINT + documentId + '.pdf',
               },
             ].map(({name, url}) => (
               <ListItemLink label={name} href={url} key={url} />

@@ -59,11 +59,7 @@ export const InputPdfSingle: React.FC<InputPdfSingleProps> = ({
     [onChange, onError]
   );
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
     ...(maxFileSize && {maxSize: maxFileSize}),
     accept: 'application/pdf',
@@ -140,7 +136,9 @@ const StyledButton = styled(ButtonIcon).attrs({
 
 const StyledIconAdd = styled(IconAdd).attrs(
   ({$isdragactive}: DefaultContainerProps) => ({
-    className: `${$isdragactive === 'true' ? 'text-primary-500' : 'text-ui-600'}`,
+    className: `${
+      $isdragactive === 'true' ? 'text-primary-500' : 'text-ui-600'
+    }`,
   })
 )<DefaultContainerProps>``;
 
