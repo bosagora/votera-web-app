@@ -253,7 +253,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
             <div>
               <div className="flex justify-center gap-8 my-6">
                 <div className="text-xl font-bold text-blue-500">
-                  통과 기준 : 각 항목 5점 이상, 평균 7점 이상 통과
+                  {t('assessmentWidget.passConditionDesc')}
                 </div>
               </div>
               <div className="p-4 border rounded-lg bg-white">
@@ -261,7 +261,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                   <IncreaseAmount
                     max={10}
                     min={1}
-                    label={'완성도'}
+                    label={t('assessmentWidget.completeness')}
                     value={assessment.completeness.toString()}
                     mode="default"
                     placeholder="1-10 사이 값을 입력하세요"
@@ -270,7 +270,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                   <IncreaseAmount
                     max={10}
                     min={1}
-                    label={'가능성'}
+                    label={t('assessmentWidget.possibility')}
                     value={assessment.possibility.toString()}
                     mode="default"
                     placeholder="1-10 사이 값을 입력하세요"
@@ -279,7 +279,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                   <IncreaseAmount
                     max={10}
                     min={1}
-                    label={'수익성'}
+                    label={t('assessmentWidget.profitability')}
                     value={assessment.profitability.toString()}
                     mode="default"
                     placeholder="1-10 사이 값을 입력하세요"
@@ -288,7 +288,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                   <IncreaseAmount
                     max={10}
                     min={1}
-                    label={'매력도'}
+                    label={t('assessmentWidget.attractiveness')}
                     value={assessment.attractiveness.toString()}
                     mode="default"
                     placeholder="1-10 사이 값을 입력하세요"
@@ -297,7 +297,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                   <IncreaseAmount
                     max={10}
                     min={1}
-                    label={'확장성'}
+                    label={t('assessmentWidget.scalability')}
                     value={assessment.scalability.toString()}
                     mode="default"
                     placeholder="1-10 사이 값을 입력하세요"
@@ -363,7 +363,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
     <Footer>
       <StyledButtonText
         css={{}}
-        label={'평가하기'}
+        label={t('assessmentWidget.doAssessment')}
         size="large"
         onClick={handleAssessSubmit}
         disabled={!canAssess}

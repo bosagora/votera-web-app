@@ -57,7 +57,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.proposalType')}
-          helpText={t('select.your.proposal.type')}
+          helpText={t('createDAO2.step2.proposalType')}
         />
         <Controller
           name="proposalType"
@@ -102,7 +102,10 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
 
       {/* Title */}
       <FormItem>
-        <Label label={t('labels.title')} />
+        <Label
+          label={t('labels.title')}
+          helpText={t('createDAO2.step2.title')}
+        />
 
         <Controller
           name="title"

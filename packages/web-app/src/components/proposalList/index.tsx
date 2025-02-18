@@ -97,15 +97,15 @@ export type CardViewProposal = Omit<CardProposalProps, 'onClick'> & {
   id: string;
 };
 
-const getInProgressPhase = (proposal: any) => {
+const getInProgressPhase = (proposal: any, t: TFunction) => {
   console.log('--------------------------------');
   console.log('proposal', proposal);
   const extendedPhase = getExtendedPhase(proposal);
   console.log('getInProgressPhase > extendedPhase', extendedPhase);
   if (extendedPhase.toLowerCase().includes('opened')) {
-    return '진행중';
+    return t('governance.statusWidget.active');
   } else if (extendedPhase.toLowerCase().includes('closed')) {
-    return '종료';
+    return t('governance.statusWidget.finished');
   }
 };
 
@@ -142,7 +142,7 @@ export function proposal2CardDataProps(
         })
       );
     },
-    progressLabel: getInProgressPhase(proposal),
+    progressLabel: getInProgressPhase(proposal, t),
   };
 
   return props;

@@ -123,7 +123,7 @@ const WidgetFooter: React.FC<FooterProps> = ({proposalId, exPhase}) => {
     <Footer>
       <StyledButtonText
         css={{}}
-        label={'출금 요청 '}
+        label={t('executionWidget.title')}
         size="large"
         onClick={handleExecutionSubmit}
       />

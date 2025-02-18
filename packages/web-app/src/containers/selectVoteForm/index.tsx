@@ -20,22 +20,22 @@ const SelectVoteForm: React.FC<{onSelect: (choice: number) => void}> = ({
   const voteOptions = [
     {
       id: 'yes',
-      title: '찬성',
-      description: '이 제안에 동의합니다',
+      title: t('voteWidget.yes'),
+      description: t('voteWidget.yesDesc'),
       icon: '👍',
       value: 1,
     },
     {
       id: 'no',
-      title: '반대',
-      description: '이 제안에 반대합니다',
+      title: t('voteWidget.no'),
+      description: t('voteWidget.noDesc'),
       icon: '👎',
       value: 2,
     },
     {
       id: 'abstain',
-      title: '기권',
-      description: '투표를 보류합니다',
+      title: t('voteWidget.abstain'),
+      description: t('voteWidget.abstainDesc'),
       icon: '🤔',
       value: 0,
     },

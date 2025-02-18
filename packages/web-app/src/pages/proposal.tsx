@@ -11,7 +11,7 @@ import {
 } from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import {TFunction, useTranslation} from 'react-i18next';
 import {generatePath, useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -300,36 +300,39 @@ const checkExecutionStatus = (proposal: any): ExecutionStatus => {
 };
 
 // UI에서 상태에 따른 메시지를 표시하기 위한 헬퍼 함수
-const getProposalStatusMessage = (phase: ProposalPhaseExtended): string => {
+const getProposalStatusMessage = (
+  phase: ProposalPhaseExtended,
+  t: TFunction
+): string => {
   switch (phase) {
     case ProposalPhaseExtended.OPENED_ASSESSMENT:
-      return '평가가 진행 중입니다.';
+      return t('proposalStatusMessage.openedAssessment');
     case ProposalPhaseExtended.OPENED_VOTE:
-      return '투표가 진행 중입니다.';
+      return t('proposalStatusMessage.openedVote');
     case ProposalPhaseExtended.OPENED_EXECUTION:
-      return '실행이 진행 중입니다.';
+      return t('proposalStatusMessage.openedExecution');
     case ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT:
-      return '평가 기간이 만료되었습니다. 투표단계로 전환되어야 합니다.';
+      return t('proposalStatusMessage.openedExpiredAssessment');
     case ProposalPhaseExtended.CLOSED_EXPIRED_ASSESSMENT:
-      return '평가 기간이 만료되었습니다. 투표 단계로 전환되지 않았습니다.';
+      return t('proposalStatusMessage.closedExpiredAssessment');
     case ProposalPhaseExtended.OPENED_EXPIRED_VOTE:
-      return '투표 기간이 만료되었습니다. 실행 단계로 전환되어야 합니다.';
+      return t('proposalStatusMessage.openedExpiredVote');
     case ProposalPhaseExtended.CLOSED_EXPIRED_VOTE:
-      return '투표 기간이 만료되었습니다. 실행 단계로 전환되지 않았습니다.';
+      return t('proposalStatusMessage.closedExpiredVote');
     case ProposalPhaseExtended.CLOSED_REJECTED_ASSESSMENT:
-      return '평가 단계에서 탈락되었습니다.';
+      return t('proposalStatusMessage.closedRejectedAssessment');
     case ProposalPhaseExtended.CLOSED_REJECTED_VOTE:
-      return '투표가 부결되었습니다.';
+      return t('proposalStatusMessage.closedRejectedVote');
     case ProposalPhaseExtended.CLOSED_INVALID_QUORUM_VOTE:
-      return '정족수 미달로 투표가 부결되었습니다.';
+      return t('proposalStatusMessage.closedInvalidQuorumVote');
     case ProposalPhaseExtended.CLOSED_FINISHED:
-      return '제안이 성공적으로 완료되었습니다.';
+      return t('proposalStatusMessage.closedFinished');
     case ProposalPhaseExtended.ERROR:
-      return '오류가 발생했습니다.';
+      return t('proposalStatusMessage.error');
     case ProposalPhaseExtended.UNDEFINED:
     case ProposalPhaseExtended.UNKNOWN:
     default:
-      return '알 수 없는 상태입니다.';
+      return t('proposalStatusMessage.undefined');
   }
 };
 
@@ -386,16 +389,16 @@ const Proposal: React.FC = () => {
     }
   }, [queryResult]);
 
-  const getStepTitle = (period: ProposalPeriod) => {
+  const getStepTitle = (period: ProposalPeriod, t: TFunction) => {
     switch (period) {
       case ProposalPeriod.ASSESSMENT:
-        return '평가 단계';
+        return t('voteSteps.step1.title');
       case ProposalPeriod.VOTE:
-        return '투표 단계';
+        return t('voteSteps.step2.title');
       case ProposalPeriod.EXECUTION:
-        return '실행 단계';
+        return t('voteSteps.step3.title');
       default:
-        return '종료';
+        return t('governance.statusWidget.finished');
     }
   };
 
@@ -456,7 +459,7 @@ const Proposal: React.FC = () => {
                   fetchedProposal.description ||
                   '이 제안서는 우리 프로젝트의 미래 발전 방향성을 제시하고 있으며...',
               },
-              phase: getStepTitle(fetchedProposal.period),
+              phase: getStepTitle(fetchedProposal.period, t),
               proposalType: fetchedProposal.proposalType,
               beginAssess: fetchedProposal?.beginAssess || 0,
               endAssess: fetchedProposal?.endAssess || 0,
@@ -510,7 +513,7 @@ const Proposal: React.FC = () => {
     if (client && address && proposalId && fetchedProposal) {
       fetchProposalData();
     }
-  }, [client, address, proposalId, fetchedProposal]);
+  }, [client, address, proposalId, fetchedProposal, t]);
 
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
@@ -644,7 +647,7 @@ const Proposal: React.FC = () => {
             proposalType={proposal.proposalType}
             fundAmount={proposal.fundAmount}
             extendedPhase={extendedPhase}
-            exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+            exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
             assessmentStartDate={new Date(proposal.beginAssess * 1000)}
             assessmentEndDate={new Date(proposal.endAssess * 1000)}
             voteStartDate={new Date(proposal.beginVote * 1000)}
@@ -656,7 +659,7 @@ const Proposal: React.FC = () => {
               phase={proposal.phase}
               canAssess={canAssess}
               exPhase={extendedPhase}
-              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+              exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
               proposalId={proposal.id}
             />
           ) : (
@@ -666,7 +669,7 @@ const Proposal: React.FC = () => {
               txhash={transactionHash || proposal?.executionTxHash || undefined}
               canVote={canVote}
               exPhase={extendedPhase}
-              exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+              exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
               proposalId={proposal.id}
             />
           )}
@@ -676,7 +679,7 @@ const Proposal: React.FC = () => {
                 period={proposal.period}
                 phase={proposal.phase}
                 exPhase={extendedPhase}
-                exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+                exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
                 proposalId={proposal.id}
               />
             )}
@@ -686,7 +689,7 @@ const Proposal: React.FC = () => {
                 period={proposal.period}
                 phase={proposal.phase}
                 exPhase={extendedPhase}
-                exPhaseMessage={getProposalStatusMessage(extendedPhase)}
+                exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
                 proposalId={proposal.id}
               />
             )}

@@ -72,29 +72,30 @@ export const OverviewDAOHeader: React.FC<OverviewDAOHeaderProps> = ({
   );
 };
 
-const OverviewCards = [
-  <CardWithImage
-    key="SelectBlockchain"
-    imgSrc={<IlluObject object="chain" />}
-    caption={i18n.t('createDAO2.step1.label')}
-    title={i18n.t('createDAO2.step1.title')}
-  />,
-  <CardWithImage
-    key="DefineMetadata"
-    imgSrc={<IlluObject object="labels" />}
-    caption={i18n.t('createDAO2.step2.label')}
-    title={i18n.t('createDAO2.step2.title')}
-  />,
-  <CardWithImage
-    key="SetupCommunity"
-    imgSrc={<IlluObject object="users" />}
-    caption={i18n.t('createDAO2.step3.label')}
-    title={i18n.t('createDAO2.step3.title')}
-  />,
-];
-
 export const OverviewDAOStep: React.FC = () => {
   const {isDesktop} = useScreen();
+  const {t} = useTranslation();
+
+  const OverviewCards = [
+    <CardWithImage
+      key="SelectBlockchain"
+      imgSrc={<IlluObject object="chain" />}
+      caption={t('createDAO2.step1.label')}
+      title={t('createDAO2.step1.title')}
+    />,
+    <CardWithImage
+      key="DefineMetadata"
+      imgSrc={<IlluObject object="labels" />}
+      caption={t('createDAO2.step2.label')}
+      title={t('createDAO2.step2.title')}
+    />,
+    <CardWithImage
+      key="SetupCommunity"
+      imgSrc={<IlluObject object="users" />}
+      caption={t('createDAO2.step3.label')}
+      title={t('createDAO2.step3.title')}
+    />,
+  ];
 
   if (isDesktop) {
     return (
