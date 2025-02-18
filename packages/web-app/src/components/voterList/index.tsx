@@ -7,6 +7,7 @@ import {CHAIN_METADATA} from 'utils/constants';
 import {shortenAddress} from 'utils/library';
 import {useClient2} from 'hooks/useClient2';
 import {SortType, IVoteBallotData, Candidate} from 'votera-sdk-client';
+import {TFunction, useTranslation} from 'react-i18next';
 
 interface Comment {
   id: string;
@@ -22,7 +23,7 @@ interface CommentListProps {
 
 const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
   const {network} = useNetwork();
-
+  const {t} = useTranslation();
   const {client} = useClient2();
 
   const PAGE_SIZE = 10;
@@ -85,14 +86,14 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
     setCurrentPage(nextPage);
   };
 
-  const getVoteText = (vote: Candidate) => {
+  const getVoteText = (vote: Candidate, t: TFunction) => {
     switch (vote) {
       case Candidate.YES:
-        return '찬성';
+        return t('voteWidget.yes');
       case Candidate.NO:
-        return '반대';
+        return t('voteWidget.no');
       case Candidate.BLANK:
-        return '기권';
+        return t('voteWidget.abstain');
     }
   };
 
@@ -111,8 +112,10 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
   return (
     <Container>
       <Header>
-        <HeaderTitle>투표 현황</HeaderTitle>
-        <VoterCount>{ballotLength}명 참여</VoterCount>
+        <HeaderTitle>{t('voteWidget.voteStatus')}</HeaderTitle>
+        <VoterCount>
+          {t('voteWidget.voterCount', {count: ballotLength})}
+        </VoterCount>
       </Header>
 
       {/* <VoteStatsContainer>
@@ -142,7 +145,7 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
                     href={`${CHAIN_METADATA[network].explorer}/address/${ballot.voter}`}
                   />
                   <VoteChoice vote={ballot.choice}>
-                    {getVoteText(ballot.choice)}
+                    {getVoteText(ballot.choice, t)}
                   </VoteChoice>
                 </HeaderLeft>
                 <CreatedAt>
@@ -158,12 +161,13 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
           ))}
           {hasMore && (
             <ShowMoreButton onClick={handleLoadMore}>
-              <FiChevronDown size={20} />더 보기
+              <FiChevronDown size={20} />
+              {t('explore.showMore')}
             </ShowMoreButton>
           )}
         </>
       ) : (
-        <EmptyMessage>투표 참여자가 없습니다</EmptyMessage>
+        <EmptyMessage>{t('voteWidget.emptyState')}</EmptyMessage>
       )}
     </Container>
   );

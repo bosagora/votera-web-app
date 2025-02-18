@@ -105,7 +105,7 @@ const ProposalSnapshot: React.FC<Props> = ({
           mode="secondary"
           size="large"
           iconRight={<IconChevronRight />}
-          label={t('labels.more')}
+          label={t('explore.showMore')}
           onClick={onLoadMore}
           disabled={isLoading}
         />

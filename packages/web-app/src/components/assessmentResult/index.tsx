@@ -56,11 +56,11 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
   }, [values]);
 
   const assessmentTypes = [
-    {key: 'completeness', label: '완성도'},
-    {key: 'possibility', label: '실현가능성'},
-    {key: 'profitability', label: '수익성'},
-    {key: 'attractiveness', label: '매력도'},
-    {key: 'scalability', label: '확장성'},
+    {key: 'completeness', label: t('assessmentWidget.completeness')},
+    {key: 'possibility', label: t('assessmentWidget.possibility')},
+    {key: 'profitability', label: t('assessmentWidget.profitability')},
+    {key: 'attractiveness', label: t('assessmentWidget.attractiveness')},
+    {key: 'scalability', label: t('assessmentWidget.scalability')},
   ] as const;
 
   const calculateItemAverage = (key: keyof Assessment) => {
@@ -75,7 +75,9 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
       <Container>
         <InputWrapper>
           <AverageWrapper>{average}</AverageWrapper>
-          <NodeInfoWrapper>참여한 노드 {assessmentLength}</NodeInfoWrapper>
+          <NodeInfoWrapper>
+            {t('assessmentWidget.assessNodeCount')} {assessmentLength}
+          </NodeInfoWrapper>
         </InputWrapper>
 
         <ProgressWrapper>
@@ -104,7 +106,7 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
                       ? 0
                       : (values[0][key] / assessmentLength).toFixed(1)}
                   </ApprovalAddresses>
-                  <TotalAddresses>{t(` of ${max}`)}</TotalAddresses>
+                  <TotalAddresses>{max}</TotalAddresses>
                 </ProgressInfo>
               </LinearProgressContainer>
             </ProgressInfoWrapper>

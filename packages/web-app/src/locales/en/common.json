@@ -323,7 +323,8 @@
       "executed": "Executed",
       "succeeded": "Succeeded",
       "defeated": "Rejected",
-      "expired": "Expired"
+      "expired": "Expired",
+      "finished": "Finished"
     },
     "executionCard": {
       "title": "Actions",
@@ -1334,7 +1335,8 @@
     },
     "step2": {
       "label": "Step 2",
-      "title": "Describe your proposal",
+      "title": "Define your proposal in one sentence",
+      "proposalType": "Select the purpose of your proposal.",
       "description": "Name and define your proposal so new contributors know they've come to the right place. This information is displayed on the dashboard page.",
       "nameSubtitle": "Maximum of 128 characters",
       "documentSubtitle": "Only PDF files are accepted. Please prepare your proposal or related documents in PDF format. Maximum file size is limited to 10MB.",
@@ -1348,11 +1350,92 @@
     "step3": {
       "label": "Step 3",
       "title": "Setup your proposal",
+      "assessmentPeriod": "Assessment period",
+      "assessmentPeriodDesc": "The assessment period is the period during which the proposal is evaluated. It should be set between 7 and 14 days.",
+      "votePeriod": "Vote period",
+      "votePeriodDesc": "The vote period is the period during which the proposal is voted on. It should be set between 14 and 28 days.",
+      "fundAmount": "Fund amount",
+      "fundAmountDesc": "The fund amount is the amount of BOA that is supported by the proposal. It should be set between 100 and 1000 BOA.",
       "description": "Setup your proposal so new contributors know they've come to the right place. This information is displayed on the proposal detail page."
     },
     "deploy": {
       "title": "Deploy your proposal",
       "description": "Double-check that everything is correct before launching your organization."
     }
+  },
+  "voteSteps": {
+    "step1": {
+      "label": "Step 1",
+      "title": "Assessment",
+      "description": "Define the assessment step for your proposal."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Vote",
+      "description": "Define the vote step for your proposal."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Execution",
+      "description": "Define the execution step for your proposal."
+    }
+  },
+  "proposalStatusMessage": {
+    "openedAssessment": "Assessment is in progress.",
+    "openedVote": "Vote is in progress.",
+    "openedExecution": "Execution is in progress.",
+    "openedExpiredAssessment": "Assessment period has expired. The vote step must be transitioned.",
+    "closedExpiredAssessment": "Assessment period has expired. The vote step was not transitioned.",
+    "openedExpiredVote": "Vote period has expired. The execution step must be transitioned.",
+    "closedExpiredVote": "Vote period has expired. The execution step was not transitioned.",
+    "closedRejectedAssessment": "Assessment step rejected.",
+    "closedRejectedVote": "Vote rejected.",
+    "closedInvalidQuorumVote": "Vote rejected due to invalid quorum.",
+    "closedFinished": "Proposal completed successfully.",
+    "error": "An error occurred.",
+    "undefined": "Unknown status."
+  },
+  "proposalInfo": {
+    "currentStatus": "Current status",
+    "proposalType": "Proposal type",
+    "fundAmount": "Fund amount",
+    "assessmentPeriod": "Assessment period",
+    "votePeriod": "Vote period",
+    "executionPeriod": "Execution period",
+    "proposalDocument": "Proposal document",
+    "systemProposal": "System proposal",
+    "fundingProposal": "Funding proposal",
+    "download": "Download"
+  },
+  "assessmentWidget": {
+    "title": "Assessment result",
+    "assessNodeCount": "Assessed nodes",
+    "completeness": "Completeness",
+    "possibility": "Possibility",
+    "profitability": "Profitability",
+    "attractiveness": "Attractiveness",
+    "scalability": "Scalability",
+    "totalScore": "Total score",
+    "totalScoreDesc": "The total score is the sum of the assessment results.",
+    "doAssessment": "Do assessment",
+    "passConditionDesc": "Pass condition: Each item 5 points or more, average 7 points or more",
+    "emptyComment": "No comments have been registered.",
+    "enterComment": "Enter a comment."
+  },
+  "voteWidget": {
+    "vote": "Vote",
+    "yes": "Support",
+    "no": "Oppose",
+    "abstain": "Abstain",
+    "yesDesc": "I support this proposal",
+    "noDesc": "I oppose this proposal",
+    "abstainDesc": "I abstain from voting",
+    "voterCount": "{{count}} participants",
+    "voteStatus": "Vote status",
+    "emptyState": "No participants have voted yet."
+  },
+  "executionWidget": {
+    "title": "Withdrawal request",
+    "description": "Request a withdrawal."
   }
 }

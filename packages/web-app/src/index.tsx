@@ -54,7 +54,7 @@ const onLoad = () => {
   // Wipe local storage cache if its structure is out of date and clashes
   // with this version of the app.
   const cacheVersion = localStorage.getItem('AragonCacheVersion');
-  const retainKeys = ['privacy-policy-preferences', 'favoriteDaos'];
+  const retainKeys = ['privacy-policy-preferences', 'favoriteDaos', 'uselang'];
   if (!cacheVersion || parseInt(cacheVersion) < CACHE_VERSION) {
     for (let i = 0; i < localStorage.length; i++) {
       if (!retainKeys.includes(localStorage.key(i)!)) {
@@ -62,6 +62,11 @@ const onLoad = () => {
       }
     }
     localStorage.setItem('AragonCacheVersion', CACHE_VERSION.toString());
+  }
+
+  // 언어 설정이 없는 경우 기본값 설정
+  if (!localStorage.getItem('uselang')) {
+    localStorage.setItem('uselang', 'ko');
   }
 };
 onLoad();

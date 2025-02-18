@@ -38,9 +38,9 @@ const VoteResults: React.FC<Props> = ({voteSummary}) => {
   });
 
   const voteTypes = [
-    {key: 'yes', label: '찬성', value: 1},
-    {key: 'no', label: '반대', value: 2},
-    {key: 'abstain', label: '기권', value: 0},
+    {key: 'yes', label: t('voteWidget.yes'), value: 1},
+    {key: 'no', label: t('voteWidget.no'), value: 2},
+    {key: 'abstain', label: t('voteWidget.abstain'), value: 0},
   ] as const;
 
   useEffect(() => {

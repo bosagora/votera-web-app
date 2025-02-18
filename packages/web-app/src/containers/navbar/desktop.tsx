@@ -22,6 +22,7 @@ import {NavlinksDropdown} from './breadcrumbDropdown';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
+import {changeLanguage} from '../../../i18n.config';
 
 const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
@@ -35,7 +36,7 @@ type DesktopNavProp = {
 };
 
 const DesktopNav: React.FC<DesktopNavProp> = props => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const navigate = useNavigate();
   const {network} = useNetwork();
   const {dao} = useParams();
@@ -62,6 +63,10 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
     navigate(generatePath(props.returnURL!, {network, dao}));
   }, [dao, navigate, network, props.returnURL]);
 
+  const handleLanguageChange = (lang: string) => {
+    changeLanguage(lang);
+  };
+
   if (props.isProcess) {
     return (
       <>
@@ -73,12 +78,30 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
               onClick={handleExitWithWarning}
             />
 
-            <ButtonWallet
-              src={address}
-              onClick={props.onWalletClick}
-              isConnected={isConnected}
-              label={isConnected ? address : t('navButtons.connectWallet')}
-            />
+            <div className="flex items-center gap-3">
+              <LanguageButtonGroup>
+                <ButtonText
+                  mode={i18n.language === 'en' ? 'primary' : 'secondary'}
+                  size="small"
+                  label="EN"
+                  onClick={() => handleLanguageChange('en')}
+                  className="px-2 py-1"
+                />
+                <ButtonText
+                  mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
+                  size="small"
+                  label="한국어"
+                  onClick={() => handleLanguageChange('ko')}
+                  className="px-2 py-1"
+                />
+              </LanguageButtonGroup>
+              <ButtonWallet
+                src={address}
+                onClick={props.onWalletClick}
+                isConnected={isConnected}
+                label={isConnected ? address : t('navButtons.connectWallet')}
+              />
+            </div>
           </Menu>
         </Container>
         {props.processType && (
@@ -129,7 +152,23 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
           />
         </Content>
 
-        <div className="flex gap-2">
+        <div className="flex items-center gap-3">
+          <LanguageButtonGroup>
+            <ButtonText
+              mode={i18n.language === 'en' ? 'primary' : 'secondary'}
+              size="small"
+              label="EN"
+              onClick={() => handleLanguageChange('en')}
+              className="px-2 py-1"
+            />
+            <ButtonText
+              mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
+              size="small"
+              label="한국어"
+              onClick={() => handleLanguageChange('ko')}
+              className="px-2 py-1"
+            />
+          </LanguageButtonGroup>
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}
@@ -162,4 +201,8 @@ const Content = styled.div.attrs({
 
 const LinksWrapper = styled.div.attrs({
   className: 'flex items-center space-x-1.5',
+})``;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex items-center gap-2',
 })``;

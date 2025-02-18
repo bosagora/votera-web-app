@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ButtonWallet} from '@aragon/ui-components';
+import {ButtonWallet, ButtonText, IconType} from '@aragon/ui-components';
 import {useTranslation} from 'react-i18next';
 
 import {useWallet} from 'hooks/useWallet';
@@ -9,7 +9,7 @@ import {useGlobalModalContext} from 'context/globalModals';
 import {Container, GridLayout} from 'components/layout';
 
 const ExploreNav: React.FC = () => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const {address, isConnected, methods} = useWallet();
   const {open} = useGlobalModalContext();
   const path = t('logo.linkURL');
@@ -26,6 +26,10 @@ const ExploreNav: React.FC = () => {
     });
   };
 
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <Container data-testid="navbar">
       <Menu>
@@ -38,6 +42,20 @@ const ExploreNav: React.FC = () => {
           </LeftContent>
           <RightContent>
             <ActionsWrapper>
+              <LanguageButtonGroup>
+                <ButtonText
+                  mode={i18n.language === 'en' ? 'primary' : 'secondary'}
+                  size="small"
+                  label="EN"
+                  onClick={() => handleLanguageChange('en')}
+                />
+                <ButtonText
+                  mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
+                  size="small"
+                  label="한국어"
+                  onClick={() => handleLanguageChange('ko')}
+                />
+              </LanguageButtonGroup>
               <ButtonWallet
                 src={address}
                 onClick={handleWalletButtonClick}
@@ -73,6 +91,10 @@ const RightContent = styled.div.attrs({
 
 const ActionsWrapper = styled.div.attrs({
   className: 'flex space-x-3 items-center',
+})``;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex space-x-2 items-center mr-3',
 })``;
 
 export default ExploreNav;

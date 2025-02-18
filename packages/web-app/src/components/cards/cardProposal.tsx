@@ -11,6 +11,7 @@ import {ProposalPhase} from 'utils/types';
 import {CardProposalDataProps} from 'components/proposalList';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {getExtendedPhase} from 'pages/proposal';
+import {useTranslation} from 'react-i18next';
 type ProposalUseCase = 'list' | 'explore';
 
 export function isExploreProposal(
@@ -84,16 +85,16 @@ const getPhaseColor = (phase: ProposalPeriod) => {
   }
 };
 
-const getPhaseLabel = (phase: ProposalPeriod) => {
+const getPhaseLabel = (phase: ProposalPeriod, t: TFunction) => {
   switch (phase) {
     case ProposalPeriod.ASSESSMENT:
-      return '평가 단계';
+      return t('voteSteps.step1.title');
     case ProposalPeriod.VOTE:
-      return '투표 단계';
+      return t('voteSteps.step2.title');
     case ProposalPeriod.EXECUTION:
-      return '실행 단계';
+      return t('voteSteps.step3.title');
     case ProposalPeriod.FINISHED:
-      return '실행 단계';
+      return t('voteSteps.step3.title');
     default:
       return '';
   }
@@ -117,7 +118,11 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
     <Card
       data-testid="cardProposal"
       onClick={onClick}
-      className={progressLabel === '종료' && 'bg-gray-200'}
+      className={
+        progressLabel === '종료' || progressLabel === 'Finished'
+          ? 'bg-gray-200'
+          : ''
+      }
     >
       <Header>
         <HeaderOptions phase={phase} type={type || ''} />
@@ -182,15 +187,16 @@ type HeaderOptionProps = Pick<CardProposalDataProps, 'phase'> & {
 };
 
 const HeaderOptions: React.VFC<HeaderOptionProps> = ({phase, type}) => {
+  const {t} = useTranslation();
   switch (phase) {
     case ProposalPeriod.ASSESSMENT:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'assessment'} />;
+      return <Tag label={getPhaseLabel(phase, t)} colorScheme={'assessment'} />;
     case ProposalPeriod.VOTE:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'vote'} />;
+      return <Tag label={getPhaseLabel(phase, t)} colorScheme={'vote'} />;
     case ProposalPeriod.EXECUTION:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'execution'} />;
+      return <Tag label={getPhaseLabel(phase, t)} colorScheme={'execution'} />;
     case ProposalPeriod.FINISHED:
-      return <Tag label={getPhaseLabel(phase)} colorScheme={'execution'} />;
+      return <Tag label={getPhaseLabel(phase, t)} colorScheme={'execution'} />;
     default:
       return null;
   }
@@ -207,10 +213,11 @@ const HeaderProgressOptions: React.VFC<HeaderProgressOptionProps> = ({
   progressLabel,
   type,
 }) => {
+  const {t} = useTranslation();
   switch (progressLabel) {
-    case '진행중':
+    case t('governance.statusWidget.active'):
       return <Tag label={progressLabel} colorScheme={'inprogress'} />;
-    case '종료':
+    case t('governance.statusWidget.finished'):
       return <Tag label={progressLabel} colorScheme={'finished'} />;
     default:
       return null;

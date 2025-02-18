@@ -13,7 +13,7 @@ import {useClient2} from 'hooks/useClient2';
 import {ICommentData, SortType} from 'votera-sdk-client';
 import {useWaitForTransaction} from 'wagmi';
 import {useWallet} from 'hooks/useWallet';
-
+import {useTranslation} from 'react-i18next';
 interface Comment {
   id: string;
   author: string;
@@ -35,7 +35,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
   const {network} = useNetwork();
   const [newComment, setNewComment] = React.useState('');
   const {handlePublishComment} = useCreateCommentContext();
-
+  const {t} = useTranslation();
   const [comments, setComments] = React.useState<ICommentData[]>([]);
   const [commentLength, setCommentLength] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -128,7 +128,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
             <StyledTextarea
               value={newComment}
               onChange={e => setNewComment(e.target.value)}
-              placeholder="댓글을 입력하세요"
+              placeholder={t('assessmentWidget.enterComment')}
               rows={3}
             />
             <SubmitButton onClick={handleSubmit}>
@@ -140,7 +140,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
       )}
 
       {comments.length === 0 ? (
-        <NoComments>등록된 댓글이 없습니다</NoComments>
+        <NoComments>{t('assessmentWidget.emptyComment')}</NoComments>
       ) : (
         <>
           {comments.map(comment => (
@@ -166,7 +166,8 @@ const CommentListContent: React.FC<CommentListProps> = ({
 
           {hasMore && (
             <ShowMoreButton onClick={handleLoadMore}>
-              <FiChevronDown size={20} />더 보기
+              <FiChevronDown size={20} />
+              {t('explore.showMore')}
             </ShowMoreButton>
           )}
         </>

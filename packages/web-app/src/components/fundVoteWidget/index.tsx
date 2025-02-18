@@ -67,7 +67,7 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
     <CreateVoteProvider>
       <Card>
         <Header>
-          <Title>{t('governance.executionCard.title')}</Title>
+          {/* <Title>{t('governance.executionCard.title')}</Title> */}
           {/* <Description>{t('governance.executionCard.description')}</Description> */}
         </Header>
 

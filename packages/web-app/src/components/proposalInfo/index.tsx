@@ -69,17 +69,17 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* 현재 상태 */}
         <InfoLine>
-          <p>현재 상태</p>
+          <p>{t('proposalInfo.currentStatus')}</p>
           <Strong>{phase}</Strong>
         </InfoLine>
 
         {/* 참고 문서 */}
         <InfoLine>
-          <p>제안서</p>
+          <p>{t('proposalInfo.proposalDocument')}</p>
           <Strong>
             {[
               {
-                name: '다운로드',
+                name: t('proposalInfo.download'),
                 url: IPFS_ENDPOINT + documentId + '.pdf',
               },
             ].map(({name, url}) => (
@@ -90,9 +90,11 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* 제안 유형 */}
         <InfoLine>
-          <p>제안 유형</p>
+          <p>{t('proposalInfo.proposalType')}</p>
           <Strong>
-            {proposalType === ProposalType.SYSTEM ? '시스템 제안' : '펀딩 제안'}
+            {proposalType === ProposalType.SYSTEM
+              ? t('proposalInfo.systemProposal')
+              : t('proposalInfo.fundingProposal')}
           </Strong>
         </InfoLine>
 
@@ -100,13 +102,13 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposalType === ProposalType.FUND && (
           <>
             <InfoLine>
-              <p>펀딩 금액</p>
+              <p>{t('proposalInfo.fundAmount')}</p>
               <Strong>
                 {new Amount(fundAmount, 18).toDisplayString(true, 2)} BOA
               </Strong>
             </InfoLine>
             <InfoLine>
-              <p>평가 기간</p>
+              <p>{t('proposalInfo.assessmentPeriod')}</p>
               <Strong>
                 {`${formatDate(assessmentStartDate)} ~ ${formatDate(
                   assessmentEndDate
@@ -128,7 +130,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* Vote 기간 */}
         <InfoLine>
-          <p>투표 기간</p>
+          <p>{t('proposalInfo.votePeriod')}</p>
           <Strong>
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
             {period === ProposalPeriod.VOTE && (

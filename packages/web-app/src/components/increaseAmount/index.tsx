@@ -50,7 +50,8 @@ const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
                 {value <= max ? value : max}
               </ApprovalAddresses>
               <TotalAddresses>
-                {t('createDAO.step4.minApprovalAddressCount', {count: max})}
+                {/* {t('createDAO.step4.minApprovalAddressCount', {count: max})} */}
+                {max}
               </TotalAddresses>
             </ProgressInfo>
           </LinearProgressContainer>

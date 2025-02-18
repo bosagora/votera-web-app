@@ -8,7 +8,12 @@ import {
   ValueInput,
 } from '@aragon/ui-components';
 import React, {useCallback} from 'react';
-import {Controller, FieldError, useFormContext, useWatch} from 'react-hook-form';
+import {
+  Controller,
+  FieldError,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
@@ -33,54 +38,20 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
 
   const proposalType = useWatch({
     control,
-    name: 'proposalType'
+    name: 'proposalType',
   });
 
   return (
     <>
-
-    {proposalType   === ProposalType.FUND && (
-      <FormItem>
-        <Label
-          label={t('labels.assessmentPeriod')}
-          helpText={t('createDAO2.step2.nameSubtitle')}
-        />
-
-        <Controller
-          name="assessmentPeriod"
-          control={control}
-          defaultValue={7}
-          rules={{
-            required: t('errors.required.name'),
-            min: {value: 0, message: t('errors.required.minValue')},
-          }}
-          render={({
-            field: {onBlur, onChange, value, name},
-            fieldState: {error},
-          }) => (
-            <>
-              <IncreaseAmount
-                {...{name, value, onBlur}}
-                onChange={onChange}
-                placeholder={t('placeHolders.assessmentPeriod')}
-                min={7}
-                max={14}
-              />
-              {error?.message && (
-                <AlertInline label={error.message} mode="critical" />
-              )}
-            </>
-          )}
-        />
-      </FormItem>
-    )}
+      {proposalType === ProposalType.FUND && (
         <FormItem>
           <Label
-            label={t('labels.votePeriod')}
-            helpText={t('createDAO2.step2.descriptionSubtitle')}
+            label={t('labels.assessmentPeriod')}
+            helpText={t('createDAO2.step3.assessmentPeriodDesc')}
           />
-           <Controller
-            name="votePeriod"
+
+          <Controller
+            name="assessmentPeriod"
             control={control}
             defaultValue={7}
             rules={{
@@ -95,9 +66,9 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                 <IncreaseAmount
                   {...{name, value, onBlur}}
                   onChange={onChange}
-                  placeholder={t('placeHolders.votePeriod')}
-                  min={14}
-                  max={28}
+                  placeholder={''}
+                  min={7}
+                  max={14}
                 />
                 {error?.message && (
                   <AlertInline label={error.message} mode="critical" />
@@ -106,7 +77,39 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
             )}
           />
         </FormItem>
-  
+      )}
+      <FormItem>
+        <Label
+          label={t('labels.votePeriod')}
+          helpText={t('createDAO2.step3.votePeriodDesc')}
+        />
+        <Controller
+          name="votePeriod"
+          control={control}
+          defaultValue={7}
+          rules={{
+            required: t('errors.required.name'),
+            min: {value: 0, message: t('errors.required.minValue')},
+          }}
+          render={({
+            field: {onBlur, onChange, value, name},
+            fieldState: {error},
+          }) => (
+            <>
+              <IncreaseAmount
+                {...{name, value, onBlur}}
+                onChange={onChange}
+                placeholder={''}
+                min={14}
+                max={28}
+              />
+              {error?.message && (
+                <AlertInline label={error.message} mode="critical" />
+              )}
+            </>
+          )}
+        />
+      </FormItem>
 
       {proposalType === ProposalType.FUND && (
         <FormItem>
@@ -154,7 +157,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   )} */}
                 </div>
               </>
-          )}
+            )}
           />
         </FormItem>
       )}
