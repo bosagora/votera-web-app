@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
       </GridLayout>
       <div className="flex z-10 justify-center items-center py-0.5 space-x-1 text-sm text-ui-0 bg-primary-400">
         <IconInfo />
-        <span>Multisig Wallet App Public Beta</span>
+        <span>Votera App Public Beta</span>
       </div>
     </Section>
   );

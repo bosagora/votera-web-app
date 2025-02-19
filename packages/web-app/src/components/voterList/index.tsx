@@ -9,26 +9,17 @@ import {useClient2} from 'hooks/useClient2';
 import {SortType, IVoteBallotData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
 
-interface Comment {
-  id: string;
-  author: string;
-  vote: 'yes' | 'no' | 'abstain';
-  createdAt: string;
-}
-
-interface CommentListProps {
+interface VoteListProps {
   proposalId: string;
-  comments: Comment[];
 }
 
-const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
+const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   const {network} = useNetwork();
   const {t} = useTranslation();
   const {client} = useClient2();
 
   const PAGE_SIZE = 10;
 
-  const [voters, setVoters] = useState<string[]>([]);
   const [ballotLength, setBallotLength] = useState<number>(0);
   const [ballots, setBallots] = useState<IVoteBallotData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -97,18 +88,6 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
     }
   };
 
-  const voteStats = comments.reduce(
-    (acc, comment) => {
-      acc[comment.vote]++;
-      return acc;
-    },
-    {
-      yes: 0,
-      no: 0,
-      abstain: 0,
-    }
-  );
-
   return (
     <Container>
       <Header>
@@ -117,21 +96,6 @@ const VoterList: React.FC<CommentListProps> = ({proposalId, comments}) => {
           {t('voteWidget.voterCount', {count: ballotLength})}
         </VoterCount>
       </Header>
-
-      {/* <VoteStatsContainer>
-        <VoteStatItem>
-          <VoteLabel vote="yes">찬성</VoteLabel>
-          <VoteCount>{voteSummary?.[1] || 0}명</VoteCount>
-        </VoteStatItem>
-        <VoteStatItem>
-          <VoteLabel vote="no">반대</VoteLabel>
-          <VoteCount>{voteSummary?.[2] || 0}명</VoteCount>
-        </VoteStatItem>
-        <VoteStatItem>
-          <VoteLabel vote="abstain">기권</VoteLabel>
-          <VoteCount>{voteSummary?.[0] || 0}명</VoteCount>
-        </VoteStatItem>
-      </VoteStatsContainer> */}
 
       {ballots.length > 0 ? (
         <>
@@ -253,7 +217,7 @@ const VoteStatItem = styled.div.attrs({
   className: 'flex items-center justify-between w-full px-4',
 })``;
 
-const VoteLabel = styled.span<{vote: Comment['vote']}>`
+const VoteLabel = styled.span<{vote: Candidate}>`
   ${({vote}) => `
     padding: 2px 8px;
     border-radius: 4px;
@@ -261,21 +225,21 @@ const VoteLabel = styled.span<{vote: Comment['vote']}>`
     min-width: 80px;
     text-align: center;
     ${
-      vote === 'yes' &&
+      vote === Candidate.YES &&
       `
       background-color: #E8FFF1;
       color: #16A34A;
     `
     }
     ${
-      vote === 'no' &&
+      vote === Candidate.NO &&
       `
       background-color: #FFE8E8;
       color: #DC2626;
     `
     }
     ${
-      vote === 'abstain' &&
+      vote === Candidate.BLANK &&
       `
       background-color: #F3F4F6;
       color: #6B7280;

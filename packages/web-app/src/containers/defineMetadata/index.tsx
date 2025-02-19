@@ -104,7 +104,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.title')}
-          helpText={t('createDAO2.step2.title')}
+          helpText={t('createDAO2.step2.metaTitle')}
         />
 
         <Controller

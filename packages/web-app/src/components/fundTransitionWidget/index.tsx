@@ -122,11 +122,11 @@ const WidgetFooter: React.FC<FooterProps> = ({proposalId, exPhase}) => {
     <Footer>
       <StyledButtonText
         css={{}}
-        label={'단계 전환'}
+        label={t('transitionWidget.title')}
         size="large"
         onClick={handleTransitionSubmit}
       />
-      <AlertInline label={t('governance.executionCard.status.succeeded')} />
+      <AlertInline label={t('transitionWidget.description')} />
     </Footer>
   );
 };

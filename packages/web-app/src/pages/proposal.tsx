@@ -703,41 +703,7 @@ const Proposal: React.FC = () => {
               <CommentList proposalId={proposal.id} isVoter={isVoter} />
             )}
           {proposal && proposal.period >= ProposalPeriod.VOTE && (
-            <VoterList
-              proposalId={proposal.id}
-              comments={[
-                {
-                  id: '1',
-                  author: '0x1234567890123456789012345678901234567890',
-                  vote: 'yes',
-                  createdAt: '2024-03-10 14:23',
-                },
-                {
-                  id: '2',
-                  author: '0x2345678901234567890123456789012345678901',
-                  vote: 'no',
-                  createdAt: '2024-03-10 15:45',
-                },
-                {
-                  id: '3',
-                  author: '0x3456789012345678901234567890123456789012',
-                  vote: 'yes',
-                  createdAt: '2024-03-11 09:12',
-                },
-                {
-                  id: '4',
-                  author: '0x4567890123456789012345678901234567890123',
-                  vote: 'yes',
-                  createdAt: '2024-03-11 10:30',
-                },
-                {
-                  id: '5',
-                  author: '0x5678901234567890123456789012345678901234',
-                  vote: 'abstain',
-                  createdAt: '2024-03-11 11:45',
-                },
-              ]}
-            />
+            <VoterList proposalId={proposal.id} />
           )}
         </AdditionalInfoContainer>
       </ContentContainer>

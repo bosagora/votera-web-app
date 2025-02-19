@@ -11,7 +11,7 @@ import {ProposalPhase} from 'utils/types';
 import {CardProposalDataProps} from 'components/proposalList';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {getExtendedPhase} from 'pages/proposal';
-import {useTranslation} from 'react-i18next';
+import {TFunction, useTranslation} from 'react-i18next';
 type ProposalUseCase = 'list' | 'explore';
 
 export function isExploreProposal(
@@ -120,7 +120,7 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
       onClick={onClick}
       className={
         progressLabel === '종료' || progressLabel === 'Finished'
-          ? 'bg-gray-200'
+          ? 'bg-ui-200'
           : ''
       }
     >

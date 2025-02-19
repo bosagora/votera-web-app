@@ -4,9 +4,10 @@ import {BigNumber} from 'ethers';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
-import {IPFS_ENDPOINT} from 'utils/constants';
+import {CHAIN_METADATA, IPFS_ENDPOINT} from 'utils/constants';
 import {ProposalPhase} from 'utils/types';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
+import {useNetwork} from 'context/network';
 
 const NumberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
@@ -57,6 +58,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   const {t} = useTranslation();
 
   const averageRating = 5.0;
+  const network = useNetwork().network;
 
   console.log('ProposalInfo phase', phase);
 
@@ -76,7 +78,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* 참고 문서 */}
         <InfoLine>
           <p>{t('proposalInfo.proposalDocument')}</p>
-          <Strong>
+          <div className="flex flex-col gap-y-1">
             {[
               {
                 name: t('proposalInfo.download'),
@@ -85,7 +87,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             ].map(({name, url}) => (
               <ListItemLink label={name} href={url} key={url} />
             ))}
-          </Strong>
+          </div>
         </InfoLine>
 
         {/* 제안 유형 */}
@@ -113,7 +115,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 {`${formatDate(assessmentStartDate)} ~ ${formatDate(
                   assessmentEndDate
                 )}`}
-                {period === ProposalPeriod.ASSESSMENT && (
+              </Strong>
+              {CHAIN_METADATA[network].name === 'bosagora_devnet' &&
+                period === ProposalPeriod.ASSESSMENT && (
                   <div className="text-sm text-ui-500">
                     {(() => {
                       const now = new Date();
@@ -123,7 +127,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                     })()}
                   </div>
                 )}
-              </Strong>
             </InfoLine>
           </>
         )}
@@ -133,7 +136,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           <p>{t('proposalInfo.votePeriod')}</p>
           <Strong>
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
-            {period === ProposalPeriod.VOTE && (
+          </Strong>
+          {period === ProposalPeriod.VOTE &&
+            CHAIN_METADATA[network].name === 'bosagora_devnet' && (
               <div className="text-sm text-ui-500">
                 {(() => {
                   const now = new Date();
@@ -143,7 +148,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 })()}
               </div>
             )}
-          </Strong>
         </InfoLine>
       </VStackSection>
     </Container>

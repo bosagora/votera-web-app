@@ -1335,7 +1335,8 @@
     },
     "step2": {
       "label": "Step 2",
-      "title": "Define your proposal in one sentence",
+      "title": "Describe your proposal",
+      "metaTitle": "Define your proposal in one sentence.",
       "proposalType": "Select the purpose of your proposal.",
       "description": "Name and define your proposal so new contributors know they've come to the right place. This information is displayed on the dashboard page.",
       "nameSubtitle": "Maximum of 128 characters",
@@ -1385,7 +1386,7 @@
     "openedVote": "Vote is in progress.",
     "openedExecution": "Execution is in progress.",
     "openedExpiredAssessment": "Assessment period has expired. The vote step must be transitioned.",
-    "closedExpiredAssessment": "Assessment period has expired. The vote step was not transitioned.",
+    "closedExpiredAssessment": "The vote step was not transitioned within the vote period.",
     "openedExpiredVote": "Vote period has expired. The execution step must be transitioned.",
     "closedExpiredVote": "Vote period has expired. The execution step was not transitioned.",
     "closedRejectedAssessment": "Assessment step rejected.",
@@ -1436,6 +1437,10 @@
   },
   "executionWidget": {
     "title": "Withdrawal request",
-    "description": "Request a withdrawal."
+    "description": "The proposal has passed. Request a withdrawal."
+  },
+  "transitionWidget": {
+    "title": "Transition",
+    "description": "Transition to the next step."
   }
 }

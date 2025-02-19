@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
         }`}
       >
         <IconInfo />
-        <span>Multisig Wallet App Public Beta</span>
+        <span>Votera App Public Beta</span>
       </div>
     </Section>
   );
