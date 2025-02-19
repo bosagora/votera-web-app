@@ -1240,7 +1240,8 @@
     },
     "step2": {
       "label": "2단계",
-      "title": "제안을 한 문장으로 정의하세요.",
+      "title": "제안 설명하기",
+      "metaTitle": "제안을 한 문장으로 정의하세요.",
       "proposalType": "제안의 목적이 무엇인지 선택하세요.",
       "description": "새로운 기여자들이 올바른 곳에 왔다는 것을 알 수 있도록 제안의 이름을 정하고 정의하세요. 이 정보는 대시보드 페이지에 표시됩니다.",
       "nameSubtitle": "최대 128자",
@@ -1291,7 +1292,7 @@
     "openedVote": "투표가 진행 중입니다.",
     "openedExecution": "실행이 진행 중입니다.",
     "openedExpiredAssessment": "평가 기간이 만료되었습니다. 투표 단계로 전환되어야 합니다.",
-    "closedExpiredAssessment": "평가 기간이 만료되었습니다. 투표 단계로 전환되지 않았습니다.",
+    "closedExpiredAssessment": "투표 유효기간 내에 투표 단계로 전환되지 못했습니다.",
     "openedExpiredVote": "투표 기간이 만료되었습니다. 실행 단계로 전환되어야 합니다.",
     "closedExpiredVote": "투표 기간이 만료되었습니다. 실행 단계로 전환되지 않았습니다.",
     "closedRejectedAssessment": "평가 단계에서 거절되었습니다.",
@@ -1342,6 +1343,10 @@
   },
   "executionWidget": {
     "title": "출금 요청",
-    "description": "출금 요청을 하세요."
+    "description": "제안이 통과되었습니다. 출금 요청을 하세요."
+  },
+  "transitionWidget": {
+    "title": "단계 전환",
+    "description": "제안을 다음 단계를 전환하세요."
   }
 }

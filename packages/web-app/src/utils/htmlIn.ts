@@ -1,4 +1,5 @@
 import {TFunction} from 'react-i18next';
+import React from 'react';
 
 type TParam0 = Parameters<TFunction<'translation', undefined>>[0];
 
@@ -19,3 +20,11 @@ export const htmlIn =
     }
     return value;
   };
+export const htmlInParagraph = (text: string) => {
+  const sentences = text.split('\r');
+  return sentences
+    .filter(sentence => sentence.trim().length > 0)
+    .map((sentence, index) =>
+      React.createElement('p', {key: index}, sentence.trim())
+    );
+};

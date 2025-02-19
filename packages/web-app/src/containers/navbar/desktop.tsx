@@ -79,22 +79,6 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
             />
 
             <div className="flex items-center gap-3">
-              <LanguageButtonGroup>
-                <ButtonText
-                  mode={i18n.language === 'en' ? 'primary' : 'secondary'}
-                  size="small"
-                  label="EN"
-                  onClick={() => handleLanguageChange('en')}
-                  className="px-2 py-1"
-                />
-                <ButtonText
-                  mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
-                  size="small"
-                  label="한국어"
-                  onClick={() => handleLanguageChange('ko')}
-                  className="px-2 py-1"
-                />
-              </LanguageButtonGroup>
               <ButtonWallet
                 src={address}
                 onClick={props.onWalletClick}
@@ -153,22 +137,6 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
         </Content>
 
         <div className="flex items-center gap-3">
-          <LanguageButtonGroup>
-            <ButtonText
-              mode={i18n.language === 'en' ? 'primary' : 'secondary'}
-              size="small"
-              label="EN"
-              onClick={() => handleLanguageChange('en')}
-              className="px-2 py-1"
-            />
-            <ButtonText
-              mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
-              size="small"
-              label="한국어"
-              onClick={() => handleLanguageChange('ko')}
-              className="px-2 py-1"
-            />
-          </LanguageButtonGroup>
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}
@@ -201,8 +169,4 @@ const Content = styled.div.attrs({
 
 const LinksWrapper = styled.div.attrs({
   className: 'flex items-center space-x-1.5',
-})``;
-
-const LanguageButtonGroup = styled.div.attrs({
-  className: 'flex items-center gap-2',
 })``;

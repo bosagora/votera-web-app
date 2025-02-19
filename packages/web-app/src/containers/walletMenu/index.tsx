@@ -20,13 +20,14 @@ import {trackEvent} from 'services/analytics';
 import {CHAIN_METADATA} from 'utils/constants';
 import {handleClipboardActions, shortenAddress} from 'utils/library';
 import {LoginRequired} from './LoginRequired';
+import {changeLanguage} from '../../../i18n.config';
 
 export const WalletMenu = () => {
   const {close, isWalletOpen} = useGlobalModalContext();
   const {address, methods, chainId, isConnected, network, status, provider} =
     useWallet();
   const {isDesktop} = useScreen();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const {alert} = useAlertContext();
 
   useEffect(() => {
@@ -63,6 +64,10 @@ export const WalletMenu = () => {
     window.open(baseUrl + '/address/' + address, '_blank');
   };
 
+  const handleLanguageChange = (lang: string) => {
+    changeLanguage(lang);
+  };
+
   if (!isConnected) return <LoginRequired />;
 
   return (
@@ -95,6 +100,22 @@ export const WalletMenu = () => {
         )}
       </ModalHeader>
       <ModalBody>
+        <LanguageButtonGroup>
+          <StyledButtonText
+            size="large"
+            mode={i18n.language === 'en' ? 'primary' : 'secondary'}
+            label="EN"
+            onClick={() => handleLanguageChange('en')}
+            className="justify-center text-center"
+          />
+          <StyledButtonText
+            size="large"
+            mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
+            label="한국어"
+            onClick={() => handleLanguageChange('ko')}
+            className="justify-center text-center"
+          />
+        </LanguageButtonGroup>
         <StyledButtonText
           size="large"
           mode="ghost"
@@ -138,4 +159,16 @@ const ModalBody = styled.div.attrs({
 
 const StyledButtonText = styled(ButtonText)`
   justify-content: flex-start;
+  text-align: center;
+`;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex items-center gap-1.5 mb-1.5',
+})`
+  button {
+    flex: 1;
+    min-width: 50px;
+    height: 40px;
+    border-radius: 8px;
+  }
 `;

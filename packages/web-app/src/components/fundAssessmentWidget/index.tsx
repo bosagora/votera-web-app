@@ -29,6 +29,7 @@ import {
   useCreateAssessContext,
 } from 'context/createAssess';
 import {useForm} from 'react-hook-form';
+import {htmlInParagraph} from 'utils/htmlIn';
 
 const Card = styled.div.attrs({
   className:
@@ -315,7 +316,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
           )}
 
           <div className="flex justify-center gap-8 my-6">
-            <div className="text-xl font-bold text-blue-500">
+            <div className="text-lg font-bold text-blue-500">
               {exPhaseMessage}
             </div>
             {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}

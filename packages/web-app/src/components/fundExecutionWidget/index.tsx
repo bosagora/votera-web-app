@@ -127,7 +127,7 @@ const WidgetFooter: React.FC<FooterProps> = ({proposalId, exPhase}) => {
         size="large"
         onClick={handleExecutionSubmit}
       />
-      <AlertInline label={t('governance.executionCard.status.succeeded')} />
+      <AlertInline label={t('executionWidget.description')} />
     </Footer>
   );
 };
