@@ -18,14 +18,16 @@ import {ProposalPhaseExtended} from 'pages/proposal';
 import VoteResults from 'components/voteResults';
 import {BigNumber} from 'ethers';
 import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';
-import {Candidate, ProposalPeriod} from 'votera-sdk-client';
+import {Candidate, ProposalPeriod, IVoteBallotData} from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
 import {useEffect} from 'react';
+import {useWallet} from 'hooks/useWallet';
 
 type VoteWidgetProps = {
   txhash?: string;
   phase?: ProposalPhase;
   canVote?: boolean;
+  myBallot?: IVoteBallotData;
   exPhase?: ProposalPhaseExtended;
   exPhaseMessage?: string;
   proposalId: BigNumber;
@@ -37,6 +39,7 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
   phase,
   txhash,
   canVote,
+  myBallot,
   exPhase,
   exPhaseMessage,
   proposalId,
@@ -45,7 +48,7 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
   const [selectedVote, setSelectedVote] = useState<Candidate>(Candidate.BLANK);
   const {client} = useClient2();
   const [voteSummary, setVoteSummary] = useState<Array<number>>([0, 0, 0]);
-
+  const {address} = useWallet();
   console.log('canVote', canVote);
   useEffect(() => {
     console.log('proposalId', proposalId);
@@ -73,30 +76,42 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
 
         <Content>
           {exPhase === ProposalPhaseExtended.OPENED_VOTE && canVote && (
-            <div className="space-y-3">
-              {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
-              <div className="flex flex-col gap-3">
-                {exPhase === ProposalPhaseExtended.OPENED_VOTE && (
-                  <SelectVoteForm onSelect={selectVote} />
-                )}
-                <WidgetFooter
-                  phase={phase}
-                  exPhase={exPhase}
-                  proposalId={proposalId}
-                  choice={selectedVote}
-                  canVote={canVote}
-                />
+            <div className="p-4 border rounded-lg bg-white">
+              <div className="space-y-3">
+                {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
+                <div className="flex flex-col gap-3">
+                  {exPhase === ProposalPhaseExtended.OPENED_VOTE && (
+                    <SelectVoteForm onSelect={selectVote} />
+                  )}
+                  <WidgetFooter
+                    phase={phase}
+                    exPhase={exPhase}
+                    proposalId={proposalId}
+                    choice={selectedVote}
+                    canVote={canVote}
+                  />
+                </div>
               </div>
             </div>
           )}
 
-          <div>
-            <div className="flex justify-center gap-8 my-6">
+          <div className="p-4 border rounded-lg bg-white">
+            <div className="flex justify-center gap-8 mt-3">
               <div className="text-lg font-bold text-blue-500">
                 {exPhaseMessage}
               </div>
-              {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
             </div>
+            {myBallot && myBallot.voter === address && (
+              <div className="flex justify-center gap-8 mb-3">
+                <div className="text-sm font-bold text-blue-400">
+                  {myBallot.choice === Candidate.YES
+                    ? t('voteWidget.yesDesc')
+                    : myBallot.choice === Candidate.NO
+                    ? t('voteWidget.noDesc')
+                    : t('voteWidget.abstainDesc')}
+                </div>
+              </div>
+            )}
             <VoteResults voteSummary={voteSummary} />
           </div>
         </Content>
@@ -147,7 +162,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
         onClick={() => handleVoteSubmit(choice, openExpiredVote)}
         disabled={!canVote}
       />
-      <AlertInline label={t('governance.executionCard.status.succeeded')} />
+      <AlertInline label={t('voteWidget.voteStatusDesc')} />
     </Footer>
   );
 };
