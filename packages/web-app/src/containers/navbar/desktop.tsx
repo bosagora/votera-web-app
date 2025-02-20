@@ -7,7 +7,12 @@ import {
 } from '@aragon/ui-components';
 import React, {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {generatePath, useNavigate, useParams} from 'react-router-dom';
+import {
+  generatePath,
+  useNavigate,
+  useParams,
+  useLocation,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {DaoSelector} from 'components/daoSelector';
@@ -38,6 +43,7 @@ type DesktopNavProp = {
 const DesktopNav: React.FC<DesktopNavProp> = props => {
   const {t, i18n} = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const {network} = useNetwork();
   const {dao} = useParams();
   const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
@@ -134,6 +140,16 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
             className="h-4"
             onClick={() => navigate(Landing)}
           />
+          {location.pathname.includes('/proposals') && (
+            <div className="flex items-center gap-3">
+              <div
+                className="text-primary-500 font-bold ft-text-lg cursor-pointer"
+                onClick={() => navigate(Landing)}
+              >
+                {'< Dashboard'}
+              </div>
+            </div>
+          )}
         </Content>
 
         <div className="flex items-center gap-3">

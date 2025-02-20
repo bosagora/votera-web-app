@@ -114,9 +114,9 @@ const ApprovalAddresses = styled.p.attrs({
 const TotalAddresses = styled.p.attrs({className: 'text-ui-600 ft-text-sm'})``;
 
 const ProgressWrapper = styled.div.attrs({
-  className: 'flex flex-col w-full gap-y-2',
+  className:
+    'flex flex-1 flex-col items-stretch w-full gap-y-4 order-2 desktop:order-none',
 })``;
-
 const ProgressInfoWrapper = styled.div.attrs({
   className: 'flex w-full items-center gap-x-4',
 })``;
@@ -127,5 +127,5 @@ const AverageWrapper = styled.div.attrs({
 })``;
 
 const AssessmentLabel = styled.div.attrs({
-  className: 'text-ui-800 font-bold w-32 desktop:w-24 flex-shrink-0',
+  className: 'text-ui-800 font-bold w-32 desktop:w-24 flex-shrink-0 mb-2',
 })``;

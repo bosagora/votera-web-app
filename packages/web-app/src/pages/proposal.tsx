@@ -1,5 +1,3 @@
-import {VoteValues} from '../utils/aragon/sdk-client-multisig-types';
-import {ProposalPhase} from '../utils/types';
 import {
   Breadcrumb,
   ButtonText,
@@ -19,34 +17,21 @@ import {Loading} from 'components/temporary';
 import {TerminalTabs, VotingTerminal} from 'containers/votingTerminal';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
-import {useProposalTransactionContext} from 'context/proposalTransaction';
 import {useSpecificProvider} from 'context/providers';
-import {useCache} from 'hooks/useCache';
 import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
-import {CHAIN_METADATA, getSupportedNetworkByChainId} from 'utils/constants';
+import {CHAIN_METADATA} from 'utils/constants';
 import {formatUnits, shortenAddress, toDisplayEns} from 'utils/library';
 import {Dashboard, NotFound} from 'utils/paths';
-import {
-  getVoteButtonLabel,
-  isMultisigProposal,
-  stripPlgnAdrFromProposalId,
-} from 'utils/proposals';
-import {
-  Action,
-  ActionWithdraw,
-  DetailedProposal,
-  ProposalId,
-} from 'utils/types';
-import {PluginTypes} from '../utils/aragon/types';
+
+import {DetailedProposal, ProposalId} from 'utils/types';
 
 import {FundVoteWidget} from 'components/fundVoteWidget';
 import {FundAssessmentWidget} from 'components/fundAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
 import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
-import {ListItemLink} from 'components/listItem/link';
 import {
   IVoteBallotData,
   IScoreData,
@@ -55,13 +40,12 @@ import {
   IProposalData,
   ProposalPeriod,
   ProposalStates,
-  SortType,
   VoteResult,
 } from 'votera-sdk-client';
 import {useClient2} from 'hooks/useClient2';
-import {useProposalQuery} from 'hooks/useProposalQuery';
 import {FundTransitionWidget} from 'components/fundTransitionWidget';
 import {FundExecutionWidget} from 'components/fundExecutionWidget';
+import {useProposalQuery} from 'hooks/useProposalQuery';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -446,7 +430,7 @@ const Proposal: React.FC = () => {
         }
 
         // Mock 데이터와 실제 데이터를 결합
-        const mockProposalData = fetchedProposal
+        const extendedProposalData = fetchedProposal
           ? {
               id: fetchedProposal?.proposalId || 'default-id',
 
@@ -495,9 +479,9 @@ const Proposal: React.FC = () => {
             }
           : null;
 
-        console.log('mockProposalData :', mockProposalData);
-        setProposal(mockProposalData);
-        const extendedPhaseTmp = getExtendedPhase(mockProposalData);
+        console.log('extendedProposalData :', extendedProposalData);
+        setProposal(extendedProposalData);
+        const extendedPhaseTmp = getExtendedPhase(extendedProposalData);
         console.log('extendedPhaseTmp :', extendedPhaseTmp);
         setExtendedPhase(extendedPhaseTmp);
         setProposalError(null);
@@ -658,6 +642,7 @@ const Proposal: React.FC = () => {
               period={proposal.period}
               phase={proposal.phase}
               canAssess={canAssess}
+              myScore={myScore || null}
               exPhase={extendedPhase}
               exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
               proposalId={proposal.id}
@@ -668,6 +653,7 @@ const Proposal: React.FC = () => {
               phase={proposal.phase}
               txhash={transactionHash || proposal?.executionTxHash || undefined}
               canVote={canVote}
+              myBallot={myBallot || null}
               exPhase={extendedPhase}
               exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
               proposalId={proposal.id}

@@ -30,7 +30,8 @@ import {
 } from 'context/createAssess';
 import {useForm} from 'react-hook-form';
 import {htmlInParagraph} from 'utils/htmlIn';
-
+import {IScoreData} from 'votera-sdk-client';
+import {useWallet} from 'hooks/useWallet';
 const Card = styled.div.attrs({
   className:
     'w-84 flex-col bg-white rounded-xl py-3 px-2 desktop:p-3 space-y-3',
@@ -61,14 +62,15 @@ const StyledButtonText = styled(ButtonText).attrs({
   className: 'w-full tablet:w-max',
 })``;
 
-type AssessmentProps = {
-  proposalId: string;
-  phase: ProposalPhase;
+interface FundAssessmentWidgetProps {
+  period: ProposalPeriod;
+  phase: string;
   canAssess: boolean;
+  myScore: IScoreData | null;
   exPhase: ProposalPhaseExtended;
   exPhaseMessage: string;
-  period: ProposalPeriod;
-};
+  proposalId: string;
+}
 
 interface Assessment {
   completeness: number;
@@ -86,10 +88,11 @@ export type AssessmentFormData = {
   scalability: number;
 };
 
-export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
+export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
   period,
   phase,
   canAssess,
+  myScore,
   exPhase,
   exPhaseMessage,
   proposalId,
@@ -124,6 +127,7 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
   const [assessmentLength, setAssessmentLength] = useState(0);
 
   const {client} = useClient2();
+  const {address} = useWallet();
 
   useEffect(() => {
     console.log('exPhase', exPhase);
@@ -252,13 +256,14 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
         <Content>
           {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess && (
             <div>
-              <div className="flex justify-center gap-8 my-6">
-                <div className="text-xl font-bold text-blue-500">
-                  {t('assessmentWidget.passConditionDesc')}
-                </div>
-              </div>
               <div className="p-4 border rounded-lg bg-white">
-                <div className="space-y-1">
+                {/* <div className="flex justify-center gap-8 my-6">
+                  <div className="text-lg font-bold text-blue-500">
+                    {t('assessmentWidget.passConditionDesc')}
+                  </div>
+                </div> */}
+
+                <div className="space-y-0">
                   <IncreaseAmount
                     max={10}
                     min={1}
@@ -305,26 +310,38 @@ export const FundAssessmentWidget: React.FC<AssessmentProps> = ({
                     onChange={handleScalabilityChange}
                   />
                 </div>
-                <WidgetFooter
-                  proposalId={proposalId}
-                  assessment={assessment}
-                  canAssess={canAssess}
-                  exPhase={exPhase}
-                />
+                <div className="mt-4">
+                  <WidgetFooter
+                    proposalId={proposalId}
+                    assessment={assessment}
+                    canAssess={canAssess}
+                    exPhase={exPhase}
+                  />
+                </div>
               </div>
             </div>
           )}
 
-          <div className="flex justify-center gap-8 my-6">
-            <div className="text-lg font-bold text-blue-500">
-              {exPhaseMessage}
+          <div className="p-4 border rounded-lg bg-white">
+            <div className="flex justify-center gap-8 mt-3">
+              <div className="text-lg font-bold text-blue-500">
+                {exPhaseMessage}
+              </div>
+
+              {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
             </div>
-            {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
+            {myScore && myScore.timestamp > 0 && myScore.voter === address && (
+              <div className="flex justify-center gap-8 mb-3">
+                <div className="text-sm font-bold text-blue-400">
+                  {t('assessmentWidget.myScore')}
+                </div>
+              </div>
+            )}
+            <AssessmentResult
+              values={[assessmentSummary]}
+              assessmentLength={assessmentLength}
+            />
           </div>
-          <AssessmentResult
-            values={[assessmentSummary]}
-            assessmentLength={assessmentLength}
-          />
         </Content>
       </Card>
     </CreateAssessProvider>
@@ -369,6 +386,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
         onClick={handleAssessSubmit}
         disabled={!canAssess}
       />
+      <AlertInline label={t('assessmentWidget.passConditionDesc')} />
     </Footer>
   );
 };

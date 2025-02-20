@@ -26,7 +26,9 @@ const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
     <>
       <Container>
         <LabelWrapper>
-          <p className="text-sm font-bold text-ui-800">{rest.label}</p>
+          <p className="text-sm font-bold text-ui-800 min-w-[220px]">
+            {rest.label}
+          </p>
         </LabelWrapper>
         <InputWrapper>
           <NumberInput
@@ -85,7 +87,7 @@ const ApprovalAddresses = styled.p.attrs({
 const TotalAddresses = styled.p.attrs({className: 'text-ui-600 ft-text-sm'})``;
 
 const LabelWrapper = styled.div.attrs({
-  className: 'order-1 min-w-[120px] desktop:min-w-[120px] text-center',
+  className: 'order-1 min-w-[220px] desktop:w-1/4 text-center',
 })``;
 
 const InputWrapper = styled.div.attrs({

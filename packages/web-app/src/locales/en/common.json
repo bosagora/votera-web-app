@@ -1382,9 +1382,9 @@
     }
   },
   "proposalStatusMessage": {
-    "openedAssessment": "Assessment is in progress.",
-    "openedVote": "Vote is in progress.",
-    "openedExecution": "Execution is in progress.",
+    "openedAssessment": "Assessment is ongoing.",
+    "openedVote": "Vote is ongoing.",
+    "openedExecution": "Execution is ongoing.",
     "openedExpiredAssessment": "Assessment period has expired. The vote step must be transitioned.",
     "closedExpiredAssessment": "The vote step was not transitioned within the vote period.",
     "openedExpiredVote": "Vote period has expired. The execution step must be transitioned.",
@@ -1397,7 +1397,7 @@
     "undefined": "Unknown status."
   },
   "proposalInfo": {
-    "currentStatus": "Current status",
+    "currentStatus": "Current phase",
     "proposalType": "Proposal type",
     "fundAmount": "Fund amount",
     "assessmentPeriod": "Assessment period",
@@ -1406,10 +1406,14 @@
     "proposalDocument": "Proposal document",
     "systemProposal": "System proposal",
     "fundingProposal": "Funding proposal",
-    "download": "Download"
+    "download": "Download",
+    "daysLeft": "{{days}} day(s) left",
+    "hoursLeft": "{{hours}} hour(s) left",
+    "minutesLeft": "{{minutes}} minute(s) left"
   },
   "assessmentWidget": {
     "title": "Assessment result",
+    "description": "Check the assessment result.",
     "assessNodeCount": "Assessed nodes",
     "completeness": "Completeness",
     "possibility": "Possibility",
@@ -1418,22 +1422,25 @@
     "scalability": "Scalability",
     "totalScore": "Total score",
     "totalScoreDesc": "The total score is the sum of the assessment results.",
-    "doAssessment": "Do assessment",
-    "passConditionDesc": "Pass condition: Each item 5 points or more, average 7 points or more",
+    "doAssessment": "Assessment",
+    "passConditionDesc": "Passing criteria: 5 or more points for each item, with an average of 7 or more points.",
     "emptyComment": "No comments have been registered.",
-    "enterComment": "Enter a comment."
+    "enterComment": "Enter a comment.",
+    "myScore": "(You have completed the assessment.)"
   },
   "voteWidget": {
     "vote": "Vote",
     "yes": "Support",
-    "no": "Oppose",
+    "no": "Against",
     "abstain": "Abstain",
-    "yesDesc": "I support this proposal",
-    "noDesc": "I oppose this proposal",
-    "abstainDesc": "I abstain from voting",
+    "yesDesc": "(You voted in favor of this proposal.)",
+    "noDesc": "(You voted against this proposal.)",
+    "abstainDesc": "(You voted to abstain from this proposal.)",
     "voterCount": "{{count}} participants",
-    "voteStatus": "Vote status",
-    "emptyState": "No participants have voted yet."
+    "voteStatus": "Voter list",
+    "emptyState": "No participants have voted yet.",
+    "voteStatusDesc": "Passing criteria: 1/3 participation, 60% approval",
+    "myVote": "(You voted for {{vote}} on this proposal.)"
   },
   "executionWidget": {
     "title": "Withdrawal request",

@@ -18,7 +18,7 @@ import MobileMenu from './mobileMenu';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 type MobileNavProps = {
   isProcess?: boolean;
@@ -33,7 +33,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
   const currentDao = useReactiveVar(selectedDaoVar);
   const {isConnected, address} = useWallet();
   const navigate = useNavigate();
-
+  const location = useLocation();
   if (props.isProcess)
     return (
       <Container>
@@ -62,6 +62,17 @@ const MobileNav: React.FC<MobileNavProps> = props => {
                 onClick={() => open('mobileMenu')}
               />
             )} */}
+
+            {location.pathname.includes('/proposals') && (
+              <div className="flex items-center gap-3">
+                <div
+                  className="text-primary-500 font-bold ft-text-xl cursor-pointer"
+                  onClick={() => navigate(Landing)}
+                >
+                  {' < Back '}
+                </div>
+              </div>
+            )}
           </FlexOne>
           <FlexOne className="justify-center">
             {/* <DaoContainer>

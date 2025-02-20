@@ -1,13 +1,15 @@
-import {AlertInline, ButtonText, Tag} from '@aragon/ui-components';
+import {AlertInline, ButtonText, IconReload, Tag} from '@aragon/ui-components';
 import {ListItemLink} from 'components/listItem/link';
 import {BigNumber} from 'ethers';
 import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import {TFunction, useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import {CHAIN_METADATA, IPFS_ENDPOINT} from 'utils/constants';
 import {ProposalPhase} from 'utils/types';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
 import {useNetwork} from 'context/network';
+
+const Icon = styled(IconReload).attrs({className: 'ml-1 w-1.5 h-1.5'})``;
 
 const NumberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
@@ -42,6 +44,25 @@ interface StageStatus {
   availableTransitionToExecute?: boolean;
 }
 
+const getTimeRemaining = (endDate: Date, t: TFunction) => {
+  const now = new Date();
+  const diff = endDate.getTime() - now.getTime();
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (days > 0) {
+    return t('proposalInfo.daysLeft', {days});
+  } else if (hours > 0) {
+    return t('proposalInfo.hoursLeft', {hours});
+  } else if (minutes > 0) {
+    return t('proposalInfo.minutesLeft', {minutes});
+  } else {
+    return '';
+  }
+};
+
 const ProposalInfo: React.FC<ProposalInfoProps> = ({
   period,
   phase,
@@ -72,7 +93,15 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* 현재 상태 */}
         <InfoLine>
           <p>{t('proposalInfo.currentStatus')}</p>
-          <Strong>{phase}</Strong>
+          <div className="flex items-center">
+            <Strong>{phase}</Strong>
+            <button
+              className="p-0 hover:bg-ui-100 rounded-full"
+              onClick={() => window.location.reload()}
+            >
+              <Icon />
+            </button>
+          </div>
         </InfoLine>
 
         {/* 참고 문서 */}
@@ -117,14 +146,10 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 )}`}
               </Strong>
               {CHAIN_METADATA[network].name === 'bosagora_devnet' &&
-                period === ProposalPeriod.ASSESSMENT && (
+                period === ProposalPeriod.ASSESSMENT &&
+                !!getTimeRemaining(assessmentEndDate, t) && (
                   <div className="text-sm text-ui-500">
-                    {(() => {
-                      const now = new Date();
-                      const diff = assessmentEndDate.getTime() - now.getTime();
-                      const minutes = Math.floor(diff / (1000 * 60));
-                      return `(${minutes}분 남음)`;
-                    })()}
+                    {getTimeRemaining(assessmentEndDate, t)}
                   </div>
                 )}
             </InfoLine>
@@ -138,14 +163,10 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
           </Strong>
           {period === ProposalPeriod.VOTE &&
-            CHAIN_METADATA[network].name === 'bosagora_devnet' && (
+            CHAIN_METADATA[network].name === 'bosagora_devnet' &&
+            !!getTimeRemaining(voteEndDate, t) && (
               <div className="text-sm text-ui-500">
-                {(() => {
-                  const now = new Date();
-                  const diff = voteEndDate.getTime() - now.getTime();
-                  const minutes = Math.floor(diff / (1000 * 60));
-                  return `(${minutes}분 남음)`;
-                })()}
+                {getTimeRemaining(voteEndDate, t)}
               </div>
             )}
         </InfoLine>
