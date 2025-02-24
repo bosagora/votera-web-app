@@ -150,8 +150,11 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
     <CreateCommentContext.Provider value={{handlePublishComment}}>
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.submitCommentSubtitle')}
-        buttonLabelSuccess={t('TransactionModal.close')}
+        title={t('assessmentWidget.transactionModal.commentModal.title')}
+        subtitle={t(
+          'assessmentWidget.transactionModal.commentModal.description'
+        )}
+        buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={commentProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}

@@ -27,7 +27,7 @@ type VoteWidgetProps = {
   txhash?: string;
   phase?: ProposalPhase;
   canVote?: boolean;
-  myBallot?: IVoteBallotData;
+  myBallot?: IVoteBallotData | null;
   exPhase?: ProposalPhaseExtended;
   exPhaseMessage?: string;
   proposalId: BigNumber;

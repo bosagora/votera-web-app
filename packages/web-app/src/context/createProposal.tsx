@@ -304,7 +304,8 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
     <CreateProposalContext.Provider value={{handlePublishProposal}}>
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.createProposalSubtitle')}
+        title={t('createDAO2.deploy.transactionModal.title')}
+        subtitle={t('createDAO2.deploy.transactionModal.description')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={creationProcessState}
         isOpen={showModal}

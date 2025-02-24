@@ -180,7 +180,8 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     <CreateVoteContext.Provider value={{handlePublishVote}}>
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.submitVoteSubtitle')}
+        title={t('voteWidget.transactionModal.title')}
+        subtitle={t('voteWidget.transactionModal.description')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={voteProcessState}
         isOpen={showModal}

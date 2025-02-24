@@ -199,7 +199,8 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
     >
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.submitAssessmentSubtitle')}
+        title={t('assessmentWidget.transactionModal.title')}
+        subtitle={t('assessmentWidget.transactionModal.description')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={assessmentProcessState}
         isOpen={showModal}

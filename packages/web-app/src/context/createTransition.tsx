@@ -158,7 +158,8 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
     >
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.submitTransitionSubtitle')}
+        title={t('transitionWidget.transactionModal.title')}
+        subtitle={t('transitionWidget.transactionModal.description')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={transitionProcessState}
         isOpen={showModal}

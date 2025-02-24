@@ -140,7 +140,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
             className="h-4"
             onClick={() => navigate(Landing)}
           />
-          {location.pathname.includes('/proposals') && (
+          {location.pathname.includes('proposal') && (
             <div className="flex items-center gap-3">
               <div
                 className="text-primary-500 font-bold ft-text-lg cursor-pointer"
