@@ -1361,7 +1361,11 @@
     },
     "deploy": {
       "title": "Deploy your proposal",
-      "description": "Double-check that everything is correct before launching your organization."
+      "description": "Double-check that everything is correct before launching your organization.",
+      "transactionModal": {
+        "title": "Deploy proposal",
+        "description": "Approve the transaction to deploy the proposal."
+      }
     }
   },
   "voteSteps": {
@@ -1426,7 +1430,15 @@
     "passConditionDesc": "Passing criteria: 5 or more points for each item, with an average of 7 or more points.",
     "emptyComment": "No comments have been registered.",
     "enterComment": "Enter a comment.",
-    "myScore": "(You have completed the assessment.)"
+    "myScore": "(You have completed the assessment.)",
+    "transactionModal": {
+      "title": "Assessment",
+      "description": "Approve the transaction to assess the proposal.",
+      "commentModal": {
+        "title": "Assessment comment",
+        "description": "Approve the transaction to assess the proposal."
+      }
+    }
   },
   "voteWidget": {
     "vote": "Vote",
@@ -1440,14 +1452,26 @@
     "voteStatus": "Voter list",
     "emptyState": "No participants have voted yet.",
     "voteStatusDesc": "Passing criteria: 1/3 participation, 60% approval",
-    "myVote": "(You voted for {{vote}} on this proposal.)"
+    "myVote": "(You voted for {{vote}} on this proposal.)",
+    "transactionModal": {
+      "title": "Vote",
+      "description": "Approve the transaction to vote."
+    }
   },
   "executionWidget": {
     "title": "Withdrawal request",
-    "description": "The proposal has passed. Request a withdrawal."
+    "description": "The proposal has passed. Request a withdrawal.",
+    "transactionModal": {
+      "title": "Withdrawal request",
+      "description": "Approve the transaction to request a withdrawal."
+    }
   },
   "transitionWidget": {
     "title": "Transition",
-    "description": "Transition to the next step."
+    "description": "Transition to the next step.",
+    "transactionModal": {
+      "title": "Execute transition",
+      "description": "Approve the transaction to execute the transition."
+    }
   }
 }

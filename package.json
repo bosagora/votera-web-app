@@ -1,9 +1,9 @@
 {
-  "name": "@aragon/apps",
+  "name": "@votera/apps",
   "version": "0.1.0",
-  "description": "Aragon DAO Clients",
-  "repository": "https://github.com/aragon/apps",
-  "author": "Aragon Association",
+  "description": "Votera DAO Clients",
+  "repository": "https://github.com/votera/apps",
+  "author": "Votera",
   "license": "GNU",
   "private": true,
   "workspaces": {

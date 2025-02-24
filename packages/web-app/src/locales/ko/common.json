@@ -1267,7 +1267,11 @@
     },
     "deploy": {
       "title": "제안 배포하기",
-      "description": "조직을 출시하기 전에 모든 것이 올바른지 다시 한 번 확인하세요."
+      "description": "조직을 출시하기 전에 모든 것이 올바른지 다시 한 번 확인하세요.",
+      "transactionModal": {
+        "title": "제안 배포",
+        "description": "거래를 승인하여 제안을 배포하세요."
+      }
     }
   },
   "voteSteps": {
@@ -1332,7 +1336,15 @@
     "passConditionDesc": "통과 기준 : 각 항목 당 5점 이상, 평균 7점 이상 통과",
     "emptyComment": "등록된 댓글이 없습니다.",
     "enterComment": "댓글을 입력하세요.",
-    "myScore": "(당신은 평가를 완료했습니다.)"
+    "myScore": "(당신은 평가를 완료했습니다.)",
+    "transactionModal": {
+      "title": "평가 실행",
+      "description": "거래를 승인하여 평가를 실행하세요.",
+      "commentModal": {
+        "title": "평가 댓글 등록",
+        "description": "거래를 승인하여 평가 댓글을 등록하세요."
+      }
+    }
   },
   "voteWidget": {
     "vote": "투표하기",
@@ -1346,14 +1358,26 @@
     "voteStatus": "투표자 목록",
     "emptyState": "참여한 투표자가 없습니다.",
     "voteStatusDesc": "통과 기준 : 1/3 이상 참여, 60% 이상 찬성",
-    "myVote": "(당신은 제안에 {{vote}} 투표했습니다.)"
+    "myVote": "(당신은 제안에 {{vote}} 투표했습니다.)",
+    "transactionModal": {
+      "title": "투표 실행",
+      "description": "거래를 승인하여 투표를 실행하세요."
+    }
   },
   "executionWidget": {
     "title": "출금 요청",
-    "description": "제안이 통과되었습니다. 출금 요청을 하세요."
+    "description": "제안이 통과되었습니다. 출금 요청을 하세요.",
+    "transactionModal": {
+      "title": "출금 요청",
+      "description": "거래를 승인하여 출금 요청을 하세요."
+    }
   },
   "transitionWidget": {
     "title": "단계 전환",
-    "description": "제안을 다음 단계를 전환하세요."
+    "description": "제안을 다음 단계로 전환하세요.",
+    "transactionModal": {
+      "title": "전환 실행",
+      "description": "거래를 승인하여 전환을 실행하세요."
+    }
   }
 }

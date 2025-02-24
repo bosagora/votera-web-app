@@ -159,7 +159,8 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
     >
       {children}
       <PublishModal
-        subtitle={t('TransactionModal.submitExecuteSubtitle')}
+        title={t('executionWidget.transactionModal.title')}
+        subtitle={t('executionWidget.transactionModal.description')}
         buttonLabelSuccess={t('TransactionModal.goToProposal')}
         state={executeProcessState}
         isOpen={showModal}
