@@ -306,7 +306,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       <PublishModal
         title={t('createDAO2.deploy.transactionModal.title')}
         subtitle={t('createDAO2.deploy.transactionModal.description')}
-        buttonLabelSuccess={t('TransactionModal.goToProposal')}
+        buttonLabelSuccess={t('createDAO2.buttonLabelSuccess')}
         state={creationProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}

@@ -7,7 +7,7 @@ import {useClient2} from 'hooks/useClient2';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Dashboard} from '../utils/paths';
+import {Proposal} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
@@ -47,6 +47,7 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
   const [showModal, setShowModal] = useState(false);
   const [assessmentCreationData, setAssessmentCreationData] =
     useState<AssessmentParams>();
+  const [proposalId, setProposalId] = useState<string>();
 
   const shouldPoll =
     assessmentCreationData !== undefined &&
@@ -143,6 +144,7 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
           assessmentCreationData.assessment.scalability,
         ] as const;
 
+        setProposalId(assessmentCreationData.proposalId);
         const assessIterator = await client.methods.postScore(
           assessmentCreationData.proposalId,
           scores as [number, number, number, number, number]
@@ -173,12 +175,20 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
 
   const handleCloseModal = () => {
     console.log('assessmentProcessState', assessmentProcessState);
-    alert('assessmentProcessState' + assessmentProcessState);
+    console.log('proposalId', proposalId);
     switch (assessmentProcessState) {
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        navigate(generatePath(Dashboard));
+        window.location.reload();
+        // navigate(
+        //   generatePath(Proposal, {
+        //     network,
+        //     id: proposalId,
+        //   })
+        // );
+        // setShowModal(false);
+        // setProposalId(undefined);
         break;
       default: {
         setShowModal(false);
@@ -201,7 +211,7 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
       <PublishModal
         title={t('assessmentWidget.transactionModal.title')}
         subtitle={t('assessmentWidget.transactionModal.description')}
-        buttonLabelSuccess={t('TransactionModal.goToProposal')}
+        buttonLabelSuccess={t('assessmentWidget.buttonLabelSuccess')}
         state={assessmentProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}
