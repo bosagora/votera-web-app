@@ -7,7 +7,7 @@ import {useClient2} from 'hooks/useClient2';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Dashboard} from '../utils/paths';
+import {Dashboard, Proposal} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
@@ -32,7 +32,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
   const navigate = useNavigate();
   const {network} = useNetwork();
   const {isOnWrongNetwork, provider} = useWallet();
-
+  const [proposalId, setProposalId] = useState<string>();
   const [transitionProcessState, setTransitionProcessState] =
     useState<TransactionState>(TransactionState.WAITING);
   const [showModal, setShowModal] = useState(false);
@@ -100,6 +100,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
 
     setTransitionProcessState(TransactionState.LOADING);
 
+    setProposalId(transitionData.proposalId);
     try {
       const transitionIterator = await client.methods.transition(
         transitionData.proposalId
@@ -132,12 +133,15 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        navigate(
-          generatePath(Dashboard, {
-            network,
-            id: transitionData?.proposalId,
-          })
-        );
+        window.location.reload();
+        // navigate(
+        //   generatePath(Proposal, {
+        //     network,
+        //     id: proposalId,
+        //   })
+        // );
+        // setShowModal(false);
+        // setProposalId(undefined);
         break;
       default: {
         setShowModal(false);
@@ -160,7 +164,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
       <PublishModal
         title={t('transitionWidget.transactionModal.title')}
         subtitle={t('transitionWidget.transactionModal.description')}
-        buttonLabelSuccess={t('TransactionModal.goToProposal')}
+        buttonLabelSuccess={t('transitionWidget.buttonLabelSuccess')}
         state={transitionProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}

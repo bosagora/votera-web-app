@@ -1366,7 +1366,8 @@
         "title": "Deploy proposal",
         "description": "Approve the transaction to deploy the proposal."
       }
-    }
+    },
+    "buttonLabelSuccess": "Go to dashboard"
   },
   "voteSteps": {
     "step1": {
@@ -1438,7 +1439,8 @@
         "title": "Assessment comment",
         "description": "Approve the transaction to assess the proposal."
       }
-    }
+    },
+    "buttonLabelSuccess": "Go to proposal"
   },
   "voteWidget": {
     "vote": "Vote",
@@ -1456,7 +1458,8 @@
     "transactionModal": {
       "title": "Vote",
       "description": "Approve the transaction to vote."
-    }
+    },
+    "buttonLabelSuccess": "Go to proposal"
   },
   "executionWidget": {
     "title": "Withdrawal request",
@@ -1464,7 +1467,8 @@
     "transactionModal": {
       "title": "Withdrawal request",
       "description": "Approve the transaction to request a withdrawal."
-    }
+    },
+    "buttonLabelSuccess": "Go to proposal"
   },
   "transitionWidget": {
     "title": "Transition",
@@ -1472,6 +1476,7 @@
     "transactionModal": {
       "title": "Execute transition",
       "description": "Approve the transaction to execute the transition."
-    }
+    },
+    "buttonLabelSuccess": "Go to proposal"
   }
 }

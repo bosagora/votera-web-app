@@ -154,7 +154,7 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
         subtitle={t(
           'assessmentWidget.transactionModal.commentModal.description'
         )}
-        buttonLabelSuccess={t('TransactionModal.goToProposal')}
+        buttonLabelSuccess={t('assessmentWidget.buttonLabelSuccess')}
         state={commentProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}

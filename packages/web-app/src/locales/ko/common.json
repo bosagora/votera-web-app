@@ -1272,7 +1272,8 @@
         "title": "제안 배포",
         "description": "거래를 승인하여 제안을 배포하세요."
       }
-    }
+    },
+    "buttonLabelSuccess": "대시보드로 이동"
   },
   "voteSteps": {
     "step1": {
@@ -1344,7 +1345,8 @@
         "title": "평가 댓글 등록",
         "description": "거래를 승인하여 평가 댓글을 등록하세요."
       }
-    }
+    },
+    "buttonLabelSuccess": "제안으로 이동"
   },
   "voteWidget": {
     "vote": "투표하기",
@@ -1362,7 +1364,8 @@
     "transactionModal": {
       "title": "투표 실행",
       "description": "거래를 승인하여 투표를 실행하세요."
-    }
+    },
+    "buttonLabelSuccess": "제안으로 이동"
   },
   "executionWidget": {
     "title": "출금 요청",
@@ -1370,7 +1373,8 @@
     "transactionModal": {
       "title": "출금 요청",
       "description": "거래를 승인하여 출금 요청을 하세요."
-    }
+    },
+    "buttonLabelSuccess": "제안으로 이동"
   },
   "transitionWidget": {
     "title": "단계 전환",
@@ -1378,6 +1382,7 @@
     "transactionModal": {
       "title": "전환 실행",
       "description": "거래를 승인하여 전환을 실행하세요."
-    }
+    },
+    "buttonLabelSuccess": "제안으로 이동"
   }
 }
