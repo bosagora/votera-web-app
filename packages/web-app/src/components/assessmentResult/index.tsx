@@ -90,7 +90,7 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
                   value={
                     isNaN(values[0][key] / assessmentLength)
                       ? 0
-                      : (values[0][key] / assessmentLength) * 100
+                      : values[0][key] / assessmentLength
                   }
                 />
                 <ProgressInfo>

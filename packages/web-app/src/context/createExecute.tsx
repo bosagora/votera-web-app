@@ -7,7 +7,7 @@ import {useClient2} from 'hooks/useClient2';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Dashboard} from '../utils/paths';
+import {Proposal} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
@@ -133,12 +133,13 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        navigate(
-          generatePath(Dashboard, {
-            network,
-            id: executeData?.proposalId,
-          })
-        );
+        window.location.reload();
+        // navigate(
+        //   generatePath(Proposal, {
+        //     network,
+        //     id: executeData?.proposalId,
+        //   })
+        // );
         break;
       default: {
         setShowModal(false);
@@ -161,7 +162,7 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
       <PublishModal
         title={t('executionWidget.transactionModal.title')}
         subtitle={t('executionWidget.transactionModal.description')}
-        buttonLabelSuccess={t('TransactionModal.goToProposal')}
+        buttonLabelSuccess={t('executionWidget.buttonLabelSuccess')}
         state={executeProcessState}
         isOpen={showModal}
         onClose={handleCloseModal}
