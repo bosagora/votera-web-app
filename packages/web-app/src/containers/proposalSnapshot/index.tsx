@@ -38,8 +38,6 @@ const ProposalSnapshot: React.FC<Props> = ({
   onLoadMore,
   isLoading,
 }) => {
-  //console.log'ProposalSnapshot');
-  console.log('proposals', proposals);
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {address} = useWallet();
@@ -52,8 +50,7 @@ const ProposalSnapshot: React.FC<Props> = ({
       }),
     [proposals, network, navigate, t, address]
   );
-  console.log('hasMore', hasMore);
-  //console.log'mappedProposals : ', mappedProposals);
+
   if (proposalLength === 0) {
     return (
       <StateEmpty

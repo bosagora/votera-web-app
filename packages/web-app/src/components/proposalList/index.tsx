@@ -98,10 +98,7 @@ export type CardViewProposal = Omit<CardProposalProps, 'onClick'> & {
 };
 
 const getInProgressPhase = (proposal: any, t: TFunction) => {
-  console.log('--------------------------------');
-  console.log('proposal', proposal);
   const extendedPhase = getExtendedPhase(proposal);
-  console.log('getInProgressPhase > extendedPhase', extendedPhase);
   if (extendedPhase.toLowerCase().includes('opened')) {
     return t('governance.statusWidget.active');
   } else if (extendedPhase.toLowerCase().includes('closed')) {

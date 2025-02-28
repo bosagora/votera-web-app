@@ -118,11 +118,22 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
     <Card
       data-testid="cardProposal"
       onClick={onClick}
-      className={
-        progressLabel === '종료' || progressLabel === 'Finished'
-          ? 'bg-ui-200'
-          : ''
-      }
+      // className={
+      //   progressLabel === '종료' || progressLabel === 'Finished'
+      //     ? 'bg-ui-200'
+      //     : ''
+      // }
+      style={{
+        background:
+          progressLabel === '종료' || progressLabel === 'Finished'
+            ? 'linear-gradient(180deg, #e5e9ed 0%, #f0f2f4 50%, #e5e9ed 100%)'
+            : '#ffffff',
+        transition: 'all 0.3s ease',
+        boxShadow:
+          progressLabel === '종료' || progressLabel === 'Finished'
+            ? '0 1px 3px rgba(0, 0, 0, 0.05)'
+            : 'none',
+      }}
     >
       <Header>
         <HeaderOptions phase={phase} type={type || ''} />

@@ -28,7 +28,7 @@ type StyledTagProps = {
 const StyledTag = styled.div.attrs(({colorScheme}: StyledTagProps) => {
   let colorCode;
   if (colorScheme === 'assessment') {
-    colorCode = 'bg-ui-300 text-ui-900';
+    colorCode = 'bg-success-100 text-ui-900';
   } else if (colorScheme === 'vote') {
     colorCode = 'bg-info-200 text-info-800';
   } else if (colorScheme === 'execution') {

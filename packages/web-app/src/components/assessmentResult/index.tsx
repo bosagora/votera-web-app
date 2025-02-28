@@ -41,8 +41,6 @@ const AssessmentResult: React.FC<Props> = ({values, assessmentLength}) => {
   };
 
   useEffect(() => {
-    console.log('assement values', values);
-    console.log('assement length', assessmentLength);
     if (values?.length > 0) {
       const totalAverage = values.reduce(
         (sum, assessment) => sum + calculateAssessmentAverage(assessment),
