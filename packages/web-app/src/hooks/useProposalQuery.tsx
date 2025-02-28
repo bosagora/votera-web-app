@@ -71,10 +71,8 @@ export const useProposalWithUseQuery = (
     () => networkUrlSegment ?? network,
     [network, networkUrlSegment]
   );
-  console.log('useProposalWithUseQuery id', proposalId);
   const enabled = !!client && clientNetwork === queryNetwork;
 
-  console.log('useProposalWithUseQuery enabled', enabled);
   const queryFn = useCallback(() => {
     return proposalId
       ? fetchProposal(client, proposalId)

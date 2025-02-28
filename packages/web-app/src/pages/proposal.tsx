@@ -105,9 +105,9 @@ export const getExtendedPhase = (proposal: any): ProposalPhaseExtended => {
     const voteStatus = checkVoteStatus(proposal);
     const assessStatus = checkAssessmentStatus(proposal);
 
-    console.log('assessStatus :', assessStatus);
-    console.log('voteStatus :', voteStatus);
-    console.log('execStatus :', execStatus);
+    // console.log('assessStatus :', assessStatus);
+    // console.log('voteStatus :', voteStatus);
+    // console.log('execStatus :', execStatus);
 
     // 평가 없음
     if (assessStatus === AssessmentStatus.NONE) {
@@ -219,10 +219,16 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
       return VoteStatus.NONE;
     }
 
-    if (now < new Date(proposal.beginVote * 1000).getTime()) {
-      return VoteStatus.NOT_STARTED;
+    // 투표 기간이 지난 경우
+    if (now > new Date(proposal.endVote * 1000).getTime()) {
+      if (proposal.voteResult === VoteResult.NONE) {
+        return VoteStatus.EXPIRED;
+      }
+      return proposal.voteResult === VoteResult.APPROVED
+        ? VoteStatus.APPROVED
+        : VoteStatus.REJECTED;
+    } else {
     }
-    console.log('proposal.voteResult :', proposal.voteResult);
     // 정족수 미달로 투표 결과 부결되어 종료된 경우
     if (proposal.voteResult === VoteResult.INVALID_QUORUM) {
       return VoteStatus.INVALID_QUORUM;
@@ -235,16 +241,6 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
 
     if (proposal.voteResult === VoteResult.REJECTED) {
       return VoteStatus.REJECTED;
-    }
-
-    // 투표 기간이 지난 경우
-    if (now > new Date(proposal.endVote * 1000).getTime()) {
-      if (proposal.voteResult === VoteResult.NONE) {
-        return VoteStatus.EXPIRED;
-      }
-      return proposal.voteResult === VoteResult.APPROVED
-        ? VoteStatus.APPROVED
-        : VoteStatus.REJECTED;
     }
 
     return VoteStatus.IN_PROGRESS;
@@ -395,13 +391,11 @@ const Proposal: React.FC = () => {
         const voterLength = await client?.methods.getVoterLength(
           fetchedProposal?.proposalId || ''
         );
-        console.log('voterLength :', voterLength);
 
         const isVoterTmp = await client?.methods.isVoter(
           fetchedProposal?.proposalId || '',
           address || ''
         );
-        console.log('isVoterTmp :', isVoterTmp);
         setIsVoter(isVoterTmp || false);
         // 제안서가 있는 경우에만 점수와 투표 정보 조회
         if (fetchedProposal) {
@@ -410,8 +404,6 @@ const Proposal: React.FC = () => {
             fetchedProposal.proposalId,
             address || ''
           );
-          console.log('address for score :', address);
-          console.log('fetched myScore :', score);
           setMyScore(score || null);
 
           // 투표 정보 조회
@@ -419,10 +411,8 @@ const Proposal: React.FC = () => {
             fetchedProposal.proposalId,
             address || ''
           );
-          console.log('fetched myBallot :', ballot);
           setMyBallot(ballot || null);
         } else {
-          console.log('no proposal data');
           navigate(NotFound, {
             replace: true,
             state: {invalidProposal: proposalId},
@@ -479,10 +469,9 @@ const Proposal: React.FC = () => {
             }
           : null;
 
-        console.log('extendedProposalData :', extendedProposalData);
         setProposal(extendedProposalData);
+        console.log('extendedProposalData :', extendedProposalData);
         const extendedPhaseTmp = getExtendedPhase(extendedProposalData);
-        console.log('extendedPhaseTmp :', extendedPhaseTmp);
         setExtendedPhase(extendedPhaseTmp);
         setProposalError(null);
       } catch (error) {

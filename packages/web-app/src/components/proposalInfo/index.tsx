@@ -145,8 +145,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                   assessmentEndDate
                 )}`}
               </Strong>
-              {CHAIN_METADATA[network].name === 'bosagora_devnet' &&
-                period === ProposalPeriod.ASSESSMENT &&
+              {period === ProposalPeriod.ASSESSMENT &&
                 !!getTimeRemaining(assessmentEndDate, t) && (
                   <div className="text-sm text-ui-500">
                     {getTimeRemaining(assessmentEndDate, t)}
@@ -163,7 +162,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {`${formatDate(voteStartDate)} ~ ${formatDate(voteEndDate)}`}
           </Strong>
           {period === ProposalPeriod.VOTE &&
-            CHAIN_METADATA[network].name === 'bosagora_devnet' &&
             !!getTimeRemaining(voteEndDate, t) && (
               <div className="text-sm text-ui-500">
                 {getTimeRemaining(voteEndDate, t)}

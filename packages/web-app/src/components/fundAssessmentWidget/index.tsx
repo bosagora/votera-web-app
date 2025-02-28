@@ -137,7 +137,6 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
       const assessmentLength = await client?.methods.getScoreLength(
         proposalId.toString()
       );
-      console.log('assessmentLength', assessmentLength);
       if (assessmentLength) {
         setAssessmentLength(assessmentLength);
       }
@@ -152,7 +151,6 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
           attractiveness: assessments[3],
           scalability: assessments[4],
         });
-        console.log('assessments summary', assessments);
       }
     };
     getAssessmentList();
@@ -160,17 +158,12 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
 
   const handleValueChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const targetValue = Number(event.target.value);
-    console.log('value', targetValue);
     const CORRECTION_DELAY = 1000;
 
     if (targetValue > maxValue) {
-      setTimeout(() => {
-        console.log('maxValue', maxValue);
-      }, CORRECTION_DELAY);
+      setTimeout(() => {}, CORRECTION_DELAY);
     } else if (targetValue <= 0) {
-      setTimeout(() => {
-        console.log('minValue', targetValue);
-      }, CORRECTION_DELAY);
+      setTimeout(() => {}, CORRECTION_DELAY);
     } else {
       event.target.value = targetValue.toString();
     }
@@ -245,24 +238,10 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
   return (
     <CreateAssessProvider>
       <Card>
-        {/* <Header>
-        <Title>{t('governance.executionCard.title')}</Title>
-        <Description>{t('governance.executionCard.description')}</Description>
-      </Header> 
-      ||
-          exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT
-      
-      */}
         <Content>
           {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess && (
             <div>
               <div className="p-4 border rounded-lg bg-white">
-                {/* <div className="flex justify-center gap-8 my-6">
-                  <div className="text-lg font-bold text-blue-500">
-                    {t('assessmentWidget.passConditionDesc')}
-                  </div>
-                </div> */}
-
                 <div className="space-y-0">
                   <IncreaseAmount
                     max={10}
