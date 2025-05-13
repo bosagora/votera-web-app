@@ -30,6 +30,7 @@ const CookieSettingsMenu: React.FC<CookieSettingsMenuProps> = props => {
       <div>
         <ModalHeader>
           <ButtonIcon
+            css={{}}
             mode="secondary"
             size="small"
             icon={<IconChevronLeft />}
@@ -58,6 +59,7 @@ const CookieSettingsMenu: React.FC<CookieSettingsMenuProps> = props => {
           </div>
           <div className="flex space-x-2">
             <ButtonText
+              css={{}}
               className="flex-1"
               label={t('privacyPolicy.acceptSelectedCookies')}
               size="large"
@@ -69,6 +71,7 @@ const CookieSettingsMenu: React.FC<CookieSettingsMenuProps> = props => {
               }
             />
             <ButtonText
+              css={{}}
               className="flex-1"
               label={t('privacyPolicy.rejectAllCookies')}
               size="large"

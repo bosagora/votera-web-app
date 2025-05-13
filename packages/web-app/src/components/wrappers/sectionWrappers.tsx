@@ -44,6 +44,7 @@ export const TokenSectionWrapper = ({title, children}: SectionWrapperProps) => {
           mode="secondary"
           label={t('labels.seeAllTokens')}
           iconRight={<IconChevronRight />}
+          css=""
         />
       </Link>
     </>
@@ -78,6 +79,7 @@ export const TransferSectionWrapper = ({
               mode="secondary"
               label={t('labels.seeAllTransfers')}
               iconRight={<IconChevronRight />}
+              css=""
             />
           </Link>
         </div>

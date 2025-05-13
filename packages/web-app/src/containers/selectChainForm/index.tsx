@@ -25,6 +25,7 @@ const SelectChainForm: React.FC = () => {
       <Header>
         <NetworkTypeSwitcher>
           <ButtonText
+            css={{}}
             mode="ghost"
             bgWhite
             size={isMobile ? 'small' : 'medium'}
@@ -35,6 +36,7 @@ const SelectChainForm: React.FC = () => {
             }}
           />
           <ButtonText
+            css={{}}
             mode="ghost"
             bgWhite
             size={isMobile ? 'small' : 'medium'}
@@ -105,35 +107,13 @@ type SelectableNetworks = Record<
 
 const networks: SelectableNetworks = {
   main: {
-    cost: [
-      'bosagora_mainnet',
-      // 'ethereum',
-      // 'acc_sidechain_mainnet'
-    ],
-    popularity: ['bosagora_mainnet', 'acc_sidechain_mainnet', 'ethereum'],
-    security: ['bosagora_mainnet', 'acc_sidechain_mainnet', 'ethereum'],
+    cost: ['bosagora_mainnet'],
+    popularity: ['bosagora_mainnet'],
+    security: ['bosagora_mainnet'],
   },
   test: {
-    cost: [
-      'bosagora_testnet',
-      'bosagora_devnet',
-      // 'acc_sidechain_testnet',
-      // 'acc_sidechain_devnet',
-      // 'sepolia',
-    ],
-    popularity: [
-      'bosagora_testnet',
-      'bosagora_devnet',
-      'acc_sidechain_testnet',
-      'acc_sidechain_devnet',
-      'sepolia',
-    ],
-    security: [
-      'bosagora_testnet',
-      'bosagora_devnet',
-      'acc_sidechain_testnet',
-      'acc_sidechain_devnet',
-      'sepolia',
-    ],
+    cost: ['bosagora_testnet', 'bosagora_devnet'],
+    popularity: ['bosagora_testnet', 'bosagora_devnet'],
+    security: ['bosagora_testnet', 'bosagora_devnet'],
   },
 };

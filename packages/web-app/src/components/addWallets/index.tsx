@@ -90,6 +90,7 @@ const AddWallets: React.FC = () => {
           mode="secondary"
           size="large"
           onClick={handleAddWallet}
+          css=""
         />
         <Dropdown
           align="start"
@@ -100,6 +101,7 @@ const AddWallets: React.FC = () => {
               bgWhite
               icon={<IconMenuVertical />}
               data-testid="trigger"
+              css=""
             />
           }
           sideOffset={8}

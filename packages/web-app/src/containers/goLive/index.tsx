@@ -107,6 +107,7 @@ export const GoLiveFooter: React.FC = () => {
     <div className="flex justify-center pt-3">
       <div onClick={showInvalidFields}>
         <ButtonText
+          css={{}}
           size="large"
           iconRight={<IconChevronRight />}
           label={t('createDAO.review.title')}

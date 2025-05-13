@@ -49,10 +49,10 @@ const ProtectedRoute: React.FC = () => {
     isLoading: membersAreLoading,
   } = {
     data: {
-      members: [{address: '0x123'}, {address: '0x456'}], 
-      filteredMembers: [{address: '0x123'}]
+      members: [{address: '0x123'}, {address: '0x456'}],
+      filteredMembers: [{address: '0x123'}],
     },
-    isLoading: false
+    isLoading: false,
   };
   const {network} = useNetwork();
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);

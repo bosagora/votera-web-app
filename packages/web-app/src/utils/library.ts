@@ -157,7 +157,6 @@ export async function decodeWithdrawToAction(
   }
 }
 
-
 const FLAG_TYPED_ARRAY = 'FLAG_TYPED_ARRAY';
 /**
  *  Custom serializer that includes fix for BigInt type
@@ -273,14 +272,12 @@ export function translateToNetworkishName(
   }
 
   switch (appNetwork) {
-
     case 'bosagora_mainnet':
       return SdkSupportedNetworks.MAINNET;
     case 'bosagora_testnet':
       return SdkSupportedNetworks.TESTNET;
     case 'bosagora_devnet':
       return SdkSupportedNetworks.DEVNET;
-
   }
 
   return 'unsupported';

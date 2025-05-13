@@ -62,7 +62,7 @@ async function fetchProposal(
 
 export const useProposalWithUseQuery = (
   proposalId?: string,
-  page: number = 1,
+  page = 1,
   refetchInterval = 0
 ) => {
   const {network, networkUrlSegment} = useNetwork();

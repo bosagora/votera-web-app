@@ -88,7 +88,7 @@ export const FundTransitionWidget: React.FC<TransitionProps> = ({
       </Header> */}
 
         <Content>
-          <div className="p-4 border rounded-lg bg-white">
+          <div className="p-4 bg-white rounded-lg border">
             <WidgetFooter proposalId={proposalId} exPhase={exPhase} />
           </div>
         </Content>

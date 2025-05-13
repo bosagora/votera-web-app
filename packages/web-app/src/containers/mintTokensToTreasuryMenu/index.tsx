@@ -91,6 +91,7 @@ const MintTokensToTreasuryMenu: React.FC<Props> = ({
         <>
           <ModalHeader>
             <ButtonIcon
+              css={{}}
               mode="secondary"
               size="small"
               icon={<IconChevronLeft />}
@@ -145,6 +146,7 @@ const MintTokensToTreasuryMenu: React.FC<Props> = ({
                   </div>
                   <ActionContainer>
                     <ButtonText
+                      css={{}}
                       label={t('modal.mintTokensToTreasury.step2CtaLabel')}
                       mode="primary"
                       size="large"
@@ -155,6 +157,7 @@ const MintTokensToTreasuryMenu: React.FC<Props> = ({
                       disabled={!isActionEnabled}
                     />
                     <ButtonText
+                      css={{}}
                       label={t('modal.mintTokensToTreasury.step2CancelLabel')}
                       mode="secondary"
                       size="large"

@@ -56,6 +56,7 @@ export const DescriptionListContainer: React.FC<DescriptionListProps> = ({
             size="large"
             bgWhite
             onClick={onEditClick}
+            css=""
           />
         )}
       </HStack>

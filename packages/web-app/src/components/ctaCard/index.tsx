@@ -34,6 +34,7 @@ const CTACard: React.FC<Props> = props => {
           : {mode: 'ghost', disabled: true})}
         onClick={() => props.onClick(props.path)}
         className={`${!isDesktop && 'w-full'}`}
+        css=""
       />
     </CTACardWrapper>
   );

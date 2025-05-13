@@ -43,6 +43,7 @@ const NotFound: React.FC = () => {
                 size="large"
                 className="hidden desktop:block mt-5"
                 onClick={() => navigate(Landing)}
+                css=""
               />
             </div>
 
@@ -61,6 +62,7 @@ const NotFound: React.FC = () => {
               size="large"
               className="block desktop:hidden mt-14 desktop:mt-0 w-full"
               onClick={() => navigate(Landing)}
+              css=""
             />
           </div>
         </GridLayout>

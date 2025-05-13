@@ -55,6 +55,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
               />
             ) : (
               <ButtonText
+                css={{}}
                 size="large"
                 mode="secondary"
                 label={t('menu')}
@@ -64,9 +65,9 @@ const MobileNav: React.FC<MobileNavProps> = props => {
             )} */}
 
             {location.pathname.includes('/proposals') && (
-              <div className="flex items-center gap-3">
+              <div className="flex gap-3 items-center">
                 <div
-                  className="text-primary-500 font-bold ft-text-xl cursor-pointer"
+                  className="font-bold text-primary-500 cursor-pointer ft-text-xl"
                   onClick={() => navigate(Landing)}
                 >
                   {' < Back '}

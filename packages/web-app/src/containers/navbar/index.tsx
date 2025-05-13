@@ -23,7 +23,7 @@ import {
   NewProposal,
   NewWithDraw,
   ProposeNewSettings,
-  Dashboard
+  Dashboard,
 } from 'utils/paths';
 import {i18n} from '../../../i18n.config';
 import DesktopNav from './desktop';

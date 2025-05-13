@@ -84,7 +84,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
               onClick={handleExitWithWarning}
             />
 
-            <div className="flex items-center gap-3">
+            <div className="flex gap-3 items-center">
               <ButtonWallet
                 src={address}
                 onClick={props.onWalletClick}
@@ -141,9 +141,9 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
             onClick={() => navigate(Landing)}
           />
           {location.pathname.includes('proposal') && (
-            <div className="flex items-center gap-3">
+            <div className="flex gap-3 items-center">
               <div
-                className="text-primary-500 font-bold ft-text-lg cursor-pointer"
+                className="font-bold text-primary-500 cursor-pointer ft-text-lg"
                 onClick={() => navigate(Landing)}
               >
                 {'< Dashboard'}
@@ -152,7 +152,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
           )}
         </Content>
 
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}

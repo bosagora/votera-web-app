@@ -163,6 +163,7 @@ const ManageWalletsModal: React.FC<ManageWalletsModalProps> = ({
 
       <ButtonContainer>
         <ButtonText
+          css={{}}
           label={labels.button as string}
           size="large"
           onClick={() => {
@@ -171,6 +172,7 @@ const ManageWalletsModal: React.FC<ManageWalletsModalProps> = ({
           }}
         />
         <ButtonText
+          css={{}}
           label={t('labels.cancel')}
           mode="secondary"
           size="large"

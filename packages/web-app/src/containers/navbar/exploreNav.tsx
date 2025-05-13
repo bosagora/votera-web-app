@@ -44,12 +44,14 @@ const ExploreNav: React.FC = () => {
             <ActionsWrapper>
               <LanguageButtonGroup>
                 <ButtonText
+                  css={{}}
                   mode={i18n.language === 'en' ? 'primary' : 'secondary'}
                   size="small"
                   label="EN"
                   onClick={() => handleLanguageChange('en')}
                 />
                 <ButtonText
+                  css={{}}
                   mode={i18n.language === 'ko' ? 'primary' : 'secondary'}
                   size="small"
                   label="한국어"

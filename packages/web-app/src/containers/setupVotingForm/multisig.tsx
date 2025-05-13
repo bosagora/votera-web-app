@@ -185,8 +185,6 @@ const SetupMultisigVotingForm: React.FC = () => {
         />
       </FormSection>
 
-
-
       <UtcMenu onTimezoneSelect={tzSelector} />
     </>
   );

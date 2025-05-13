@@ -58,6 +58,7 @@ const DaoSelectMenu: React.FC = () => {
       <div className="flex flex-col h-full" style={{maxHeight: '75vh'}}>
         <ModalHeader>
           <ButtonIcon
+            css={{}}
             mode="secondary"
             size="small"
             bgWhite
@@ -97,6 +98,7 @@ const DaoSelectMenu: React.FC = () => {
         </ModalContentContainer>
         <div className="p-3">
           <ButtonText
+            css={{}}
             mode="secondary"
             size="large"
             label={t('daoSwitcher.subtitle')}

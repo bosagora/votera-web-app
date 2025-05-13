@@ -230,6 +230,7 @@ const WalletRow: React.FC<WalletRowProps> = ({index, onDelete}) => {
           align="start"
           trigger={
             <ButtonIcon
+              css={{}}
               mode="ghost"
               size="large"
               bgWhite

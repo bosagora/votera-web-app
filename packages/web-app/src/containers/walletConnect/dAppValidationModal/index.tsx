@@ -180,6 +180,7 @@ const WCdAppValidation: React.FC<Props> = props => {
           />
         </FormGroup>
         <ButtonText
+          css={{}}
           size="large"
           label={ctaLabel}
           disabled={disableCta}

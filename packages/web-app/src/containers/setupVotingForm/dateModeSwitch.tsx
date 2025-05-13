@@ -19,12 +19,14 @@ export const DateModeSwitch: React.FC<DateModeSwitchProps> = ({
   return (
     <SwitchContainer>
       <ButtonText
+        css={{}}
         mode="secondary"
         label={t('labels.days')}
         isActive={value === 'duration'}
         onClick={() => setValue('duration')}
       />
       <ButtonText
+        css={{}}
         mode="secondary"
         label={t('labels.dateTime')}
         isActive={value === 'date'}

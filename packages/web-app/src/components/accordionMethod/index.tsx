@@ -96,6 +96,7 @@ export const AccordionItem: React.FC<AccordionMethodType & {name: string}> = ({
                 disabled={dropdownItems.length === 0}
                 trigger={
                   <ButtonIcon
+                    css={{}}
                     mode="ghost"
                     size="medium"
                     icon={<IconMenuVertical />}
@@ -105,6 +106,7 @@ export const AccordionItem: React.FC<AccordionMethodType & {name: string}> = ({
             )}
             <Accordion.Trigger asChild>
               <AccordionButton
+                css={{}}
                 mode={type === 'action-builder' ? 'ghost' : 'secondary'}
                 size="medium"
                 icon={<IconChevronDown />}

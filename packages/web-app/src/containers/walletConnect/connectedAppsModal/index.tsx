@@ -89,6 +89,7 @@ const WCConnectedApps: React.FC<Props> = props => {
               ))}
             </div>
             <ButtonText
+              css={{}}
               mode="secondary"
               size="large"
               label={t('wc.listdApps.ctaLabelDefault')}

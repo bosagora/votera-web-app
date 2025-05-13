@@ -21,10 +21,8 @@ export const NewDeposit = '/multisig-wallets/:network/:dao/finance/new-deposit';
 export const NewWithDraw =
   '/multisig-wallets/:network/:dao/finance/new-withdrawal';
 
-export const Proposal =
-  '/dao/proposals/:network/:id';
-export const NewProposal =
-  '/dao/new-proposal/:network';
+export const Proposal = '/dao/proposals/:network/:id';
+export const NewProposal = '/dao/new-proposal/:network';
 export const MintTokensProposal =
   '/multisig-wallets/:network/:dao/community/mint-tokens';
 export const ManageMembersProposal =

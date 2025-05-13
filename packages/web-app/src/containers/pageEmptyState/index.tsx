@@ -30,6 +30,7 @@ const PageEmptyState = ({
             dangerouslySetInnerHTML={{__html: subtitle || ''}}
           ></span>
           <ButtonText
+            css={{}}
             size="large"
             label={buttonLabel}
             className="mt-4"

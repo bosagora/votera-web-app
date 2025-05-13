@@ -73,7 +73,6 @@ export const useDaoMembers = (
     // );
     async function fetchMembers() {
       try {
-
         if (pluginType === 'multisig.plugin.dao.eth' || network === 'goerli') {
           setIsLoading(true);
 
@@ -146,4 +145,3 @@ function sortMembers<T extends MultisigMember>(a: T, b: T) {
   if (a.address === (b as MultisigMember).address) return 0;
   return a.address > (b as MultisigMember).address ? 1 : -1;
 }
-

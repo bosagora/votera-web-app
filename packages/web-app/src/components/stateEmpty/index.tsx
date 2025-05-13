@@ -72,6 +72,7 @@ export const StateEmpty: React.FC<StateEmptyProps> = props => {
                 size="large"
                 {...(props.mode === 'inline' &&
                   (props.secondaryButton ? {} : {className: 'w-full'}))}
+                css=""
               />
             )}
             {props.secondaryButton && (
@@ -80,6 +81,7 @@ export const StateEmpty: React.FC<StateEmptyProps> = props => {
                 mode="secondary"
                 size="large"
                 bgWhite={props.secondaryButton.bgWhite ?? true}
+                css=""
               />
             )}
           </ActionContainer>

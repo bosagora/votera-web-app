@@ -42,6 +42,7 @@ const NetworkErrorMenu = () => {
           </AddressContainer>
         </AvatarAddressContainer>
         <ButtonIcon
+          css={{}}
           mode="secondary"
           icon={<IconCopy />}
           size="small"
@@ -51,6 +52,7 @@ const NetworkErrorMenu = () => {
         />
         {isDesktop && (
           <ButtonIcon
+            css={{}}
             mode="ghost"
             icon={<IconClose />}
             size="small"
@@ -76,6 +78,7 @@ const NetworkErrorMenu = () => {
         </WarningContainer>
         {connectorName === 'MetaMask' && (
           <ButtonText
+            css={{}}
             label={t('alert.wrongNetwork.buttonLabel', {
               network: CHAIN_METADATA[network].name,
             })}

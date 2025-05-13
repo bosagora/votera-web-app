@@ -169,6 +169,7 @@ const ActionListenerModal: React.FC<Props> = ({
         <div className="space-y-1.5">
           {actionsReceived.length > 0 ? (
             <ButtonText
+              css={{}}
               label={t('wc.detaildApp.ctaLabel.addAmountActions', {
                 amountActions: actionsReceived.length,
               })}
@@ -178,6 +179,7 @@ const ActionListenerModal: React.FC<Props> = ({
             />
           ) : null}
           <ButtonText
+            css={{}}
             label={t('wc.detaildApp.ctaLabel.opendApp', {
               dappName: metadataName,
             })}
@@ -187,6 +189,7 @@ const ActionListenerModal: React.FC<Props> = ({
             className="w-full"
           />
           <ButtonText
+            css={{}}
             label={t('wc.detaildApp.ctaLabel.disconnectdApp', {
               dappName: metadataName,
             })}

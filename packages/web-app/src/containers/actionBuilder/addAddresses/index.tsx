@@ -208,7 +208,7 @@ const AddAddresses: React.FC<AddAddressesProps> = ({
       })}
       <FormItem className="flex justify-between">
         <ButtonText
-          css={{}}
+          css=""
           label={t('labels.addWallet')}
           mode="secondary"
           size="large"

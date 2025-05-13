@@ -170,6 +170,7 @@ export const FullScreenStepper: React.FC<FullScreenStepperProps> = ({
                 }
                 disabled={currentStep === 1}
                 iconLeft={<IconChevronLeft />}
+                css=""
               />
               <ButtonValidationTrigger onClick={onNextButtonDisabledClicked}>
                 <ButtonText
@@ -180,6 +181,7 @@ export const FullScreenStepper: React.FC<FullScreenStepperProps> = ({
                   }
                   disabled={isNextButtonDisabled}
                   iconRight={<IconChevronRight />}
+                  css=""
                 />
               </ButtonValidationTrigger>
             </FormFooter>

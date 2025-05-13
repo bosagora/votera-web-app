@@ -41,14 +41,17 @@ const DefineMetadata: React.FC = () => {
           <Dl>
             <Dt>{t('labels.uploadDocument')}</Dt>
             <Dd>
-              {file?.name ? (
-                file.name.length > 20 ? 
-                  file.name.substring(0, 20 - file.name.split('.').pop()!.length) + 
-                  '...' + 
-                  '.' + 
-                  file.name.split('.').pop() 
-                : file.name
-              ) : ''}
+              {file?.name
+                ? file.name.length > 20
+                  ? file.name.substring(
+                      0,
+                      20 - file.name.split('.').pop()!.length
+                    ) +
+                    '...' +
+                    '.' +
+                    file.name.split('.').pop()
+                  : file.name
+                : ''}
             </Dd>
           </Dl>
         </DescriptionListContainer>

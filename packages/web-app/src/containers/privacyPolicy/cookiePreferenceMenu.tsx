@@ -23,6 +23,7 @@ const CookiePreferenceMenu: React.FC<Props> = ({show, onClose, onAccept}) => {
       <ModalHeader>
         <Title>{t('cookiePreferences.title')}</Title>
         <ButtonIcon
+          css={{}}
           mode="secondary"
           size="small"
           icon={<IconClose />}
@@ -34,12 +35,14 @@ const CookiePreferenceMenu: React.FC<Props> = ({show, onClose, onAccept}) => {
         <Text>{t('cookiePreferences.content')}</Text>
         <div className="flex space-x-2">
           <ButtonText
+            css={{}}
             className="flex-1"
             label={t('cookiePreferences.accept')}
             size="large"
             onClick={onAccept}
           />
           <ButtonText
+            css={{}}
             className="flex-1"
             label={t('cookiePreferences.cancel')}
             size="large"

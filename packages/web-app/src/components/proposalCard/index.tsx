@@ -7,7 +7,7 @@ import {IconClock} from '@aragon/ui-components';
 import {Link} from '@aragon/ui-components';
 import {LinearProgress} from '@aragon/ui-components';
 import {Tag} from '@aragon/ui-components';
-import { getSupportedNetworkByChainId } from 'utils/constants';
+import {getSupportedNetworkByChainId} from 'utils/constants';
 
 type ProposalUseCase = 'list' | 'explore';
 
@@ -109,7 +109,7 @@ export const CardProposal: React.FC<
             type={type}
           />
         </Header>
-        
+
         <TextContent>
           <Title>{title}</Title>
           <Description>{description}</Description>
@@ -233,7 +233,7 @@ const Title = styled.p.attrs({
 })``;
 
 const Description = styled.p.attrs({
-  className: 
+  className:
     'text-ui-600 text-left font-normal ft-text-base line-clamp-2 ' +
     'min-h-[4.5rem]',
 })``;

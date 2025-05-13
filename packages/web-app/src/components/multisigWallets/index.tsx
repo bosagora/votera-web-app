@@ -122,6 +122,7 @@ export const MultisigWallets = () => {
               size="large"
               bgWhite
               onClick={handleAdd}
+              css=""
             />
           </TextButtonsContainer>
           <Dropdown
@@ -130,6 +131,7 @@ export const MultisigWallets = () => {
             sideOffset={4}
             trigger={
               <ButtonIcon
+                css={{}}
                 size="large"
                 mode="secondary"
                 bgWhite

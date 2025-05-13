@@ -8,7 +8,7 @@ export const useFileUpload = () => {
   const uploadFile = async (file: File) => {
     setIsUploading(true);
     setError(null);
-    
+
     try {
       const cid = await uploadToIPFS(file);
       return cid;
@@ -23,6 +23,6 @@ export const useFileUpload = () => {
   return {
     uploadFile,
     isUploading,
-    error
+    error,
   };
-}; 
+};

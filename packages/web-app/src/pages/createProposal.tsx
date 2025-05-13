@@ -239,8 +239,8 @@ const CreateProposal: React.FC = () => {
           >
             <GoLive />
           </Step>
-          {/* 
-       
+          {/*
+
           <Step
             wizardTitle={t('createProposal.step3.title')}
             wizardDescription={htmlIn(t)(

@@ -16,7 +16,6 @@ import {erc1155TokenABI} from 'abis/erc1155TokenABI';
 import {erc721TokenABI} from 'abis/erc721TokenABI';
 import {aragonTokenABI} from 'abis/aragonTokenABI';
 
-
 /**
  * This method sorts a list of array information. It is applicable to any field
  * of the information object that can be compared using '<', '>'.

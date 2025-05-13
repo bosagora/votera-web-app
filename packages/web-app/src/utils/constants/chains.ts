@@ -2,9 +2,7 @@
 
 import {infuraApiKey} from './api';
 
-export const SUPPORTED_CHAIN_ID = [
-  1, 5, 2151, 2019, 24600, 24680, 215110, 215115, 11155111,
-] as const;
+export const SUPPORTED_CHAIN_ID = [1, 5, 2019, 2151, 24680, 11155111] as const;
 export type SupportedChainID = typeof SUPPORTED_CHAIN_ID[number];
 
 export function isSupportedChainId(
@@ -22,17 +20,15 @@ const SUPPORTED_NETWORKS = [
   'bosagora_mainnet',
   'bosagora_testnet',
   'bosagora_devnet',
-  // 'acc_sidechain_mainnet',
-  // 'acc_sidechain_testnet',
-  // 'acc_sidechain_devnet',
 ] as const;
 
 export type availableNetworks =
   | 'mainnet'
   | 'goerli'
   | 'sepolia'
-  | 'bosagora_devnet'
-  | 'acc_sidechain_devnet';
+  | 'bosagora_mainnet'
+  | 'bosagora_testnet'
+  | 'bosagora_devnet';
 
 export type SupportedNetworks =
   | typeof SUPPORTED_NETWORKS[number]
@@ -142,6 +138,28 @@ export const CHAIN_METADATA: ChainList = {
     supportsEns: false,
     ipfs: 'https://test.ipfs.aragon.network',
   },
+  sepolia: {
+    id: 11155111,
+    name: 'Ethereum Sepolia',
+    domain: 'Main Chain',
+    logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+    explorer: 'https://sepolia.etherscan.io/',
+    testnet: true,
+    rpc: [
+      `https://sepolia.infura.io/v3/${infuraApiKey}`,
+      `wss://sepolia.infura.io/ws/v3/${infuraApiKey}`,
+    ],
+    nativeCurrency: {
+      name: 'SepoliaETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    etherscanApi: 'https://api-sepolia.etherscan.io/api',
+    etherscanApiKey: etherscanApiKey,
+    alchemyApi: 'https://eth-sepolia.g.alchemy.com/v2',
+    supportsEns: false,
+    ipfs: 'https://test.ipfs.aragon.network',
+  },
   bosagora_mainnet: {
     id: 2151,
     name: 'bosagora_mainnet',
@@ -201,89 +219,6 @@ export const CHAIN_METADATA: ChainList = {
     alchemyApi: '',
     supportsEns: false,
     ipfs: '',
-  },
-
-  // acc_sidechain_mainnet: {
-  //   id: 215110,
-  //   name: 'acc_sidechain_mainnet',
-  //   domain: 'Side Chain',
-  //   logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-  //   explorer: 'https://boascan.io/',
-  //   testnet: false,
-  //   rpc: ['https://rpc.main.acccoin.io'],
-  //   nativeCurrency: {
-  //     name: 'BOA',
-  //     symbol: 'BOA',
-  //     decimals: 18,
-  //   },
-  //   etherscanApi: '',
-  //   etherscanApiKey: '',
-  //   covalentApi: '',
-  //   alchemyApi: '',
-  //   supportsEns: false,
-  //   ipfs: '',
-  // },
-  // acc_sidechain_testnet: {
-  //   id: 215115,
-  //   name: 'acc_sidechain_testnet',
-  //   domain: 'Side Chain',
-  //   logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-  //   explorer: 'https://testnet.boascan.io/',
-  //   testnet: true,
-  //   rpc: ['https://rpc.test.acccoin.io'],
-  //   nativeCurrency: {
-  //     name: 'BOA',
-  //     symbol: 'BOA',
-  //     decimals: 18,
-  //   },
-  //   etherscanApi: '',
-  //   etherscanApiKey: '',
-  //   covalentApi: '',
-  //   alchemyApi: '',
-  //   supportsEns: false,
-  //   ipfs: '',
-  // },
-  // acc_sidechain_devnet: {
-  //   id: 24680,
-  //   name: 'acc_sidechain_devnet',
-  //   domain: 'Side Chain',
-  //   logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-  //   explorer: 'http://localhost:14000/',
-  //   testnet: true,
-  //   rpc: ['http://localhost:8545'],
-  //   nativeCurrency: {
-  //     name: 'BOA',
-  //     symbol: 'BOA',
-  //     decimals: 18,
-  //   },
-  //   etherscanApi: '',
-  //   etherscanApiKey: '',
-  //   covalentApi: '',
-  //   alchemyApi: '',
-  //   supportsEns: false,
-  //   ipfs: '',
-  // },
-  sepolia: {
-    id: 11155111,
-    name: 'Ethereum Sepolia',
-    domain: 'Main Chain',
-    logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-    explorer: 'https://sepolia.etherscan.io/',
-    testnet: true,
-    rpc: [
-      `https://sepolia.infura.io/v3/${infuraApiKey}`,
-      `wss://sepolia.infura.io/ws/v3/${infuraApiKey}`,
-    ],
-    nativeCurrency: {
-      name: 'SepoliaETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    etherscanApi: 'https://api-sepolia.etherscan.io/api',
-    etherscanApiKey: etherscanApiKey,
-    alchemyApi: 'https://eth-sepolia.g.alchemy.com/v2',
-    supportsEns: false,
-    ipfs: 'https://test.ipfs.aragon.network',
   },
   unsupported: {
     id: 1,

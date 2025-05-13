@@ -72,7 +72,7 @@ const NewWithdraw: React.FC = () => {
    *                    Render                     *
    *************************************************/
 
-  if (!daoDetails || detailsLoading ) {
+  if (!daoDetails || detailsLoading) {
     return <Loading />;
   }
 

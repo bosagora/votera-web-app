@@ -26,6 +26,7 @@ const PoapClaimModal: React.FC = () => {
           </PoapImgContainer>
 
           <ButtonText
+            css={{}}
             mode="primary"
             size="large"
             label={t('modal.claimPoap.ctaLabel')}

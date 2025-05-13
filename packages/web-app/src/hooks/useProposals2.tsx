@@ -58,7 +58,7 @@ export function useProposals2(
           // console.log('skip : ', skip);
           // console.log('requiredCount : ', requiredCount);
           // console.log('from, to : ', from, to);
-          let response = limit
+          const response = limit
             ? await client?.methods.getProposalList(from, to, SortType.ASC)
             : await client?.methods.getProposalList(0, txCount, SortType.ASC);
 

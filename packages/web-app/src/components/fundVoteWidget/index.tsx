@@ -76,7 +76,7 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
 
         <Content>
           {exPhase === ProposalPhaseExtended.OPENED_VOTE && canVote && (
-            <div className="p-4 border rounded-lg bg-white">
+            <div className="p-4 bg-white rounded-lg border">
               <div className="space-y-3">
                 {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
                 <div className="flex flex-col gap-3">
@@ -95,14 +95,14 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
             </div>
           )}
 
-          <div className="p-4 border rounded-lg bg-white">
-            <div className="flex justify-center gap-8 mt-3">
+          <div className="p-4 bg-white rounded-lg border">
+            <div className="flex gap-8 justify-center mt-3">
               <div className="text-lg font-bold text-blue-500">
                 {exPhaseMessage}
               </div>
             </div>
             {myBallot && myBallot.voter === address && (
-              <div className="flex justify-center gap-8 mb-3">
+              <div className="flex gap-8 justify-center mb-3">
                 <div className="text-sm font-bold text-blue-400">
                   {myBallot.choice === Candidate.YES
                     ? t('voteWidget.yesDesc')

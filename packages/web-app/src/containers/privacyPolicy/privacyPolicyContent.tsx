@@ -27,6 +27,7 @@ const PrivacyPolicyContent: React.FC<PrivacyPolicyContentProps> = ({
 
       <ButtonGroup>
         <ButtonText
+          css={{}}
           label={t('privacyPolicy.acceptAllCookies')}
           mode="secondary"
           bgWhite
@@ -36,6 +37,7 @@ const PrivacyPolicyContent: React.FC<PrivacyPolicyContentProps> = ({
           onClick={props.onAcceptAll}
         />
         <ButtonText
+          css={{}}
           label={t('privacyPolicy.rejectAllCookies')}
           mode="secondary"
           bgWhite
@@ -45,6 +47,7 @@ const PrivacyPolicyContent: React.FC<PrivacyPolicyContentProps> = ({
           onClick={props.onRejectAll}
         />
         <ButtonText
+          css={{}}
           label={t('privacyPolicy.cookieSettings')}
           {...(isDesktop
             ? {mode: 'secondary', size: 'small'}

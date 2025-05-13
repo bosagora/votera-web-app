@@ -241,7 +241,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
         <Content>
           {exPhase === ProposalPhaseExtended.OPENED_ASSESSMENT && canAssess && (
             <div>
-              <div className="p-4 border rounded-lg bg-white">
+              <div className="p-4 bg-white rounded-lg border">
                 <div className="space-y-0">
                   <IncreaseAmount
                     max={10}
@@ -301,8 +301,8 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
             </div>
           )}
 
-          <div className="p-4 border rounded-lg bg-white">
-            <div className="flex justify-center gap-8 mt-3">
+          <div className="p-4 bg-white rounded-lg border">
+            <div className="flex gap-8 justify-center mt-3">
               <div className="text-lg font-bold text-blue-500">
                 {exPhaseMessage}
               </div>
@@ -310,7 +310,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
               {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
             </div>
             {myScore && myScore.timestamp > 0 && myScore.voter === address && (
-              <div className="flex justify-center gap-8 mb-3">
+              <div className="flex gap-8 justify-center mb-3">
                 <div className="text-sm font-bold text-blue-400">
                   {t('assessmentWidget.myScore')}
                 </div>
