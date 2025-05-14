@@ -1,25 +1,22 @@
-import * as rudderAnalytics from 'rudder-sdk-js';
-
 /**
  * Sends analytics information about the events logged.
  *
  * @param eventName The event name tied to actions like button clicks.
+ * @param properties
  * @returns void
  */
 export function trackEvent(eventName: string, properties?: Object) {
-  rudderAnalytics.track(eventName, properties as rudderAnalytics.apiObject);
+  console.log(`trackEvent(${eventName}, ${properties})`);
 }
 
 /**
  * Sends analytics information about the pages visited.
  *
- * @param pathName (Dynamic) Path name as given by the react router.
+ * @param pathName (Dynamic) Path name as given by the React router.
  * @returns void
  */
 export function trackPage(pathName: string) {
-  rudderAnalytics.page({
-    path: pathName,
-  });
+  console.log(`trackPage(${pathName})`);
 }
 
 /**
@@ -34,39 +31,14 @@ export function identifyUser(
   account: string,
   networkType: string,
   connector: string
-) {
-  const walletData = {
-    wallet_address: account,
-    wallet_provider: connector,
-    network: networkType,
-  };
-  rudderAnalytics.identify(walletData);
+): void {
+  console.log(`identifyUser(${account},${networkType},${connector})`);
 }
 
 export function disableAnalytics() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).rudderanalytics = null;
+  console.log('disableAnalytics()');
 }
 
 export function enableAnalytics() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const analyticsKey = import.meta.env.VITE_REACT_APP_ANALYTICS_KEY;
-
-  if (analyticsKey) {
-    rudderAnalytics.load(
-      analyticsKey as string,
-      'https://rs-proxy.aragon.org',
-      {
-        configUrl: 'https://rs-proxy.aragon.org',
-        secureCookie: true,
-        sendAdblockPage: false,
-        sendAdblockPageOptions: {
-          integrations: {
-            All: false,
-          },
-        },
-        destSDKBaseURL: 'https://rs-proxy.aragon.org/v1.1/js-integrations',
-      }
-    );
-  }
+  console.log('enableAnalytics()');
 }
