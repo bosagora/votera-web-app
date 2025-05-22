@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react';
 import {recalculateStatus} from 'utils/proposals';
 import {DetailedProposal, HookData, ProposalListItem} from 'utils/types';
 import {useVoteraProposalDetailsQuery} from './useVoteraProposalDetails';
-import {PluginTypes} from 'utils/aragon/types';
 import {useClient} from './useClient';
 
 /**
@@ -16,7 +15,6 @@ import {useClient} from './useClient';
  */
 export function useProposals(
   daoAddress: string,
-  type: PluginTypes,
   limit = 3,
   skip = 0,
   status?: ProposalStatus
@@ -32,9 +30,6 @@ export function useProposals(
 
   const {client} = useClient();
   client?.multiSigWallet.attach(daoAddress);
-
-  const isMultisigPlugin = type === 'multisig.plugin.dao.eth';
-  const isTokenBasedPlugin = type === 'token-voting.plugin.dao.eth';
 
   useEffect(() => {
     async function getDaoProposals() {
@@ -114,8 +109,6 @@ export function useProposals(
   }, [
     client,
     daoAddress,
-    isMultisigPlugin,
-    isTokenBasedPlugin,
     limit,
     skip,
     status,

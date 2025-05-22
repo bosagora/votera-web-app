@@ -11,8 +11,8 @@ import {Community} from 'utils/paths';
 import {usePluginSettings} from 'hooks/usePluginSettings';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {IPluginSettings} from 'pages/settings';
-import {MultisigVotingSettings} from '../../../utils/aragon/sdk-client-multisig-types';
-import {PluginTypes} from '../../../utils/aragon/types';
+// import {MultisigVotingSettings} from '../../../utils/aragon/sdk-client-multisig-types';
+// import {PluginTypes} from '../../../utils/aragon/types';
 
 const MultisigSettings: React.FC<IPluginSettings> = ({daoDetails}) => {
   const {t} = useTranslation();
