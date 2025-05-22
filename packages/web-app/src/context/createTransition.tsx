@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate} from 'react-router-dom';
 
 import PublishModal from 'containers/transactionModals/publishModal';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
@@ -28,7 +28,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
 }) => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
-  const {client} = useClient2();
+  const {client} = useClient();
   const navigate = useNavigate();
   const {network} = useNetwork();
   const {isOnWrongNetwork, provider} = useWallet();

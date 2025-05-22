@@ -19,7 +19,6 @@ import {WalletMenu} from 'containers/walletMenu';
 import {useTransactionDetailContext} from 'context/transactionDetail';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
-import CreateDAO from 'pages/createDAO';
 import {FormProvider, useForm} from 'react-hook-form';
 import {identifyUser, trackPage} from 'services/analytics';
 import {NotFound} from 'utils/paths';
@@ -28,16 +27,11 @@ import DepositModal from 'containers/transactionModals/depositModal';
 import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 import ProtectedRoute from './components/protectedRoute';
 
-import {ProposalTransactionProvider} from 'context/proposalTransaction';
 import CreateProposal from 'pages/createProposal';
 const ProposalPage = lazy(() => import('pages/proposal'));
-const ExplorePage = lazy(() => import('pages/explore'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
-const SettingsPage = lazy(() => import('pages/settings'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
 const NewProposalPage = lazy(() => import('pages/newProposal'));
-const CommunityPage = lazy(() => import('pages/community'));
-const GovernancePage = lazy(() => import('pages/governance'));
 function App() {
   // TODO this needs to be inside a Routes component. Will be moved there with
   // further refactoring of layout (see further below).
@@ -120,9 +114,7 @@ const NewSettingsWrapper: React.FC = () => {
 };
 
 const ProposalDetailsWrapper: React.FC = () => (
-  <ProposalTransactionProvider>
     <ProposalPage />
-  </ProposalTransactionProvider>
 );
 
 const NotFoundWrapper: React.FC = () => {

@@ -6,7 +6,6 @@ import {NotFound} from 'utils/paths';
 import {useClient} from './useClient';
 import {SupportedNetworks} from 'utils/constants';
 import {Client, IProposalData, SortType} from 'votera-sdk-client';
-import {useClient2} from './useClient2';
 import {useQuery} from '@tanstack/react-query';
 
 export const PROPOSALS_PER_PAGE = 9;
@@ -66,7 +65,7 @@ export const useProposalWithUseQuery = (
   refetchInterval = 0
 ) => {
   const {network, networkUrlSegment} = useNetwork();
-  const {client, network: clientNetwork} = useClient2();
+  const {client, network: clientNetwork} = useClient();
   const queryNetwork = useMemo(
     () => networkUrlSegment ?? network,
     [network, networkUrlSegment]

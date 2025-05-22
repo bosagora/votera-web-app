@@ -5,7 +5,6 @@ import {TFunction, useTranslation} from 'react-i18next';
 import {NavigateFunction, generatePath, useNavigate} from 'react-router-dom';
 
 import {useNetwork} from 'context/network';
-import {useDaoMembers} from 'hooks/useDaoMembers';
 import {
   CHAIN_METADATA,
   PROPOSAL_STATE_LABELS,

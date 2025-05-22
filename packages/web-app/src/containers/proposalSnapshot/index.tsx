@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import {proposal2CardDataProps} from 'components/proposalList';
 import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
-import {useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {htmlIn} from 'utils/htmlIn';
 import {CreateProposal, Governance, NewProposal} from 'utils/paths';

@@ -16,10 +16,8 @@ import {useFormStep} from 'components/fullScreenStepper';
 import {Loading} from 'components/temporary';
 import {VotingTerminal} from 'containers/votingTerminal';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
-import {MultisigMember, useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {
-  isMultisigVotingSettings,
   usePluginSettings,
 } from 'hooks/usePluginSettings';
 import {useTokenSupply} from 'hooks/useTokenSupply';
@@ -48,18 +46,10 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
   const {setStep} = useFormStep();
 
   const {data: voteraProposal} = useVoteraProposalDetailsQuery();
+  const members = voteraProposal?.members || [];
   // const {id: pluginType, instanceAddress: pluginAddress} =
   //   voteraProposal?.plugins[0] || ({} as InstalledPluginListItem);
   //
-  const {data: daoSettings} = usePluginSettings(
-    voteraProposal?.address as string,
-    'multisig.plugin.dao.eth' as PluginTypes
-  );
-
-  const {
-    data: {members},
-  } = useDaoMembers(voteraProposal?.address || '', '');
-
   // const {data: totalSupply} = useTokenSupply(daoToken?.address as string);
 
   const {getValues, setValue} = useFormContext();
@@ -80,7 +70,7 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
     const {startSwitch, startDate, startTime, startUtc} = values;
 
     if (startSwitch === 'now') {
-      const startMinutesDelay = isMultisigVotingSettings(daoSettings) ? 0 : 10;
+      const startMinutesDelay = 10;
       return new Date(
         `${getCanonicalDate()}T${getCanonicalTime({
           minutes: startMinutesDelay,
@@ -91,11 +81,11 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
         `${startDate}T${startTime}:00${getCanonicalUtcOffset(startUtc)}`
       );
     }
-  }, [daoSettings, values]);
+  }, [values]);
 
   const formattedStartDate = useMemo(() => {
     const {startSwitch} = values;
-    if (startSwitch === 'now' || isMultisigVotingSettings(daoSettings)) {
+    if (startSwitch === 'now') {
       return t('labels.now');
     }
 
@@ -179,7 +169,7 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
 
     // adding 10 minutes to offset the 10 minutes added by starting now
     if (startSwitch === 'now') {
-      const startMinutesDelay = isMultisigVotingSettings(daoSettings) ? 0 : 10;
+      const startMinutesDelay = 10;
       endDateTime = new Date(
         endDateTime.getTime() + minutesToMills(startMinutesDelay)
       );
@@ -189,7 +179,7 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
       endDateTime,
       KNOWN_FORMATS.proposals
     )} ${getFormattedUtcOffset()}`;
-  }, [daoSettings, values]);
+  }, [values]);
 
   const terminalProps = useMemo(
     () =>
@@ -259,12 +249,7 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
           />
 
           <ExecutionWidget
-            actions={getNonEmptyActions(
-              values.actions,
-              isMultisigVotingSettings(daoSettings)
-                ? daoSettings.minApprovals
-                : 0
-            )}
+            actions={getNonEmptyActions(values.actions)}
             onAddAction={
               addActionsStepNumber
                 ? () => setStep(addActionsStepNumber)
@@ -353,47 +338,12 @@ function getReviewProposalTerminalProps(
   // daoToken: Erc20TokenDetails | undefined,
   // totalSupply: bigint | undefined
 ) {
+  // 토큰 투표 플러그인만 지원하도록 수정
   return {
-    minApproval: (daoSettings as any)?.minApprovals,
-    strategy: t('votingTerminal.multisig'),
-    voteOptions: t('votingTerminal.approve'),
     approvals: [],
     voters:
       daoMembers?.map(
         m => ({wallet: m.address, option: 'none'} as VoterType)
       ) || [],
   };
-  //
-  // if (isTokenVotingSettings(daoSettings) && daoToken && totalSupply) {
-  //   // calculate participation
-  //   const {currentPart, currentPercentage, minPart, missingPart, totalWeight} =
-  //     getErc20VotingParticipation(
-  //       daoSettings.minParticipation,
-  //       BigInt(0),
-  //       totalSupply,
-  //       daoToken.decimals
-  //     );
-  //
-  //   return {
-  //     currentParticipation: t('votingTerminal.participationErc20', {
-  //       participation: currentPart,
-  //       totalWeight,
-  //       tokenSymbol: daoToken.symbol,
-  //       percentage: currentPercentage,
-  //     }),
-  //
-  //     minParticipation: t('votingTerminal.participationErc20', {
-  //       participation: minPart,
-  //       totalWeight,
-  //       tokenSymbol: daoToken.symbol,
-  //       percentage: Math.round(daoSettings.minParticipation * 100),
-  //     }),
-  //
-  //     missingParticipation: missingPart,
-  //
-  //     strategy: t('votingTerminal.tokenVoting'),
-  //     voteOptions: t('votingTerminal.yes+no'),
-  //     supportThreshold: Math.round(daoSettings.supportThreshold * 100),
-  //   };
-  // }
 }

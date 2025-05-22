@@ -4,7 +4,7 @@ import {
   Client,
   Context as SdkContext,
   ContextParams,
-} from 'multisig-wallet-sdk-client';
+} from 'votera-sdk-client';
 
 import {useNetwork} from 'context/network';
 import React, {createContext, useContext, useEffect, useState} from 'react';
@@ -34,33 +34,44 @@ export const useClient = () => {
   return client;
 };
 
-export const UseClientProvider: React.FC = ({children}) => {
+export const UseClientProvider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
+  const {network} = useNetwork();
   const {signer} = useWallet();
   const [client, setClient] = useState<Client>();
-  const {network} = useNetwork();
   const [context, setContext] = useState<SdkContext>();
 
   useEffect(() => {
+    if (!network || !signer) return;
+
     const translatedNetwork = translateToNetworkishName(network);
+    if (translatedNetwork === 'unsupported') return;
 
-    // when network not supported by the SDK, don't set network
-    if (
-      translatedNetwork === 'unsupported' ||
-      !SupportedNetworksArray.includes(translatedNetwork)
-    ) {
-      return;
-    }
+    const contracts = LIVE_CONTRACTS[translatedNetwork];
 
-    //console.log('signer :', signer);
+    console.log('contracts :', contracts);
+
     const contextParams: ContextParams = {
-      walletFactoryAddress:
-        LIVE_CONTRACTS[translatedNetwork].MultiSigWalletFactoryAddress,
       network: translatedNetwork,
-      signer: signer ?? undefined,
+      signer,
       web3Providers: CHAIN_METADATA[network].rpc[0],
+      AddressStorage: contracts.AddressStorage,
+      BudgetManager: contracts.BudgetManager,
+      ParamStorage: contracts.ParamStorage,
+      ParticipantStorage: contracts.ParticipantStorage,
+      ProposalStorage: contracts.ProposalStorage,
+      AssessmentStorage: contracts.AssessmentStorage,
+      VoteStorage: contracts.VoteStorage,
+      ReceptionController: contracts.ReceptionController,
+      AssessmentController: contracts.AssessmentController,
+      VoteController: contracts.VoteController,
+      ParticipantManager: contracts.ParticipantManager,
+      ExecutionManager: contracts.ExecutionManager,
     };
 
     const sdkContext = new SdkContext(contextParams);
+
     setClient(new Client(sdkContext));
     setContext(sdkContext);
   }, [network, signer]);

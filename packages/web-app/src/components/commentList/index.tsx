@@ -9,7 +9,7 @@ import {
   CreateCommentProvider,
   useCreateCommentContext,
 } from 'context/createComment';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {ICommentData, SortType} from 'votera-sdk-client';
 import {useWaitForTransaction} from 'wagmi';
 import {useWallet} from 'hooks/useWallet';
@@ -42,7 +42,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
   const [hasMore, setHasMore] = React.useState(true);
   const {address} = useWallet();
 
-  const {client} = useClient2();
+  const {client} = useClient();
 
   const fetchComments = async (page: number) => {
     if (!client) return;

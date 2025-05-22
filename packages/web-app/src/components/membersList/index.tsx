@@ -5,7 +5,6 @@ import React, {useEffect, useState} from 'react';
 
 import {useNetwork} from 'context/network';
 // import {useSpecificProvider} from 'context/providers';
-import {MultisigMember} from 'hooks/useDaoMembers';
 import {CHAIN_METADATA} from 'utils/constants';
 // import {getTokenInfo} from 'utils/tokens';
 

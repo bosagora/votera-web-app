@@ -19,7 +19,7 @@ import AssessmentResult from 'components/assessmentResult';
 import {ProposalPhaseExtended} from 'pages/proposal';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {BigNumber} from 'ethers';
 
 import {useForm} from 'react-hook-form';
@@ -72,7 +72,7 @@ export const FundExecutionWidget: React.FC<ExecutionProps> = ({
 }) => {
   const {t} = useTranslation();
 
-  const {client} = useClient2();
+  const {client} = useClient();
 
   useEffect(() => {
     console.log('exPhase', exPhase);

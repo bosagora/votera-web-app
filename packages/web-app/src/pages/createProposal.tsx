@@ -20,7 +20,6 @@ import {htmlIn} from 'utils/htmlIn';
 import {Landing} from 'utils/paths';
 
 import {BigNumber} from 'ethers';
-import {BOACoin} from 'multisig-wallet-sdk-client';
 import {CreateProposalProvider} from 'context/createProposal';
 import ConfigureActions from 'containers/configureActions';
 import SetupProposal from 'containers/setupProposal';
@@ -82,7 +81,7 @@ const CreateProposal: React.FC = () => {
     title: 'test',
     description: 'test',
     proposalId: getRandomId(),
-    fundAmount: BOACoin.make(0).value,
+    fundAmount: BigNumber.from(0),
     assessmentPeriod: 7,
     votePeriod: 14,
     documentId: '',

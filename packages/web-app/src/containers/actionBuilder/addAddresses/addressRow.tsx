@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import {WrappedWalletInput} from 'components/wrappedWalletInput';
 import {useAlertContext} from 'context/alert';
 import {useProviders} from 'context/providers';
-import {BalanceMember, MultisigMember} from 'hooks/useDaoMembers';
 import {Web3Address} from 'utils/library';
 import {ActionAddAddress} from 'utils/types';
 import {validateWeb3Address} from 'utils/validators';
@@ -29,7 +28,6 @@ type Props = {
   }>;
   onBlur?: () => void;
   onClearRow?: () => void;
-  currentDaoMembers?: MultisigMember[] | BalanceMember[];
 };
 
 export const AddressRow = ({
@@ -39,7 +37,6 @@ export const AddressRow = ({
   dropdownItems,
   onBlur,
   onClearRow,
-  currentDaoMembers,
 }: Props) => {
   const {t} = useTranslation();
   const {alert} = useAlertContext();
@@ -74,15 +71,6 @@ export const AddressRow = ({
 
       // check if there is duplicated address in the Multisig plugin
       if (
-        currentDaoMembers?.some(
-          member =>
-            member.address.toLowerCase() === web3Address.address?.toLowerCase()
-        )
-      )
-        validationResult = t('errors.duplicateAddressOnCurrentMembersList');
-
-      // check if there is a duplicate in the form
-      if (
         memberWallets?.some(
           ({address, ensName}, memberWalletIndex) =>
             (address === web3Address.address ||
@@ -94,7 +82,7 @@ export const AddressRow = ({
 
       return validationResult;
     },
-    [currentDaoMembers, memberWallets, provider, t]
+    [memberWallets, provider, t]
   );
 
   /*************************************************

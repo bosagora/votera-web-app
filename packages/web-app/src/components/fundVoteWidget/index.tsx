@@ -19,7 +19,7 @@ import VoteResults from 'components/voteResults';
 import {BigNumber} from 'ethers';
 import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';
 import {Candidate, ProposalPeriod, IVoteBallotData} from 'votera-sdk-client';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {useEffect} from 'react';
 import {useWallet} from 'hooks/useWallet';
 
@@ -46,7 +46,7 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
 }) => {
   const {t} = useTranslation();
   const [selectedVote, setSelectedVote] = useState<Candidate>(Candidate.BLANK);
-  const {client} = useClient2();
+  const {client} = useClient();
   const [voteSummary, setVoteSummary] = useState<Array<number>>([0, 0, 0]);
   const {address} = useWallet();
   console.log('canVote', canVote);

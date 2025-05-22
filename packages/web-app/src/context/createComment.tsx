@@ -2,7 +2,7 @@ import React, {createContext, useCallback, useContext, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 
 import PublishModal from 'containers/transactionModals/publishModal';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
@@ -27,7 +27,7 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
 }) => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
-  const {client} = useClient2();
+  const {client} = useClient();
   const {isOnWrongNetwork, provider} = useWallet();
 
   const [commentProcessState, setCommentProcessState] =

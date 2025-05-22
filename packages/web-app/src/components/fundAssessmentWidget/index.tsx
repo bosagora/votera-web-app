@@ -22,7 +22,7 @@ import {
   NoAssessmentControllerAddress,
   ProposalPeriod,
 } from 'votera-sdk-client';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {BigNumber} from 'ethers';
 import {
   CreateAssessProvider,
@@ -126,7 +126,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
 
   const [assessmentLength, setAssessmentLength] = useState(0);
 
-  const {client} = useClient2();
+  const {client} = useClient();
   const {address} = useWallet();
 
   useEffect(() => {

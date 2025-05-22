@@ -25,7 +25,6 @@ import {Governance, Dashboard} from 'utils/paths';
 // import {useExistingToken} from 'hooks/useExistingToken';
 import {htmlIn} from 'utils/htmlIn';
 import {PluginTypes} from '../../utils/aragon/types';
-import {WalletDetails} from 'multisig-wallet-sdk-client';
 // import {useGovTokensWrapping} from 'context/govTokensWrapping';
 
 const TokenContainer = ({tokenName}: {tokenName: string}) => {

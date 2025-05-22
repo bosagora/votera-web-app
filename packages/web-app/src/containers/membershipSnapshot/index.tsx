@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import {MembersList} from 'components/membersList';
 import {Loading} from 'components/temporary';
 import {useNetwork} from 'context/network';
-import {useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import useScreen from 'hooks/useScreen';
 import {
@@ -41,12 +40,6 @@ export const MembershipSnapshot: React.FC<Props> = ({
   const {isDesktop} = useScreen();
   //console.log('isDesktop :', isDesktop);
   // const {handleOpenModal} = useGovTokensWrapping();
-
-  const {
-    data: {members},
-    isLoading,
-  } = useDaoMembers(daoAddressOrEns, pluginType);
-  const totalMemberCount = members.length;
 
   // const {data: daoDetails} = useDaoDetailsQuery();
 

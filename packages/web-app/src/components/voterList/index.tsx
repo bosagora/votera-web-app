@@ -5,7 +5,7 @@ import {Link} from '@aragon/ui-components';
 import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
 import {shortenAddress} from 'utils/library';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {SortType, IVoteBallotData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
 
@@ -16,7 +16,7 @@ interface VoteListProps {
 const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   const {network} = useNetwork();
   const {t} = useTranslation();
-  const {client} = useClient2();
+  const {client} = useClient();
 
   const PAGE_SIZE = 10;
 

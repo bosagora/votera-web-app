@@ -1,4 +1,3 @@
-import {QueryOption} from 'multisig-wallet-sdk-client';
 import {
   InfiniteData,
   UseQueryResult,
@@ -22,7 +21,7 @@ import {
   SupportedNetworks,
   getSupportedNetworkByChainId,
 } from 'utils/constants';
-import {resolveDaoAvatarIpfsCid} from 'utils/library';
+import {QueryOption} from 'votera-sdk-client';
 
 const DEFAULT_QUERY_PARAMS = {
   skip: 0,

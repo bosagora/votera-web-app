@@ -12,7 +12,7 @@ import useScreen from 'hooks/useScreen';
 import {useGlobalModalContext} from 'context/globalModals';
 import ProposalSnapshot from 'containers/proposalSnapshot';
 import {ProposalListItem, ProposalPhase} from 'utils/types';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {IProposalData, SortType} from 'votera-sdk-client';
 import {useProposalQuery, PROPOSALS_PER_PAGE} from 'hooks/useProposalQuery';
 
@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
   const {network} = useNetwork();
   const daoAddressOrEns = '0x1234567890abcdef1234567890abcdef12345678';
   const {open} = useGlobalModalContext();
-  const {client} = useClient2();
+  const {client} = useClient();
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [proposals, setProposals] = useState<Array<IProposalData>>([]);

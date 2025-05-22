@@ -13,28 +13,14 @@ import styled from 'styled-components';
 
 import {DaoCard} from 'components/daoCard';
 import {useFavoritedDaosInfiniteQuery} from 'hooks/useFavoritedDaos';
-import {
-  AugmentedDaoListItem,
-  ExploreFilter,
-  EXPLORE_FILTER,
-  useDaosInfiniteQuery,
-} from 'hooks/useDaos';
 import {useWallet} from 'hooks/useWallet';
 import {getSupportedNetworkByChainId, SupportedChainID} from 'utils/constants';
 import {Dashboard} from 'utils/paths';
-
-export function isExploreFilter(
-  filterValue: string
-): filterValue is ExploreFilter {
-  return EXPLORE_FILTER.some(ef => ef === filterValue);
-}
 
 export const DaoExplorer = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {isConnected, address} = useWallet();
-
-  const [filterValue, setFilterValue] = useState<ExploreFilter>('favorite');
 
   // conditional api queries
   const fetchFavorited = filterValue === 'favorite';

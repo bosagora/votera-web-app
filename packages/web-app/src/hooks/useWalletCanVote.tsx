@@ -8,7 +8,6 @@ import {useEffect, useState} from 'react';
 import {HookData, ProposalId} from 'utils/types';
 // import {PluginTypes, usePluginClient} from './usePluginClient';
 import {stripPlgnAdrFromProposalId} from '../utils/proposals';
-import {MultisigMember} from './useDaoMembers';
 
 /**
  * Check whether wallet is eligible to vote on proposal
@@ -17,7 +16,6 @@ import {MultisigMember} from './useDaoMembers';
  */
 export const useWalletCanVote = (
   address: string | null,
-  members: MultisigMember[],
   approval: string[] | undefined,
   executed: boolean | undefined
 ): HookData<boolean> => {
@@ -73,21 +71,13 @@ export const useWalletCanVote = (
               stripPlgnAdrFromProposalId(a).toLowerCase() ===
               address.toLowerCase()
           );
-        const isMember =
-          members &&
-          members.some(
-            a =>
-              // remove the call to strip plugin address when sdk returns proper plugin address
-              stripPlgnAdrFromProposalId(a.address).toLowerCase() ===
-              address.toLowerCase()
-          );
 
         // console.log('approval :', approval);
         // console.log('members :', members);
         // console.log('isMember :', isMember);
         // console.log('approved :', approved);
 
-        if (isMember && !approved) {
+        if (approved) {
           setData(true);
         } else setData(false);
 
@@ -102,7 +92,7 @@ export const useWalletCanVote = (
     }
 
     fetchCanVote();
-  }, [address, approval, members, executed]);
+  }, [address, approval, executed]);
 
   return {
     data: Array.isArray(data) ? data.some(v => v) : data,

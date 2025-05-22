@@ -42,7 +42,7 @@ import {
   ProposalStates,
   VoteResult,
 } from 'votera-sdk-client';
-import {useClient2} from 'hooks/useClient2';
+import {useClient} from 'hooks/useClient';
 import {FundTransitionWidget} from 'components/fundTransitionWidget';
 import {FundExecutionWidget} from 'components/fundExecutionWidget';
 import {useProposalQuery} from 'hooks/useProposalQuery';
@@ -322,7 +322,7 @@ const Proposal: React.FC = () => {
   const {isDesktop} = useScreen();
   const {breadcrumbs, tag} = useMappedBreadcrumbs();
   const navigate = useNavigate();
-  const {client} = useClient2();
+  const {client} = useClient();
   const {dao, id: urlId} = useParams();
   const proposalId = useMemo(
     () => (urlId ? new ProposalId(urlId) : undefined),

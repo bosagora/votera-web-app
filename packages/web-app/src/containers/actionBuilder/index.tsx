@@ -5,7 +5,6 @@ import TokenMenu from 'containers/tokenMenu';
 import {useActionsContext} from 'context/actions';
 import {useNetwork} from 'context/network';
 import {useDaoBalances} from 'hooks/useDaoBalances';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
 import {usePluginSettings} from 'hooks/usePluginSettings';
 import {fetchTokenPrice} from 'services/prices';
 import {formatUnits} from 'utils/library';

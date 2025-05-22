@@ -17,7 +17,6 @@ import {SupportedVotingSettings} from 'utils/types';
 import ConfigureActions from 'containers/configureActions';
 import {actionsAreValid} from 'utils/validators';
 import {useActionsContext} from 'context/actions';
-import {WalletDetails} from 'multisig-wallet-sdk-client';
 
 interface WithdrawStepperProps {
   enableTxModal: () => void;

@@ -17,7 +17,6 @@ import {ActionIndex} from 'utils/types';
 import AccordionSummary from './accordionSummary';
 import {AddressRow} from './addressRow';
 import {useAlertContext} from 'context/alert';
-import {BalanceMember, MultisigMember} from 'hooks/useDaoMembers';
 
 export type CustomHeaderProps = {
   useCustomHeader?: boolean;

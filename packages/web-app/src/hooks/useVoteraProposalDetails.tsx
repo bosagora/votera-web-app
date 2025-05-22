@@ -1,4 +1,3 @@
-import {Client, WalletDetails} from 'multisig-wallet-sdk-client';
 import {useQuery} from '@tanstack/react-query';
 import {useCallback, useEffect, useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
