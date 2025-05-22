@@ -1,11 +1,7 @@
 // import {MultisigVotingSettings, VotingSettings} from '@aragon/sdk-client';
 import {useEffect, useState} from 'react';
 import {HookData, SupportedVotingSettings} from 'utils/types';
-import {
-  MultisigVotingSettings,
-  PluginTypes,
-  VotingSettings,
-} from '../utils/aragon/types';
+import {VotingSettings} from '../utils/aragon/types';
 import {useClient} from './useClient';
 
 // import {PluginTypes, usePluginClient} from './usePluginClient';
@@ -17,23 +13,14 @@ export function isTokenVotingSettings(
   return 'minDuration' in settings;
 }
 
-export function isMultisigVotingSettings(
-  settings: SupportedVotingSettings | undefined
-): settings is MultisigVotingSettings {
-  if (!settings || Object.keys(settings).length === 0) return false;
-  return !('minDuration' in settings);
-}
-
 /**
  * Retrieves plugin governance settings from SDK
  * @param pluginAddress plugin from which proposals will be retrieved
- * @param type plugin type
  * @returns plugin governance settings
  */
 export function usePluginSettings(
-  pluginAddress: string,
-  type: PluginTypes
-): HookData<SupportedVotingSettings> {
+  pluginAddress: string
+) {
   const [data, setData] = useState<SupportedVotingSettings>(
     {} as SupportedVotingSettings
   );
@@ -47,16 +34,8 @@ export function usePluginSettings(
       try {
         setIsLoading(true);
 
-        const minApprovals = await client?.multiSigWallet.getRequired();
-        //console.log('minApprovals :', minApprovals);
-        const settings = {
-          minDuration: 0,
-          minParticipation: 0,
-          supportThreshold: 0,
-          votingMode: 'Standard',
-          minApprovals: minApprovals,
-          onlyListed: true,
-        };
+        // Token voting 플러그인만 지원하도록 수정
+        const settings = await client?.tokenVoting.getSettings();
         if (settings) setData(settings as VotingSettings);
       } catch (err) {
         console.error(err);

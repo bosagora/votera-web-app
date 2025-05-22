@@ -7,5 +7,4 @@ export type GaslessPluginType = typeof GaslessPluginName;
 
 export type PluginTypes =
   | 'token-voting.plugin.dao.eth'
-  | 'multisig.plugin.dao.eth'
   | GaslessPluginType;
