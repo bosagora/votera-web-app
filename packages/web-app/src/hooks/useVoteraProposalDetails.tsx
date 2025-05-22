@@ -62,7 +62,7 @@ export const useDaoQuery = (
   });
 };
 
-export const useDaoDetailsQuery = () => {
+export const useVoteraProposalDetailsQuery = () => {
   const {dao} = useParams();
   const navigate = useNavigate();
 

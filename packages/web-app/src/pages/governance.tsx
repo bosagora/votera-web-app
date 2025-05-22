@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import ProposalList from 'components/proposalList';
 import {Loading} from 'components/temporary';
 import {PageWrapper} from 'components/wrappers';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useProposals} from 'hooks/useProposals';
 import {ProposalListItem} from 'utils/types';
 import PageEmptyState from 'containers/pageEmptyState';
@@ -28,7 +28,7 @@ import {PluginTypes} from '../utils/aragon/types';
 import {BigNumber} from 'ethers';
 
 const Governance: React.FC = () => {
-  const {data: daoDetails, isLoading: isDaoLoading} = useDaoDetailsQuery();
+  const {data: daoDetails, isLoading: isDaoLoading} = useVoteraProposalDetailsQuery();
   const {isMobile} = useScreen();
 
   // The number of proposals displayed on each page

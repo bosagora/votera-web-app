@@ -4,7 +4,7 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {Loading} from 'components/temporary';
 import {ActionsProvider} from 'context/actions';
 import {CreateProposalProvider} from 'context/createProposal';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 // import {PluginTypes} from 'hooks/usePluginClient';
 // import {usePluginSettings} from 'hooks/usePluginSettings';
 import WithdrawStepper from 'containers/withdrawStepper';
@@ -57,7 +57,7 @@ export const defaultValues = {
 const NewWithdraw: React.FC = () => {
   const [showTxModal, setShowTxModal] = useState(false);
 
-  const {data: daoDetails, isLoading: detailsLoading} = useDaoDetailsQuery();
+  const {data: voteraProposal, isLoading: detailsLoading} = useVoteraProposalDetailsQuery();
   // const {data: pluginSettings, isLoading: settingsLoading} = usePluginSettings(
   //   daoDetails?.plugins[0].instanceAddress as string,
   //   daoDetails?.plugins[0].id as PluginTypes
@@ -72,14 +72,14 @@ const NewWithdraw: React.FC = () => {
    *                    Render                     *
    *************************************************/
 
-  if (!daoDetails || detailsLoading) {
+  if (!voteraProposal || detailsLoading) {
     return <Loading />;
   }
 
   return (
     <>
       <FormProvider {...formMethods}>
-        <ActionsProvider daoId={daoDetails?.address as string}>
+        <ActionsProvider daoId={voteraProposal?.address as string}>
           <CreateProposalProvider
             showTxModal={showTxModal}
             setShowTxModal={setShowTxModal}

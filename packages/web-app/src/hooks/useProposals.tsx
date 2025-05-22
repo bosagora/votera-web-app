@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 import {recalculateStatus} from 'utils/proposals';
 import {DetailedProposal, HookData, ProposalListItem} from 'utils/types';
-import {useDaoDetailsQuery} from './useDaoDetails';
+import {useVoteraProposalDetailsQuery} from './useVoteraProposalDetails';
 import {PluginTypes} from 'utils/aragon/types';
 import {useClient} from './useClient';
 
@@ -28,7 +28,7 @@ export function useProposals(
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
 
   const {client} = useClient();
   client?.multiSigWallet.attach(daoAddress);

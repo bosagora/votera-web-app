@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import {AccordionMethod} from 'components/accordionMethod';
 import {useNetwork} from 'context/network';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useDaoMembers} from 'hooks/useDaoMembers';
 import {PluginTypes} from 'hooks/usePluginClient';
 import {CHAIN_METADATA} from 'utils/constants';
@@ -17,7 +17,7 @@ export const MintTokenCard: React.FC<{
   const {t} = useTranslation();
   const {network} = useNetwork();
 
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
 
   const {
     data: {members},

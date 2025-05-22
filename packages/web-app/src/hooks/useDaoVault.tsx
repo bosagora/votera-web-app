@@ -5,7 +5,7 @@ import {formatUnits} from 'utils/library';
 
 import {PollTokenOptions, VaultToken} from 'utils/types';
 import {useDaoBalances} from './useDaoBalances';
-import {useDaoDetailsQuery} from './useDaoDetails';
+import {useVoteraProposalDetailsQuery} from './useVoteraProposalDetails';
 // import {useDaoTransfers} from './useDaoTransfers';
 import {usePollTokenPrices} from './usePollTokenPrices';
 // import {usePollTransfersPrices} from './usePollTransfersPrices';
@@ -23,7 +23,7 @@ export const useDaoVault = (
   options: PollTokenOptions = {filter: TimeFilter.day, interval: 300000}
 ) => {
   //console.log('useDaoVault > ');
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
   //console.log('daoDetails :', daoDetails);
 
   const {data: balances} = useDaoBalances(daoDetails?.address || '');

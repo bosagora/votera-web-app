@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 import {recalculateStatus} from 'utils/proposals';
 import {DetailedProposal, HookData, ProposalListItem} from 'utils/types';
-import {useDaoDetailsQuery} from './useDaoDetails';
+import {useVoteraProposalDetailsQuery} from './useVoteraProposalDetails';
 import {PluginTypes} from 'utils/aragon/types';
 import {useClient2} from './useClient2';
 import {IProposalData, SortType} from 'votera-sdk-client';

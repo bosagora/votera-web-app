@@ -13,7 +13,7 @@ import ReviewProposal from 'containers/reviewProposal';
 import {useActionsContext} from 'context/actions';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 
 import {useWallet} from 'hooks/useWallet';
 import {Governance} from 'utils/paths';
@@ -26,7 +26,7 @@ type ProposalStepperType = {
 const ProposalStepper: React.FC<ProposalStepperType> = ({
   enableTxModal,
 }: ProposalStepperType) => {
-  const {data: daoDetails, isLoading} = useDaoDetailsQuery();
+  const {data: voteraProposal, isLoading} = useVoteraProposalDetailsQuery();
   const {actions, addAction} = useActionsContext();
   const {open} = useGlobalModalContext();
 
@@ -50,13 +50,13 @@ const ProposalStepper: React.FC<ProposalStepperType> = ({
     return <Loading />;
   }
 
-  if (!daoDetails) return null;
+  if (!voteraProposal) return null;
   return (
     <FullScreenStepper
       wizardProcessName={t('newProposal.title')}
       processType="ProposalCreation"
       navLabel={t('newProposal.title')}
-      returnPath={generatePath(Governance, {network, dao: daoDetails.address})}
+      returnPath={generatePath(Governance, {network, dao: voteraProposal.address})}
     >
       <Step
         wizardTitle={t('newWithdraw.defineProposal.heading')}

@@ -5,7 +5,7 @@ import {usePrivacyContext} from 'context/privacyContext';
 import {CHAIN_METADATA, PENDING_MULTISIG_PROPOSALS_KEY} from 'utils/constants';
 import {formatUnits} from 'utils/library';
 import {DetailedProposal, HookData, ProposalId} from 'utils/types';
-import {useDaoDetailsQuery} from './useDaoDetails';
+import {useVoteraProposalDetailsQuery} from './useVoteraProposalDetails';
 import {useClient} from './useClient';
 import {BigNumber, constants} from 'ethers';
 import {PluginTypes, ProposalStatus} from '../utils/aragon/types';
@@ -44,7 +44,7 @@ export const useDaoProposal = (
   const {network} = useNetwork();
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
   const {client} = useClient();
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
 
   const cachedMultisigVotes = useReactiveVar(pendingMultisigApprovalsVar);
 

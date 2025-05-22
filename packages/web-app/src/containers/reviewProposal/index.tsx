@@ -15,7 +15,7 @@ import {useFormStep} from 'components/fullScreenStepper';
 // import ResourceList from 'components/resourceList';
 import {Loading} from 'components/temporary';
 import {VotingTerminal} from 'containers/votingTerminal';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {MultisigMember, useDaoMembers} from 'hooks/useDaoMembers';
 // import {PluginTypes} from 'hooks/usePluginClient';
 import {
@@ -47,18 +47,18 @@ const ReviewProposal: React.FC<ReviewProposalProps> = ({
   const {t, i18n} = useTranslation();
   const {setStep} = useFormStep();
 
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: voteraProposal} = useVoteraProposalDetailsQuery();
   // const {id: pluginType, instanceAddress: pluginAddress} =
-  //   daoDetails?.plugins[0] || ({} as InstalledPluginListItem);
+  //   voteraProposal?.plugins[0] || ({} as InstalledPluginListItem);
   //
   const {data: daoSettings} = usePluginSettings(
-    daoDetails?.address as string,
+    voteraProposal?.address as string,
     'multisig.plugin.dao.eth' as PluginTypes
   );
 
   const {
     data: {members},
-  } = useDaoMembers(daoDetails?.address || '', '');
+  } = useDaoMembers(voteraProposal?.address || '', '');
 
   // const {data: totalSupply} = useTokenSupply(daoToken?.address as string);
 
@@ -354,7 +354,7 @@ function getReviewProposalTerminalProps(
   // totalSupply: bigint | undefined
 ) {
   return {
-    minApproval: daoSettings?.minApprovals,
+    minApproval: (daoSettings as any)?.minApprovals,
     strategy: t('votingTerminal.multisig'),
     voteOptions: t('votingTerminal.approve'),
     approvals: [],

@@ -386,7 +386,7 @@ export type TransactionItem = {
 };
 
 /* MISCELLANEOUS TYPES ======================================================= */
-export type Dao = {
+export type VoteraProposal = {
   address: string;
 };
 

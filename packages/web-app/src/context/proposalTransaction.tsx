@@ -15,7 +15,7 @@ import {useTranslation} from 'react-i18next';
 import {generatePath, useNavigate, useParams} from 'react-router-dom';
 
 import PublishModal from 'containers/transactionModals/publishModal';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {useWallet} from 'hooks/useWallet';
 import {PENDING_MULTISIG_VOTES_KEY, TransactionState} from 'utils/constants';
@@ -79,7 +79,7 @@ const ProposalTransactionProvider: React.FC<Props> = ({children}) => {
     useState<TransactionState>();
   const [transactionHash, setTransactionHash] = useState<string>('');
 
-  const {data: daoDetails, isLoading} = useDaoDetailsQuery();
+  const {data: daoDetails, isLoading} = useVoteraProposalDetailsQuery();
 
   const {pluginAddress, pluginType} = useMemo(() => {
     return {

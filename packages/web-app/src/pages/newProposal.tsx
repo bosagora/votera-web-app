@@ -6,10 +6,10 @@ import {Loading} from 'components/temporary';
 import ProposalStepper from 'containers/proposalStepper';
 import {ActionsProvider} from 'context/actions';
 import {CreateProposalProvider} from 'context/createProposal';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 
 const NewProposal: React.FC = () => {
-  const {data, isLoading} = useDaoDetailsQuery();
+  const {data, isLoading} = useVoteraProposalDetailsQuery();
 
   const [showTxModal, setShowTxModal] = useState(false);
 

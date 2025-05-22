@@ -8,7 +8,7 @@ import ModalBottomSheetSwitcher from 'components/modalBottomSheetSwitcher';
 import {WrappedWalletInput} from 'components/wrappedWalletInput';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
 import {CHAIN_METADATA, ENS_SUPPORTED_NETWORKS} from 'utils/constants';
 import {toDisplayEns} from 'utils/library';
@@ -21,7 +21,7 @@ const DepositModal: React.FC = () => {
   const {isDepositOpen, open, close} = useGlobalModalContext();
   const {status, isConnected, isOnWrongNetwork} = useWallet();
 
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
 
   const networkSupportsENS = ENS_SUPPORTED_NETWORKS.includes(network);
 

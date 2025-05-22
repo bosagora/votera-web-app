@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {Action} from 'utils/types';
 // import {AddAddressCard} from './actions/addAddressCard';
 // import {MintTokenCard} from './actions/mintTokenCard';
@@ -17,7 +17,7 @@ type ActionsFilterProps = {
 };
 
 export const ActionsFilter: React.FC<ActionsFilterProps> = ({action}) => {
-  const {data: dao} = useDaoDetailsQuery();
+  const {data: dao} = useVoteraProposalDetailsQuery();
 
   // all actions have names
   switch (action.name) {

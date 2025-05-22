@@ -7,7 +7,7 @@ import {selectedDaoVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {usePrivacyContext} from 'context/privacyContext';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import useScreen from 'hooks/useScreen';
 import {CHAIN_METADATA, FEEDBACK_FORM, SupportedChainID} from 'utils/constants';
 import {
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
   const {network} = useNetwork();
   const {handleWithFunctionalPreferenceMenu} = usePrivacyContext();
 
-  const {data: walletDetails} = useDaoDetailsQuery();
+  const {data: walletDetails} = useVoteraProposalDetailsQuery();
 
   const processInfo = useMemo(() => {
     const matches = matchRoutes(processPaths, pathname);

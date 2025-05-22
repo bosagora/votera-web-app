@@ -20,7 +20,7 @@ import {
   ManageMembersProposal,
   MintTokensProposal,
 } from 'utils/paths';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 // import {useExistingToken} from 'hooks/useExistingToken';
 // import {useGovTokensWrapping} from 'context/govTokensWrapping';
 

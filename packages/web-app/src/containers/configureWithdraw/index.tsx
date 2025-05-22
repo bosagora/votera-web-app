@@ -23,7 +23,7 @@ import {useAlertContext} from 'context/alert';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useProviders} from 'context/providers';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
 import {WithdrawAction} from 'pages/newWithdraw';
 // import {fetchTokenData} from 'services/prices';
@@ -53,7 +53,7 @@ const ConfigureWithdrawForm: React.FC<ConfigureWithdrawFormProps> = ({
   const {setSelectedActionIndex} = useActionsContext();
   const {alert} = useAlertContext();
 
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
 
   const {control, getValues, trigger, resetField, setFocus, setValue} =
     useFormContext();

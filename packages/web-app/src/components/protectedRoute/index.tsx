@@ -8,8 +8,7 @@ import {LoginRequired} from 'containers/walletMenu/LoginRequired';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useSpecificProvider} from 'context/providers';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
-import {useDaoMembers} from 'hooks/useDaoMembers';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 // import {PluginTypes} from 'hooks/usePluginClient';
 // import {usePluginSettings} from 'hooks/usePluginSettings';
 import {useWallet} from 'hooks/useWallet';
@@ -27,7 +26,7 @@ const ProtectedRoute: React.FC = () => {
     isOnWrongNetwork,
     isModalOpen: web3ModalIsShown,
   } = useWallet();
-  const {data: daoDetails, isLoading: detailsAreLoading} = useDaoDetailsQuery();
+  const {data: daoDetails, isLoading: detailsAreLoading} = useVoteraProposalDetailsQuery();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 

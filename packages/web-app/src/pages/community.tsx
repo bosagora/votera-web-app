@@ -17,7 +17,7 @@ import {StateEmpty} from 'components/stateEmpty';
 import {Loading} from 'components/temporary';
 import {PageWrapper} from 'components/wrappers';
 import {useNetwork} from 'context/network';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useDaoMembers} from 'hooks/useDaoMembers';
 import {useDebouncedState} from 'hooks/useDebouncedState';
 import {PluginTypes} from 'hooks/usePluginClient';
@@ -41,7 +41,7 @@ const Community: React.FC = () => {
   const [page, setPage] = useState(1);
   const [debouncedTerm, searchTerm, setSearchTerm] = useDebouncedState('');
 
-  const {data: daoDetails, isLoading: detailsAreLoading} = useDaoDetailsQuery();
+  const {data: daoDetails, isLoading: detailsAreLoading} = useVoteraProposalDetailsQuery();
   // const {
   //   data: {members, filteredMembers, daoToken},
   //   isLoading: membersLoading,

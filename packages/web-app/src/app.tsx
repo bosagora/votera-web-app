@@ -17,7 +17,7 @@ import NetworkErrorMenu from 'containers/networkErrorMenu';
 import TransferMenu from 'containers/transferMenu';
 import {WalletMenu} from 'containers/walletMenu';
 import {useTransactionDetailContext} from 'context/transactionDetail';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
 import CreateDAO from 'pages/createDAO';
 import {FormProvider, useForm} from 'react-hook-form';

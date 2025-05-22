@@ -18,19 +18,20 @@ import {PageWrapper} from 'components/wrappers';
 // import MajorityVotingSettings from 'containers/settings/majorityVoting';
 import MultisigSettings from 'containers/settings/multisig';
 import {useNetwork} from 'context/network';
-import {useDaoDetailsQuery} from 'hooks/useDaoDetails';
+import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {PluginTypes} from 'hooks/usePluginClient';
 import useScreen from 'hooks/useScreen';
 import {CHAIN_METADATA} from 'utils/constants';
 import {EditSettings} from 'utils/paths';
 import {DaoDetails} from '../utils/aragon/sdk-client-types';
+import {VoteraProposal} from 'utils/types';
 
 const Settings: React.FC = () => {
   const {t} = useTranslation();
   const {network, isL2Network} = useNetwork();
   const navigate = useNavigate();
 
-  const {data: daoDetails, isLoading} = useDaoDetailsQuery();
+  const {data: voteraProposal, isLoading} = useVoteraProposalDetailsQuery();
 
   const networkInfo = CHAIN_METADATA[network];
   const chainLabel = networkInfo.name;
@@ -38,8 +39,8 @@ const Settings: React.FC = () => {
     ? t('labels.testNet')
     : t('labels.mainNet');
 
-  const resourceLinks = daoDetails?.metadata.links?.filter(
-    l => l.name && l.url
+  const resourceLinks = voteraProposal?.metadata.links?.filter(
+    (l: {name: string; url: string}) => l.name && l.url
   );
 
   if (isLoading) {
@@ -71,14 +72,14 @@ const Settings: React.FC = () => {
             <Dd>
               <AvatarDao
                 size={'small'}
-                daoName={daoDetails?.metadata.name || ''}
-                src={daoDetails?.metadata.avatar}
+                daoName={voteraProposal?.metadata.name || ''}
+                src={voteraProposal?.metadata.avatar || ''}
               />
             </Dd>
           </Dl>
           <Dl>
             <Dt>{t('labels.daoName')}</Dt>
-            <Dd>{daoDetails?.metadata.name}</Dd>
+            <Dd>{voteraProposal?.metadata.name}</Dd>
           </Dl>
           {/*{!isL2Network && (*/}
           {/*  <Dl>*/}
@@ -88,14 +89,14 @@ const Settings: React.FC = () => {
           {/*)}*/}
           <Dl>
             <Dt>{t('labels.summary')}</Dt>
-            <Dd>{daoDetails?.metadata.description}</Dd>
+            <Dd>{voteraProposal?.metadata.description}</Dd>
           </Dl>
           {resourceLinks && resourceLinks.length > 0 && (
             <Dl>
               <Dt>{t('labels.links')}</Dt>
               <Dd>
                 <div className="space-y-1.5">
-                  {resourceLinks.map(({name, url}) => (
+                  {resourceLinks.map(({name, url}: {name: string; url: string}) => (
                     <ListItemLink label={name} href={url} key={url} />
                   ))}
                 </div>
@@ -105,7 +106,7 @@ const Settings: React.FC = () => {
         </DescriptionListContainer>
 
         {/* Plugins */}
-        <PluginSettingsWrapper daoDetails={daoDetails} />
+        <PluginSettingsWrapper voteraProposal={voteraProposal} />
       </div>
 
       {/* Edit */}
@@ -125,13 +126,13 @@ const Settings: React.FC = () => {
 };
 
 export interface IPluginSettings {
-  daoDetails: DaoDetails | undefined | null;
+  voteraProposal: VoteraProposal | undefined | null;
 }
 
 export const PluginSettingsWrapper: React.FC<IPluginSettings> = ({
-  daoDetails,
+  voteraProposal,
 }) => {
-  return <MultisigSettings daoDetails={daoDetails} />;
+  return <MultisigSettings voteraProposal={voteraProposal} />;
 };
 
 export const SettingsWrapper: React.FC = ({children}) => {
