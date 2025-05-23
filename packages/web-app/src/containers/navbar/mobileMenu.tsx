@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
 
 import BottomSheet from 'components/bottomSheet';
-import {DaoSelector} from 'components/daoSelector';
+import {VoteraProposalSelector} from 'components/voteraProposalSelector';
 import NavLinks from 'components/navLinks';
 import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
@@ -21,7 +21,7 @@ const MobileNavMenu = () => {
     <BottomSheet isOpen={isMobileMenuOpen} onClose={() => close('mobileMenu')}>
       <div className="tablet:w-50">
         <CardWrapper className="rounded-xl">
-          <DaoSelector
+          <VoteraProposalSelector
             daoAddress={currentDao.address}
             daoName={currentDao.metadata.name}
             src={currentDao.address}

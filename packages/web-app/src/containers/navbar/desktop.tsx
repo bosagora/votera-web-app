@@ -28,6 +28,7 @@ import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
 import {changeLanguage} from '../../../i18n.config';
+import {VoteraProposalSelector} from 'components/voteraProposalSelector';
 
 const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
