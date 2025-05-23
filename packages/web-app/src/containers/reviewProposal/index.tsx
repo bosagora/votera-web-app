@@ -17,9 +17,7 @@ import {Loading} from 'components/temporary';
 import {VotingTerminal} from 'containers/votingTerminal';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 // import {PluginTypes} from 'hooks/usePluginClient';
-import {
-  usePluginSettings,
-} from 'hooks/usePluginSettings';
+import {usePluginSettings} from 'hooks/usePluginSettings';
 import {useTokenSupply} from 'hooks/useTokenSupply';
 import {
   KNOWN_FORMATS,
@@ -31,7 +29,6 @@ import {
 } from 'utils/date';
 import {getNonEmptyActions} from 'utils/proposals';
 import {ProposalResource, SupportedVotingSettings} from 'utils/types';
-import {InstalledPluginListItem, PluginTypes} from '../../utils/aragon/types';
 
 type ReviewProposalProps = {
   defineProposalStepNumber: number;

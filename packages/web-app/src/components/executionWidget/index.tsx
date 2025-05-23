@@ -15,7 +15,6 @@ import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
 import {Action} from 'utils/types';
 import {ActionsFilter} from './actionsFilter';
-import {PluginTypes} from '../../utils/aragon/types';
 
 export type ExecutionStatus =
   | 'defeated'

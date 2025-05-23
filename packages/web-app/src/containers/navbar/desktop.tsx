@@ -19,7 +19,7 @@ import {DaoSelector} from 'components/daoSelector';
 import {Container} from 'components/layout';
 import NavLinks from 'components/navLinks';
 import ExitProcessMenu, {ProcessType} from 'containers/exitProcessMenu';
-import {selectedDaoVar} from 'context/apolloClient';
+import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useNetwork} from 'context/network';
 import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import {useWallet} from 'hooks/useWallet';
@@ -49,7 +49,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
   const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
   const {address, isConnected} = useWallet();
 
-  const currentDao = useReactiveVar(selectedDaoVar);
+  const currentDao = useReactiveVar(selectedVoteraProposalVar);
 
   const [showExitProcessMenu, setShowExitProcessMenu] = useState(false);
 

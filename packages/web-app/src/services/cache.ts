@@ -2,7 +2,7 @@
 // of a caching service provided by separate server
 // For now most of these methods will be passed the reactive
 // variables from Apollo-client
-import {NavigationDao} from 'context/apolloClient';
+import {NavigationVoteraProposal} from 'context/apolloClient';
 import {
   FAVORITE_DAOS_KEY,
   PENDING_DAOS_KEY,
@@ -21,16 +21,16 @@ import {sleepFor} from 'utils/library';
 export async function getFavoritedDaosFromCache(options: {
   skip: number;
   limit?: number;
-}): Promise<NavigationDao[]> {
+}): Promise<NavigationVoteraProposal[]> {
   const {skip, limit} = options;
 
-  const favoriteDaos = JSON.parse(
+  const favoriteVoteraProposals = JSON.parse(
     localStorage.getItem(FAVORITE_DAOS_KEY) || '[]'
-  ) as NavigationDao[];
+  ) as NavigationVoteraProposal[];
 
   // sleeping for 600 ms because the immediate apparition of DAOS creates a flickering issue
   await sleepFor(600);
-  return favoriteDaos.slice(skip, limit ? skip + limit : undefined);
+  return favoriteVoteraProposals.slice(skip, limit ? skip + limit : undefined);
 }
 
 /**
@@ -60,7 +60,7 @@ export async function getFavoritedDaoFromCache(
  * @param dao DAO being favorited
  * @returns an error if the dao to favorite is not provided
  */
-export async function addFavoriteDaoToCache(dao: NavigationDao) {
+export async function addFavoriteDaoToCache(dao: NavigationVoteraProposal) {
   if (!dao) return Promise.reject(new Error('daoToFavorite must be defined'));
 
   const cache = await getFavoritedDaosFromCache({skip: 0});
@@ -74,7 +74,9 @@ export async function addFavoriteDaoToCache(dao: NavigationDao) {
  * @param dao DAO to unfavorite
  * @returns an error if no DAO is provided
  */
-export async function removeFavoriteDaoFromCache(dao: NavigationDao) {
+export async function removeFavoriteDaoFromCache(
+  dao: NavigationVoteraProposal
+) {
   if (!dao) return Promise.reject(new Error('dao must be defined'));
 
   const cache = await getFavoritedDaosFromCache({skip: 0});
@@ -92,7 +94,7 @@ export async function removeFavoriteDaoFromCache(dao: NavigationDao) {
  * @param dao updated DAO; note dao.address & dao.chain should never be changed
  * @returns an error if no DAO is provided
  */
-export async function updateFavoritedDaoInCache(dao: NavigationDao) {
+export async function updateFavoritedDaoInCache(dao: NavigationVoteraProposal) {
   if (!dao) return Promise.reject(new Error('dao must be defined'));
 
   const cache = await getFavoritedDaosFromCache({skip: 0});

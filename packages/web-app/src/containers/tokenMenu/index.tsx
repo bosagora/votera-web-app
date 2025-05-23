@@ -16,7 +16,6 @@ import {formatUnits} from 'utils/library';
 import {abbreviateTokenAmount} from 'utils/tokens';
 import {BaseTokenInfo, TokenWithMetadata} from 'utils/types';
 import TokenBox from './tokenBox';
-import {AssetBalance} from '../../utils/aragon/sdk-client-types';
 
 const customToken = {
   address: '',

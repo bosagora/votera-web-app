@@ -24,7 +24,6 @@ import {Governance, Dashboard} from 'utils/paths';
 // import {toDisplayEns} from 'utils/library';
 // import {useExistingToken} from 'hooks/useExistingToken';
 import {htmlIn} from 'utils/htmlIn';
-import {PluginTypes} from '../../utils/aragon/types';
 // import {useGovTokensWrapping} from 'context/govTokensWrapping';
 
 const TokenContainer = ({tokenName}: {tokenName: string}) => {

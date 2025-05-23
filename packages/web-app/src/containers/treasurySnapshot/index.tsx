@@ -15,7 +15,6 @@ import {StateEmpty} from 'components/stateEmpty';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useTransactionDetailContext} from 'context/transactionDetail';
-import {AllTransfers} from 'utils/paths';
 import {abbreviateTokenAmount} from 'utils/tokens';
 import {TokenWithMetadata, Transfer} from 'utils/types';
 import {htmlIn} from 'utils/htmlIn';

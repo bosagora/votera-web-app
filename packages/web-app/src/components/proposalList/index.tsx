@@ -12,9 +12,7 @@ import {
 } from 'utils/constants';
 import {Proposal} from 'utils/paths';
 import {ProposalListItem, ProposalPhase} from 'utils/types';
-import {PluginTypes} from 'utils/aragon/types';
 import {useWallet} from 'hooks/useWallet';
-import {stripPlgnAdrFromProposalId} from '../../utils/proposals';
 import {shortenAddress} from '../../utils/library';
 import {IProposalData, ProposalPeriod} from 'votera-sdk-client';
 import {getExtendedPhase} from 'pages/proposal';

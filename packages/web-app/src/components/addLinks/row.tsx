@@ -182,6 +182,7 @@ const LinkRow: React.FC<LinkRowProps & BgWhite> = ({
               bgWhite
               icon={<IconMenuVertical />}
               data-testid="trigger"
+              css={{}}
             />
           }
           listItems={[

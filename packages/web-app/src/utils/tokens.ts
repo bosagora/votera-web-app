@@ -7,9 +7,6 @@ import {formatUnits} from 'utils/library';
 import {NativeTokenData, TimeFilter, TOKEN_AMOUNT_REGEX} from './constants';
 import {add} from 'date-fns';
 import {Transfer} from 'utils/types';
-import {TokenType, TransferType} from 'utils/aragon/types';
-// import {Transfer, TransferType} from '@aragon/sdk-client';
-// import {TokenType} from '@aragon/sdk-client-common';
 import {ownableABI} from 'abis/ownableABI';
 import {votesUpgradeableABI} from 'abis/governanceWrappedERC20TokenABI';
 import {erc1155TokenABI} from 'abis/erc1155TokenABI';
@@ -362,48 +359,6 @@ export function abbreviateTokenAmount(amount: string): string {
   }
 
   return `${Number.parseInt(integers)}${symbol && ' ' + symbol}`;
-}
-
-export function historicalTokenBalances(
-  transfers: Transfer[],
-  tokenBalances: TokenWithMetadata[],
-  pastIntervalMins: number
-) {
-  const historicalBalances = {} as Record<string, TokenWithMetadata>;
-  tokenBalances.forEach(
-    bal => (historicalBalances[bal.metadata.id.toLowerCase()] = {...bal})
-  );
-  const nowMs = new Date().getTime();
-
-  // transfers assumed in reverse date order. Reverses effect on balances of all transactions which
-  // occurred in pastIntervalMins.
-  for (let i = 0; i < transfers.length; i++) {
-    const transfer = transfers[i];
-    // a transfer without a creationDate is pending and so always included
-    const transferTimeMs = transfers[i].creationDate?.getTime();
-    if (transferTimeMs && nowMs - transferTimeMs > pastIntervalMins * 60000)
-      break;
-
-    const tokenId =
-      transfer.tokenType === TokenType.ERC20
-        ? transfer.token.address
-        : constants.AddressZero;
-
-    // reverse change to balance from transfer
-    if (
-      transfer.tokenType !== TokenType.ERC721 &&
-      // This condition will ignore the tokens that has history in transfer list but doesn't exist in balances
-      historicalBalances[tokenId?.toLowerCase()]
-    ) {
-      // TODO Handle ERC721
-      historicalBalances[tokenId.toLowerCase()].balance -=
-        transfer.type === TransferType.DEPOSIT
-          ? transfer.amount
-          : -transfer.amount;
-    }
-  }
-
-  return historicalBalances;
 }
 
 export function timeFilterToMinutes(tf: TimeFilter) {

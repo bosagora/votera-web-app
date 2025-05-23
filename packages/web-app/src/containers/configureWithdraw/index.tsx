@@ -37,7 +37,6 @@ import {
   validateWeb3Address,
 } from 'utils/validators';
 import {add} from 'date-fns';
-import {stripPlgnAdrFromProposalId} from '../../utils/proposals';
 
 type ConfigureWithdrawFormProps = ActionIndex; //extend if necessary
 

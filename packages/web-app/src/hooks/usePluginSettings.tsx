@@ -1,7 +1,6 @@
 // import {MultisigVotingSettings, VotingSettings} from '@aragon/sdk-client';
 import {useEffect, useState} from 'react';
 import {HookData, SupportedVotingSettings} from 'utils/types';
-import {VotingSettings} from '../utils/aragon/types';
 import {useClient} from './useClient';
 
 // import {PluginTypes, usePluginClient} from './usePluginClient';
@@ -18,9 +17,7 @@ export function isTokenVotingSettings(
  * @param pluginAddress plugin from which proposals will be retrieved
  * @returns plugin governance settings
  */
-export function usePluginSettings(
-  pluginAddress: string
-) {
+export function usePluginSettings(pluginAddress: string) {
   const [data, setData] = useState<SupportedVotingSettings>(
     {} as SupportedVotingSettings
   );

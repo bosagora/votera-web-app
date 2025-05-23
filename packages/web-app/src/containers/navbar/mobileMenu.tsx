@@ -6,12 +6,12 @@ import {useTranslation} from 'react-i18next';
 import BottomSheet from 'components/bottomSheet';
 import {DaoSelector} from 'components/daoSelector';
 import NavLinks from 'components/navLinks';
-import {selectedDaoVar} from 'context/apolloClient';
+import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import {usePrivacyContext} from 'context/privacyContext';
 
 const MobileNavMenu = () => {
-  const currentDao = useReactiveVar(selectedDaoVar);
+  const currentDao = useReactiveVar(selectedVoteraProposalVar);
   const {open, close, isMobileMenuOpen} = useGlobalModalContext();
   const {t} = useTranslation();
 

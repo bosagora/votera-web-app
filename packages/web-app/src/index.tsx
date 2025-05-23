@@ -53,7 +53,11 @@ const onLoad = () => {
   // Wipe local storage cache if its structure is out of date and clashes
   // with this version of the app.
   const cacheVersion = localStorage.getItem('AragonCacheVersion');
-  const retainKeys = ['privacy-policy-preferences', 'favoriteDaos', 'uselang'];
+  const retainKeys = [
+    'privacy-policy-preferences',
+    'favoriteVoteraProposals',
+    'uselang',
+  ];
   if (!cacheVersion || parseInt(cacheVersion) < CACHE_VERSION) {
     for (let i = 0; i < localStorage.length; i++) {
       if (!retainKeys.includes(localStorage.key(i)!)) {

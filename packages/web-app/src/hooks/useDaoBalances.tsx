@@ -5,9 +5,9 @@ import {HookData} from 'utils/types';
 import {fetchBalance, getTokenInfo, isNativeToken} from 'utils/tokens';
 import {useSpecificProvider} from 'context/providers';
 import {useNetwork} from 'context/network';
-import {TokenType} from '../utils/aragon/sdk-client-common-types';
-import {AssetBalance} from '../utils/aragon/sdk-client-types';
 import loadedTokensMeta from '../../data/tokens.json';
+
+import {AssetBalance, TokenType} from '../utils/votera/sdk-client-types';
 
 export const useLoadTokenLogoURL = (): {getImgUrl: any; tokenList: any} => {
   const [tokenList, setTokenList] = useState({});

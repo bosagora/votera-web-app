@@ -9,7 +9,7 @@ import {Loading} from 'components/temporary';
 import {MembershipSnapshot} from 'containers/membershipSnapshot';
 import TreasurySnapshot from 'containers/treasurySnapshot';
 import {useAlertContext} from 'context/alert';
-import {NavigationDao} from 'context/apolloClient';
+import {NavigationVoteraProposal} from 'context/apolloClient';
 import {useNetwork} from 'context/network';
 import {useDaoQuery} from 'hooks/useVoteraProposalDetails';
 import {
@@ -56,7 +56,7 @@ const DashboardCopy: React.FC = () => {
   } = useDaoQuery(daoAddressOrEns, pollInterval);
 
   const favoriteDaoMatchPredicate = useCallback(
-    (favoriteDao: NavigationDao) => {
+    (favoriteDao: NavigationVoteraProposal) => {
       return (
         favoriteDao.address.toLowerCase() ===
           daoDetail?.address.toLowerCase() &&
@@ -87,7 +87,7 @@ const DashboardCopy: React.FC = () => {
   }, [alert, daoAddressOrEns, network, t]);
 
   const handleFavoriteClick = useCallback(
-    async (dao: NavigationDao) => {
+    async (dao: NavigationVoteraProposal) => {
       try {
         if (isFavoritedDao) {
           await removeFavoriteDaoMutation.mutateAsync({dao});

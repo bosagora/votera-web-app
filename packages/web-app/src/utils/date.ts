@@ -1,4 +1,3 @@
-import {ProposalStatus} from '@aragon/sdk-client-common';
 import {
   format,
   formatDistance,
@@ -234,7 +233,7 @@ export function getRemainingTime(
  * @returns a message with i18 translation as proposal ends alert
  */
 export function translateProposalDate(
-  status: ProposalStatus,
+  status: string,
   startDate: Date,
   endDate: Date
 ): string | undefined {

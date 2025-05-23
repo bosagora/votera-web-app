@@ -77,10 +77,7 @@ function getInfuraProvider(network: SupportedNetworks) {
   if (
     network === 'bosagora_mainnet' ||
     network === 'bosagora_testnet' ||
-    network === 'bosagora_devnet' ||
-    network === 'acc_sidechain_mainnet' ||
-    network === 'acc_sidechain_testnet' ||
-    network === 'acc_sidechain_devnet'
+    network === 'bosagora_devnet' 
   ) {
     return new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
       chainId: CHAIN_METADATA[network].id,

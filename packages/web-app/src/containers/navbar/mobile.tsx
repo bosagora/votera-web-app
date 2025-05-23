@@ -10,7 +10,7 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {selectedDaoVar} from 'context/apolloClient';
+import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
@@ -30,7 +30,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {isMobile} = useScreen();
-  const currentDao = useReactiveVar(selectedDaoVar);
+  const currentDao = useReactiveVar(selectedVoteraProposalVar);
   const {isConnected, address} = useWallet();
   const navigate = useNavigate();
   const location = useLocation();

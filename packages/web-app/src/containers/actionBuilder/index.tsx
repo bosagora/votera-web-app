@@ -5,7 +5,6 @@ import TokenMenu from 'containers/tokenMenu';
 import {useActionsContext} from 'context/actions';
 import {useNetwork} from 'context/network';
 import {useDaoBalances} from 'hooks/useDaoBalances';
-import {usePluginSettings} from 'hooks/usePluginSettings';
 import {fetchTokenPrice} from 'services/prices';
 import {formatUnits} from 'utils/library';
 import {
@@ -15,7 +14,6 @@ import {
   BaseTokenInfo,
 } from 'utils/types';
 import WithdrawAction from './withdraw/withdrawAction';
-import {PluginTypes} from '../../utils/aragon/types';
 
 /**
  * This Component is responsible for generating all actions that append to pipeline context (actions)

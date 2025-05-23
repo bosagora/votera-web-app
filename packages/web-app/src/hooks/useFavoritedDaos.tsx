@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import {NavigationDao} from 'context/apolloClient';
+import {NavigationVoteraProposal} from 'context/apolloClient';
 import {useCallback} from 'react';
 import {
   addFavoriteDaoToCache,
@@ -33,13 +33,13 @@ const DEFAULT_QUERY_PARAMS = {
  * @param skip The number of DAOs to skip before starting to fetch the result set.
  * (defaults to 0)
  * @param limit The maximum number of DAOs to return. Fetches all available DAOs by default.
- * @returns result object containing an array of NavigationDao objects with added avatar information.
+ * @returns result object containing an array of NavigationVoteraProposal objects with added avatar information.
  */
 export const useFavoritedDaosQuery = (
   skip = 0
-): UseQueryResult<NavigationDao[]> => {
-  return useQuery<NavigationDao[]>({
-    queryKey: ['favoriteDaos'],
+): UseQueryResult<NavigationVoteraProposal[]> => {
+  return useQuery<NavigationVoteraProposal[]>({
+    queryKey: ['favoriteVoteraProposals'],
     queryFn: useCallback(() => getFavoritedDaosFromCache({skip}), [skip]),
     select: addAvatarToWallet,
     refetchOnWindowFocus: false,
@@ -58,7 +58,7 @@ export const useFavoritedDaosInfiniteQuery = (
   {limit = DEFAULT_QUERY_PARAMS.limit}: Partial<Pick<QueryOption, 'limit'>> = {}
 ) => {
   return useInfiniteQuery({
-    queryKey: ['infiniteFavoriteDaos'],
+    queryKey: ['infinitefavoriteVoteraProposals'],
 
     queryFn: useCallback(
       ({pageParam = 0}) =>
@@ -70,8 +70,8 @@ export const useFavoritedDaosInfiniteQuery = (
     ),
 
     getNextPageParam: (
-      lastPage: NavigationDao[],
-      allPages: NavigationDao[][]
+      lastPage: NavigationVoteraProposal[],
+      allPages: NavigationVoteraProposal[][]
     ) => (lastPage.length === limit ? allPages.length : undefined),
 
     select: augmentCachedDaos,
@@ -106,14 +106,14 @@ export const useUpdateFavoritedDaoMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationDao}) =>
+    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
       updateFavoritedDaoInCache(variables.dao),
 
     onSuccess: (_, variables) => {
       const network = getSupportedNetworkByChainId(variables.dao.chain);
 
-      queryClient.invalidateQueries(['favoriteDaos']);
-      queryClient.invalidateQueries(['infiniteFavoriteDaos']);
+      queryClient.invalidateQueries(['favoriteVoteraProposals']);
+      queryClient.invalidateQueries(['infinitefavoriteVoteraProposals']);
       queryClient.invalidateQueries([
         'favoritedDao',
         variables.dao.address,
@@ -131,13 +131,13 @@ export const useAddFavoriteDaoMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationDao}) =>
+    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
       addFavoriteDaoToCache(variables.dao),
 
     onSuccess: () => {
       onSuccess?.();
-      queryClient.invalidateQueries(['favoriteDaos']);
-      queryClient.invalidateQueries(['infiniteFavoriteDaos']);
+      queryClient.invalidateQueries(['favoriteVoteraProposals']);
+      queryClient.invalidateQueries(['infinitefavoriteVoteraProposals']);
     },
   });
 };
@@ -150,13 +150,13 @@ export const useRemoveFavoriteDaoMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationDao}) =>
+    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
       removeFavoriteDaoFromCache(variables.dao),
 
     onSuccess: () => {
       onSuccess?.();
-      queryClient.invalidateQueries(['favoriteDaos']);
-      queryClient.invalidateQueries(['infiniteFavoriteDaos']);
+      queryClient.invalidateQueries(['favoriteVoteraProposals']);
+      queryClient.invalidateQueries(['infinitefavoriteVoteraProposals']);
     },
   });
 };
@@ -166,7 +166,7 @@ export const useRemoveFavoriteDaoMutation = (onSuccess?: () => void) => {
  * @param data raw fetched data for the cached DAOs.
  * @returns list of DAOs augmented with the resolved IPFS CID avatars
  */
-function augmentCachedDaos(data: InfiniteData<NavigationDao[]>) {
+function augmentCachedDaos(data: InfiniteData<NavigationVoteraProposal[]>) {
   return {
     pageParams: data.pageParams,
     pages: data.pages.flatMap(page => addAvatarToWallet(page)),
@@ -175,10 +175,10 @@ function augmentCachedDaos(data: InfiniteData<NavigationDao[]>) {
 
 /**
  * Add resolved IPFS CID for each DAO's avatar to the metadata.
- * @param daos array of `NavigationDao` objects representing the DAOs to be processed.
- * @returns array of augmented NavigationDao objects with resolved avatar IPFS CIDs.
+ * @param daos array of `NavigationVoteraProposal` objects representing the DAOs to be processed.
+ * @returns array of augmented NavigationVoteraProposal objects with resolved avatar IPFS CIDs.
  */
-function addAvatarToWallet<T extends NavigationDao>(daos: T[]): T[] {
+function addAvatarToWallet<T extends NavigationVoteraProposal>(daos: T[]): T[] {
   return daos.map(dao => {
     const {metadata} = dao;
     return {

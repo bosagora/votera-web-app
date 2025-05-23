@@ -10,10 +10,21 @@ import {
   SupportedChainID,
 } from 'utils/constants';
 import {PRIVACY_KEY} from './privacyContext';
-import {WalletDetails} from 'multisig-wallet-sdk-client';
+import {
+  AssessmentResult,
+  ExecutionStates,
+  IProposalData,
+  ISystemProposalParam,
+  ProposalPeriod,
+  ProposalStates,
+  ProposalType,
+  SystemProposalType,
+  VoteResult,
+} from 'votera-sdk-client';
 import {customJSONReviver} from '../utils/library';
 import {DetailedProposal} from '../utils/types';
-import {VotingMode} from '../utils/aragon/sdk-client-multisig-types';
+import {BigNumber} from '@ethersproject/bignumber';
+import {VoteraProposalData} from '../utils/votera/sdk-client-types';
 
 const cache = new InMemoryCache();
 
@@ -80,30 +91,37 @@ if (value && JSON.parse(value).functional) {
  *            FAVORITE & SELECTED DAOS           *
  *************************************************/
 // including description, type, and chain in anticipation for
-// showing these daos on explorer page
-export type NavigationDao = Omit<WalletDetails, 'creationDate' | 'metadata'> & {
+// showing these votera proposal on explorer page
+export type NavigationVoteraProposal = Omit<
+  VoteraProposalData,
+  'creationDate' | 'metadata'
+> & {
+  proposalType: ProposalType;
+  title: string;
+  description: string;
+  proposer: string;
+  proposalId: string;
   address: string;
-  metadata: {
-    name: string;
-    description?: string;
-  };
-  creationDate?: Date;
   chain: SupportedChainID;
 };
-const favoriteDaos = JSON.parse(
+const favoriteVoteraProposals = JSON.parse(
   localStorage.getItem(FAVORITE_DAOS_KEY) || '[]'
 );
-const favoriteDaosVar = makeVar<Array<NavigationDao>>(favoriteDaos);
+const favoriteVoteraProposalsVar = makeVar<Array<NavigationVoteraProposal>>(
+  favoriteVoteraProposals
+);
 
-const selectedDaoVar = makeVar<NavigationDao>({
+const selectedVoteraProposalVar = makeVar<NavigationVoteraProposal>({
+  proposalType: ProposalType.FUND,
+  title: '',
+  description: '',
+  proposer: '',
+  proposalId: '',
   address: '',
-  metadata: {
-    name: '',
-  },
   chain: 5,
 });
 
-export {favoriteDaosVar, selectedDaoVar};
+export {favoriteVoteraProposalsVar, selectedVoteraProposalVar};
 
 /*************************************************
  *                 PENDING PROPOSAL              *
@@ -112,10 +130,7 @@ export {favoriteDaosVar, selectedDaoVar};
 export type CachedProposal = Omit<
   DetailedProposal,
   'creationBlockNumber' | 'executionBlockNumber' | 'executionDate' | 'status'
-> & {
-  votingMode?: VotingMode;
-  minApprovals?: number;
-};
+> & {};
 
 export type PendingMultisigApprovals = {
   /** key is: daoAddress_proposalId; value: wallet address */

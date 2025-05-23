@@ -1,12 +1,26 @@
-import {VotingMode} from '@aragon/sdk-client';
 import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 
 import {AccordionMethod} from 'components/accordionMethod';
 import {ActionCardDlContainer, Dd, Dl, Dt} from 'components/descriptionList';
 import {getDHMFromSeconds} from 'utils/date';
-import {getErc20MinParticipation} from 'utils/proposals';
-import {ActionUpdatePluginSettings} from 'utils/types';
+
+interface Token {
+  symbol?: string;
+  decimals?: number;
+}
+
+interface ActionUpdatePluginSettings {
+  inputs: {
+    minDuration: number;
+    minParticipation: number;
+    totalVotingWeight: number;
+    token?: Token;
+    minProposerVotingPower?: number;
+    supportThreshold: number;
+    votingMode: string;
+  };
+}
 
 export const ModifyMvSettingsCard: React.FC<{
   action: ActionUpdatePluginSettings;
@@ -16,11 +30,7 @@ export const ModifyMvSettingsCard: React.FC<{
 
   const minParticipation = useMemo(
     () => `≥ ${Math.round(inputs.minParticipation * 100)}% (≥
-            ${getErc20MinParticipation(
-              inputs.minParticipation,
-              inputs.totalVotingWeight,
-              inputs.token?.decimals || 18
-            )} 
+            ${(inputs.totalVotingWeight * inputs.minParticipation).toFixed(2)} 
             ${inputs.token?.symbol})`,
     [
       inputs.minParticipation,
@@ -71,7 +81,7 @@ export const ModifyMvSettingsCard: React.FC<{
         <Dl>
           <Dt>{t('labels.earlyExecution')}</Dt>
           <Dd>
-            {inputs.votingMode === VotingMode.EARLY_EXECUTION
+            {inputs.votingMode === 'EARLY_EXECUTION'
               ? t('labels.yes')
               : t('labels.no')}
           </Dd>
@@ -79,7 +89,7 @@ export const ModifyMvSettingsCard: React.FC<{
         <Dl>
           <Dt>{t('labels.voteReplacement')}</Dt>
           <Dd>
-            {inputs.votingMode === VotingMode.VOTE_REPLACEMENT
+            {inputs.votingMode === 'VOTE_REPLACEMENT'
               ? t('labels.yes')
               : t('labels.no')}
           </Dd>

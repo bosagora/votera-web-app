@@ -3,7 +3,7 @@ import {matchRoutes, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {ProcessType} from 'containers/exitProcessMenu';
-import {selectedDaoVar} from 'context/apolloClient';
+import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {usePrivacyContext} from 'context/privacyContext';
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
   // set current dao as selected dao
   useEffect(() => {
     if (walletDetails) {
-      selectedDaoVar({
+      selectedVoteraProposalVar({
         address: walletDetails.address,
         metadata: {
           name: walletDetails.metadata.name,

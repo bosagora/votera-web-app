@@ -15,7 +15,6 @@ import {useWallet} from 'hooks/useWallet';
 import {CHAIN_METADATA} from 'utils/constants';
 // import {formatUnits} from 'utils/library';
 // import {fetchBalance} from 'utils/tokens';
-// import {PluginTypes} from '../../utils/aragon/types';
 
 const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +25,8 @@ const ProtectedRoute: React.FC = () => {
     isOnWrongNetwork,
     isModalOpen: web3ModalIsShown,
   } = useWallet();
-  const {data: daoDetails, isLoading: detailsAreLoading} = useVoteraProposalDetailsQuery();
+  const {data: daoDetails, isLoading: detailsAreLoading} =
+    useVoteraProposalDetailsQuery();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 

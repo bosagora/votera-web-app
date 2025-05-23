@@ -4,8 +4,6 @@ import {useEffect, useState} from 'react';
 import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
 import {HookData, TokenWithMetadata} from 'utils/types';
-import {AssetBalance} from '../utils/aragon/sdk-client-types';
-import {TokenType} from '../utils/aragon/sdk-client-common-types';
 import {useLoadTokenLogoURL} from './useDaoBalances';
 
 export const useTokenMetadata = (

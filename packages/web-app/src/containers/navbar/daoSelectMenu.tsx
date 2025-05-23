@@ -13,9 +13,9 @@ import styled from 'styled-components';
 import {useReactiveVar} from '@apollo/client';
 import ModalBottomSheetSwitcher from 'components/modalBottomSheetSwitcher';
 import {
-  favoriteDaosVar,
-  NavigationDao,
-  selectedDaoVar,
+  favoriteVoteraProposalsVar,
+  NavigationVoteraProposal,
+  selectedVoteraProposalVar,
 } from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import useScreen from 'hooks/useScreen';
@@ -26,13 +26,15 @@ const DaoSelectMenu: React.FC = () => {
   const {t} = useTranslation();
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
-  const currentWallet = useReactiveVar(selectedDaoVar);
-  const favoriteDaoCache = useReactiveVar(favoriteDaosVar);
+  const currentVoteraProposal = useReactiveVar(selectedVoteraProposalVar);
+  const favoriteVoteraProposalCache = useReactiveVar(
+    favoriteVoteraProposalsVar
+  );
   const {isSelectDaoOpen, close, open} = useGlobalModalContext();
 
   const handleDaoSelect = useCallback(
-    (dao: NavigationDao) => {
-      selectedDaoVar(dao);
+    (dao: NavigationVoteraProposal) => {
+      selectedVoteraProposalVar(dao);
       navigate(
         generatePath(Dashboard, {
           network: getSupportedNetworkByChainId(dao.chain),
@@ -72,15 +74,15 @@ const DaoSelectMenu: React.FC = () => {
           <ListGroup>
             <ListItemDao
               selected
-              daoAddress={currentWallet?.address}
-              daoName={currentWallet?.metadata.name}
+              daoAddress={currentVoteraProposal?.address}
+              daoName={currentVoteraProposal?.title}
               onClick={() => close('selectDao')}
             />
-            {favoriteDaoCache.flatMap(msw => {
+            {favoriteVoteraProposalCache.flatMap(msw => {
               if (
                 msw.address.toLowerCase() ===
-                  currentWallet.address.toLowerCase() &&
-                msw.chain === currentWallet.chain
+                  currentVoteraProposal.address.toLowerCase() &&
+                msw.chain === currentVoteraProposal.chain
               ) {
                 return [];
               } else {
@@ -88,7 +90,7 @@ const DaoSelectMenu: React.FC = () => {
                   <ListItemDao
                     key={msw.address}
                     daoAddress={msw.address}
-                    daoName={msw.metadata.name}
+                    daoName={msw.title}
                     onClick={() => handleDaoSelect(msw)}
                   />
                 );

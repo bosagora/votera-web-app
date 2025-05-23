@@ -13,7 +13,6 @@ import useBreadcrumbs, {BreadcrumbData} from 'use-react-router-breadcrumbs';
 
 import * as Paths from 'utils/paths';
 import {useCache} from './useCache';
-import {ProposalStatus} from '../utils/aragon/sdk-client-common-types';
 
 type MappedBreadcrumbs = {
   breadcrumbs: {

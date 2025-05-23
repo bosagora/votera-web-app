@@ -43,6 +43,7 @@ export const DaoSelector: React.FC<DaoSelectorProps> = ({
         mode="secondary"
         size="small"
         bgWhite={!isDesktop}
+        css={{}}
       />
     </Card>
   );

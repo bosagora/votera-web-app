@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import useScreen from 'hooks/useScreen';
 import {getSupportedNetworkByChainId} from 'utils/constants';
 
-export interface IDaoCardProps {
+export interface IVoteraProposalProps {
   name: string;
   description: string;
   address: string;
@@ -18,11 +18,11 @@ type DescriptionProps = {
   isDesktop?: boolean;
 };
 
-export const DaoCard = (props: IDaoCardProps) => {
+export const VoteraProposalCard = (props: IVoteraProposalProps) => {
   const {isDesktop} = useScreen();
 
   return (
-    <Container data-testid="daoCard" onClick={props.onClick}>
+    <Container data-testid="voteraProposalCard" onClick={props.onClick}>
       <DaoDataWrapper>
         <HeaderContainer>
           <AvatarDao daoName={props.name} src={props.address} />

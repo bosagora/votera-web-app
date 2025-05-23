@@ -1,10 +1,3 @@
-import {
-  MultisigProposal,
-  MultisigProposalListItem,
-  MultisigVotingSettings,
-  VoteValues,
-  VotingSettings,
-} from 'utils/aragon/types';
 import {BigNumber} from 'ethers';
 
 import {TimeFilter, TransferTypes} from './constants';
@@ -160,11 +153,8 @@ type ExecutionData = {
 
 export type Erc20ProposalVote = {
   address: string;
-  vote: VoteValues;
   weight: bigint;
 };
-
-export type DetailedProposal = MultisigProposal;
 
 export enum ProposalPhase {
   NONE = 'NONE',
@@ -203,10 +193,6 @@ export interface ProposalListItem {
   data: string;
   executed: boolean;
 }
-
-export type SupportedProposals = DetailedProposal | ProposalListItem;
-
-export type SupportedVotingSettings = MultisigVotingSettings | VotingSettings;
 
 /* ACTION TYPES ============================================================= */
 
