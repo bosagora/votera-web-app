@@ -1,33 +1,21 @@
-import {HeaderDao} from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import {BigNumber} from 'ethers';
 
-import {useAlertContext} from 'context/alert';
-import {useNetwork} from 'context/network';
 import useScreen from 'hooks/useScreen';
-import {useGlobalModalContext} from 'context/globalModals';
 import ProposalSnapshot from 'containers/proposalSnapshot';
-import {ProposalListItem, ProposalPhase} from 'utils/types';
 import {useClient} from 'hooks/useClient';
-import {IProposalData, SortType} from 'votera-sdk-client';
+import {ProposalData} from 'votera-sdk-client';
 import {useProposalQuery, PROPOSALS_PER_PAGE} from 'hooks/useProposalQuery';
 
 const Dashboard: React.FC = () => {
   const {t} = useTranslation();
-  const {alert} = useAlertContext();
   const {isDesktop} = useScreen();
-  const navigate = useNavigate();
-  const {network} = useNetwork();
-  const daoAddressOrEns = '0x1234567890abcdef1234567890abcdef12345678';
-  const {open} = useGlobalModalContext();
   const {client} = useClient();
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [proposals, setProposals] = useState<Array<IProposalData>>([]);
+  const [proposals, setProposals] = useState<Array<ProposalData>>([]);
   const proposalQuery = useProposalQuery(undefined, page) || {
     data: [],
     error: null,
@@ -52,12 +40,12 @@ const Dashboard: React.FC = () => {
       }
     };
 
-    fetchProposalLength();
+    fetchProposalLength().then();
   }, [client]);
 
   useEffect(() => {
     if (proposalQuery.data) {
-      const newProposals = proposalQuery.data as Array<IProposalData>;
+      const newProposals = proposalQuery.data as Array<ProposalData>;
 
       if (newProposals.length < PROPOSALS_PER_PAGE) {
         setHasMore(false);
@@ -116,7 +104,7 @@ const HeaderWrapper = styled.div.attrs({
 /* DESKTOP DASHBOARD ======================================================== */
 
 type DashboardContentProps = {
-  proposals: Array<IProposalData>;
+  proposals: Array<ProposalData>;
   proposalLength: number;
   hasMore: boolean;
   onLoadMore: () => void;

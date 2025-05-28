@@ -1,5 +1,4 @@
 import {BigNumber, ethers} from 'ethers';
-import {BytesLike} from '@ethersproject/bytes';
 import React, {createContext, useCallback, useContext, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
@@ -13,11 +12,10 @@ import {TransactionState} from 'utils/constants';
 import {Dashboard} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
-import {BigNumberish} from '@ethersproject/bignumber';
 import {
   ProposalType,
   SystemProposalType,
-  ISystemProposalParam,
+  SystemProposalParam,
   NormalSteps,
   Amount,
 } from 'votera-sdk-client';
@@ -41,7 +39,7 @@ type CreateProposalParams = {
   votePeriod: number;
   documentId: string;
   systemType: SystemProposalType;
-  params: ISystemProposalParam[];
+  params: SystemProposalParam[];
 };
 
 const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({

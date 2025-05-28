@@ -1,28 +1,9 @@
-import {
-  AlertInline,
-  InputImageSingle,
-  Label,
-  NumberInput,
-  TextareaSimple,
-  TextInput,
-  ValueInput,
-} from '@aragon/ui-components';
-import React, {useCallback} from 'react';
-import {
-  Controller,
-  FieldError,
-  useFormContext,
-  useWatch,
-} from 'react-hook-form';
+import {AlertInline, Label, ValueInput} from '@aragon/ui-components';
+import React from 'react';
+import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import AddLinks from 'components/addLinks';
-import {URL_PATTERN} from 'utils/constants';
-import {isOnlyWhitespace} from 'utils/library';
-import {isDaoEnsNameValid} from 'utils/validators';
-import {useProviders} from 'context/providers';
-import {useNetwork} from 'context/network';
 import IncreaseAmount from 'components/increaseAmount';
 import {ProposalType} from 'pages/createProposal';
 
@@ -69,6 +50,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   placeholder={''}
                   min={7}
                   max={14}
+                  label={''}
                 />
                 {error?.message && (
                   <AlertInline label={error.message} mode="critical" />
@@ -102,6 +84,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                 placeholder={''}
                 min={14}
                 max={28}
+                label={''}
               />
               {error?.message && (
                 <AlertInline label={error.message} mode="critical" />

@@ -74,8 +74,8 @@ const DaoSelectMenu: React.FC = () => {
           <ListGroup>
             <ListItemDao
               selected
-              daoAddress={currentVoteraProposal?.address}
-              daoName={currentVoteraProposal?.title}
+              proposalId={currentVoteraProposal?.address}
+              proposalTitle={currentVoteraProposal?.title}
               onClick={() => close('selectDao')}
             />
             {favoriteVoteraProposalCache.flatMap(msw => {
@@ -89,8 +89,8 @@ const DaoSelectMenu: React.FC = () => {
                 return (
                   <ListItemDao
                     key={msw.address}
-                    daoAddress={msw.address}
-                    daoName={msw.title}
+                    proposalId={msw.address}
+                    proposalTitle={msw.title}
                     onClick={() => handleDaoSelect(msw)}
                   />
                 );

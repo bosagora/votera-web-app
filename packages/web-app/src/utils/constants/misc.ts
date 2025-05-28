@@ -1,14 +1,7 @@
-import {
-  IconCommunity,
-  IconDashboard,
-  IconFinance,
-  IconGovernance,
-  IconType,
-  IconSettings,
-} from '@aragon/ui-components';
+import {IconDashboard, IconType} from '@aragon/ui-components';
 
 import {i18n} from '../../../i18n.config';
-import {Dashboard, Community, Finance, Governance, Settings} from '../paths';
+import {Dashboard} from '../paths';
 
 /** Time period options for token price change */
 export const enum TimeFilter {
@@ -45,22 +38,6 @@ export const NAV_LINKS_DATA: NavLinkData[] = [
     label: i18n.t('navLinks.dashboard'),
     path: Dashboard,
     icon: IconDashboard,
-  },
-  {
-    label: i18n.t('navLinks.governance'),
-    path: Governance,
-    icon: IconGovernance,
-  },
-  // {label: i18n.t('navLinks.finance'), path: Finance, icon: IconFinance},
-  {
-    label: i18n.t('navLinks.community'),
-    path: Community,
-    icon: IconCommunity,
-  },
-  {
-    label: i18n.t('navLinks.settings'),
-    path: Settings,
-    icon: IconSettings,
   },
 ];
 
@@ -134,7 +111,6 @@ export const PROPOSAL_STATE_LABELS = [
 export const FAVORITE_DAOS_KEY = 'favoriteVoteraProposals';
 export const PENDING_DEPOSITS_KEY = 'pendingDeposits';
 export const PENDING_PROPOSALS_KEY = 'pendingProposals';
-export const PENDING_MULTISIG_PROPOSALS_KEY = 'pendingMultisigProposals';
 export const PENDING_VOTES_KEY = 'pendingVotes';
 export const PENDING_MULTISIG_VOTES_KEY = 'pendingMultisigVotes';
 export const PENDING_DAOS_KEY = 'pendingDaos';

@@ -102,7 +102,7 @@
     "networkCost": "네트워크 비용",
     "security": "보안",
     "popularity": "인기도",
-    "daoName": "제안 이름",
+    "proposalTitle": "제안 이름",
     "summary": "설명",
     "description": "설명",
     "addLink": "링크 추가",
@@ -253,7 +253,7 @@
     "selectToken": "토큰 선택...",
     "walletOrEns": "지갑 주소 입력...",
     "searchTokens": "검색어 입력...",
-    "daoName": "제안 이름을 입력하세요...",
+    "proposalTitle": "제안 이름을 입력하세요...",
     "ensName": "aragon",
     "daoDescription": "설명을 입력하세요...",
     "addResource": "Lens, Discord 등"
@@ -564,7 +564,7 @@
       "heading": "제안 검토",
       "description": "투표에 부치기 전에 모든 내용이 올바른지 확인하세요. 제안이 게시된 후에는 수정할 수 없습니다."
     },
-    "daoAddress": {
+    "proposalId": {
       "alertCritical": "자신의 DAO 금고로는 출금할 수 없습니다."
     }
   },

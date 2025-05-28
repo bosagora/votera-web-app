@@ -1,7 +1,7 @@
 import { GasFeeEstimation } from "../client-common/interfaces/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
-import { Candidate, ISystemProposalParam, ProposalType, SystemProposalType } from "../interfaces";
+import { Candidate, SystemProposalParam, ProposalType, SystemProposalType } from "../interfaces";
 
 export interface IClientEstimation {
     estimation: IClientEstimationMethods;
@@ -31,7 +31,7 @@ export interface IClientEstimationMethods {
         votePeriod: number,
         documentId: BytesLike,
         systemType: SystemProposalType,
-        params: ISystemProposalParam[]
+        params: SystemProposalParam[]
     ) => Promise<GasFeeEstimation>;
 
     /**

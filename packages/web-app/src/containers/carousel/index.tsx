@@ -120,8 +120,11 @@ const MobileCTA = styled.div.attrs({
   className: 'relative -mt-13 mb-5 -mx-2 tablet:-mx-3 desktop:mx-0',
 })``;
 
-export const ActiveIndicator = styled.li.attrs({
-  className: 'inline-block bg-primary-500 h-0.75 w-6 ml-1 rounded-xl',
+export const ActiveIndicator = styled.li.attrs<{className?: string}>({
+  className: (props: {className?: string}) =>
+    `inline-block bg-primary-500 h-0.75 w-6 ml-1 rounded-xl ${
+      props.className || ''
+    }`,
 })``;
 
 export const Indicator = styled.li.attrs({

@@ -89,6 +89,7 @@ export const WalletMenu = () => {
           onClick={() =>
             address ? handleClipboardActions(address, () => null, alert) : null
           }
+          css={{}}
         />
         {isDesktop && (
           <ButtonIcon
@@ -96,6 +97,7 @@ export const WalletMenu = () => {
             icon={<IconClose />}
             size="small"
             onClick={() => close('wallet')}
+            css={{}}
           />
         )}
       </ModalHeader>
@@ -107,6 +109,7 @@ export const WalletMenu = () => {
             label="EN"
             onClick={() => handleLanguageChange('en')}
             className="justify-center text-center"
+            css={{}}
           />
           <StyledButtonText
             size="large"
@@ -114,6 +117,7 @@ export const WalletMenu = () => {
             label="한국어"
             onClick={() => handleLanguageChange('ko')}
             className="justify-center text-center"
+            css={{}}
           />
         </LanguageButtonGroup>
         <StyledButtonText
@@ -122,6 +126,7 @@ export const WalletMenu = () => {
           iconLeft={<IconSwitch />}
           label={t('labels.viewTransactions')}
           onClick={handleViewTransactions}
+          css={{}}
         />
         <StyledButtonText
           size="large"
@@ -129,6 +134,7 @@ export const WalletMenu = () => {
           iconLeft={<IconTurnOff />}
           label={t('labels.disconnectWallet')}
           onClick={handleDisconnect}
+          css={{}}
         />
       </ModalBody>
     </ModalBottomSheetSwitcher>

@@ -208,10 +208,7 @@ function getNativeTokenId(network: SupportedNetworks): string {
   if (
     network === 'bosagora_mainnet' ||
     network === 'bosagora_testnet' ||
-    network === 'bosagora_devnet' ||
-    network === 'acc_sidechain_mainnet' ||
-    network === 'acc_sidechain_testnet' ||
-    network === 'acc_sidechain_devnet'
+    network === 'bosagora_devnet'
   ) {
     return NATIVE_TOKEN_ID.bosagora;
   }

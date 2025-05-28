@@ -498,6 +498,7 @@ export const WalletInput = React.forwardRef<
                   bgWhite
                   onClick={handleCopyToClipboard}
                   disabled={adornmentsDisabled}
+                  css={{}}
                 />
                 {showExternalButton && (
                   <ButtonIcon
@@ -507,6 +508,7 @@ export const WalletInput = React.forwardRef<
                     bgWhite
                     disabled={adornmentsDisabled}
                     onClick={handleViewOnExplorer}
+                    css={{}}
                   />
                 )}
               </AdornmentWrapper>

@@ -16,6 +16,8 @@ import {Web3Address} from 'utils/library';
 import {ActionAddAddress} from 'utils/types';
 import {validateWeb3Address} from 'utils/validators';
 
+import {BalanceMember} from '../../../utils/votera/sdk-client-types';
+
 type Props = {
   actionIndex: number;
   // TODO: when refactoring, this is what indicates whether the row
@@ -28,6 +30,7 @@ type Props = {
   }>;
   onBlur?: () => void;
   onClearRow?: () => void;
+  currentDaoMembers?: BalanceMember[];
 };
 
 export const AddressRow = ({
@@ -125,6 +128,7 @@ export const AddressRow = ({
                 icon={<IconMenuVertical />}
                 data-testid="trigger"
                 bgWhite
+                css={{}}
               />
             }
           />

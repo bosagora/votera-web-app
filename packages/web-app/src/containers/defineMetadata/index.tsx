@@ -1,9 +1,6 @@
 import {
   AlertInline,
-  ButtonGroup,
   ButtonText,
-  DropdownInput,
-  InputImageSingle,
   Label,
   TextareaSimple,
   TextInput,
@@ -13,12 +10,7 @@ import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import AddLinks from 'components/addLinks';
-import {URL_PATTERN} from 'utils/constants';
 import {isOnlyWhitespace} from 'utils/library';
-import {isDaoEnsNameValid} from 'utils/validators';
-import {useProviders} from 'context/providers';
-import {useNetwork} from 'context/network';
 import {ProposalType} from 'pages/createProposal';
 import useScreen from 'hooks/useScreen';
 import {useFileUpload} from 'hooks/useFileUpload';
@@ -79,6 +71,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
                     setProposalType(ProposalType.FUND);
                     formMethods.setValue('proposalType', ProposalType.FUND);
                   }}
+                  css={{}}
                 />
                 <StyledButtonText
                   mode="ghost"
@@ -90,6 +83,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
                     setProposalType(ProposalType.SYSTEM);
                     formMethods.setValue('proposalType', ProposalType.SYSTEM);
                   }}
+                  css={{}}
                 />
               </ProposalTypeSwitcher>
               {error?.message && (
@@ -121,7 +115,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
             <>
               <TextInput
                 {...{name, value, onBlur, onChange}}
-                placeholder={t('placeHolders.daoName')}
+                placeholder={t('placeHolders.proposalTitle')}
               />
               <InputCount>{`${value.length}/128`}</InputCount>
               {error?.message && (

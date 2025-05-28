@@ -1,11 +1,10 @@
 import {useCallback, useEffect, useMemo} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import {useNetwork} from 'context/network';
 import {NotFound} from 'utils/paths';
 import {useClient} from './useClient';
-import {SupportedNetworks} from 'utils/constants';
-import {Client, IProposalData, SortType} from 'votera-sdk-client';
+import {Client, ProposalData, SortType} from 'votera-sdk-client';
 import {useQuery} from '@tanstack/react-query';
 
 export const PROPOSALS_PER_PAGE = 9;
@@ -13,7 +12,7 @@ export const PROPOSALS_PER_PAGE = 9;
 async function fetchProposals(
   client: Client | undefined,
   page: number
-): Promise<Array<IProposalData> | null> {
+): Promise<Array<ProposalData> | null> {
   if (!client) return Promise.reject(new Error('client must be defined'));
 
   const startIndex = (page - 1) * PROPOSALS_PER_PAGE;
@@ -45,7 +44,7 @@ async function fetchProposals(
 async function fetchProposal(
   client: Client | undefined,
   proposalId: string
-): Promise<IProposalData | null> {
+): Promise<ProposalData | null> {
   console.log('client 4444 :', client?.web3.getProvider()?.network.name);
   if (!client) return Promise.reject(new Error('client must be defined'));
 
@@ -78,7 +77,7 @@ export const useProposalWithUseQuery = (
       : fetchProposals(client, page);
   }, [client, proposalId, page]);
 
-  return useQuery<IProposalData | Array<IProposalData> | null>({
+  return useQuery<ProposalData | Array<ProposalData> | null>({
     queryKey: proposalId
       ? ['proposal', queryNetwork, proposalId]
       : ['proposals', queryNetwork, page],

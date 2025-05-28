@@ -4,8 +4,6 @@
   "navLinks": {
     "dashboard": "Dashboard",
     "governance": "Proposals",
-    "finance": "Finance",
-    "community": "Members",
     "explore": "Explore",
     "learn": "Learn",
     "build": "Build",
@@ -102,7 +100,7 @@
     "networkCost": "Network cost",
     "security": "Security",
     "popularity": "Popularity",
-    "daoName": "Proposal name",
+    "proposalTitle": "Proposal name",
     "summary": "Description",
     "description": "Description",
     "addLink": "Add link",
@@ -253,7 +251,7 @@
     "selectToken": "Select a token …",
     "walletOrEns": "Type wallet address …",
     "searchTokens": "Type to search …",
-    "daoName": "Type your proposal's name …",
+    "proposalTitle": "Type your proposal's name …",
     "ensName": "aragon",
     "daoDescription": "Type your summary …",
     "addResource": "Lens, Discord, etc."
@@ -547,7 +545,6 @@
     "approveSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
     "approveToken": "Approve token",
     "depositTitle": "Sign deposit",
-    "goToFinance": "Go to Finance",
     "goToProposal": "Open your proposal",
     "launchGovernancePage": "Launch governance page",
     "launchDaoDashboard": "Launch DAO Dashboard",
@@ -650,7 +647,7 @@
       "heading": "Review proposal",
       "description": "Check to make sure everything is correct before putting it to vote. You can't edit a proposal once it's published."
     },
-    "daoAddress": {
+    "proposalId": {
       "alertCritical": "You can't withdraw money to your own DAO treasury."
     }
   },

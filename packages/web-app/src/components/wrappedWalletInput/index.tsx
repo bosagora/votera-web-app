@@ -76,6 +76,7 @@ export const WrappedWalletInput = forwardRef(
           }
           {...props}
           ref={ref}
+          css={{}}
         />
         {showResolvedLabels && !networkSupportsENS && (
           <AlertInline

@@ -1,24 +1,27 @@
-import {Link} from '@aragon/ui-components';
 import React from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
 import {Dd, DescriptionListContainer, Dl, Dt} from 'components/descriptionList';
 import {useFormStep} from 'components/fullScreenStepper';
-import CommunityAddressesModal from 'containers/communityAddressesModal';
-import {useGlobalModalContext} from 'context/globalModals';
+import {CHAIN_METADATA} from 'utils/constants';
 import {useNetwork} from 'context/network';
 
-const Community: React.FC = () => {
+const SelectChain: React.FC = () => {
   const {control, getValues} = useFormContext();
   const {setStep} = useFormStep();
-  const {open} = useGlobalModalContext();
+  const {network} = useNetwork();
+  const {blockchain, reviewCheckError} = getValues();
   const {t} = useTranslation();
-  const {multisigWallets, reviewCheckError} = getValues();
+
+  const networkInfo = CHAIN_METADATA[network];
+  const networkType = networkInfo.testnet
+    ? t('labels.testNet')
+    : t('labels.mainNet');
 
   return (
     <Controller
-      name="reviewCheck.community"
+      name="reviewCheck.blockchain"
       control={control}
       defaultValue={false}
       rules={{
@@ -26,8 +29,8 @@ const Community: React.FC = () => {
       }}
       render={({field: {onChange, value}}) => (
         <DescriptionListContainer
-          title={t('labels.review.voters')}
-          onEditClick={() => setStep(4)}
+          title={t('labels.review.blockchain')}
+          onEditClick={() => setStep(2)}
           checkBoxErrorMessage={t('createDAO.review.acceptContent')}
           checkedState={
             value ? 'active' : reviewCheckError ? 'error' : 'default'
@@ -36,26 +39,17 @@ const Community: React.FC = () => {
           onChecked={() => onChange(!value)}
         >
           <Dl>
-            <Dd>{t('labels.multisigMembers')}</Dd>
+            <Dt>{t('labels.review.network')}</Dt>
+            <Dd>{networkType}</Dd>
           </Dl>
-
           <Dl>
-            <Dt>{t('labels.review.distribution')}</Dt>
-            <Dd>
-              <Link
-                label={t('labels.review.distributionLink', {
-                  walletCount: multisigWallets.length,
-                })}
-                onClick={() => open('addresses')}
-              />
-            </Dd>
+            <Dt>{t('labels.review.blockchain')}</Dt>
+            <Dd>{blockchain.label}</Dd>
           </Dl>
-
-          <CommunityAddressesModal tokenMembership={false} />
         </DescriptionListContainer>
       )}
     />
   );
 };
 
-export default Community;
+export default SelectChain;

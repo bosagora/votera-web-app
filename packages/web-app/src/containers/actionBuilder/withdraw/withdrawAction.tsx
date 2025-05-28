@@ -75,7 +75,7 @@ const WithdrawAction: React.FC<WithdrawActionProps> = ({
       type="action-builder"
       methodName={t('TransferModal.item2Title')}
       dropdownItems={methodActions}
-      smartContractName={'BOSAgora'}
+      smartContractName={'BOSagora'}
       methodDescription={t('AddActionModal.withdrawAssetsActionSubtitle')}
     >
       <FormItem className="py-3 space-y-3 rounded-b-xl">

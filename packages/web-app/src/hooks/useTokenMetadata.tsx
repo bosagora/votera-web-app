@@ -6,6 +6,8 @@ import {CHAIN_METADATA} from 'utils/constants';
 import {HookData, TokenWithMetadata} from 'utils/types';
 import {useLoadTokenLogoURL} from './useDaoBalances';
 
+import {AssetBalance, TokenType} from 'utils/votera/sdk-client-types';
+
 export const useTokenMetadata = (
   assets: AssetBalance[]
 ): HookData<TokenWithMetadata[]> => {
@@ -22,7 +24,10 @@ export const useTokenMetadata = (
 
         // map metadata to token balances
         const tokensWithMetadata = assets?.map((asset, index) => ({
-          balance: asset.type !== TokenType.ERC721 ? asset.balance : BigInt(0),
+          balance:
+            asset.type !== TokenType.ERC721
+              ? (asset as {balance: bigint}).balance
+              : BigInt(0),
           metadata: {
             ...(asset.type === TokenType.ERC20
               ? {
@@ -39,8 +44,12 @@ export const useTokenMetadata = (
                 }),
 
             price: 1,
-            apiId: index,
-            imgUrl: getImgUrl(asset.symbol, CHAIN_METADATA[network].id) || '',
+            apiId: index.toString(),
+            imgUrl:
+              getImgUrl(
+                (asset as {symbol: string}).symbol,
+                CHAIN_METADATA[network].id
+              ) || '',
           },
         }));
 

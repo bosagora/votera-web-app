@@ -1,24 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {AlertInline} from '@aragon/ui-components';
-import {AvatarDao} from '@aragon/ui-components';
-import {IconClock} from '@aragon/ui-components';
 import {Link} from '@aragon/ui-components';
-import {LinearProgress} from '@aragon/ui-components';
 import {Tag} from 'components/tag/tag';
-import {ProposalPhase} from 'utils/types';
 import {CardProposalDataProps} from 'components/proposalList';
 import {ProposalPeriod} from 'votera-sdk-client';
-import {getExtendedPhase} from 'pages/proposal';
 import {TFunction, useTranslation} from 'react-i18next';
 type ProposalUseCase = 'list' | 'explore';
-
-export function isExploreProposal(
-  proposalUseCase: ProposalUseCase
-): proposalUseCase is 'explore' {
-  return proposalUseCase === 'explore';
-}
 
 export type CardProposalProps = {
   /** Proposal Title / Title of the card */
@@ -59,7 +47,7 @@ export type CardProposalProps = {
    * explore */
   publisherAddress?: string;
   /** DAO name to display when type is explore */
-  daoName?: string;
+  proposalTitle?: string;
   /** Blockchain explorer URL */
   explorer?: string;
 

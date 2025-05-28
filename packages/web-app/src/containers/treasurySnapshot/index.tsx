@@ -1,6 +1,5 @@
 import {
   ButtonText,
-  IconChevronRight,
   IconFinance,
   IconStorage,
   ListItemHeader,
@@ -8,12 +7,10 @@ import {
 } from '@aragon/ui-components';
 import React, {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {generatePath, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {StateEmpty} from 'components/stateEmpty';
 import {useGlobalModalContext} from 'context/globalModals';
-import {useNetwork} from 'context/network';
 import {useTransactionDetailContext} from 'context/transactionDetail';
 import {abbreviateTokenAmount} from 'utils/tokens';
 import {TokenWithMetadata, Transfer} from 'utils/types';
@@ -38,8 +35,6 @@ const TreasurySnapshot: React.FC<Props> = ({
   const isWallet = true;
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
-  const navigate = useNavigate();
-  const {network} = useNetwork();
   const {handleTransferClicked} = useTransactionDetailContext();
   const {data: tokensB} = useDaoBalances(multiSignatureWalletAddress || '');
   const {data: tokens} = useTokenMetadata(tokensB || []);

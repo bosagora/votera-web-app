@@ -6,20 +6,19 @@ import {useNetwork} from 'context/network';
 import {NotFound} from 'utils/paths';
 import {useClient} from './useClient';
 import {SupportedNetworks} from 'utils/constants';
+import {Client, ProposalData} from 'votera-sdk-client';
 
 async function fetchDaoDetails(
   client: Client | undefined,
   daoAddressOrEns: string | undefined
-): Promise<WalletDetails | null> {
+): Promise<ProposalData | null> {
   if (!daoAddressOrEns)
     return Promise.reject(new Error('walletAddress must be defined'));
 
   if (!client) return Promise.reject(new Error('client must be defined'));
 
   try {
-    return await client.multiSigWalletFactory.getWalletDetail(
-      daoAddressOrEns.toLowerCase()
-    );
+    return await client.methods.getProposal(daoAddressOrEns.toLowerCase());
   } catch (e) {
     return Promise.reject(new Error('getWalletDetail failed'));
   }
@@ -51,7 +50,7 @@ export const useDaoQuery = (
     return fetchDaoDetails(client, daoAddressOrEns);
   }, [client, daoAddressOrEns]);
 
-  return useQuery<WalletDetails | null>({
+  return useQuery<ProposalData | null>({
     queryKey: ['daoDetails', daoAddressOrEns, queryNetwork],
     queryFn,
     select: addAvatarToWallet(network),
@@ -87,14 +86,9 @@ export const useVoteraProposalDetailsQuery = () => {
 };
 
 const addAvatarToWallet =
-  (network: SupportedNetworks) => (wallet: WalletDetails | null) => {
-    if (!wallet) return null;
-
+  (network: SupportedNetworks) => (data: ProposalData | null) => {
+    if (!data) return null;
     return {
-      ...wallet,
-      metadata: {
-        ...wallet?.metadata,
-        avatar: undefined,
-      },
+      ...data,
     };
   };

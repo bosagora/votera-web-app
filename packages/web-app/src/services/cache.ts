@@ -35,23 +35,23 @@ export async function getFavoritedDaosFromCache(options: {
 
 /**
  * Fetch a favorited DAO from the cache if available
- * @param daoAddress the address of the favorited DAO to fetch
+ * @param proposalId the address of the favorited DAO to fetch
  * @param chain the chain of the favorited DAO to fetch
  * @returns a favorited DAO with the given address and chain or null
  * if not found
  */
 export async function getFavoritedDaoFromCache(
-  daoAddress: string | undefined,
+  proposalId: string | undefined,
   chain: SupportedChainID
 ) {
-  if (!daoAddress)
+  if (!proposalId)
     return Promise.reject(new Error('daoAddressOrEns must be defined'));
 
   if (!chain) return Promise.reject(new Error('chain must be defined'));
 
   const daos = await getFavoritedDaosFromCache({skip: 0});
   return (
-    daos.find(dao => dao.address === daoAddress && dao.chain === chain) ?? null
+    daos.find(dao => dao.address === proposalId && dao.chain === chain) ?? null
   );
 }
 

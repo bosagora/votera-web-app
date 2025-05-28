@@ -93,7 +93,7 @@
     "networkCost": "Network cost",
     "security": "Security",
     "popularity": "Popularity",
-    "daoName": "DAO name",
+    "proposalTitle": "DAO name",
     "summary": "Summary",
     "description": "Description",
     "addLink": "Add link",
@@ -226,7 +226,7 @@
     "selectToken": "Select a token …",
     "walletOrEns": "Type wallet address or ENS …",
     "searchTokens": "Type to search …",
-    "daoName": "Type your DAO's name …",
+    "proposalTitle": "Type your DAO's name …",
     "ensName": "aragon",
     "daoDescription": "Type your summary …",
     "addResource": "Lens, Discord, etc."

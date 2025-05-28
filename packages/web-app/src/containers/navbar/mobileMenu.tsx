@@ -22,8 +22,8 @@ const MobileNavMenu = () => {
       <div className="tablet:w-50">
         <CardWrapper className="rounded-xl">
           <VoteraProposalSelector
-            daoAddress={currentDao.address}
-            daoName={currentDao.metadata.name}
+            proposalId={currentDao.proposalId}
+            proposalTitle={currentDao.title}
             src={currentDao.address}
             onClick={() => {
               close('mobileMenu');

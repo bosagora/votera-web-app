@@ -1,19 +1,13 @@
 import {AlertInline, ButtonText, IconReload, Tag} from '@aragon/ui-components';
 import {ListItemLink} from 'components/listItem/link';
 import {BigNumber} from 'ethers';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {TFunction, useTranslation} from 'react-i18next';
 import styled from 'styled-components';
-import {CHAIN_METADATA, IPFS_ENDPOINT} from 'utils/constants';
-import {ProposalPhase} from 'utils/types';
+import {IPFS_ENDPOINT} from 'utils/constants';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
-import {useNetwork} from 'context/network';
 
 const Icon = styled(IconReload).attrs({className: 'ml-1 w-1.5 h-1.5'})``;
-
-const NumberFormatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 2,
-});
 
 interface ProposalInfoProps {
   period: ProposalPeriod;
@@ -36,13 +30,6 @@ const formatDate = (date: Date) => {
     day: '2-digit',
   });
 };
-
-interface StageStatus {
-  isActive: boolean;
-  message: string;
-  availableTransitionToVote?: boolean;
-  availableTransitionToExecute?: boolean;
-}
 
 const getTimeRemaining = (endDate: Date, t: TFunction) => {
   const now = new Date();
@@ -68,8 +55,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   phase,
   proposalType,
   fundAmount,
-  extendedPhase,
-  exPhaseMessage,
   assessmentStartDate,
   assessmentEndDate,
   voteStartDate,
@@ -77,9 +62,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   documentId,
 }) => {
   const {t} = useTranslation();
-
-  const averageRating = 5.0;
-  const network = useNetwork().network;
 
   console.log('ProposalInfo phase', phase);
 
@@ -173,53 +155,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   );
 };
 
-type ExecutionStatus =
-  | 'defeated'
-  | 'executed'
-  | 'executable'
-  | 'executable-failed'
-  | 'default';
-
-type ExecutionWidgetProps = {
-  txhash?: string;
-  status?: ExecutionStatus;
-  onAddAction?: () => void;
-  onTransitionClicked?: () => void;
-};
-
-type FooterProps = Pick<
-  ExecutionWidgetProps,
-  'status' | 'txhash' | 'onTransitionClicked'
->;
-
-const WidgetFooter: React.FC<FooterProps> = ({
-  status = 'default',
-  onTransitionClicked,
-}) => {
-  const {t} = useTranslation();
-
-  return (
-    <Footer>
-      <StyledButtonText
-        css={{}}
-        label={t('governance.proposals.buttons.execute')}
-        size="large"
-        onClick={onTransitionClicked}
-      />
-      <AlertInline label={t('governance.executionCard.status.succeeded')} />
-    </Footer>
-  );
-};
-
 export default ProposalInfo;
-
-const EndDateWrapper = styled.div.attrs({
-  className: 'space-y-0.5 text-right',
-})``;
-
-const CurrentParticipationWrapper = styled.div.attrs({
-  className: 'space-y-0.5 text-right',
-})``;
 
 const VStackSection = styled.div.attrs({
   className: 'space-y-1.5 p-2 tablet:p-3 -mx-2 tablet:-mx-3',
@@ -233,27 +169,6 @@ const Strong = styled.p.attrs({
   className: 'font-bold text-ui-800',
 })``;
 
-const SectionHeader = styled.p.attrs({
-  className: 'font-bold text-ui-800 ft-text-lg',
-})``;
 const Container = styled.div.attrs({
   className: 'tablet:p-3 py-2.5 px-2 rounded-xl bg-ui-0 border border-ui-100',
-})``;
-
-const Header = styled.div.attrs({
-  className:
-    'tablet:flex tablet:justify-between tablet:items-center space-y-2 tablet:space-y-0',
-})``;
-
-const Heading1 = styled.h1.attrs({
-  className: 'ft-text-xl font-bold text-ui-800 flex-grow',
-})``;
-
-const Footer = styled.div.attrs({
-  className:
-    'flex flex-col tablet:flex-row items-center gap-y-2 tablet:gap-y-0 tablet:gap-x-3',
-})``;
-
-const StyledButtonText = styled(ButtonText).attrs({
-  className: 'w-full tablet:w-max',
 })``;

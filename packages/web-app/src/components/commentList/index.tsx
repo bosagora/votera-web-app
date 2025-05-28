@@ -10,8 +10,7 @@ import {
   useCreateCommentContext,
 } from 'context/createComment';
 import {useClient} from 'hooks/useClient';
-import {ICommentData, SortType} from 'votera-sdk-client';
-import {useWaitForTransaction} from 'wagmi';
+import {CommentData, SortType} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
 import {useTranslation} from 'react-i18next';
 interface Comment {
@@ -36,7 +35,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
   const [newComment, setNewComment] = React.useState('');
   const {handlePublishComment} = useCreateCommentContext();
   const {t} = useTranslation();
-  const [comments, setComments] = React.useState<ICommentData[]>([]);
+  const [comments, setComments] = React.useState<CommentData[]>([]);
   const [commentLength, setCommentLength] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [hasMore, setHasMore] = React.useState(true);
@@ -101,7 +100,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
       });
 
       // 새로운 댓글 객체 생성
-      const newCommentData: ICommentData = {
+      const newCommentData: CommentData = {
         message: newComment,
         writer: address || '',
         timestamp: Math.floor(Date.now() / 1000),

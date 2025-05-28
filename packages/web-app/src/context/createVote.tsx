@@ -1,15 +1,12 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {generatePath, useNavigate} from 'react-router-dom';
 
 import PublishModal from 'containers/transactionModals/publishModal';
 import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Proposal} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
-import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
 
 type VoteParams = {
@@ -30,8 +27,6 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
-  const navigate = useNavigate();
-  const {network} = useNetwork();
   const {isOnWrongNetwork, provider} = useWallet();
 
   const [voteProcessState, setVoteProcessState] = useState<TransactionState>(

@@ -31,7 +31,7 @@ const DefineMetadata: React.FC = () => {
           onChecked={() => onChange(!value)}
         >
           <Dl>
-            <Dt>{t('labels.daoName')}</Dt>
+            <Dt>{t('labels.proposalTitle')}</Dt>
             <Dd>{title}</Dd>
           </Dl>
           <Dl>

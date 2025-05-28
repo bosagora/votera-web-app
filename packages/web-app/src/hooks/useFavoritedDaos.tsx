@@ -1,6 +1,5 @@
 import {
   InfiniteData,
-  UseQueryResult,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -21,29 +20,12 @@ import {
   SupportedNetworks,
   getSupportedNetworkByChainId,
 } from 'utils/constants';
+
 import {QueryOption} from 'votera-sdk-client';
 
 const DEFAULT_QUERY_PARAMS = {
   skip: 0,
   limit: 4,
-};
-
-/**
- * This hook retrieves a list of cached DAOs with optional pagination.
- * @param skip The number of DAOs to skip before starting to fetch the result set.
- * (defaults to 0)
- * @param limit The maximum number of DAOs to return. Fetches all available DAOs by default.
- * @returns result object containing an array of NavigationVoteraProposal objects with added avatar information.
- */
-export const useFavoritedDaosQuery = (
-  skip = 0
-): UseQueryResult<NavigationVoteraProposal[]> => {
-  return useQuery<NavigationVoteraProposal[]>({
-    queryKey: ['favoriteVoteraProposals'],
-    queryFn: useCallback(() => getFavoritedDaosFromCache({skip}), [skip]),
-    select: addAvatarToWallet,
-    refetchOnWindowFocus: false,
-  });
 };
 
 /**
@@ -82,20 +64,20 @@ export const useFavoritedDaosInfiniteQuery = (
 
 /**
  * Fetch a favorite DAO from the cache
- * @param daoAddress address of the favorited DAO
+ * @param proposalId address of the favorited DAO
  * @param network network of the favorited DAO
  * @returns favorited DAO with given address and network if available
  */
 export const useFavoritedDaoQuery = (
-  daoAddress: string | undefined,
+  proposalId: string | undefined,
   network: SupportedNetworks
 ) => {
   const chain = CHAIN_METADATA[network].id;
 
   return useQuery({
-    queryKey: ['favoritedDao', daoAddress, network],
-    queryFn: () => getFavoritedDaoFromCache(daoAddress, chain),
-    enabled: !!daoAddress && !!network,
+    queryKey: ['favoritedDao', proposalId, network],
+    queryFn: () => getFavoritedDaoFromCache(proposalId, chain),
+    enabled: !!proposalId && !!network,
   });
 };
 
@@ -180,13 +162,8 @@ function augmentCachedDaos(data: InfiniteData<NavigationVoteraProposal[]>) {
  */
 function addAvatarToWallet<T extends NavigationVoteraProposal>(daos: T[]): T[] {
   return daos.map(dao => {
-    const {metadata} = dao;
     return {
       ...dao,
-      metadata: {
-        ...metadata,
-        avatar: undefined,
-      },
     } as T;
   });
 }

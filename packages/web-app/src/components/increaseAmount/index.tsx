@@ -1,7 +1,6 @@
 import {
   AlertInline,
   AlertInlineProps,
-  Label,
   LinearProgress,
   NumberInput,
   NumberInputProps,

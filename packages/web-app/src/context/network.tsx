@@ -14,7 +14,6 @@ import {
   SupportedNetworks,
   toSupportedNetwork,
 } from 'utils/constants';
-import {NotFound} from 'utils/paths';
 
 /* CONTEXT PROVIDER ========================================================= */
 

@@ -1,29 +1,9 @@
 import {InMemoryCache, makeVar} from '@apollo/client';
 import {CachePersistor, LocalStorageWrapper} from 'apollo3-cache-persist';
 
-import {
-  FAVORITE_DAOS_KEY,
-  PENDING_EXECUTION_KEY,
-  PENDING_MULTISIG_EXECUTION_KEY,
-  PENDING_MULTISIG_PROPOSALS_KEY,
-  PENDING_MULTISIG_VOTES_KEY,
-  SupportedChainID,
-} from 'utils/constants';
+import {FAVORITE_DAOS_KEY, SupportedChainID} from 'utils/constants';
 import {PRIVACY_KEY} from './privacyContext';
-import {
-  AssessmentResult,
-  ExecutionStates,
-  IProposalData,
-  ISystemProposalParam,
-  ProposalPeriod,
-  ProposalStates,
-  ProposalType,
-  SystemProposalType,
-  VoteResult,
-} from 'votera-sdk-client';
-import {customJSONReviver} from '../utils/library';
-import {DetailedProposal} from '../utils/types';
-import {BigNumber} from '@ethersproject/bignumber';
+import {ProposalType} from 'votera-sdk-client';
 import {VoteraProposalData} from '../utils/votera/sdk-client-types';
 
 const cache = new InMemoryCache();
@@ -122,68 +102,3 @@ const selectedVoteraProposalVar = makeVar<NavigationVoteraProposal>({
 });
 
 export {favoriteVoteraProposalsVar, selectedVoteraProposalVar};
-
-/*************************************************
- *                 PENDING PROPOSAL              *
- *************************************************/
-// iffy about this structure
-export type CachedProposal = Omit<
-  DetailedProposal,
-  'creationBlockNumber' | 'executionBlockNumber' | 'executionDate' | 'status'
-> & {};
-
-export type PendingMultisigApprovals = {
-  /** key is: daoAddress_proposalId; value: wallet address */
-  [key: string]: string;
-};
-const pendingMultisigApprovals = JSON.parse(
-  localStorage.getItem(PENDING_MULTISIG_VOTES_KEY) || '{}'
-);
-
-export const pendingMultisigApprovalsVar = makeVar<PendingMultisigApprovals>(
-  pendingMultisigApprovals
-);
-
-/*************************************************
- *                PENDING EXECUTION              *
- *************************************************/
-// Token-based
-export type PendingTokenBasedExecution = {
-  /** key is: daoAddress_proposalId */
-  [key: string]: boolean;
-};
-const pendingTokenBasedExecution = JSON.parse(
-  localStorage.getItem(PENDING_EXECUTION_KEY) || '{}',
-  customJSONReviver
-);
-const pendingTokenBasedExecutionVar = makeVar<PendingTokenBasedExecution>(
-  pendingTokenBasedExecution
-);
-
-//================ Multisig
-export type PendingMultisigExecution = {
-  /** key is: daoAddress_proposalId */
-  [key: string]: boolean;
-};
-const pendingMultisigExecution = JSON.parse(
-  localStorage.getItem(PENDING_MULTISIG_EXECUTION_KEY) || '{}',
-  customJSONReviver
-);
-export const pendingMultisigExecutionVar = makeVar<PendingMultisigExecution>(
-  pendingMultisigExecution
-);
-//================ Multisig
-type PendingMultisigProposals = {
-  // key is dao address
-  [key: string]: {
-    // key is proposal id
-    [key: string]: CachedProposal;
-  };
-};
-export const pendingMultisigProposals = JSON.parse(
-  localStorage.getItem(PENDING_MULTISIG_PROPOSALS_KEY) || '{}',
-  customJSONReviver
-);
-export const pendingMultisigProposalsVar = makeVar<PendingMultisigProposals>(
-  pendingMultisigProposals
-);

@@ -61,7 +61,7 @@ export type CardProposalProps = {
    * explore */
   publisherAddress?: string;
   /** DAO name to display when type is explore */
-  daoName?: string;
+  proposalTitle?: string;
   /** Blockchain explorer URL */
   explorer?: string;
 
@@ -92,7 +92,7 @@ export const CardProposal: React.FC<
   stateLabel,
   type = 'list',
   daoLogo,
-  daoName,
+  proposalTitle,
   onClick,
   addressLabel,
 }: CardProposalProps & {addressLabel: string}) => {
@@ -112,7 +112,11 @@ export const CardProposal: React.FC<
         <Description>{description}</Description>
         <Publisher>
           {isExploreProposal(type) ? (
-            <AvatarDao daoName={daoName!} size="small" src={daoLogo} />
+            <AvatarDao
+              proposalTitle={proposalTitle!}
+              size="small"
+              src={daoLogo}
+            />
           ) : (
             <PublisherLabel>{publishLabel}</PublisherLabel>
           )}

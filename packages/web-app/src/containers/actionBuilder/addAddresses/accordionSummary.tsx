@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import {AccordionMethodType, AccordionType} from 'components/accordionMethod';
 import {useNetwork} from 'context/network';
-import {Community} from 'utils/paths';
 
 type AccordionSummaryPropsType = {
   type?: AccordionMethodType['type'];
@@ -22,15 +21,6 @@ const AccordionSummary: React.FC<AccordionSummaryPropsType> = ({
   const {t} = useTranslation();
   const {dao} = useParams();
   const {network} = useNetwork();
-
-  // get protocol and domain, add generated path
-  const membersHref = useMemo(
-    () =>
-      window.location.href
-        .split('#')[0]
-        .concat(`#${generatePath(Community, {dao, network})}`),
-    [dao, network]
-  );
 
   return (
     <Footer {...{type}}>
@@ -59,11 +49,6 @@ const AccordionSummary: React.FC<AccordionSummaryPropsType> = ({
               </>
             )}
           </div>
-          <Link
-            href={membersHref}
-            label={t('labels.seeCommunity')}
-            iconRight={<IconLinkExternal />}
-          />
         </div>
       )}
     </Footer>

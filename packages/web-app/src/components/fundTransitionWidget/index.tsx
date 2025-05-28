@@ -1,27 +1,13 @@
-import {
-  AlertCard,
-  AlertInline,
-  ButtonText,
-  IconAdd,
-  IconLinkExternal,
-  Label,
-} from '@aragon/ui-components';
+import {AlertInline, ButtonText} from '@aragon/ui-components';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {StateEmpty} from 'components/stateEmpty';
-import {useNetwork} from 'context/network';
-import {CHAIN_METADATA} from 'utils/constants';
 import {Action, ProposalPhase} from 'utils/types';
-import IncreaseAmount from 'components/increaseAmount';
-import AssessmentResult from 'components/assessmentResult';
-import {ProposalPhaseExtended, ProposalPeriod} from 'pages/proposal';
-import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
+import {ProposalPhaseExtended} from 'pages/proposal';
+import {ProposalPeriod} from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
-import {BigNumber} from 'ethers';
 
-import {useForm} from 'react-hook-form';
 import {useCreateTransitionContext} from 'context/createTransition';
 import {CreateTransitionProvider} from 'context/createTransition';
 const Card = styled.div.attrs({

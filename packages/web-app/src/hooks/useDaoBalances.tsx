@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {CHAIN_METADATA} from 'utils/constants';
 
 import {HookData} from 'utils/types';
@@ -34,14 +34,7 @@ export const useLoadTokenLogoURL = (): {getImgUrl: any; tokenList: any} => {
 
   const getImgUrl = useCallback(
     (symbol: string, chainId: number) => {
-      if (!tokenList) return '';
-
-      const matched = tokenList.tokens.filter(
-        (t: {symbol: string; chainId: number}) =>
-          t.symbol === symbol && t.chainId === chainId
-      );
-      console.log('>>>>> matched :', matched);
-      return matched && matched.length > 0 ? matched[0].logoURI : '';
+      return '';
     },
     [tokenList]
   );
@@ -49,7 +42,7 @@ export const useLoadTokenLogoURL = (): {getImgUrl: any; tokenList: any} => {
 };
 
 export const useDaoBalances = (
-  daoAddress: string
+  proposalId: string
 ): HookData<Array<AssetBalance> | undefined> => {
   const {network} = useNetwork();
   const [data, setData] = useState<Array<AssetBalance>>([]);
@@ -67,7 +60,10 @@ export const useDaoBalances = (
 
         const loadedTokens = tokenList
           ? tokenList.tokens
-              ?.filter(t => t.chainId === CHAIN_METADATA[network].id)
+              ?.filter(
+                (t: {chainId: number}) =>
+                  t.chainId === CHAIN_METADATA[network].id
+              )
               .filter((t: {address: string}) => !isNativeToken(t.address))
               .map((t: {address: any}) => t.address)
           : [];
@@ -79,12 +75,12 @@ export const useDaoBalances = (
             : [];
         const nonZeroBalances = [
           ...new Set(nonZeroBalancesBefore.concat(loadedTokens)),
-        ];
+        ] as string[];
 
         const nativeCurrency = CHAIN_METADATA[network].nativeCurrency;
         let nativeTokenBalances = [] as Array<AssetBalance>;
 
-        const fetchNativeCurrencyBalance = provider.getBalance(daoAddress);
+        const fetchNativeCurrencyBalance = provider.getBalance(proposalId);
 
         // Define a list of promises to fetch ERC20 token balances
         const tokenListPromises = !nonZeroBalances
@@ -97,17 +93,18 @@ export const useDaoBalances = (
               );
               const tokenBalance = await fetchBalance(
                 contractAddress,
-                daoAddress,
+                proposalId,
                 provider,
                 nativeCurrency,
                 false
               );
               return {
+                id: contractAddress,
                 address: contractAddress,
                 name,
                 symbol,
                 updateDate: new Date(),
-                type: TokenType.ERC20,
+                type: TokenType.ERC20 as const,
                 balance: BigInt(tokenBalance),
                 decimals,
               };
@@ -143,8 +140,8 @@ export const useDaoBalances = (
       }
     }
 
-    if (daoAddress) getBalances();
-  }, [daoAddress, network, provider, tokenList]);
+    if (proposalId) getBalances();
+  }, [proposalId, network, provider, tokenList]);
 
   return {data, error, isLoading};
 };

@@ -78,7 +78,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
           <FlexOne className="justify-center">
             {/* <DaoContainer>
               <AvatarDao
-                daoName={currentDao.metadata.name}
+                proposalTitle={currentDao.metadata.name}
                 onClick={props.onDaoSelect}
               />
               <DaoName>{currentDao.metadata.name}</DaoName>

@@ -1,10 +1,4 @@
-import {
-  AlertInline,
-  AlertInlineProps,
-  LinearProgress,
-  NumberInput,
-  NumberInputProps,
-} from '@aragon/ui-components';
+import {LinearProgress} from '@aragon/ui-components';
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
@@ -119,11 +113,6 @@ const ProgressWrapper = styled.div.attrs({
 })``;
 const ProgressInfoWrapper = styled.div.attrs({
   className: 'flex w-full items-center gap-x-4',
-})``;
-
-const AverageWrapper = styled.div.attrs({
-  className:
-    'flex w-full justify-center items-center text-3xl font-bold text-ui-800',
 })``;
 
 const AssessmentLabel = styled.div.attrs({

@@ -15,22 +15,14 @@ import {
 } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {DaoSelector} from 'components/daoSelector';
 import {Container} from 'components/layout';
-import NavLinks from 'components/navLinks';
 import ExitProcessMenu, {ProcessType} from 'containers/exitProcessMenu';
-import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useNetwork} from 'context/network';
-import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import {useWallet} from 'hooks/useWallet';
-import {NavlinksDropdown} from './breadcrumbDropdown';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
 import {changeLanguage} from '../../../i18n.config';
-import {VoteraProposalSelector} from 'components/voteraProposalSelector';
-
-const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
 type DesktopNavProp = {
   isProcess?: boolean;
@@ -47,10 +39,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
   const location = useLocation();
   const {network} = useNetwork();
   const {dao} = useParams();
-  const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
   const {address, isConnected} = useWallet();
-
-  const currentDao = useReactiveVar(selectedVoteraProposalVar);
 
   const [showExitProcessMenu, setShowExitProcessMenu] = useState(false);
 
@@ -113,8 +102,8 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
       <Menu>
         <Content>
           {/* <DaoSelector
-            daoAddress={currentDao.address}
-            daoName={currentDao?.metadata.name}
+            proposalId={currentDao.address}
+            proposalTitle={currentDao?.metadata.name}
             src={currentDao.address}
             onClick={props.onDaoSelect}
           />

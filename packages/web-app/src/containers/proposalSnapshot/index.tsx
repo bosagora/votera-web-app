@@ -13,16 +13,14 @@ import styled from 'styled-components';
 import {proposal2CardDataProps} from 'components/proposalList';
 import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
-// import {PluginTypes} from 'hooks/usePluginClient';
 import {htmlIn} from 'utils/htmlIn';
-import {CreateProposal, Governance, NewProposal} from 'utils/paths';
-import {IProposalData} from 'votera-sdk-client';
+import {CreateProposal} from 'utils/paths';
+import {ProposalData} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
-import {getExtendedPhase} from 'pages/proposal';
 
 type Props = {
   daoAddressOrEns: string;
-  proposals: IProposalData[];
+  proposals: ProposalData[];
   proposalLength: number;
   hasMore: boolean;
   onLoadMore: () => void;

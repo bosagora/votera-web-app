@@ -1,6 +1,5 @@
 // Library utils / Ethers for now
 import {
-  Client,
   Context as SdkContext,
   SupportedNetwork as SdkSupportedNetworks,
 } from 'votera-sdk-client';
@@ -18,9 +17,6 @@ import {
 } from 'utils/constants';
 
 import {i18n} from '../../i18n.config';
-import {getTokenInfo} from './tokens';
-import {fetchTokenData} from '../services/prices';
-import {ActionWithdraw} from './types';
 
 export function formatUnits(amount: BigNumberish, decimals: number) {
   if (amount.toString().includes('.') || !decimals) {
@@ -84,100 +80,7 @@ export const toHex = (num: number | string) => {
   return '0x' + num.toString(16);
 };
 
-/**
- * DecodeWithdrawToAction
- * @param data Uint8Array action data
- * @param client SDK client, Fetched using useClient
- * @param apolloClient Apollo client, Fetched using useApolloClient
- * @param provider Eth provider
- * @param network network of the dao
- * @returns Return Decoded Withdraw action
- */
-
-export async function decodeWithdrawToAction(
-  data: Uint8Array | undefined,
-  client: Client | undefined,
-  // apolloClient: ApolloClient<object>,
-  provider: providers.Provider,
-  network: SupportedNetworks,
-  to: string,
-  value: bigint
-): Promise<ActionWithdraw | undefined> {
-  if (!client || !data) {
-    console.error('SDK client is not initialized correctly');
-    return;
-  }
-
-  const decoded = client.decoding.withdrawAction(to, value, data);
-
-  if (!decoded) {
-    console.error('Unable to decode withdraw action');
-    return;
-  }
-
-  const tokenAddress =
-    decoded.type === 'native' ? constants.AddressZero : decoded?.tokenAddress;
-
-  try {
-    const recipient = await Web3Address.create(
-      provider,
-      decoded.recipientAddressOrEns
-    );
-
-    const [tokenInfo] = await Promise.all([
-      getTokenInfo(
-        tokenAddress,
-        provider,
-        CHAIN_METADATA[network].nativeCurrency
-      ),
-    ]);
-
-    const apiResponse = await fetchTokenData(
-      tokenAddress,
-      apolloClient,
-      network,
-      tokenInfo.symbol
-    );
-
-    return {
-      amount: Number(formatUnits(decoded.amount, tokenInfo.decimals)),
-      name: 'withdraw_assets',
-      to: recipient,
-      tokenBalance: 0, // unnecessary?
-      tokenAddress: tokenAddress,
-      tokenImgUrl: apiResponse?.imgUrl || '',
-      tokenName: tokenInfo.name,
-      tokenPrice: apiResponse?.price || 0,
-      tokenSymbol: tokenInfo.symbol,
-      tokenDecimals: tokenInfo.decimals,
-      isCustomToken: false,
-    };
-  } catch (error) {
-    console.error('Error decoding withdraw action', error);
-  }
-}
-
 const FLAG_TYPED_ARRAY = 'FLAG_TYPED_ARRAY';
-/**
- *  Custom serializer that includes fix for BigInt type
- * @param _ key; unused
- * @param value value to serialize
- * @returns serialized value
- */
-export const customJSONReplacer = (_: string, value: unknown) => {
-  // uint8array (encoded actions)
-  if (value instanceof Uint8Array) {
-    return {
-      data: [...value],
-      flag: FLAG_TYPED_ARRAY,
-    };
-  }
-
-  // bigint
-  if (typeof value === 'bigint') return `${value.toString()}n`;
-
-  return value;
-};
 
 /**
  * Custom function to deserialize values, including Date and BigInt types
@@ -204,10 +107,6 @@ export const customJSONReviver = (_: string, value: any) => {
   return value;
 };
 
-type DecodedVotingMode = {
-  earlyExecution: boolean;
-  voteReplacement: boolean;
-};
 /**
  * Get DAO resolved IPFS CID URL for the DAO avatar
  * @param avatar - avatar to be resolved. If it's an IPFS CID,
@@ -219,17 +118,6 @@ export function resolveDaoAvatarIpfsCid(
   avatar?: string
 ): string | undefined {
   return undefined;
-}
-
-export function readFile(file: Blob): Promise<ArrayBuffer> {
-  return new Promise((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = () => {
-      resolve(fr.result as ArrayBuffer);
-    };
-    fr.onerror = reject;
-    fr.readAsArrayBuffer(file);
-  });
 }
 
 /**
@@ -293,10 +181,6 @@ export function toDisplayEns(ensName?: string) {
 
   if (!ensName.includes('.dao.eth')) return `${ensName}.dao.eth`;
   return ensName;
-}
-
-export function getDefaultPayableAmountInputName(t: TFunction) {
-  return t('scc.inputPayableAmount.label');
 }
 
 export function getWCPayableAmount(

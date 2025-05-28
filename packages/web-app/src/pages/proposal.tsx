@@ -1,31 +1,21 @@
-import {
-  Breadcrumb,
-  ButtonText,
-  IconChevronDown,
-  IconChevronUp,
-  IconGovernance,
-  Link,
-  WidgetStatus,
-} from '@aragon/ui-components';
+import {ButtonText, IconChevronUp, Link} from '@aragon/ui-components';
 import {withTransaction} from '@elastic/apm-rum-react';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {TFunction, useTranslation} from 'react-i18next';
-import {generatePath, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {Loading} from 'components/temporary';
-import {TerminalTabs, VotingTerminal} from 'containers/votingTerminal';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useSpecificProvider} from 'context/providers';
-import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
 import {CHAIN_METADATA} from 'utils/constants';
-import {formatUnits, shortenAddress, toDisplayEns} from 'utils/library';
-import {Dashboard, NotFound} from 'utils/paths';
+import {shortenAddress} from 'utils/library';
+import {NotFound} from 'utils/paths';
 
-import {DetailedProposal, ProposalId} from 'utils/types';
+import {ProposalId} from 'utils/types';
 
 import {FundVoteWidget} from 'components/fundVoteWidget';
 import {FundAssessmentWidget} from 'components/fundAssessmentWidget';
@@ -33,11 +23,11 @@ import ProposalInfo from 'components/proposalInfo';
 import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
 import {
-  IVoteBallotData,
-  IScoreData,
+  VoteBallotData,
+  ScoreData,
   AssessmentResult,
   ExecutionStates,
-  IProposalData,
+  ProposalData,
   ProposalPeriod,
   ProposalStates,
   VoteResult,
@@ -228,6 +218,7 @@ const checkVoteStatus = (proposal: any): VoteStatus => {
         ? VoteStatus.APPROVED
         : VoteStatus.REJECTED;
     } else {
+      //
     }
     // 정족수 미달로 투표 결과 부결되어 종료된 경우
     if (proposal.voteResult === VoteResult.INVALID_QUORUM) {
@@ -320,7 +311,6 @@ const Proposal: React.FC = () => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {isDesktop} = useScreen();
-  const {breadcrumbs, tag} = useMappedBreadcrumbs();
   const navigate = useNavigate();
   const {client} = useClient();
   const {dao, id: urlId} = useParams();
@@ -339,10 +329,9 @@ const Proposal: React.FC = () => {
   const [proposal, setProposal] = useState<any | null>(null);
   const [proposalError, setProposalError] = useState<Error | null>(null);
   const [proposalIsLoading, setProposalIsLoading] = useState(true);
-  const [myScore, setMyScore] = useState<IScoreData | null>(null);
-  const [myBallot, setMyBallot] = useState<IVoteBallotData | null>(null);
+  const [myScore, setMyScore] = useState<ScoreData | null>(null);
+  const [myBallot, setMyBallot] = useState<VoteBallotData | null>(null);
   const [votingInProcess, setVotingInProcess] = useState(false);
-  const [terminalTab, setTerminalTab] = useState<TerminalTabs>('info');
   const [expandedProposal, setExpandedProposal] = useState(false);
   const [paramsAreLoading, setParamsAreLoading] = useState(true);
   const [voteSubmitted, setVoteSubmitted] = useState(false);
@@ -353,7 +342,7 @@ const Proposal: React.FC = () => {
   const [isVoter, setIsVoter] = useState(false);
 
   const [fetchedProposal, setFetchedProposal] = useState<
-    IProposalData | null | undefined
+    ProposalData | null | undefined
   >(null);
 
   // useProposalQuery를 컴포넌트 최상위 레벨에서 호출
@@ -515,7 +504,7 @@ const Proposal: React.FC = () => {
   // voter tab effect
   useEffect(() => {
     if (voteSubmitted) {
-      setTerminalTab('voters');
+      // setTerminalTab('voters');
       setVotingInProcess(false);
     }
   }, [voteSubmitted]);

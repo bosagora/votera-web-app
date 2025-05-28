@@ -6,7 +6,7 @@ import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
 import {shortenAddress} from 'utils/library';
 import {useClient} from 'hooks/useClient';
-import {SortType, IVoteBallotData, Candidate} from 'votera-sdk-client';
+import {SortType, VoteBallotData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
 
 interface VoteListProps {
@@ -21,7 +21,7 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   const PAGE_SIZE = 10;
 
   const [ballotLength, setBallotLength] = useState<number>(0);
-  const [ballots, setBallots] = useState<IVoteBallotData[]>([]);
+  const [ballots, setBallots] = useState<VoteBallotData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
 

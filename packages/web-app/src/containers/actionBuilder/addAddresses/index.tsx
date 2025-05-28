@@ -18,12 +18,14 @@ import AccordionSummary from './accordionSummary';
 import {AddressRow} from './addressRow';
 import {useAlertContext} from 'context/alert';
 
+import {BalanceMember} from '../../../utils/votera/sdk-client-types';
+
 export type CustomHeaderProps = {
   useCustomHeader?: boolean;
 };
 
 export type CurrentDaoMembers = {
-  currentDaoMembers?: MultisigMember[] | BalanceMember[];
+  currentDaoMembers?: BalanceMember[];
 };
 
 type AddAddressesProps = ActionIndex &

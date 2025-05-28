@@ -83,7 +83,7 @@ const RenderIconLeft: React.FC<{
   }
 
   return typeof icon === 'string' ? (
-    <AvatarDao daoName={label || icon} src={icon} size="small" />
+    <AvatarDao proposalTitle={label || icon} src={icon} size="small" />
   ) : (
     <span>{icon}</span>
   );

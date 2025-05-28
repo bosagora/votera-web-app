@@ -11,7 +11,6 @@ import styled from 'styled-components';
 
 import {StateEmpty} from 'components/stateEmpty';
 import {useNetwork} from 'context/network';
-// import {PluginTypes} from 'hooks/usePluginClient';
 import {CHAIN_METADATA} from 'utils/constants';
 import {Action} from 'utils/types';
 import {ActionsFilter} from './actionsFilter';
@@ -24,8 +23,7 @@ export type ExecutionStatus =
   | 'default';
 
 type ExecutionWidgetProps = {
-  pluginType?: PluginTypes;
-  txhash?: string;
+  txHash?: string;
   actions?: Array<Action | undefined>;
   status?: ExecutionStatus;
   onAddAction?: () => void;
@@ -35,10 +33,9 @@ type ExecutionWidgetProps = {
 export const ExecutionWidget: React.FC<ExecutionWidgetProps> = ({
   actions = [],
   status,
-  txhash,
+  txHash,
   onAddAction,
   onExecuteClicked,
-  pluginType,
 }) => {
   const {t} = useTranslation();
 
@@ -71,9 +68,8 @@ export const ExecutionWidget: React.FC<ExecutionWidgetProps> = ({
             })}
           </Content>
           <WidgetFooter
-            pluginType={pluginType}
             status={status}
-            txhash={txhash}
+            txHash={txHash}
             onExecuteClicked={onExecuteClicked}
           />
         </>
@@ -84,38 +80,22 @@ export const ExecutionWidget: React.FC<ExecutionWidgetProps> = ({
 
 type FooterProps = Pick<
   ExecutionWidgetProps,
-  'status' | 'txhash' | 'onExecuteClicked' | 'pluginType'
+  'status' | 'txHash' | 'onExecuteClicked'
 >;
 
 const WidgetFooter: React.FC<FooterProps> = ({
   status = 'default',
   onExecuteClicked,
-  txhash,
-  pluginType,
+  txHash,
 }) => {
   const {t} = useTranslation();
   const {network} = useNetwork();
 
   const handleTxViewButtonClick = () => {
-    window.open(CHAIN_METADATA[network].explorer + 'tx/' + txhash, '_blank');
+    window.open(CHAIN_METADATA[network].explorer + 'tx/' + txHash, '_blank');
   };
 
   switch (status) {
-    case 'defeated': {
-      return pluginType === 'multisig.plugin.dao.eth' ? (
-        <AlertCard
-          mode="info"
-          title={t('governance.executionCard.statusMultisig.expiredTitle')}
-          helpText={t('governance.executionCard.statusMultisig.expiredDesc')}
-        />
-      ) : (
-        <AlertInline
-          label={t('governance.executionCard.status.defeated')}
-          mode={'warning'}
-        />
-      );
-    }
-
     case 'executable':
       return (
         <Footer>
@@ -137,7 +117,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
             size="large"
             onClick={onExecuteClicked}
           />
-          {txhash && (
+          {txHash && (
             <StyledButtonText
               css={{}}
               label={t('governance.executionCard.seeTransaction')}
@@ -157,7 +137,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
     case 'executed':
       return (
         <Footer>
-          {txhash && (
+          {txHash && (
             <StyledButtonText
               css={{}}
               label={t('governance.executionCard.seeTransaction')}

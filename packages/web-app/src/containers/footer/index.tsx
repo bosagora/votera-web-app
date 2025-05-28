@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import {GridLayout} from 'components/layout';
 import useScreen from 'hooks/useScreen';
-import IconLogoBlue from 'public/iconLogoBlue.svg';
 import {EXPLORE_NAV_LINKS, PRIVACY_NAV_LINKS} from 'utils/constants';
 import {useWallet} from 'hooks/useWallet';
 

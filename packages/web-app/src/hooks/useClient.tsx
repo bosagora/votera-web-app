@@ -1,6 +1,5 @@
 import {
   LIVE_CONTRACTS,
-  SupportedNetworksArray,
   Client,
   Context as SdkContext,
   ContextParams,

@@ -2,7 +2,7 @@ import {BigNumber} from '@ethersproject/bignumber';
 import {
   AssessmentResult,
   ExecutionStates,
-  ISystemProposalParam,
+  SystemProposalParam,
   ProposalPeriod,
   ProposalStates,
   ProposalType,
@@ -24,7 +24,7 @@ export interface VoteraProposalData {
   beginVote?: number;
   endVote?: number;
   systemType?: SystemProposalType;
-  params?: ISystemProposalParam[];
+  params?: SystemProposalParam[];
   states?: ProposalStates;
   period?: ProposalPeriod;
   assessmentResult?: AssessmentResult;
@@ -88,3 +88,7 @@ export type AssetBalance =
   | Erc20AssetBalance
   | Erc721AssetBalance
   | Erc1155AssetBalance;
+
+export type BalanceMember = {
+  balance: number;
+};

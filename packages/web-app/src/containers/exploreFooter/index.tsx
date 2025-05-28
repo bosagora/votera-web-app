@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {GridLayout} from 'components/layout';
 import useScreen from 'hooks/useScreen';
 import Green from 'public/greenGradient.svg';
-import IconLogo from 'public/iconLogo.svg';
 import Purple from 'public/purpleGradient.svg';
 import {PRIVACY_NAV_LINKS} from 'utils/constants';
 

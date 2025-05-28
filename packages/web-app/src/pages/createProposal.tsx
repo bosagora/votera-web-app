@@ -4,28 +4,23 @@ import {FormProvider, useForm, useFormState, useWatch} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
 import {FullScreenStepper, Step} from 'components/fullScreenStepper';
-import {MultisigWalletField} from 'components/multisigWallets/row';
-import ConfigureCommunity from 'containers/configureCommunity';
 import {OverviewDAOHeader, OverviewDAOStep} from 'containers/daoOverview';
 import DefineMetadata from 'containers/defineMetadata';
-import GoLive, {GoLiveFooter, GoLiveHeader} from 'containers/goLive2';
+import GoLive, {GoLiveFooter, GoLiveHeader} from '../containers/goLive';
 import SelectChain from 'containers/selectChainForm';
-import SetupCommunity from 'containers/setupCommunity';
-import {CreateDaoProvider} from 'context/createDao';
 import {useNetwork} from 'context/network';
 import {useWallet} from 'hooks/useWallet';
-import {trackEvent} from 'services/analytics';
 import {CHAIN_METADATA, getSupportedNetworkByChainId} from 'utils/constants';
 import {htmlIn} from 'utils/htmlIn';
 import {Landing} from 'utils/paths';
 
 import {BigNumber} from 'ethers';
 import {CreateProposalProvider} from 'context/createProposal';
-import ConfigureActions from 'containers/configureActions';
 import SetupProposal from 'containers/setupProposal';
 import {defaultAbiCoder} from '@ethersproject/abi';
 import {keccak256} from '@ethersproject/keccak256';
 import {randomBytes} from '@ethersproject/random';
+import {trackEvent} from 'services/analytics';
 
 const getRandomId = () => {
   const encodedResult = defaultAbiCoder.encode(
@@ -128,31 +123,16 @@ const CreateProposal: React.FC = () => {
   /*************************************************
    *             Step Validation States            *
    *************************************************/
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const daoMetadataIsValid = useMemo(() => {
-    // required fields not dirty
-    if (!title) return false;
-
-    return !errors.title;
-  }, [title, dirtyFields.title, errors.title]);
-
-  const daoSetupCommunityIsValid = useMemo(() => {
-    return true;
-  }, []);
-
-  const daoConfigureCommunityIsValid = useMemo(() => {
-    return true;
-  }, []);
 
   const handleNextButtonTracking = (
     next: () => void,
     stepName: string,
     properties: Record<string, unknown>
   ) => {
-    // trackEvent('daoCreation_continueBtn', {
-    //   step: stepName,
-    //   settings: properties,
-    // });
+    trackEvent('daoCreation_continueBtn', {
+      step: stepName,
+      settings: properties,
+    });
     next();
   };
 
@@ -238,42 +218,6 @@ const CreateProposal: React.FC = () => {
           >
             <GoLive />
           </Step>
-          {/*
-
-          <Step
-            wizardTitle={t('createProposal.step3.title')}
-            wizardDescription={htmlIn(t)(
-              'createProposal.step3.description'
-            )}
-            isNextButtonDisabled={!daoSetupCommunityIsValid}
-            onNextButtonClicked={next =>
-              handleNextButtonTracking(next, '3_setup_community', {
-                destination: formMethods.getValues('destination'),
-              })
-            }
-          >
-            <SetupCommunity />
-          </Step>
-          <Step
-            wizardTitle={t('createProposal.step4.title')}
-            wizardDescription={htmlIn(t)('createProposal.step4.description')}
-            isNextButtonDisabled={!daoConfigureCommunityIsValid}
-            onNextButtonClicked={next =>
-              handleNextButtonTracking(next, '4_configure_governance', {
-                fundAmount: formMethods.getValues('fundAmount'),
-              })
-            }
-          >
-            <ConfigureCommunity />
-          </Step>
-          <Step
-            hideWizard
-            fullWidth
-            customHeader={<GoLiveHeader />}
-            customFooter={<GoLiveFooter />}
-          >
-            <GoLive />
-          </Step> */}
         </FullScreenStepper>
       </CreateProposalProvider>
     </FormProvider>

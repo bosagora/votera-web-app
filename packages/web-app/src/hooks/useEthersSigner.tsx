@@ -45,12 +45,6 @@ export function useBOSagoraSigner(chainId: number, chainName: string) {
     chainName = 'bosagora_mainnet';
   } else if (chainId === 24600) {
     chainName = 'bosagora_devnet';
-  } else if (chainId === 215110) {
-    chainName = 'acc_sidechain_mainnet';
-  } else if (chainId === 215115) {
-    chainName = 'acc_sidechain_testnet';
-  } else if (chainId === 24680) {
-    chainName = 'acc_sidechain_devnet';
   }
 
   const {data: walletClient} = useWalletClient({chainId});

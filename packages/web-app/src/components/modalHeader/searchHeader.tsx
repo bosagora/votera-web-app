@@ -28,6 +28,7 @@ const SearchHeader: React.FC<SearchHeader> = props => {
           mode="secondary"
           bgWhite
           onClick={props.onHomeButtonClick}
+          css={{}}
         />
         <IconChevronRight />
         {props.selectedValue && (
@@ -48,6 +49,7 @@ const SearchHeader: React.FC<SearchHeader> = props => {
         icon={<IconClose />}
         onClick={props.onClose}
         bgWhite
+        css={{}}
       />
     </Container>
   );

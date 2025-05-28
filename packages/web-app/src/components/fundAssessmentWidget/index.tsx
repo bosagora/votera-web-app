@@ -30,7 +30,7 @@ import {
 } from 'context/createAssess';
 import {useForm} from 'react-hook-form';
 import {htmlInParagraph} from 'utils/htmlIn';
-import {IScoreData} from 'votera-sdk-client';
+import {ScoreData} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
 const Card = styled.div.attrs({
   className:
@@ -66,7 +66,7 @@ interface FundAssessmentWidgetProps {
   period: ProposalPeriod;
   phase: string;
   canAssess: boolean;
-  myScore: IScoreData | null;
+  myScore: ScoreData | null;
   exPhase: ProposalPhaseExtended;
   exPhaseMessage: string;
   proposalId: string;

@@ -9,9 +9,9 @@ import {IconRadioDefault, IconSuccess} from '../icons';
 
 export type ListItemDaoProps = {
   /** Dao's ethereum address **or** ENS name */
-  daoAddress: string;
+  proposalId: string;
   daoLogo?: string;
-  daoName: string;
+  proposalTitle: string;
   selected?: boolean;
   /** Handler for ListItem selection */
   onClick?: React.MouseEventHandler;
@@ -23,10 +23,10 @@ export type ListItemDaoProps = {
 export const ListItemDao: React.FC<ListItemDaoProps> = props => {
   return (
     <Container selected={props.selected} onClick={props.onClick}>
-      <AvatarDao daoName={props.daoName} src={props.daoLogo} />
+      <AvatarDao proposalTitle={props.proposalTitle} src={props.daoLogo} />
       <Content>
-        <DaoName selected={props.selected}>{props.daoName}</DaoName>
-        <Domain>{shortenAddress(props.daoAddress)}</Domain>
+        <DaoName selected={props.selected}>{props.proposalTitle}</DaoName>
+        <Domain>{shortenAddress(props.proposalId)}</Domain>
       </Content>
       <IconContainer selected={props.selected}>
         {props.selected ? <IconSuccess /> : <IconRadioDefault />}

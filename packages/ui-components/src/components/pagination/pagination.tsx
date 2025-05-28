@@ -163,6 +163,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         disabled={page === 1}
         icon={<IconChevronLeft />}
         {...(bgWhite && {bgWhite})}
+        css={{}}
       />
       <ButtonList />
       <ButtonIcon
@@ -172,6 +173,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         disabled={page === totalPages}
         icon={<IconChevronRight />}
         {...(bgWhite && {bgWhite})}
+        css={{}}
       />
     </HStack>
   );

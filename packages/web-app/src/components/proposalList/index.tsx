@@ -5,25 +5,13 @@ import {TFunction, useTranslation} from 'react-i18next';
 import {NavigateFunction, generatePath, useNavigate} from 'react-router-dom';
 
 import {useNetwork} from 'context/network';
-import {
-  CHAIN_METADATA,
-  PROPOSAL_STATE_LABELS,
-  SupportedNetworks,
-} from 'utils/constants';
+import {CHAIN_METADATA, SupportedNetworks} from 'utils/constants';
 import {Proposal} from 'utils/paths';
-import {ProposalListItem, ProposalPhase} from 'utils/types';
 import {useWallet} from 'hooks/useWallet';
 import {shortenAddress} from '../../utils/library';
-import {IProposalData, ProposalPeriod} from 'votera-sdk-client';
+import {ProposalData, ProposalPeriod} from 'votera-sdk-client';
 import {getExtendedPhase} from 'pages/proposal';
 
-type ProposalListProps = {
-  proposals: Array<ProposalListItem>;
-  daoAddressOrEns: string;
-  pluginAddress: string;
-  pluginType: PluginTypes;
-  isLoading?: boolean;
-};
 export type CardProposalDataProps = {
   id: string;
   title: string;
@@ -38,7 +26,7 @@ export type CardProposalDataProps = {
   progressLabel?: string;
 };
 type ProposalDataListProps = {
-  proposals: Array<IProposalData>;
+  proposals: Array<ProposalData>;
   isLoading: boolean;
 };
 const ProposalList: React.FC<ProposalDataListProps> = ({
@@ -83,17 +71,6 @@ const ProposalList: React.FC<ProposalDataListProps> = ({
   );
 };
 
-function relativeVoteCount(optionCount: number, totalCount: number) {
-  if (totalCount === 0) {
-    return 0;
-  }
-  return Math.round((optionCount / totalCount) * 100);
-}
-
-export type CardViewProposal = Omit<CardProposalProps, 'onClick'> & {
-  id: string;
-};
-
 const getInProgressPhase = (proposal: any, t: TFunction) => {
   const extendedPhase = getExtendedPhase(proposal);
   if (extendedPhase.toLowerCase().includes('opened')) {
@@ -110,7 +87,7 @@ const getInProgressPhase = (proposal: any, t: TFunction) => {
  * @returns list of proposals ready to be display as CardProposals
  */
 export function proposal2CardDataProps(
-  proposal: IProposalData,
+  proposal: ProposalData,
   network: SupportedNetworks,
   navigate: NavigateFunction,
   t: TFunction,
@@ -140,33 +117,6 @@ export function proposal2CardDataProps(
   };
 
   return props;
-
-  // const specificProps = {
-  //   voteTitle: t('votingTerminal.approvedBy'),
-  //   stateLabel: PROPOSAL_STATE_LABELS,
-  //   alertMessage: 'alert message',
-  // };
-
-  // if (proposal.phase === ProposalPhase.VOTE) {
-  //   const votedAlertLabel = proposal.approval?.some(
-  //     v =>
-  //       stripPlgnAdrFromProposalId(v).toLowerCase() === address?.toLowerCase()
-  //   )
-  //     ? t('governance.proposals.alert.voted')
-  //     : undefined;
-
-  //   const activeProps = {
-  //     votedAlertLabel,
-  //     voteProgress: relativeVoteCount(proposal.approval.length, memberCount),
-  //     winningOptionValue: `${proposal.approval.length} ${t(
-  //       'votingTerminal.ofMemberCount',
-  //       {memberCount}
-  //     )}`,
-  //   };
-  //   return {...props, ...specificProps, ...activeProps};
-  // } else {
-  //   return {...props, ...specificProps};
-  // }
 }
 
 export default ProposalList;

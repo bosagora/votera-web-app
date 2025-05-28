@@ -2,7 +2,6 @@
 // compatible with react-router-dom v6
 import React, {lazy, Suspense, useEffect} from 'react';
 import {Navigate, Outlet, Route, Routes, useLocation} from 'react-router-dom';
-// import ProtectedRoute from 'components/protectedRoute';
 // HACK: All pages MUST be exported with the withTransaction function
 // from the '@elastic/apm-rum-react' package in order for analytics to
 // work properly on the pages.
@@ -16,22 +15,17 @@ import ExploreNav from 'containers/navbar/exploreNav';
 import NetworkErrorMenu from 'containers/networkErrorMenu';
 import TransferMenu from 'containers/transferMenu';
 import {WalletMenu} from 'containers/walletMenu';
-import {useTransactionDetailContext} from 'context/transactionDetail';
-import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
 import {FormProvider, useForm} from 'react-hook-form';
 import {identifyUser, trackPage} from 'services/analytics';
 import {NotFound} from 'utils/paths';
 import '../i18n.config';
-import DepositModal from 'containers/transactionModals/depositModal';
 import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
-import ProtectedRoute from './components/protectedRoute';
 
 import CreateProposal from 'pages/createProposal';
 const ProposalPage = lazy(() => import('pages/proposal'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
-const NewProposalPage = lazy(() => import('pages/newProposal'));
 function App() {
   // TODO this needs to be inside a Routes component. Will be moved there with
   // further refactoring of layout (see further below).
@@ -68,12 +62,6 @@ function App() {
 
             <Route element={<DaoWrapper />}>
               <Route path="dao/dashboard" element={<DashboardPage />} />
-              <Route element={<ProtectedRoute />}>
-                <Route
-                  path="dao/new-proposal/:network"
-                  element={<NewProposalPage />}
-                />
-              </Route>
               <Route
                 path="dao/proposals/:network/:id"
                 element={<ProposalDetailsWrapper />}
@@ -113,9 +101,7 @@ const NewSettingsWrapper: React.FC = () => {
   );
 };
 
-const ProposalDetailsWrapper: React.FC = () => (
-    <ProposalPage />
-);
+const ProposalDetailsWrapper: React.FC = () => <ProposalPage />;
 
 const NotFoundWrapper: React.FC = () => {
   const {pathname} = useLocation();
@@ -148,7 +134,6 @@ const DaoWrapper: React.FC = () => {
         <GridLayout>
           <Outlet />
           <TransferMenu />
-          <DepositModal />
         </GridLayout>
       </div>
       <Footer />

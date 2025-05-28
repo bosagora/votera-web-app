@@ -9,25 +9,11 @@ import {useNetwork} from 'context/network';
 import {usePrivacyContext} from 'context/privacyContext';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import useScreen from 'hooks/useScreen';
-import {CHAIN_METADATA, FEEDBACK_FORM, SupportedChainID} from 'utils/constants';
-import {
-  Community,
-  CreateDAO,
-  EditSettings,
-  Finance,
-  Governance,
-  Landing,
-  ManageMembersProposal,
-  MintTokensProposal,
-  NewDeposit,
-  NewProposal,
-  NewWithDraw,
-  ProposeNewSettings,
-  Dashboard,
-} from 'utils/paths';
+import {CreateDAO, Landing} from 'utils/paths';
 import {i18n} from '../../../i18n.config';
 import DesktopNav from './desktop';
 import MobileNav from './mobile';
+import {SupportedChainID} from '../../utils/constants';
 
 const Navbar: React.FC = () => {
   const {open} = useGlobalModalContext();
@@ -36,30 +22,41 @@ const Navbar: React.FC = () => {
   const {network} = useNetwork();
   const {handleWithFunctionalPreferenceMenu} = usePrivacyContext();
 
-  const {data: walletDetails} = useVoteraProposalDetailsQuery();
+  const {data: voteraProposalDetails} = useVoteraProposalDetailsQuery();
 
   const processInfo = useMemo(() => {
     const matches = matchRoutes(processPaths, pathname);
-    //console.log('Navbar processPaths', processPaths);
-    //console.log('Navbar pathname', pathname);
-    //console.log('Navbar matches', matches);
     if (matches) return getProcessInfo(matches[0].route.path) as ProcessInfo;
   }, [pathname]);
 
   // set current dao as selected dao
   useEffect(() => {
-    if (walletDetails) {
+    if (voteraProposalDetails) {
       selectedVoteraProposalVar({
-        address: walletDetails.address,
-        metadata: {
-          name: walletDetails.metadata.name,
-          description: walletDetails.metadata.description,
-        },
-        chain: walletDetails.chain as SupportedChainID,
-        creationDate: walletDetails.creationDate,
+        address: '',
+        assessmentResult: undefined,
+        beginAssess: 0,
+        beginVote: 0,
+        documentId: '',
+        endAssess: 0,
+        endVote: 0,
+        executionStates: undefined,
+        fundAmount: undefined,
+        params: [],
+        period: undefined,
+        sendVoteCost: false,
+        states: undefined,
+        systemType: undefined,
+        voteResult: undefined,
+        proposalType: voteraProposalDetails.proposalType,
+        title: voteraProposalDetails.title,
+        description: voteraProposalDetails.description,
+        proposer: voteraProposalDetails.proposer,
+        proposalId: voteraProposalDetails.proposalId,
+        chain: voteraProposalDetails.chain as SupportedChainID,
       });
     }
-  }, [walletDetails, network]);
+  }, [voteraProposalDetails, network]);
 
   /*************************************************
    *                   Handlers                    *
@@ -72,12 +69,6 @@ const Navbar: React.FC = () => {
     open('wallet');
   };
 
-  const handleFeedbackButtonClick = () => {
-    window.open(FEEDBACK_FORM, '_blank');
-  };
-
-  //console.log('Navbar isDesktop', isDesktop);
-  //console.log('Navbar processInfo', processInfo);
   if (isDesktop) {
     return (
       <DesktopNav
@@ -109,42 +100,10 @@ export const NavigationBar = styled.nav.attrs({
 /* PROCESS ================================================================= */
 type StringIndexed = {[key: string]: {processLabel: string; returnURL: string}};
 
-export const processPaths = [
-  {path: NewDeposit},
-  {path: NewWithDraw},
-  {path: CreateDAO},
-  {path: NewProposal},
-  {path: ProposeNewSettings},
-  {path: MintTokensProposal},
-  {path: ManageMembersProposal},
-];
+export const processPaths = [{path: CreateDAO}];
 
 export const processes: StringIndexed = {
   [CreateDAO]: {processLabel: i18n.t('createDAO.title'), returnURL: Landing},
-  [NewDeposit]: {
-    processLabel: i18n.t('allTransfer.newTransfer'),
-    returnURL: Finance,
-  },
-  [NewWithDraw]: {
-    processLabel: i18n.t('allTransfer.newTransfer'),
-    returnURL: Finance,
-  },
-  [NewProposal]: {
-    processLabel: i18n.t('newProposal.title'),
-    returnURL: Dashboard,
-  },
-  [ProposeNewSettings]: {
-    processLabel: i18n.t('settings.proposeSettings'),
-    returnURL: EditSettings,
-  },
-  [MintTokensProposal]: {
-    processLabel: i18n.t('labels.addMember'),
-    returnURL: Community,
-  },
-  [ManageMembersProposal]: {
-    processLabel: i18n.t('labels.manageMember'),
-    returnURL: Community,
-  },
 };
 
 type ProcessInfo = {
@@ -172,12 +131,5 @@ function getExitProcessType(processPath: string): ProcessType | undefined {
   switch (processPath) {
     case CreateDAO:
       return 'DaoCreation';
-
-    case ManageMembersProposal:
-    case MintTokensProposal:
-    case NewProposal:
-    case NewWithDraw:
-    case ProposeNewSettings:
-      return 'ProposalCreation';
   }
 }

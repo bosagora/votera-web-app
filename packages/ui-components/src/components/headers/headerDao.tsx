@@ -20,7 +20,7 @@ const DEFAULT_LINES_SHOWN = 2;
 const DEFAULT_LINKS_SHOWN = 3;
 
 export type HeaderDaoProps = {
-  daoName: string;
+  proposalTitle: string;
   daoAvatar?: string;
   daoUrl: string;
   description: string;
@@ -44,7 +44,7 @@ type DescriptionProps = {
 };
 
 export const HeaderDao: React.FC<HeaderDaoProps> = ({
-  daoName,
+  proposalTitle,
   daoAvatar,
   daoUrl,
   description,
@@ -96,7 +96,7 @@ export const HeaderDao: React.FC<HeaderDaoProps> = ({
     <Card data-testid="header-dao">
       <ContentWrapper>
         <Content>
-          <Title>{daoName}</Title>
+          <Title>{proposalTitle}</Title>
           <p className="mt-0.25 desktop:mt-0.5 font-semibold text-ui-500"></p>
           <Link
             label={daoUrl}
@@ -123,7 +123,7 @@ export const HeaderDao: React.FC<HeaderDaoProps> = ({
         </Content>
         <AvatarContainer>
           <AvatarDao
-            daoName={daoName || ''}
+            proposalTitle={proposalTitle || ''}
             size="unset"
             className="w-10 desktop:w-14 h-10 desktop:h-14 text-lg desktop:text-xl"
             {...(daoAvatar && {src: daoAvatar})}
@@ -181,6 +181,7 @@ export const HeaderDao: React.FC<HeaderDaoProps> = ({
               mode="secondary"
               size="large"
               bgWhite
+              css={{}}
             />
           </ActionContainer>
         </ActionWrapper>

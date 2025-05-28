@@ -3,14 +3,12 @@ import {
   ButtonWallet,
   Label,
   TextareaSimple,
-  TextareaWYSIWYG,
   TextInput,
 } from '@aragon/ui-components';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
 
-import AddLinks from 'components/addLinks';
 import {useWallet} from 'hooks/useWallet';
 import {StringIndexed} from 'utils/types';
 import {Controller, useFormContext} from 'react-hook-form';

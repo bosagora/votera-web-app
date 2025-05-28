@@ -13,7 +13,7 @@ export default class CreateDAO {
     cy.get('button').contains('Next').click();
 
     // Fills out mandatory fields on the Define DAO metadata page and proceeds to the next page
-    cy.get('input[name="daoName"]').type('Cypress test');
+    cy.get('input[name="proposalTitle"]').type('Cypress test');
     cy.get('input[name="daoEnsName"]').type(Date.now().toString());
     cy.get('textarea[name="daoSummary"]').type(
       'Cypress test to test Multisig DAO Creation'

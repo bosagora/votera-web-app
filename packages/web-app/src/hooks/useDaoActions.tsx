@@ -2,8 +2,6 @@ import {useTranslation} from 'react-i18next';
 
 import {ActionParameter, HookData} from 'utils/types';
 import {useDaoQuery} from './useVoteraProposalDetails';
-import {getDaoTokenOwner} from 'utils/tokens';
-// import {useDaoToken} from './useDaoToken';
 import {useProviders} from 'context/providers';
 import {useEffect, useState} from 'react';
 

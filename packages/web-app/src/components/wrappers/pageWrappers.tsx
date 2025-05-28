@@ -3,8 +3,6 @@ import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
-import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
-
 export type PageWrapperProps = Omit<
   HeaderPageProps,
   'breadCrumbs' | 'description' | 'title'
@@ -14,27 +12,6 @@ export type PageWrapperProps = Omit<
   customBody?: React.ReactNode;
   description?: string;
   title?: string;
-};
-
-export const PageWrapper: React.FC<PageWrapperProps> = ({title, ...props}) => {
-  const navigate = useNavigate();
-  const {breadcrumbs: crumbs, icon} = useMappedBreadcrumbs();
-
-  return (
-    <>
-      {props.customHeader || (
-        <HeaderContainer>
-          <HeaderPage
-            {...props}
-            title={title || ''}
-            breadCrumbs={{crumbs, icon, onClick: navigate}}
-          />
-        </HeaderContainer>
-      )}
-
-      {props.customBody || <BodyContainer>{props.children}</BodyContainer>}
-    </>
-  );
 };
 
 const HeaderContainer = styled.div.attrs({

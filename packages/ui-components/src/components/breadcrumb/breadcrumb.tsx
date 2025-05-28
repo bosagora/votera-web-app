@@ -77,6 +77,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             icon={<IconChevronLeft />}
             onClick={() => onClick?.(crumbs.path)}
             bgWhite
+            css={{}}
           />
           <p className="font-bold">{crumbs?.label}</p>
           {tag}

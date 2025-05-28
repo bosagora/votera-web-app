@@ -19,6 +19,7 @@ export const NavlinksDropdown: React.FC = () => {
           size="large"
           icon={showCrumbMenu ? <IconClose /> : <IconMenu />}
           isActive={showCrumbMenu}
+          css={{}}
         />
       }
       sideOffset={8}

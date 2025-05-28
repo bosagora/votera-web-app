@@ -1,10 +1,9 @@
 import React from 'react';
 import {useFormContext} from 'react-hook-form';
 
-import TokenMenu from 'containers/tokenMenu';
 import {useActionsContext} from 'context/actions';
 import {useNetwork} from 'context/network';
-import {useDaoBalances} from 'hooks/useDaoBalances';
+import {useVoteraProposalDetailsQuery} from '../../hooks/useVoteraProposalDetails';
 import {fetchTokenPrice} from 'services/prices';
 import {formatUnits} from 'utils/library';
 import {
@@ -45,10 +44,9 @@ interface ActionBuilderProps {
 }
 
 const ActionBuilder: React.FC<ActionBuilderProps> = ({allowEmpty = true}) => {
-  const {data: daoDetails} = useDaoDetailsQuery();
+  const {data: daoDetails} = useVoteraProposalDetailsQuery();
   const {network} = useNetwork();
   const {selectedActionIndex: index, actions} = useActionsContext();
-  const {data: tokens} = useDaoBalances(daoDetails?.address || '');
   const {setValue, resetField, clearErrors} = useFormContext();
 
   /*************************************************
@@ -98,12 +96,6 @@ const ActionBuilder: React.FC<ActionBuilderProps> = ({allowEmpty = true}) => {
           allowRemove={actions.length <= 1 ? allowEmpty : true}
         />
       ))}
-
-      <TokenMenu
-        isWallet={false}
-        onTokenSelect={handleTokenSelect}
-        tokenBalances={tokens || []}
-      />
     </>
   );
 };

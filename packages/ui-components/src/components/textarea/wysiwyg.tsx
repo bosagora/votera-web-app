@@ -76,6 +76,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
           isActive={editor.isActive('bold')}
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={disabled}
+          css={{}}
         />
         <ButtonIcon
           icon={<IconItalic />}
@@ -83,6 +84,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
           isActive={editor.isActive('italic')}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={disabled}
+          css={{}}
         />
         <ButtonIcon
           icon={<IconLinkSet />}
@@ -90,12 +92,14 @@ const MenuBar: React.FC<MenuBarProps> = ({
           isActive={editor.isActive('link')}
           onClick={setLink}
           disabled={disabled}
+          css={{}}
         />
         <ButtonIcon
           icon={<IconLinkUnset />}
           mode="ghost"
           onClick={() => editor.chain().focus().unsetLink().run()}
           disabled={!editor.isActive('link') || disabled}
+          css={{}}
         />
         <ButtonIcon
           icon={<IconListOrdered />}
@@ -103,6 +107,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
           isActive={editor.isActive('bulletList')}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           disabled={disabled}
+          css={{}}
         />
         <ButtonIcon
           icon={<IconListUnordered />}
@@ -110,6 +115,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
           isActive={editor.isActive('orderedList')}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           disabled={disabled}
+          css={{}}
         />
       </Toolgroup>
       <ButtonIcon
@@ -117,6 +123,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
         mode="ghost"
         disabled={disabled}
         onClick={() => setIsExpanded(!isExpanded)}
+        css={{}}
       />
     </StyledMenuBar>
   );

@@ -25,8 +25,6 @@ import {useNetwork} from 'context/network';
 import {useProviders} from 'context/providers';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import {useWallet} from 'hooks/useWallet';
-import {WithdrawAction} from 'pages/newWithdraw';
-// import {fetchTokenData} from 'services/prices';
 import {CHAIN_METADATA} from 'utils/constants';
 import {Web3Address, handleClipboardActions, toDisplayEns} from 'utils/library';
 import {fetchBalance, getTokenInfo, isNativeToken} from 'utils/tokens';
@@ -36,7 +34,6 @@ import {
   validateTokenAmount,
   validateWeb3Address,
 } from 'utils/validators';
-import {add} from 'date-fns';
 
 type ConfigureWithdrawFormProps = ActionIndex; //extend if necessary
 

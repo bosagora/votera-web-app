@@ -1,1 +1,0 @@
-export type PluginTypes = 'token-voting.plugin.dao.eth'; 

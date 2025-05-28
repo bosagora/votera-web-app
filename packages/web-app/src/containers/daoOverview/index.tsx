@@ -8,8 +8,6 @@ import CardWithImage from 'components/cardWithImage';
 import {useFormStep} from 'components/fullScreenStepper';
 import {ActiveIndicator, Indicator, StyledCarousel} from 'containers/carousel';
 import useScreen from 'hooks/useScreen';
-import {trackEvent} from 'services/analytics';
-import {i18n} from '../../../i18n.config';
 
 type OverviewDAOHeaderProps = {
   navLabel: string;
@@ -65,6 +63,7 @@ export const OverviewDAOHeader: React.FC<OverviewDAOHeaderProps> = ({
             iconRight={<IconChevronRight />}
             label={t('createDAO.overview.button')}
             onClick={handleSetupClick}
+            css={{}}
           />
         </div>
       </div>

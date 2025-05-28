@@ -11,16 +11,16 @@ import styled from 'styled-components';
 import useScreen from 'hooks/useScreen';
 
 type VoteraProposalSelectorProps = {
-  daoName: string;
+  proposalTitle: string;
   /** Dao's ethereum address **or** ENS name */
-  daoAddress: string;
+  proposalId: string;
   /** Handler for the switch button. Will be called when the button is clicked. */
   onClick: () => void;
 } & Pick<AvatarDaoProps, 'src'>;
 
 export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
-  daoName,
-  daoAddress,
+  proposalTitle,
+  proposalId,
   onClick,
   src,
 }: VoteraProposalSelectorProps) => {
@@ -30,11 +30,11 @@ export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
     <Card data-testid="cardDao" onClick={onClick}>
       <LeftContent>
         <AvatarWrapper>
-          <AvatarDao daoName={daoName} src={src} />
+          <AvatarDao proposalTitle={proposalTitle} src={src} />
         </AvatarWrapper>
         <TextContainer>
-          <DaoName>{daoName}</DaoName>
-          <DaoAddress>{shortenAddress(daoAddress)}</DaoAddress>
+          <DaoName>{proposalTitle}</DaoName>
+          <DaoAddress>{shortenAddress(proposalId)}</DaoAddress>
         </TextContainer>
       </LeftContent>
 

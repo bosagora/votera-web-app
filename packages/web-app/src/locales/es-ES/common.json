@@ -80,7 +80,7 @@
     "networkCost": "Network Cost",
     "security": "Security",
     "popularity": "Popularity",
-    "daoName": "DAO Name",
+    "proposalTitle": "DAO Name",
     "summary": "Summary",
     "addLink": "Add Link",
     "addWallet": "Add Wallet",
@@ -178,7 +178,7 @@
     "selectToken": "Select a Token ...",
     "walletOrEns": "Type wallet address or ENS ...",
     "searchTokens": "Type to search ...",
-    "daoName": "Type your DAOs name ...",
+    "proposalTitle": "Type your DAOs name ...",
     "daoDescription": "Type your summary ...",
     "addResource": "e.g. Website, Discord, etc"
   },

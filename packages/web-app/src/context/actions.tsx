@@ -12,7 +12,7 @@ import {ActionItem} from 'utils/types';
 const ActionsContext = createContext<ActionsContextType | null>(null);
 
 type ActionsContextType = {
-  daoAddress: string;
+  proposalId: string;
   actions: ActionItem[];
   selectedActionIndex: number;
   setSelectedActionIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -94,7 +94,7 @@ const ActionsProvider: React.FC<ActionsProviderProps> = ({daoId, children}) => {
 
   const value = useMemo(
     (): ActionsContextType => ({
-      daoAddress: daoId,
+      proposalId: daoId,
       actions,
       addAction,
       removeAction,

@@ -20,7 +20,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onCloseReset: () => void;
-  daoAddress: {
+  proposalId: {
     address?: string;
     ensName?: string;
   };
@@ -30,7 +30,7 @@ const MintTokensToTreasuryMenu: React.FC<Props> = ({
   isOpen,
   onClose,
   onCloseReset,
-  daoAddress,
+  proposalId,
 }) => {
   const {t} = useTranslation();
   const [step, setStep] = useState(0);
@@ -44,12 +44,12 @@ const MintTokensToTreasuryMenu: React.FC<Props> = ({
   const isActionEnabled = useMemo(() => {
     if (treasuryAddress)
       if (
-        treasuryAddress.toLowerCase() === daoAddress.address?.toLowerCase() ||
-        treasuryAddress.toLowerCase() === daoAddress.ensName?.toLowerCase()
+        treasuryAddress.toLowerCase() === proposalId.address?.toLowerCase() ||
+        treasuryAddress.toLowerCase() === proposalId.ensName?.toLowerCase()
       )
         return true;
     return false;
-  }, [daoAddress.address, daoAddress.ensName, treasuryAddress]);
+  }, [proposalId.address, proposalId.ensName, treasuryAddress]);
 
   return (
     <ModalBottomSheetSwitcher isOpen={isOpen} {...{onCloseReset}}>

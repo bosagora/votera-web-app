@@ -45,7 +45,7 @@ Explore.args = {
   tokenAmount: '3.5M',
   tokenSymbol: 'DNT',
   publishLabel: 'Published by',
-  daoName: 'Bob DAO',
+  proposalTitle: 'Bob DAO',
   publisherAddress: '0x374d444487A4602750CA00EFdaC5d22B21F130E1',
   alertMessage: 'Starts in x days y hours',
   stateLabel: [

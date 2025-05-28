@@ -6,9 +6,9 @@ import useScreen from 'hooks/useScreen';
 import {getSupportedNetworkByChainId} from 'utils/constants';
 
 export interface IVoteraProposalProps {
-  name: string;
+  proposalTitle: string;
   description: string;
-  address: string;
+  proposalId: string;
   chainId: number;
   onClick?: () => void;
 }
@@ -25,9 +25,12 @@ export const VoteraProposalCard = (props: IVoteraProposalProps) => {
     <Container data-testid="voteraProposalCard" onClick={props.onClick}>
       <DaoDataWrapper>
         <HeaderContainer>
-          <AvatarDao daoName={props.name} src={props.address} />
+          <AvatarDao
+            proposalTitle={props.proposalTitle}
+            src={props.proposalId}
+          />
           <div className="space-y-0.25 desktop:space-y-0.5 text-left">
-            <Title>{props.name}</Title>
+            <Title>{props.proposalTitle}</Title>
           </div>
         </HeaderContainer>
         <Description isDesktop={isDesktop}>{props.description}</Description>

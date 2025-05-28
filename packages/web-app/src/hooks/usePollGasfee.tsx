@@ -1,8 +1,6 @@
-import {constants} from 'ethers';
 import {useCallback, useEffect, useState} from 'react';
 
 import {useNetwork} from 'context/network';
-import {fetchTokenPrice} from 'services/prices';
 import {GasFeeEstimation} from 'votera-sdk-client';
 
 /**
