@@ -5,7 +5,7 @@ import {
 } from 'votera-sdk-client';
 import {fetchEnsAvatar} from '@wagmi/core';
 
-import {BigNumber, BigNumberish, constants, ethers, providers} from 'ethers';
+import {BigNumber, BigNumberish, ethers, providers} from 'ethers';
 import {TFunction} from 'react-i18next';
 
 import {isAddress} from 'ethers/lib/utils';

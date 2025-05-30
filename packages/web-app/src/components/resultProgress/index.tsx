@@ -1,6 +1,5 @@
 import {
   AlertInline,
-  AlertInlineProps,
   LinearProgress,
   NumberInput,
   NumberInputProps,
@@ -13,7 +12,7 @@ type Props = NumberInputProps & {
   max: number;
   min: number;
   value: number | string;
-  error?: AlertInlineProps;
+  error?: any;
 };
 const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
   const {t} = useTranslation();

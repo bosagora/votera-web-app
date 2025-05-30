@@ -1,10 +1,4 @@
-import {
-  AlertInline,
-  AlertInlineProps,
-  LinearProgress,
-  NumberInput,
-  NumberInputProps,
-} from '@aragon/ui-components';
+import {LinearProgress} from '@aragon/ui-components';
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';

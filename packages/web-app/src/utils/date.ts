@@ -3,9 +3,7 @@ import {
   formatDistance,
   formatDistanceToNow,
   formatRelative,
-  Locale,
 } from 'date-fns';
-import * as Locales from 'date-fns/locale';
 
 import {i18n} from '../../i18n.config';
 import {HOURS_IN_DAY, MINS_IN_DAY, MINS_IN_HOUR} from './constants';
@@ -238,11 +236,10 @@ export function translateProposalDate(
   endDate: Date
 ): string | undefined {
   let timeDiff: string;
-  const locale = (Locales as Record<string, Locale>)[i18n.language];
   if (status === 'Pending') {
-    timeDiff = formatDistanceToNow(startDate, {includeSeconds: true, locale});
+    timeDiff = formatDistanceToNow(startDate, {includeSeconds: true});
   } else if (status === 'Active') {
-    timeDiff = formatDistanceToNow(endDate, {includeSeconds: true, locale});
+    timeDiff = formatDistanceToNow(endDate, {includeSeconds: true});
   } else {
     return;
   }
