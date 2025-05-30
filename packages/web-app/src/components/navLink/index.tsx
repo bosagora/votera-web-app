@@ -38,7 +38,7 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {network} = useNetwork();
-  const daoMatch = useMatch('multisig-wallets/:network/:dao/*');
+  const daoMatch = useMatch('proposal/:network/:id/*');
 
   // This logic is used to determine whether this NavLink is active or not.
   // I.e., whether the Navlink is the current page (or a subpage of it). It

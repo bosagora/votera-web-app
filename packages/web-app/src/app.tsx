@@ -13,7 +13,6 @@ import Navbar from 'containers/navbar';
 import ProposalSelectMenu from 'containers/navbar/proposalSelectMenu';
 import ExploreNav from 'containers/navbar/exploreNav';
 import NetworkErrorMenu from 'containers/networkErrorMenu';
-import TransferMenu from 'containers/transferMenu';
 import {WalletMenu} from 'containers/walletMenu';
 import {useWallet} from 'hooks/useWallet';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -23,7 +22,7 @@ import '../i18n.config';
 import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 
 import CreateProposal from 'pages/createProposal';
-const ProposalPage = lazy(() => import('pages/proposal'));
+const ProposalPage = lazy(() => import('./pages/details'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
 function App() {
@@ -58,12 +57,15 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/">
-            <Route index element={<Navigate to="dao/dashboard" replace />} />
+            <Route
+              index
+              element={<Navigate to="proposal/dashboard" replace />}
+            />
 
             <Route element={<DaoWrapper />}>
-              <Route path="dao/dashboard" element={<DashboardPage />} />
+              <Route path="proposal/dashboard" element={<DashboardPage />} />
               <Route
-                path="dao/proposals/:network/:id"
+                path="proposal/details/:network/:id"
                 element={<ProposalDetailsWrapper />}
               />
               <Route path="/create-proposal" element={<CreateProposal />} />
@@ -133,7 +135,6 @@ const DaoWrapper: React.FC = () => {
       <div className="min-h-screen">
         <GridLayout>
           <Outlet />
-          <TransferMenu />
         </GridLayout>
       </div>
       <Footer />

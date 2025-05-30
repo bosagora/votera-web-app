@@ -122,7 +122,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     <>
       <CenterWideContent>
         <ProposalSnapshot
-          daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
           proposals={proposals}
           proposalLength={proposalLength}
           hasMore={hasMore}
@@ -150,7 +149,6 @@ const MobileDashboardContent: React.FC<DashboardContentProps> = ({
   return (
     <MobileLayout>
       <ProposalSnapshot
-        daoAddressOrEns={'0x1234567890abcdef1234567890abcdef12345678'}
         proposals={proposals}
         proposalLength={proposalLength}
         hasMore={hasMore}

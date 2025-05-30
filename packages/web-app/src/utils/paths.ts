@@ -6,5 +6,5 @@ export const NotFound = '/not-found';
 
 /* DAO-SPECIFIC PAGES ======================================================= */
 
-export const Dashboard = '/dao/dashboard';
-export const Proposal = '/dao/proposals/:network/:id';
+export const Dashboard = '/proposal/dashboard';
+export const Details = '/proposal/details/:network/:id';

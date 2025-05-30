@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ButtonWallet, ButtonText, IconType} from '@aragon/ui-components';
+import {ButtonWallet, ButtonText} from '@aragon/ui-components';
 import {useTranslation} from 'react-i18next';
 
 import {useWallet} from 'hooks/useWallet';
@@ -12,7 +12,6 @@ const ExploreNav: React.FC = () => {
   const {t, i18n} = useTranslation();
   const {address, isConnected, methods} = useWallet();
   const {open} = useGlobalModalContext();
-  const path = t('logo.linkURL');
 
   const handleWalletButtonClick = () => {
     if (isConnected) {

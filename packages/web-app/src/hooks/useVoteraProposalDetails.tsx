@@ -8,30 +8,30 @@ import {useClient} from './useClient';
 import {SupportedNetworks} from 'utils/constants';
 import {Client, ProposalData} from 'votera-sdk-client';
 
-async function fetchDaoDetails(
+async function fetchProposalDetails(
   client: Client | undefined,
-  daoAddressOrEns: string | undefined
+  proposalId: string | undefined
 ): Promise<ProposalData | null> {
-  if (!daoAddressOrEns)
-    return Promise.reject(new Error('walletAddress must be defined'));
+  if (!proposalId)
+    return Promise.reject(new Error('Proposal ID must be defined'));
 
   if (!client) return Promise.reject(new Error('client must be defined'));
 
   try {
-    return await client.methods.getProposal(daoAddressOrEns.toLowerCase());
+    return await client.methods.getProposal(proposalId.toLowerCase());
   } catch (e) {
-    return Promise.reject(new Error('getWalletDetail failed'));
+    return Promise.reject(new Error('getProposal failed'));
   }
 }
 
 /**
- * Custom hook to fetch DAO details for a given DAO address or ENS name using the current network and client.
- * @param daoAddressOrEns - The DAO address or ENS name to fetch details for.
+ * Custom hook to fetch ProposalData for a given Proposal ID using the current network and client.
+ * @param proposalId - The Proposal ID to fetch details for.
  * @param refetchInterval
- * @returns An object with the status of the query and the DAO details, if available.
+ * @returns An object with the status of the query and the Proposal Detail, if available.
  */
-export const useDaoQuery = (
-  daoAddressOrEns: string | undefined,
+export const useProposalQuery = (
+  proposalId: string | undefined,
   refetchInterval = 0
 ) => {
   const {network, networkUrlSegment} = useNetwork();
@@ -43,15 +43,14 @@ export const useDaoQuery = (
   );
 
   // make sure that the network and the url match up with client network before making the request
-  const enabled =
-    !!daoAddressOrEns && !!client && clientNetwork === queryNetwork;
+  const enabled = !!proposalId && !!client && clientNetwork === queryNetwork;
 
   const queryFn = useCallback(() => {
-    return fetchDaoDetails(client, daoAddressOrEns);
-  }, [client, daoAddressOrEns]);
+    return fetchProposalDetails(client, proposalId);
+  }, [client, proposalId]);
 
   return useQuery<ProposalData | null>({
-    queryKey: ['daoDetails', daoAddressOrEns, queryNetwork],
+    queryKey: ['daoDetails', proposalId, queryNetwork],
     queryFn,
     select: addAvatarToWallet(network),
     enabled,
@@ -61,17 +60,17 @@ export const useDaoQuery = (
 };
 
 export const useVoteraProposalDetailsQuery = () => {
-  const {dao} = useParams();
+  const {proposal} = useParams();
   const navigate = useNavigate();
 
-  const daoAddressOrEns = dao?.toLowerCase();
-  const apiResponse = useDaoQuery(daoAddressOrEns);
+  const proposalId = proposal?.toLowerCase();
+  const apiResponse = useProposalQuery(proposalId);
   useEffect(() => {
     if (apiResponse.isFetched) {
       if (apiResponse.error || apiResponse.data === null) {
         navigate(NotFound, {
           replace: true,
-          state: {incorrectDao: daoAddressOrEns},
+          state: {incorrectDao: proposalId},
         });
       }
     }
@@ -79,7 +78,7 @@ export const useVoteraProposalDetailsQuery = () => {
     apiResponse.data,
     apiResponse.error,
     apiResponse.isFetched,
-    daoAddressOrEns,
+    proposalId,
     navigate,
   ]);
   return apiResponse;

@@ -1,24 +1,7 @@
 import {SupportedNetworks} from './chains';
 
-type SubgraphNetworkUrl = Record<SupportedNetworks, string | undefined>;
-
-export const FEEDBACK_FORM =
-  'https://aragonassociation.atlassian.net/servicedesk/customer/portal/3';
-
-export const SUBGRAPH_API_URL: SubgraphNetworkUrl = {
-  ethereum: undefined,
-  goerli: undefined,
-  sepolia: undefined,
-  bosagora_mainnet: undefined,
-  bosagora_testnet: undefined,
-  bosagora_devnet: undefined,
-  unsupported: undefined,
-};
-
 export const BASE_URL = 'https://api.coingecko.com/api/v3';
 export const DEFAULT_CURRENCY = 'usd';
-
-export const ARAGON_RPC = 'mainnet.eth.aragon.network';
 
 export const IPFS_ENDPOINT =
   import.meta.env.VITE_APP_IPFS_ENDPOINT ||

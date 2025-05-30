@@ -922,8 +922,8 @@
   },
   "explore": {
     "hero": {
-      "title": "Multisig Wallet",
-      "subtitle1": "Create a multi-signature wallet to keep your assets safe."
+      "title": "Votera",
+      "subtitle1": "Create a proposal."
     },
     "explorer": {
       "title": "Explore Wallets",

@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
 import {Action, ProposalPhase} from 'utils/types';
-import {ProposalPhaseExtended} from 'pages/proposal';
+import {ProposalPhaseExtended} from '../../pages/details';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
 

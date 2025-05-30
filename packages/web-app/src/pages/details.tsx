@@ -307,13 +307,13 @@ const getProposalStatusMessage = (
   }
 };
 
-const Proposal: React.FC = () => {
+const Details: React.FC = () => {
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {client} = useClient();
-  const {dao, id: urlId} = useParams();
+  const {id: urlId} = useParams();
   const proposalId = useMemo(
     () => (urlId ? new ProposalId(urlId) : undefined),
     [urlId]
@@ -528,7 +528,7 @@ const Proposal: React.FC = () => {
 
   useEffect(() => {
     if (isOnWrongNetwork || !isConnected || !canVote) {
-      // console.log('vip false on wrongnetwork');
+      // console.log('vip false on wrong network');
       setVotingInProcess(false);
     } else {
       setVotingInProcess(true);
@@ -559,7 +559,7 @@ const Proposal: React.FC = () => {
               navigate(
                 generatePath(path, {
                   network,
-                  dao: '',
+                  id: '',
                 })
               )
             }
@@ -675,7 +675,7 @@ const Proposal: React.FC = () => {
   );
 };
 
-export default withTransaction('Proposal', 'component')(Proposal);
+export default withTransaction('Proposal', 'component')(Details);
 
 const Container = styled.div.attrs({
   className: 'col-span-full desktop:col-start-2 desktop:col-end-12',

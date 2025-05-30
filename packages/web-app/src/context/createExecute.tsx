@@ -7,7 +7,7 @@ import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Proposal} from '../utils/paths';
+import {Details} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
@@ -135,7 +135,7 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.SUCCESS:
         window.location.reload();
         // navigate(
-        //   generatePath(Proposal, {
+        //   generatePath(Details, {
         //     network,
         //     id: executeData?.proposalId,
         //   })
