@@ -22,7 +22,7 @@ import useScreen from 'hooks/useScreen';
 import {getSupportedNetworkByChainId} from 'utils/constants';
 import {Dashboard} from 'utils/paths';
 
-const DaoSelectMenu: React.FC = () => {
+const ProposalSelectMenu: React.FC = () => {
   const {t} = useTranslation();
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
@@ -117,7 +117,7 @@ const DaoSelectMenu: React.FC = () => {
   );
 };
 
-export default DaoSelectMenu;
+export default ProposalSelectMenu;
 
 const ModalHeader = styled.div.attrs({
   className: 'flex items-center p-2 space-x-2 bg-ui-0 rounded-xl sticky top-0',

@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
 import {HookData, TokenWithMetadata} from 'utils/types';
-import {useLoadTokenLogoURL} from './useDaoBalances';
+import {useLoadTokenLogoURL} from './useVoteraBalances';
 
 import {AssetBalance, TokenType} from 'utils/votera/sdk-client-types';
 

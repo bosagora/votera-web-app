@@ -9,12 +9,7 @@ import {BigNumber, BigNumberish, constants, ethers, providers} from 'ethers';
 import {TFunction} from 'react-i18next';
 
 import {isAddress} from 'ethers/lib/utils';
-import {
-  BIGINT_PATTERN,
-  CHAIN_METADATA,
-  ISO_DATE_PATTERN,
-  SupportedNetworks,
-} from 'utils/constants';
+import {CHAIN_METADATA, SupportedNetworks} from 'utils/constants';
 
 import {i18n} from '../../i18n.config';
 
@@ -55,70 +50,9 @@ export const isOnlyWhitespace = (value: string) => {
   return value.trim() === '';
 };
 
-/**
- * Return user friendly wallet address label if available
- * @param value address
- * @param t translation function
- * @returns user friendly label or wallet address
- */
-export const getUserFriendlyWalletLabel = (
-  value: string,
-  t: TFunction<'translation', undefined>
-) => {
-  switch (value) {
-    case '':
-      return '';
-    case constants.AddressZero:
-      return t('labels.daoTreasury');
-
-    default:
-      return value;
-  }
-};
-
 export const toHex = (num: number | string) => {
   return '0x' + num.toString(16);
 };
-
-const FLAG_TYPED_ARRAY = 'FLAG_TYPED_ARRAY';
-
-/**
- * Custom function to deserialize values, including Date and BigInt types
- * @param _ key: unused
- * @param value value to deserialize
- * @returns deserialized value
- */
-// disabling so forced assertion is not necessary in try catch
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const customJSONReviver = (_: string, value: any) => {
-  // deserialize uint8array
-  if (value.flag === FLAG_TYPED_ARRAY) {
-    return new Uint8Array(value.data);
-  }
-
-  if (typeof value === 'string') {
-    // BigInt
-    if (BIGINT_PATTERN.test(value)) return BigInt(value.slice(0, -1));
-
-    // Date
-    if (ISO_DATE_PATTERN.test(value)) return new Date(value);
-  }
-
-  return value;
-};
-
-/**
- * Get DAO resolved IPFS CID URL for the DAO avatar
- * @param avatar - avatar to be resolved. If it's an IPFS CID,
- * the function will return a fully resolved URL.
- * @returns the url to the DAO avatar
- */
-export function resolveDaoAvatarIpfsCid(
-  network: SupportedNetworks,
-  avatar?: string
-): string | undefined {
-  return undefined;
-}
 
 /**
  * Sleep for given time before continuing
@@ -169,18 +103,6 @@ export function translateToNetworkishName(
   }
 
   return 'unsupported';
-}
-
-/**
- * display ens names properly
- * @param ensName ens name
- * @returns ens name or empty string if ens name is null.dao.eth
- */
-export function toDisplayEns(ensName?: string) {
-  if (!ensName || ensName === 'null.dao.eth') return '';
-
-  if (!ensName.includes('.dao.eth')) return `${ensName}.dao.eth`;
-  return ensName;
 }
 
 export function getWCPayableAmount(
@@ -382,12 +304,4 @@ export function shortenAddress(address: string | null) {
       address.substring(address.length - 4, address.length)
     );
   else return address;
-}
-
-export function capitalizeFirstLetter(str: string) {
-  if (typeof str !== 'string' || str.length === 0) {
-    return str; // Return the input if it's not a string or an empty string
-  }
-
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }

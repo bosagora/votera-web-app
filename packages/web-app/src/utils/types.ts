@@ -1,6 +1,6 @@
 import {BigNumber} from 'ethers';
 
-import {TimeFilter, TransferTypes} from './constants';
+import {TransferTypes} from './constants';
 import {Web3Address} from './library';
 
 /*************************************************
@@ -69,8 +69,6 @@ export type VaultToken = TokenWithMarketData & {
   treasurySharePercentage?: number;
 };
 
-export type PollTokenOptions = {interval?: number; filter: TimeFilter};
-
 // Transfers
 /** A transfer transaction */
 export type BaseTransfer = {
@@ -105,19 +103,7 @@ export type Transfer = Deposit | Withdraw;
  *                  Proposal types               *
  *************************************************/
 
-export type ProposalData = UncategorizedProposalData & {
-  type: 'draft' | 'pending' | 'active' | 'succeeded' | 'executed' | 'defeated';
-};
-
 type Seconds = string;
-
-export type UncategorizedProposalData = {
-  id: string;
-  metadata: ProposalMetadata;
-  vote: VotingData;
-  execution: ExecutionData;
-  creator: string;
-};
 
 type ProposalMetadata = {
   title: string;
@@ -151,11 +137,6 @@ type ExecutionData = {
   amount: number;
 };
 
-export type Erc20ProposalVote = {
-  address: string;
-  weight: bigint;
-};
-
 export enum ProposalPhase {
   NONE = 'NONE',
   ASSESSMENT = 'ASSESSMENT', // 평가 단계
@@ -164,63 +145,6 @@ export enum ProposalPhase {
   FINISHED = 'FINISHED', // 종료 단계
   EXPIRED = 'EXPIRED', // 만료 단계
 }
-
-export interface ProposalListItem {
-  id: BigNumber;
-  dao: {
-    address: string;
-    name: string;
-  };
-  title: string;
-  description: string;
-  phase: ProposalPhase; // period 대신 phase 사용
-  creator: string;
-  beginAssess: number;
-  endAssess: number;
-  beginVote: number;
-  endVote: number;
-  votes: {
-    yes: number;
-    no: number;
-    abstain: number;
-  };
-  executionTxHash: string;
-  approval: string[];
-  minApprovals: number;
-  createdTime: number;
-  destination: string;
-  value: string;
-  data: string;
-  executed: boolean;
-}
-
-/* ACTION TYPES ============================================================= */
-
-export type ActionIndex = {
-  actionIndex: number;
-};
-
-/**
- * Metadata for actions. This data can not really be fetched and is therefore
- * declared locally.
- */
-export type ActionParameter = {
-  type: ActionsTypes;
-  /**
-   * Name displayed in the UI
-   */
-  title: string;
-  /**
-   * Description displayed in the UI
-   */
-  subtitle: string;
-  /**
-   * Whether an action can be used several times in a proposal. Currently
-   * actions are either limited to 1 or not limited at all. This might need to
-   * be changed to a number if the rules for reuseability become more complex.
-   */
-  isReuseable?: boolean;
-};
 
 /**
  * All available types of action for DAOs
@@ -288,24 +212,6 @@ export type ActionUpdateMinimumApproval = {
   };
 };
 
-export type ActionMintToken = {
-  name: 'mint_tokens';
-  inputs: {
-    mintTokensToWallets: {
-      address: string;
-      amount: string | number;
-    }[];
-  };
-  summary: {
-    newTokens: number;
-    tokenSupply: number;
-    newHoldersCount: number;
-    daoTokenSymbol: string;
-    daoTokenAddress: string;
-    totalMembers?: number;
-  };
-};
-
 export type ActionSCC = {
   name: 'external_contract_action';
   contractName: string;
@@ -343,7 +249,6 @@ export type Action =
   | ActionWithdraw
   | ActionAddAddress
   | ActionRemoveAddress
-  | ActionMintToken
   | ActionUpdateMinimumApproval
   | ActionSCC
   | ActionWC;
@@ -396,40 +301,6 @@ export type StringIndexed = {
   [key: string]: any;
 };
 
-/* SCC TYPES ============================================================ */
-export type EtherscanContractResponse = {
-  ABI: string;
-  CompilerVersion: string;
-  ContractName: string;
-  EVMVersion: string;
-  LicenseType: string;
-  SourceCode: string;
-};
-
-export type SourcifyContractResponse = {
-  output: {
-    abi: SmartContractAction[];
-    devdoc: {
-      title: string;
-      methods: {
-        // contract write method name with its input params
-        [key: string]: {
-          // description for each method
-          details: string;
-          params: {
-            // contract method input params
-            [key: string]: string;
-          };
-          returns: {
-            // contract method output params
-            [key: string]: string;
-          };
-        };
-      };
-    };
-  };
-};
-
 export type SmartContractAction = {
   name: string;
   type: string;
@@ -455,14 +326,6 @@ export type SmartContract = {
   name: string;
 };
 
-export type VerifiedContracts = {
-  // key is wallet address
-  [key: string]: {
-    // key is chain id
-    [key: number]: Array<SmartContract>;
-  };
-};
-
 /**
  * Opaque class encapsulating a proposal id, which can
  * be globally unique or just unique per plugin address
@@ -472,22 +335,6 @@ export class ProposalId {
 
   constructor(val: string) {
     this.id = val.toString();
-  }
-
-  /** Returns proposal id in form needed for SDK */
-  export() {
-    return this.id;
-  }
-
-  /** Make the proposal id globally unique by combining with an address (should be plugin address) */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  makeGloballyUnique(_: string): string {
-    return this.id;
-  }
-
-  /** Return a string to be used as part of a url representing a proposal */
-  toUrlSlug(): string {
-    return this.id;
   }
 
   /** The proposal id as a string */
