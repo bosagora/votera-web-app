@@ -4,7 +4,10 @@ import {FormProvider, useForm, useFormState, useWatch} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
 import {FullScreenStepper, Step} from 'components/fullScreenStepper';
-import {OverviewDAOHeader, OverviewDAOStep} from 'containers/daoOverview';
+import {
+  OverviewProposalHeader,
+  OverviewDAOStep,
+} from '../containers/proposalOverview';
 import DefineMetadata from 'containers/defineMetadata';
 import GoLive, {GoLiveFooter, GoLiveHeader} from '../containers/goLive';
 import SelectChain from 'containers/selectChainForm';
@@ -152,7 +155,7 @@ const CreateProposal: React.FC = () => {
             fullWidth
             hideWizard
             customHeader={
-              <OverviewDAOHeader
+              <OverviewProposalHeader
                 navLabel={t('createProposal.title')}
                 returnPath={Landing}
               />

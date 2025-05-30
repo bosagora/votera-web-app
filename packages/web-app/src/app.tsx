@@ -10,7 +10,7 @@ import {Loading} from 'components/temporary/loading';
 import ExploreFooter from 'containers/exploreFooter';
 import Footer from 'containers/footer';
 import Navbar from 'containers/navbar';
-import DaoSelectMenu from 'containers/navbar/daoSelectMenu';
+import ProposalSelectMenu from 'containers/navbar/proposalSelectMenu';
 import ExploreNav from 'containers/navbar/exploreNav';
 import NetworkErrorMenu from 'containers/networkErrorMenu';
 import TransferMenu from 'containers/transferMenu';
@@ -73,7 +73,7 @@ function App() {
           <Route path="*" element={<NotFoundWrapper />} />
         </Routes>
       </Suspense>
-      <DaoSelectMenu />
+      <ProposalSelectMenu />
       <WalletMenu />
       <PoapClaimModal />
       <NetworkErrorMenu />

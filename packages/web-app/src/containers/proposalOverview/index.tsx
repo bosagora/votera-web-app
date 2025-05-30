@@ -9,13 +9,13 @@ import {useFormStep} from 'components/fullScreenStepper';
 import {ActiveIndicator, Indicator, StyledCarousel} from 'containers/carousel';
 import useScreen from 'hooks/useScreen';
 
-type OverviewDAOHeaderProps = {
+type OverviewProposalHeaderProps = {
   navLabel: string;
   returnPath: string;
   onExitButtonClick?: () => void;
 };
 
-export const OverviewDAOHeader: React.FC<OverviewDAOHeaderProps> = ({
+export const OverviewProposalHeader: React.FC<OverviewProposalHeaderProps> = ({
   navLabel,
   returnPath,
   onExitButtonClick,

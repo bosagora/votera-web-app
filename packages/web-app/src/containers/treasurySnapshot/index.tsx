@@ -15,7 +15,7 @@ import {useTransactionDetailContext} from 'context/transactionDetail';
 import {abbreviateTokenAmount} from 'utils/tokens';
 import {TokenWithMetadata, Transfer} from 'utils/types';
 import {htmlIn} from 'utils/htmlIn';
-import {useDaoBalances} from '../../hooks/useDaoBalances';
+import {useVoteraBalances} from '../../hooks/useVoteraBalances';
 import {useTokenMetadata} from '../../hooks/useTokenMetadata';
 import TokenBox from '../tokenMenu/tokenBox';
 import {formatUnits} from '../../utils/library';
@@ -36,7 +36,7 @@ const TreasurySnapshot: React.FC<Props> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {handleTransferClicked} = useTransactionDetailContext();
-  const {data: tokensB} = useDaoBalances(multiSignatureWalletAddress || '');
+  const {data: tokensB} = useVoteraBalances(multiSignatureWalletAddress || '');
   const {data: tokens} = useTokenMetadata(tokensB || []);
   const [searchValue, setSearchValue] = useState('');
 

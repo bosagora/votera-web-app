@@ -41,7 +41,7 @@ export const useLoadTokenLogoURL = (): {getImgUrl: any; tokenList: any} => {
   return {getImgUrl, tokenList};
 };
 
-export const useDaoBalances = (
+export const useVoteraBalances = (
   proposalId: string
 ): HookData<Array<AssetBalance> | undefined> => {
   const {network} = useNetwork();
