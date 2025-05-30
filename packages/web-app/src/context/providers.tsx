@@ -1,5 +1,4 @@
 import {
-  AlchemyProvider,
   InfuraProvider,
   JsonRpcProvider,
   Web3Provider,
@@ -8,7 +7,6 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 
 import {useWallet} from 'hooks/useWallet';
 import {
-  alchemyApiKeys,
   CHAIN_METADATA,
   getSupportedNetworkByChainId,
   infuraApiKey,
@@ -20,7 +18,6 @@ import {useNetwork} from './network';
 import {translateToNetworkishName} from 'utils/library';
 
 const NW_ARB = {chainId: 42161, name: 'arbitrum'};
-const NW_ARB_GOERLI = {chainId: 421613, name: 'arbitrum-goerli'};
 
 /* CONTEXT PROVIDER ========================================================= */
 
@@ -77,7 +74,7 @@ function getInfuraProvider(network: SupportedNetworks) {
   if (
     network === 'bosagora_mainnet' ||
     network === 'bosagora_testnet' ||
-    network === 'bosagora_devnet' 
+    network === 'bosagora_devnet'
   ) {
     return new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
       chainId: CHAIN_METADATA[network].id,
@@ -86,22 +83,6 @@ function getInfuraProvider(network: SupportedNetworks) {
   } else {
     return new InfuraProvider(CHAIN_METADATA[network].id, infuraApiKey);
   }
-}
-
-/**
- * Returns an AlchemyProvider instance for the given chain ID
- * or null if the API key is not available.
- * @param chainId - The numeric chain ID associated with the desired network.
- * @returns An AlchemyProvider instance for the specified network or null if the API key is not found.
- */
-export function getAlchemyProvider(chainId: number): AlchemyProvider | null {
-  const network = getSupportedNetworkByChainId(chainId) as SupportedNetworks;
-  const apiKey = alchemyApiKeys[network];
-  const translatedNetwork = translateToNetworkishName(network);
-
-  return apiKey && translatedNetwork !== 'unsupported'
-    ? new AlchemyProvider(translatedNetwork, apiKey)
-    : null;
 }
 
 /**

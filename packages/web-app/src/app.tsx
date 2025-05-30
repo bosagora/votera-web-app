@@ -132,7 +132,7 @@ const DaoWrapper: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen">
+      <div className="min-h-screen pt-12 desktop:pt-0">
         <GridLayout>
           <Outlet />
         </GridLayout>

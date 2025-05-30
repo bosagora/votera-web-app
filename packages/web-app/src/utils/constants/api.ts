@@ -9,16 +9,6 @@ export const IPFS_ENDPOINT =
 export const IPFS_ENDPOINT_UPLOAD =
   import.meta.env.VITE_APP_IPFS_ENDPOINT_UPLOAD ||
   'https://votera-api.testnet.bosagora.org/upload';
-type AlchemyApiKeys = Record<SupportedNetworks, string | undefined>;
-export const alchemyApiKeys: AlchemyApiKeys = {
-  ethereum: undefined,
-  goerli: undefined,
-  sepolia: undefined,
-  bosagora_mainnet: undefined,
-  bosagora_testnet: undefined,
-  bosagora_devnet: undefined,
-  unsupported: undefined,
-};
 
 export const infuraApiKey = import.meta.env
   .VITE_INFURA_MAINNET_PROJECT_ID as string;
