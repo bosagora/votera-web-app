@@ -81,7 +81,7 @@ const determineNetwork = (
  */
 export function NetworkProvider({children}: NetworkProviderProps) {
   const navigate = useNavigate();
-  const urlNetwork = useMatch('multisig-wallets/:network/*');
+  const urlNetwork = useMatch('proposal/:menu/:network/*');
   const isCreatePage = Boolean(useMatch('create'));
   const networkUrlSegment = urlNetwork?.params?.network;
   const {chain} = useWagmiNetwork();

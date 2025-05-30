@@ -685,7 +685,7 @@ const HeaderContainer = styled.div.attrs({
   className: 'flex flex-col gap-y-2 desktop:p-0 tablet:px-3 pt-2',
 })``;
 
-const ProposalTitle = styled.p.attrs({
+const ProposalTitle = styled.h1.attrs({
   className: 'font-bold text-ui-800 text-3xl',
 })``;
 
@@ -697,11 +697,11 @@ const ContentWrapper = styled.div.attrs({
 //   className: 'flex flex-wrap gap-x-1.5',
 // })``;
 
-const ProposerLink = styled.p.attrs({
+const ProposerLink = styled.div.attrs({
   className: 'text-ui-500',
 })``;
 
-const SummaryText = styled.p.attrs({
+const SummaryText = styled.div.attrs({
   className: 'text-lg text-ui-600',
 })``;
 
