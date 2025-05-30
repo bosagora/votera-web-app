@@ -35,12 +35,12 @@ const DEFAULT_QUERY_PARAMS = {
  * @returns an infinite query object that can be used to fetch and
  * display the cached DAOs.
  */
-export const useFavoritedDaosInfiniteQuery = (
+export const useFavoritedProposalsInfiniteQuery = (
   enabled = true,
   {limit = DEFAULT_QUERY_PARAMS.limit}: Partial<Pick<QueryOption, 'limit'>> = {}
 ) => {
   return useInfiniteQuery({
-    queryKey: ['infinitefavoriteVoteraProposals'],
+    queryKey: ['infiniteFavoritedVoteraProposals'],
 
     queryFn: useCallback(
       ({pageParam = 0}) =>
@@ -56,7 +56,7 @@ export const useFavoritedDaosInfiniteQuery = (
       allPages: NavigationVoteraProposal[][]
     ) => (lastPage.length === limit ? allPages.length : undefined),
 
-    select: augmentCachedDaos,
+    select: augmentCachedProposals,
     enabled,
     refetchOnWindowFocus: false,
   });
@@ -68,37 +68,37 @@ export const useFavoritedDaosInfiniteQuery = (
  * @param network network of the favorited DAO
  * @returns favorited DAO with given address and network if available
  */
-export const useFavoritedDaoQuery = (
+export const useFavoritedProposalQuery = (
   proposalId: string | undefined,
   network: SupportedNetworks
 ) => {
   const chain = CHAIN_METADATA[network].id;
 
   return useQuery({
-    queryKey: ['favoritedDao', proposalId, network],
+    queryKey: ['FavoriteProposal', proposalId, network],
     queryFn: () => getFavoritedDaoFromCache(proposalId, chain),
     enabled: !!proposalId && !!network,
   });
 };
 
 /**
- * Update a favorited DAO in in the cache
+ * Update a favorite proposal in the cache
  */
-export const useUpdateFavoritedDaoMutation = () => {
+export const useUpdateFavoritedProposalMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
-      updateFavoritedDaoInCache(variables.dao),
+    mutationFn: (variables: {proposal: NavigationVoteraProposal}) =>
+      updateFavoritedDaoInCache(variables.proposal),
 
     onSuccess: (_, variables) => {
-      const network = getSupportedNetworkByChainId(variables.dao.chain);
+      const network = getSupportedNetworkByChainId(variables.proposal.chain);
 
-      queryClient.invalidateQueries(['favoriteVoteraProposals']);
-      queryClient.invalidateQueries(['infinitefavoriteVoteraProposals']);
+      queryClient.invalidateQueries(['favoritedVoteraProposals']);
+      queryClient.invalidateQueries(['infiniteFavoritedVoteraProposals']);
       queryClient.invalidateQueries([
         'favoritedDao',
-        variables.dao.address,
+        variables.proposal.address,
         network,
       ]);
     },
@@ -106,20 +106,20 @@ export const useUpdateFavoritedDaoMutation = () => {
 };
 
 /**
- * Add a favorited DAO to the cache
+ * Add a favorited Proposal to the cache
  * @param onSuccess callback to run once DAO has been added to the cache
  */
-export const useAddFavoriteDaoMutation = (onSuccess?: () => void) => {
+export const useAddFavoritedDaoMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
-      addFavoriteDaoToCache(variables.dao),
+    mutationFn: (variables: {proposal: NavigationVoteraProposal}) =>
+      addFavoriteDaoToCache(variables.proposal),
 
     onSuccess: () => {
       onSuccess?.();
-      queryClient.invalidateQueries(['favoriteVoteraProposals']);
-      queryClient.invalidateQueries(['infinitefavoriteVoteraProposals']);
+      queryClient.invalidateQueries(['favoritedVoteraProposals']);
+      queryClient.invalidateQueries(['infiniteFavoritedVoteraProposals']);
     },
   });
 };
@@ -132,8 +132,8 @@ export const useRemoveFavoriteDaoMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (variables: {dao: NavigationVoteraProposal}) =>
-      removeFavoriteDaoFromCache(variables.dao),
+    mutationFn: (variables: {proposal: NavigationVoteraProposal}) =>
+      removeFavoriteDaoFromCache(variables.proposal),
 
     onSuccess: () => {
       onSuccess?.();
@@ -144,11 +144,13 @@ export const useRemoveFavoriteDaoMutation = (onSuccess?: () => void) => {
 };
 
 /**
- * Augment DAOs by resolving the IPFS CID for each DAO's avatar.
+ * Augment Proposals by resolving the IPFS CID for each DAO's avatar.
  * @param data raw fetched data for the cached DAOs.
  * @returns list of DAOs augmented with the resolved IPFS CID avatars
  */
-function augmentCachedDaos(data: InfiniteData<NavigationVoteraProposal[]>) {
+function augmentCachedProposals(
+  data: InfiniteData<NavigationVoteraProposal[]>
+) {
   return {
     pageParams: data.pageParams,
     pages: data.pages.flatMap(page => addAvatarToWallet(page)),
@@ -156,14 +158,16 @@ function augmentCachedDaos(data: InfiniteData<NavigationVoteraProposal[]>) {
 }
 
 /**
- * Add resolved IPFS CID for each DAO's avatar to the metadata.
- * @param daos array of `NavigationVoteraProposal` objects representing the DAOs to be processed.
+ * Add resolved IPFS CID for each Proposal's avatar to the metadata.
+ * @param proposals array of `NavigationVoteraProposal` objects representing the Proposals to be processed.
  * @returns array of augmented NavigationVoteraProposal objects with resolved avatar IPFS CIDs.
  */
-function addAvatarToWallet<T extends NavigationVoteraProposal>(daos: T[]): T[] {
-  return daos.map(dao => {
+function addAvatarToWallet<T extends NavigationVoteraProposal>(
+  proposals: T[]
+): T[] {
+  return proposals.map(proposal => {
     return {
-      ...dao,
+      ...proposal,
     } as T;
   });
 }

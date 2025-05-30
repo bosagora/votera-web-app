@@ -19,7 +19,6 @@ import {ProposalData} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
 
 type Props = {
-  daoAddressOrEns: string;
   proposals: ProposalData[];
   proposalLength: number;
   hasMore: boolean;
@@ -28,7 +27,6 @@ type Props = {
 };
 
 const ProposalSnapshot: React.FC<Props> = ({
-  daoAddressOrEns,
   proposals,
   proposalLength,
   hasMore,
@@ -62,10 +60,7 @@ const ProposalSnapshot: React.FC<Props> = ({
         description={htmlIn(t)('governance.emptyState.description')}
         primaryButton={{
           label: t('TransactionModal.createProposal'),
-          onClick: () =>
-            navigate(
-              generatePath(CreateProposal, {network, dao: daoAddressOrEns})
-            ),
+          onClick: () => navigate(generatePath(CreateProposal, {network})),
         }}
         renderHtml
       />
@@ -80,11 +75,7 @@ const ProposalSnapshot: React.FC<Props> = ({
         label={t('dashboard.proposalsTitle')}
         buttonText={t('newProposal.title')}
         orientation="horizontal"
-        onClick={() =>
-          navigate(
-            generatePath(CreateProposal, {network, dao: daoAddressOrEns})
-          )
-        }
+        onClick={() => navigate(generatePath(CreateProposal, {network}))}
       />
 
       <ProposalGrid>

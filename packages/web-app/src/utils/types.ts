@@ -6,20 +6,6 @@ import {Web3Address} from './library';
 /*************************************************
  *                   Finance types               *
  *************************************************/
-/**
- * Token with basic information populated from external api and/or blockchain
- * Market information is not included
- */
-export type BaseTokenInfo = {
-  address: string;
-  count: bigint;
-  decimals: number;
-  id?: string; // for api call, optional because custom tokens have no id
-  imgUrl: string;
-  name: string;
-  symbol: string;
-};
-
 /** The balance for a token */
 export type TokenBalance = {
   token: {
@@ -62,11 +48,6 @@ export interface MarketData {
 
 export type TokenWithMarketData = TokenWithMetadata & {
   marketData?: MarketData;
-};
-
-/** Token populated with DAO treasury information; final iteration to be displayed */
-export type VaultToken = TokenWithMarketData & {
-  treasurySharePercentage?: number;
 };
 
 // Transfers

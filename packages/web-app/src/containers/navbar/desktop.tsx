@@ -1,10 +1,4 @@
-import {useReactiveVar} from '@apollo/client';
-import {
-  Breadcrumb,
-  ButtonText,
-  ButtonWallet,
-  IconFeedback,
-} from '@aragon/ui-components';
+import {Breadcrumb, ButtonWallet} from '@aragon/ui-components';
 import React, {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -38,7 +32,7 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
   const navigate = useNavigate();
   const location = useLocation();
   const {network} = useNetwork();
-  const {dao} = useParams();
+  const {id} = useParams();
   const {address, isConnected} = useWallet();
 
   const [showExitProcessMenu, setShowExitProcessMenu] = useState(false);
@@ -50,14 +44,14 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
     if (props.processType) {
       setShowExitProcessMenu(true);
     } else {
-      navigate(generatePath(props.returnURL!, {network, dao}));
+      navigate(generatePath(props.returnURL!, {network, id}));
     }
   };
 
   const exitProcess = useCallback(() => {
     setShowExitProcessMenu(false);
-    navigate(generatePath(props.returnURL!, {network, dao}));
-  }, [dao, navigate, network, props.returnURL]);
+    navigate(generatePath(props.returnURL!, {network, id}));
+  }, [id, navigate, network, props.returnURL]);
 
   const handleLanguageChange = (lang: string) => {
     changeLanguage(lang);
@@ -171,8 +165,4 @@ const Menu = styled.nav.attrs({
 
 const Content = styled.div.attrs({
   className: 'flex items-center space-x-6',
-})``;
-
-const LinksWrapper = styled.div.attrs({
-  className: 'flex items-center space-x-1.5',
 })``;

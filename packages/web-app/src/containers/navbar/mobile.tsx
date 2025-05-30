@@ -1,20 +1,9 @@
-import {useReactiveVar} from '@apollo/client';
-import {
-  AvatarDao,
-  ButtonIcon,
-  ButtonText,
-  ButtonWallet,
-  IconMenu,
-} from '@aragon/ui-components';
+import {ButtonWallet} from '@aragon/ui-components';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {selectedVoteraProposalVar} from 'context/apolloClient';
-import {useGlobalModalContext} from 'context/globalModals';
-import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
-import MobileMenu from './mobileMenu';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
@@ -28,9 +17,6 @@ type MobileNavProps = {
 
 const MobileNav: React.FC<MobileNavProps> = props => {
   const {t} = useTranslation();
-  const {open} = useGlobalModalContext();
-  const {isMobile} = useScreen();
-  const currentDao = useReactiveVar(selectedVoteraProposalVar);
   const {isConnected, address} = useWallet();
   const navigate = useNavigate();
   const location = useLocation();
@@ -128,11 +114,3 @@ const Menu = styled.nav.attrs({
   );
   backdrop-filter: blur(24px);
 `;
-
-const DaoContainer = styled.div.attrs({
-  className: 'flex flex-col gap-y-0.5 items-center rounded-xl',
-})``;
-
-const DaoName = styled.p.attrs({
-  className: 'hidden tablet:block text-sm font-bold text-ui-800',
-})``;
