@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useMemo, useEffect} from 'react';
 import {JsonRpcSigner, Web3Provider} from '@ethersproject/providers';
 import {
   useAccount,
@@ -58,6 +58,35 @@ export const useWallet = (): IUseWallet => {
   ].includes(network)
     ? signer2
     : signer1;
+
+  // 메타마스크 계정 변경 이벤트 처리
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length === 0) {
+          // 계정이 연결 해제된 경우
+          disconnect();
+        } else {
+          // 계정이 변경된 경우 페이지 새로고침
+          window.location.reload();
+        }
+      };
+
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+
+      return () => {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      };
+    }
+  }, [disconnect]);
+
+  if (signer !== undefined) {
+    signer.getAddress().then((address: string) => {
+      console.log(`signer: ${address}`);
+    });
+  } else {
+    console.log('signer: undefined');
+  }
 
   const provider = useMemo(() => {
     return signer?.provider;

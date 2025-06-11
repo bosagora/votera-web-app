@@ -34,9 +34,9 @@ export function walletClientToBOSagoraSigner(
     name: chainName,
   };
   const provider = new providers.Web3Provider(transport, network);
-  const signer = provider.getSigner(account.address);
-  return signer;
+  return provider.getSigner(account?.address);
 }
+
 /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
 export function useBOSagoraSigner(chainId: number, chainName: string) {
   if (chainId === 2019) {
