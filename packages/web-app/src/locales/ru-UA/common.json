@@ -4,8 +4,6 @@
   "navLinks": {
     "dashboard": "Dashboard",
     "governance": "Governance",
-    "finance": "Finance",
-    "community": "Community",
     "explore": "Explore",
     "learn": "Learn",
     "build": "Build",
@@ -27,7 +25,7 @@
     "privacyLinkURL": "https://aragon.org/privacy-policy"
   },
   "daoSwitcher": {
-    "title": "Select your DAO",
+    "title": "Select your proposal",
     "subtitle": "Go back to explorer page"
   },
   "navButtons": {
@@ -160,7 +158,6 @@
     },
     "review": {
       "blockchain": "Blockchain",
-      "daoMetadata": "DAO details",
       "voters": "voters",
       "votingParameters": "Voting parameters",
       "governance": "Governance",
@@ -467,8 +464,6 @@
   "TransferModal": {
     "allTransfers": "All transfers",
     "newTransfer": "New transfer",
-    "item1Title": "Deposit assets",
-    "item1Subtitle": "Send assets to the DAO treasury",
     "item2Title": "Withdraw assets",
     "item2Subtitle": "Create a proposal to withdraw assets to a wallet."
   },
@@ -488,7 +483,6 @@
     "approveSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
     "approveToken": "Approve token",
     "depositTitle": "Sign deposit",
-    "goToFinance": "Go to Finance",
     "goToProposal": "Open your proposal",
     "launchGovernancePage": "Launch governance page",
     "launchDaoDashboard": "Launch DAO Dashboard",
@@ -857,6 +851,11 @@
     "cancel": "Cancel"
   },
   "cta": {
+    "404": {
+      "titleLine1": "Oh no,",
+      "titleLine2": "you found a wormhole in the DAO space!",
+      "backToExplore": "Back to Explore"
+    },
     "create": {
       "title": "Create your DAO",
       "description": "Mint tokens, set governance parameters, and deploy your DAO on-chain in minutes with our no-code setup process.",
@@ -871,11 +870,6 @@
       "title": "Build faster",
       "description": "Build something on open-source infrastructure with governance plugins.",
       "actionLabel": "Coming soon"
-    },
-    "404": {
-      "titleLine1": "Oh no,",
-      "titleLine2": "you found a wormhole in the DAO space!",
-      "backToExplore": "Back to Explore"
     }
   },
   "settings": {
@@ -892,13 +886,6 @@
   },
   "dashboard": {
     "proposalsTitle": "Proposals created",
-    "emptyTransfers": {
-      "title": "Initiate a token transfer",
-      "description": "Ready to distribute tokens or send funds? Initiate a token transfer here. For ideas on how to distribute your community's token, {{link}} on token distribution.",
-      "buttonLabel": "Initiate transfer",
-      "descriptionLinkLabel": "read our guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/how-to-distribute-a-dao-governance-token"
-    },
     "emptyState": {
       "title": "We're building your DAO!",
       "subtitle": "The on-chain data is being deployed and published. This won't take very long.",
@@ -919,8 +906,7 @@
     "emptyState": {
       "modalTitle": "Smart contract composer",
       "title": "No smart contract",
-      "description": "Add a smart contract to interact with its actions",
-      "primaryBtnLabel": "Connect smart contract"
+      "description": "Add a smart contract to interact with its actions"
     },
     "addressValidation": {
       "modalTitle": "Connect smart contract",

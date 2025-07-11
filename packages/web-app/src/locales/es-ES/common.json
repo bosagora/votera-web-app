@@ -1,16 +1,9 @@
 {
-  "subtitle": "Welcome to",
-  "title": {
-    "part1": "Zaragoza",
-    "part2": "The human centered Dao infrastructure."
-  },
   "testnetIndicator": "TESTNET ACTIVE",
   "menu": "Menu",
   "navLinks": {
     "dashboard": "Dashboard",
     "governance": "Governance",
-    "finance": "Finance",
-    "community": "Community",
     "explore": "Explore",
     "learn": "Learn",
     "build": "Build",
@@ -20,7 +13,7 @@
     "settings": "Settings"
   },
   "daoSwitcher": {
-    "title": "Select your DAO",
+    "title": "Select your proposal",
     "subtitle": "Go back to Explorer page"
   },
   "navButtons": {
@@ -42,10 +35,7 @@
     "mintTokens": "Mint Tokens",
     "seeAllHolders": "See All Holders",
     "seeCommunity": "See Community",
-    "aragonCore": "Aragon Core",
-    "approvalThreshold": "Approval Threshold",
     "viewTransactions": "View Transactions",
-    "logOut": "Log Out",
     "seeAll": "See all",
     "seeAllTokens": "See All Tokens",
     "seeAllTransfers": "See All Transfers",
@@ -65,12 +55,9 @@
     "next": "Next",
     "submitDeposit": "Submit Deposit",
     "resources": "Resources",
-    "start": "Start",
-    "end": "End",
     "days": "Days",
     "dateTime": "Date + Time",
     "resourcesHelptext": "Link to external resources, such as documents, forum links, chats or similar.",
-    "submitWithdraw": "Publish Proposal",
     "sortBy": "Sort by",
     "mainNet": "Main Net",
     "testNet": "Test Net",
@@ -97,11 +84,9 @@
     "optional": "Optional",
     "minimumApproval": "Minimum Approval",
     "minimumParticipation": "Minimum Participation",
-    "minimumSupport": "Minimum Support",
     "minimumDuration": "Minimum Duration",
     "support": "Support",
     "duration": "Duration",
-    "membership": "Who is eligible to participate in your DAO?",
     "communityToken": "Does your community have a token?",
     "authorisedWallets": "Authorised Wallets / Addresses",
     "addExistingToken": "Add existing Token",
@@ -109,7 +94,6 @@
     "tokenSymbol": "Symbol",
     "supply": "Supply",
     "distributeTokens": "Distribute Tokens",
-    "createToken": "Create Token",
     "duplicateAction": "Duplicate Action",
     "resetAction": "Reset Action",
     "removeEntireAction": "Remove Entire Action",
@@ -136,16 +120,12 @@
       "resetAllEntries": "Reset All Addresses",
       "deleteAllEntries": "Delete All Addresses",
       "noWallets": "No Wallets",
-      "addWalletsSubtitle": "Add a wallet to your DAO",
-      "removeWalletsSubtitle": "Choose existing wallets to remove"
+      "addWalletsSubtitle": "Add a wallet to your DAO"
     },
     "review": {
       "blockchain": "Blockchain",
-      "daoMetadata": "DAO Details",
-      "community": "Community",
       "governance": "Governance",
       "network": "Network",
-      "eligibleMembers": "Eligible Members",
       "distribution": "Distribution",
       "distributionLink": "See all {{walletCount}} Addresses",
       "minimumParticipation": "{{walletCount}} Wallets"
@@ -191,16 +171,10 @@
   },
   "governance": {
     "emptyState": {
-      "title": "Create your very first proposal now",
-      "subtitleLine1": "By creating a proposal, your community can vote and participate in this DAO.",
-      "subtitleLine2": "Learn more in",
-      "proposalGuide": "our Proposal Guide.",
-      "completeDescription": "By creating a proposal, your community can vote and participate in this DAO. Learn more in our <a href='https://aragon.org' target='_blank' rel='noreferrer'>Proposal Guide</a>"
+      "title": "Create your very first proposal now"
     },
     "proposals": {
       "publishedBy": "Published by",
-      "pending": "Starts in {{days}} days {{hours}} hours",
-      "active": "{{days}} days {{hours}} hours left",
       "voteTitle": "Winning Option",
       "states": {
         "draft": "Draft",
@@ -225,9 +199,7 @@
     "noProposals": "No proposals found!",
     "statusWidget": {
       "published": "Proposal has been published",
-      "pending": "Voting is pending",
       "active": "Voting is active...",
-      "passed": "Proposal has passed",
       "failed": "Proposal execution failed",
       "executed": "Proposal has been executed successfully",
       "succeeded": "Proposal is ready to execute",
@@ -345,8 +317,6 @@
   "TransferModal": {
     "allTransfers": "All Transfers",
     "newTransfer": "New Transfer",
-    "item1Title": "Deposit assets",
-    "item1Subtitle": "Add assets to the DAO treasury",
     "item2Title": "Withdraw assets",
     "item2Subtitle": "Propose to withdraw assets from the DAO treasury"
   },
@@ -366,11 +336,9 @@
     "approveSubtitle": "To sign your first transaction, you must approve Aragon App to make a transaction with your token.",
     "approveToken": "Approve token",
     "depositTitle": "Sign Deposit",
-    "dismiss": "Dismiss",
     "errorLabel": "Error while confirming transaction",
     "estimatedFees": "Estimated Gas Fees",
     "maxFee": "Max Fee",
-    "publishDao": "Publish Dao",
     "publishDaoButtonLabel": "Publish DAO Now",
     "signDeposit": "Sign Deposit",
     "successLabel": "Transaction successfully executed",
@@ -397,9 +365,7 @@
   },
   "newDeposit": {
     "depositAssets": "Deposit Assets",
-    "configureDeposit": "Configure Deposit",
     "configureDepositSubtitle": "Enter the desired token and its number for transmission. Furthermore, a reception address is necessary.",
-    "reviewTransfer": "Review Transfer",
     "reviewTransferSubtitle": "Check your details and make sure everything is correct. After confirmation, no more changes can be made and your token will be transferred.",
     "toSubtitle": "The recipient of the tokens is the DAO in which you are currently operating.",
     "tokenSubtitle": "Select Token to deposit in DAO",
@@ -408,7 +374,6 @@
     "referenceSubtitle": "Add a reference copy to identify this transaction later on"
   },
   "newWithdraw": {
-    "withdrawAssets": "Withdraw Assets",
     "configureWithdraw": {
       "title": "Configure Withdraw",
       "subtitle": "Enter the desired token and its number for transmission. Furthermore, a reception address is necessary.",
@@ -426,18 +391,14 @@
         "title": "Options"
       },
       "yesNoLabel": {
-        "title": "Yes, Abstain & No",
-        "helptext": "Let users vote for or against."
-      },
-      "endDescription": "Define how long the voting should last in days or exact date and time."
+        "title": "Yes, Abstain & No"
+      }
     },
     "defineProposal": {
       "heading": "Define Proposal",
       "description": "A proposal is necessary so that the community understands why you want to execute this withdraw. Fill in the necessary fields and be as detailed but as concise as possible.",
       "title": "Title",
-      "titleHelptext": "Define a custom title if needed",
       "titlePlaceholder": "Type meaningful title",
-      "summaryHelptext": "Describe this proposal in 2-3 short sentences as a summary. This information will be presented in the sharing and overview.",
       "summaryPlaceholder": "Type your description ...",
       "proposal": "Proposal",
       "proposalPlaceholder": "Type your proposal ..."
@@ -457,17 +418,12 @@
     "step1": {
       "label": "Step 1",
       "title": "Choose Blockchain",
-      "description": "Your DAO should live on the blockchain where you expect most of your transactions to happen - where will you trade coins, make payments, etc.  If you already have a token, use the same chain.  The chain cannot be changed later, though you can create a new DAO if you want to. For more details on chains, layer 1 and layer 2, etc see our ",
-      "shortTitle": "Select Blockchain",
-      "shortDescription": "Decide which blockchain the DAO should be at home on.",
-      "blockchainOverviewGuide.": "Blockchain Overview Guide."
+      "description": "Your DAO should live on the blockchain where you expect most of your transactions to happen - where will you trade coins, make payments, etc.  If you already have a token, use the same chain.  The chain cannot be changed later, though you can create a new DAO if you want to. For more details on chains, layer 1 and layer 2, etc see our "
     },
     "step2": {
       "label": "Step 2",
       "title": "Describe your DAO",
       "description": "Name and define your DAO so people know they have come to the right place. These choices can be changed by a proposal and vote in the DAO.",
-      "shortTitle": "Define DAO Details",
-      "shortDescription": "Let people find your DAO!  Name your DAO, give it a mission, link to sites and communities.",
       "nameSubtitle": "This name shows on lists, best if under 128 characters.",
       "logoSubtitle": "This is the Logo which represents your DAO. We support SVG, JPG, PNG or GIFs with max 3MB in size and must have 1:1 ratio. We suggest dimension of 1024x1024px.",
       "descriptionSubtitle": "What is your DAO's mission or goal?  This description appears on detail pages where your DAO is listed publicly.",
@@ -477,8 +433,6 @@
       "label": "Step 3",
       "title": "Define your Community",
       "description": "This section defines who is allowed to create proposals in your DAO and vote on them. You can identify specific people based on their wallet addresses or let people cast a vote for each of your tokens they hold. If you have a token already, use that. Otherwise you can create a new token here.",
-      "shortTitle": "Setup Community",
-      "shortDescription": "Who is eligible to participate in the DAO? Create a token if needed.",
       "newToken": "No",
       "authorisedWalletsSubtitle": "Add as many addresses as you like to the DAO. These are authorised to create proposals, transactions or suggest changes to the DAO settings after its creation. Upload a CSV with <a href='https://aragon.org' external>this template</a> if you want.",
       "warningTitle": "Changing the list",
@@ -500,15 +454,13 @@
       "distributeTokensHelpertext": "Determine who receives how many tokens. Unless otherwise specified, the treasury receives the rest tokens for the future distribution of tokens (these tokens have no voting rights and do not influence the quorum).",
       "distributionWalletAlertText": "Your connected wallet got automatically added to the token distribution.",
       "whiteListWalletAlertText": "Your connected wallet got automatically added to the list.",
-      "createTokenHelptext": "Mint a community token on a variable or fixed supply. To learn more about how to mint the token and how to use it, read the ",
-      "createTokenHelplink": "Token Minting Guide"
+      "createTokenHelptext": "Mint a community token on a variable or fixed supply. To learn more about how to mint the token and how to use it, read the "
     },
     "step4": {
       "label": "Step 4",
       "title": "Rules for Deciding",
       "description": "These are the rules that set how voting works in your DAO. How many people have to participate? What percent counts as winning? How long may a proposal be open for voting? Learn more about ",
       "shortTitle": "Configure Governance",
-      "shortDescription": "How are decisions made in the DAO? How long may a proposal be open for voting?",
       "bestPractices": "Best practices on governance.",
       "minimumApprovalSubtitle": "Support is the percentage of tokens or addresses that are required to vote “Yes” for a proposal to be approved, calculated based on total tokens or addresses that voted.",
       "minimumParticipationSubtitle": "Participation is the percentage of the token supply or addresses in the authorized list that vote on a proposal (either yes or no). The minimum is how many have to vote for the result to be valid.",
@@ -530,9 +482,7 @@
       "days": "{{days}} Days",
       "hours": "{{hours}} Hours",
       "minutes": "{{minutes}} Minutes",
-      "button": "Publish your DAO",
       "daoUpdates": "DAO updates are doable",
-      "daoUpdatesHelpText": "These choices can be changed by a proposal and vote in the DAO.",
       "acceptContent": "You have to accept your proposed content.",
       "valuesCorrect": "These values are correct"
     }
@@ -543,7 +493,6 @@
       "heading": "Configure Actions",
       "description": "If the response is to execute a transaction, store your desired actions at the corresponding response. These can be simple transactions or any smart contract methods you can find (e.g. Uniswap or similar).",
       "yesOption": "Yes",
-      "yesOptionSubtitle": "If the option “yes” wins the voting, perform the following actions.",
       "addFirstAction": "Add First Action",
       "addFirstActionSubtitle": "Add your very first optional action if you wish to perform on-chain executions",
       "addAction": "Add Action",
@@ -576,12 +525,8 @@
     "strategy": "Strategy",
     "tokenVoting": "1 Token -> 1 Vote",
     "multisig": "1 Wallet -> 1 Vote",
-    "minimumApproval": "Minimum Approval",
-    "participation": "Participation",
     "uniqueVoters": "Unique Voters",
     "duration": "Duration",
-    "start": "Start",
-    "end": "End",
     "participationErc20": "{{participation}} of {{totalWeight}} {{tokenSymbol}} ({{percentage}}%)",
     "chooseOption": "Choose your option",
     "chooseOptionHelptext": "To vote, you must select one of the following options. Afterwards, a confirmation with your wallet is necessary. Once the transaction is completed, your vote will be counted and displayed.",
@@ -608,8 +553,7 @@
   "explore": {
     "hero": {
       "title": "EXPLORE THE DAO WORLD",
-      "subtitle1": "Welcome to the Aragon Explore Portal.",
-      "subtitle2": "Take a look to the ecosystem,find inspiration and learn."
+      "subtitle1": "Welcome to the Aragon Explore Portal."
     },
     "explorer": {
       "title": "Explore DAOs",
@@ -637,11 +581,7 @@
     "acceptAllCookies": "Accept all",
     "rejectAllCookies": "Reject all",
     "acceptSelectedCookies": "Accept",
-    "content": "We use cookies and similar technologies to improve your browsing experience in our application, enabling certain features, and analyzing our application usage. You may choose below to opt-out for some specific behaviors. Know more by reading our",
-    "transactionDetail": {
-      "title": "Transaction Detail",
-      "viewTransaction": "View on Block Explorer"
-    }
+    "content": "We use cookies and similar technologies to improve your browsing experience in our application, enabling certain features, and analyzing our application usage. You may choose below to opt-out for some specific behaviors. Know more by reading our"
   },
   "transactionDetail": {
     "title": "Transaction Detail",
@@ -682,11 +622,6 @@
     "proposeSettingsInfo": "To make changes to the settings of this DAO, a vote must be taken via the community."
   },
   "dashboard": {
-    "proposalsTitle": "Proposals created",
-    "emptyTransfers": {
-      "title": "Create Very First Transfer",
-      "description": "Create the first financial transaction for this DAO by by either depositing or withdrawing tokens.",
-      "buttonLabel": "Create Transaction"
-    }
+    "proposalsTitle": "Proposals created"
   }
 }
