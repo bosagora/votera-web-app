@@ -25,7 +25,7 @@
     "privacyLinkURL": "https://aragon.org/privacy-policy"
   },
   "daoSwitcher": {
-    "title": "Select your Multisig Wallet",
+    "title": "Select your proposal",
     "subtitle": "Go back to explorer page"
   },
   "navButtons": {
@@ -362,7 +362,6 @@
     "votePeriod": "Vote period is required",
     "fundAmount": "Fund amount is required",
     "proposalType": "Proposal type is required",
-
     "amountWithInvalidToken": "Cannot validate amount with invalid token address",
     "defaultAmountValidationError": "Error validating amount",
     "durationTooShort": "Duration too short",
@@ -407,7 +406,6 @@
       "acceptContent": "Please accept all the content",
       "proposalType": "Proposal type is required",
       "minValue": "Minimum value is required",
-
       "tokenAddress": "Token address is required",
       "tokenName": "Token name is required",
       "tokenSymbol": "Token symbol is required",

@@ -17,7 +17,8 @@
     "lint:fix": "eslint src --fix",
     "check-types": "tsc --noemit",
     "e2e": "env-cmd -f .env npx synpress run --configFile synpress.config.js",
-    "e2e:reset": "cd tests/e2e && cpx default/runContext.json ."
+    "e2e:reset": "cd tests/e2e && cpx default/runContext.json .",
+    "clean-translations": "node scripts/clean-translations.js"
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
@@ -107,7 +108,8 @@
     "typescript": "^5.1.3",
     "vite": "^2.9.13",
     "vite-tsconfig-paths": "^3.3.17",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "glob": "^10.3.10"
   },
   "engines": {
     "node": ">=16.0.0"
