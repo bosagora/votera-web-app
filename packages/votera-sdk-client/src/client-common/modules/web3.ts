@@ -18,7 +18,9 @@ import {
     NoReceptionControllerAddress,
     NoVoteControllerAddress,
     NoParticipantManagerAddress,
-    NoAssessmentControllerAddress
+    NoAssessmentControllerAddress,
+    NoEvaluatorStorageAddress,
+    NoEvaluatorManagerAddress
 } from "../../utils/errors";
 
 const gasFeeEstimationFactorMap = new Map<Web3Module, number>();
@@ -30,6 +32,7 @@ const AddressStorageAddressMap = new Map<Web3Module, string>();
 const BudgetManagerAddressMap = new Map<Web3Module, string>();
 const ParamStorageAddressMap = new Map<Web3Module, string>();
 const ParticipantStorageAddressMap = new Map<Web3Module, string>();
+const EvaluatorStorageAddressMap = new Map<Web3Module, string>();
 const ProposalStorageAddressMap = new Map<Web3Module, string>();
 const AssessmentStorageAddressMap = new Map<Web3Module, string>();
 const VoteStorageAddressMap = new Map<Web3Module, string>();
@@ -37,6 +40,7 @@ const ReceptionControllerAddressMap = new Map<Web3Module, string>();
 const AssessmentControllerAddressMap = new Map<Web3Module, string>();
 const VoteControllerAddressMap = new Map<Web3Module, string>();
 const ParticipantManagerAddressMap = new Map<Web3Module, string>();
+const EvaluatorManagerAddressMap = new Map<Web3Module, string>();
 const ExecutionManagerAddressMap = new Map<Web3Module, string>();
 
 export class Web3Module implements IClientWeb3Core {
@@ -74,6 +78,10 @@ export class Web3Module implements IClientWeb3Core {
             ParticipantStorageAddressMap.set(this, context.ParticipantStorage);
         }
 
+        if (context.EvaluatorStorage) {
+            EvaluatorStorageAddressMap.set(this, context.EvaluatorStorage);
+        }
+
         if (context.ProposalStorage) {
             ProposalStorageAddressMap.set(this, context.ProposalStorage);
         }
@@ -102,6 +110,10 @@ export class Web3Module implements IClientWeb3Core {
             ParticipantManagerAddressMap.set(this, context.ParticipantManager);
         }
 
+        if (context.EvaluatorManager) {
+            EvaluatorManagerAddressMap.set(this, context.EvaluatorManager);
+        }
+
         if (context.ExecutionManager) {
             ExecutionManagerAddressMap.set(this, context.ExecutionManager);
         }
@@ -124,6 +136,14 @@ export class Web3Module implements IClientWeb3Core {
 
     private get ParticipantStorage(): string {
         return ParticipantStorageAddressMap.get(this) || "";
+    }
+
+    private get EvaluatorStorage(): string {
+        return EvaluatorStorageAddressMap.get(this) || "";
+    }
+
+    private get EvaluatorManager(): string {
+        return EvaluatorManagerAddressMap.get(this) || "";
     }
 
     private get ProposalStorage(): string {
@@ -332,6 +352,13 @@ export class Web3Module implements IClientWeb3Core {
         return this.ParticipantStorage;
     }
 
+    public getEvaluatorStorageAddress(): string {
+        if (!this.EvaluatorStorage) {
+            throw new NoEvaluatorStorageAddress();
+        }
+        return this.EvaluatorStorage;
+    }
+
     public getProposalStorageAddress(): string {
         if (!this.ProposalStorage) {
             throw new NoProposalStorageAddress();
@@ -379,6 +406,13 @@ export class Web3Module implements IClientWeb3Core {
             throw new NoParticipantManagerAddress();
         }
         return this.ParticipantManager;
+    }
+
+    public getEvaluatorManagerAddress(): string {
+        if (!this.EvaluatorManager) {
+            throw new NoEvaluatorManagerAddress();
+        }
+        return this.EvaluatorManager;
     }
 
     public getExecutionManagerAddress(): string {

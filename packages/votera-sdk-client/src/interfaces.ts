@@ -4,7 +4,7 @@ import { BytesLike } from "@ethersproject/bytes";
 export enum ProposalStates {
     INVALID,
     OPENED,
-    CLOSED,
+    CLOSED
 }
 
 export enum ProposalPeriod {
@@ -12,37 +12,37 @@ export enum ProposalPeriod {
     ASSESSMENT,
     VOTE,
     EXECUTION,
-    FINISHED,
+    FINISHED
 }
 
 export enum AssessmentResult {
     NONE,
     APPROVED,
-    REJECTED,
+    REJECTED
 }
 
 export enum VoteResult {
     NONE,
     APPROVED,
     REJECTED,
-    INVALID_QUORUM,
+    INVALID_QUORUM
 }
 
 export enum ExecutionStates {
     NONE,
     IN_PROCESS,
-    FINISHED,
+    FINISHED
 }
 
 export enum ProposalType {
     SYSTEM,
-    FUND,
+    FUND
 }
 
 export enum Candidate {
     BLANK,
     YES,
-    NO,
+    NO
 }
 
 export enum VoteraComponentID {
@@ -55,31 +55,31 @@ export enum VoteraComponentID {
     PARTICIPANT_STORAGE = "ParticipantStorage",
     PROPOSAL_STORAGE = "ProposalStorage",
     VOTE_STORAGE = "VoteStorage",
-    PARTICIPANT_MANAGER = "ParticipantManager",
+    PARTICIPANT_MANAGER = "ParticipantManager"
 }
 
 export enum SystemProposalType {
     NORMAL,
-    PARAMETER,
+    PARAMETER
 }
 
 export enum SortType {
     ASC,
-    DSC,
+    DSC
 }
 
-export type ParamValue = {
+export interface ParamValue {
     value: BigNumber;
     multiple: BigNumber;
-};
+}
 
-export type SystemProposalParam = {
+export interface SystemProposalParam {
     name: string;
     value: BigNumber;
     multiple: BigNumber;
-};
+}
 
-export type ProposalData = {
+export interface ProposalData {
     proposalType: ProposalType;
     title: string;
     description: string;
@@ -100,30 +100,30 @@ export type ProposalData = {
     executionStates: ExecutionStates;
     sendVoteCost: boolean;
     chain: number;
-};
+}
 
-export type ScoreData = {
-    voter: string;
+export interface ScoreData {
+    evaluator: string;
     timestamp: number;
     items: [number, number, number, number, number];
-};
+}
 
-export type CommentData = {
+export interface CommentData {
     writer: string;
     timestamp: number;
     message: string;
-};
+}
 
-export type VoteBallotData = {
+export interface VoteBallotData {
     voter: string;
     timestamp: number;
     choice: Candidate;
-};
+}
 
 export enum NormalSteps {
     PREPARED = "prepare",
     SENT = "sent",
-    DONE = "done",
+    DONE = "done"
 }
 
 export type ExecutionStepValue =
@@ -191,6 +191,17 @@ export type TransitionStepValue =
           proposalId: BytesLike;
       };
 
+export type SendVoteCostStepValue =
+    | {
+          key: NormalSteps.PREPARED;
+          proposalId: BytesLike;
+      }
+    | { key: NormalSteps.SENT; proposalId: BytesLike; txHash: BytesLike }
+    | {
+          key: NormalSteps.DONE;
+          proposalId: BytesLike;
+      };
+
 export type Pagination = {
     skip?: number;
     limit?: number;
@@ -199,7 +210,7 @@ export type Pagination = {
 
 export enum SortDirection {
     ASC = "asc",
-    DESC = "desc",
+    DESC = "desc"
 }
 
 export type QueryOption = {

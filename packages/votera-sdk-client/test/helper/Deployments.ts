@@ -17,6 +17,10 @@ import {
     BudgetManager__factory,
     IssuedContract,
     IssuedContract__factory,
+    EvaluatorStorage,
+    EvaluatorStorage__factory,
+    EvaluatorManager,
+    EvaluatorManager__factory,
     ExecutionManager,
     ExecutionManager__factory,
     ParamStorage,
@@ -53,6 +57,7 @@ export interface IAccount {
     owner: Wallet;
     users: Wallet[];
     voters: Wallet[];
+    evaluators: Wallet[];
     validators: IParticipantData[];
 }
 
@@ -70,11 +75,13 @@ export class Deployments {
         let raws = GanacheServer.accounts();
         const [deployer, owner, user01, user02, user03, user04, user05, user06, user07, user08, user09, user10] = raws;
         const voters: any = JSON.parse(fs.readFileSync("./test/data/votes.json", "utf8"));
+        const evaluators: any = JSON.parse(fs.readFileSync("./test/data/evaluator.json", "utf8"));
         this.accounts = {
             deployer,
             owner,
             users: [user01, user02, user03, user04, user05, user06, user07, user08, user09, user10],
             voters: voters.map((m: any) => new Wallet(m.privateKey, this.provider)),
+            evaluators: evaluators.map((m: any) => new Wallet(m.privateKey, this.provider)),
             validators: voters.map((m: any) => {
                 return { voter: m.address, validatorKey: m.validatorKey };
             })
@@ -115,12 +122,14 @@ export class Deployments {
             deployBudgetManager,
             deployParamStorage,
             deployParticipantStorage,
+            deployEvaluatorStorage,
             deployProposalStorage,
             deployAssessmentStorage,
             deployVoteStorage,
             deployReceptionController,
             deployAssessmentController,
             deployVoteController,
+            deployEvaluatorManager,
             deployParticipantManager,
             deployExecutionManager
         ];
@@ -142,6 +151,7 @@ export class Deployments {
             BudgetManager: this.getContractAddress("BudgetManager"),
             ParamStorage: this.getContractAddress("ParamStorage"),
             ParticipantStorage: this.getContractAddress("ParticipantStorage"),
+            EvaluatorStorage: this.getContractAddress("EvaluatorStorage"),
             ProposalStorage: this.getContractAddress("ProposalStorage"),
             AssessmentStorage: this.getContractAddress("AssessmentStorage"),
             VoteStorage: this.getContractAddress("VoteStorage"),
@@ -149,6 +159,7 @@ export class Deployments {
             AssessmentController: this.getContractAddress("AssessmentController"),
             VoteController: this.getContractAddress("VoteController"),
             ParticipantManager: this.getContractAddress("ParticipantManager"),
+            EvaluatorManager: this.getContractAddress("EvaluatorManager"),
             ExecutionManager: this.getContractAddress("ExecutionManager")
         };
     }
@@ -160,6 +171,12 @@ export class Deployments {
 
 async function transferToVoter(accounts: IAccount, _: Deployments) {
     for (const target of accounts.voters) {
+        await accounts.owner.sendTransaction({
+            to: target.address,
+            value: Amount.make("1000000", 18).value
+        });
+    }
+    for (const target of accounts.evaluators) {
         await accounts.owner.sendTransaction({
             to: target.address,
             value: Amount.make("1000000", 18).value
@@ -256,6 +273,23 @@ async function deployParticipantStorage(accounts: IAccount, deployments: Deploym
         await contract.connect(accounts.deployer).initialize(addressStorage.address);
 
         deployments.addContract(contractName, contract.address, contract);
+        console.log(`Deployed ${contractName} to ${contract.address}`);
+    }
+}
+
+async function deployEvaluatorStorage(accounts: IAccount, deployment: Deployments) {
+    const contractName = "EvaluatorStorage";
+    console.log(`Deploy ${contractName}...`);
+
+    const addressStorage = deployment.getContract("AddressStorage") as AddressStorage;
+    if (addressStorage !== undefined) {
+        const factory = new ContractFactory(EvaluatorStorage__factory.abi, EvaluatorStorage__factory.bytecode);
+        const contract = (await factory.connect(accounts.deployer).deploy()) as EvaluatorStorage;
+        await contract.deployed();
+        await contract.deployTransaction.wait();
+        await contract.connect(accounts.deployer).initialize(addressStorage.address);
+
+        deployment.addContract(contractName, contract.address, contract);
         console.log(`Deployed ${contractName} to ${contract.address}`);
     }
 }
@@ -381,6 +415,23 @@ async function deployParticipantManager(accounts: IAccount, deployments: Deploym
         await contract.connect(accounts.deployer).initialize(addressStorage.address);
 
         deployments.addContract(contractName, contract.address, contract);
+        console.log(`Deployed ${contractName} to ${contract.address}`);
+    }
+}
+
+async function deployEvaluatorManager(accounts: IAccount, deployment: Deployments) {
+    const contractName = "EvaluatorManager";
+    console.log(`Deploy ${contractName}...`);
+
+    const addressStorage = deployment.getContract("AddressStorage") as AddressStorage;
+    if (addressStorage !== undefined) {
+        const factory = new ContractFactory(EvaluatorManager__factory.abi, EvaluatorManager__factory.bytecode);
+        const contract = (await factory.connect(accounts.owner).deploy()) as EvaluatorManager;
+        await contract.deployed();
+        await contract.deployTransaction.wait();
+        await contract.connect(accounts.owner).initialize(addressStorage.address);
+
+        deployment.addContract(contractName, contract.address, contract);
         console.log(`Deployed ${contractName} to ${contract.address}`);
     }
 }

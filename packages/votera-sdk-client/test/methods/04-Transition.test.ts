@@ -17,7 +17,7 @@ import {
 } from "../../src";
 import { Deployments } from "../helper/Deployments";
 
-import { ParticipantManager } from "votera-contracts-lib";
+import { EvaluatorManager, ParticipantManager } from "votera-contracts-lib";
 
 describe("Test for Transition", () => {
     const [, owner] = GanacheServer.accounts();
@@ -26,6 +26,7 @@ describe("Test for Transition", () => {
     let participantManager: ParticipantManager;
     let endAssessTimeStamp: number;
     let endVoteTimeStamp: number;
+    let evaluatorManager: EvaluatorManager;
 
     const proposalData = {
         proposalType: ProposalType.FUND,
@@ -47,6 +48,7 @@ describe("Test for Transition", () => {
         deployments = new Deployments();
         await deployments.doDeployAll();
         participantManager = deployments.getContract("ParticipantManager") as ParticipantManager;
+        evaluatorManager = deployments.getContract("EvaluatorManager") as EvaluatorManager;
         proposalData.proposer = deployments.accounts.voters[0].address;
     });
 
@@ -72,6 +74,15 @@ describe("Test for Transition", () => {
             await participantManager
                 .connect(deployments.accounts.deployer)
                 .addParticipants(deployments.accounts.validators.slice(idx, idx + size));
+        }
+    });
+
+    it("addEvaluator", async () => {
+        const size = 24;
+        for (let idx = 0; idx < deployments.accounts.evaluators.length; idx += size) {
+            await evaluatorManager
+                .connect(deployments.accounts.owner)
+                .addMembers(deployments.accounts.evaluators.slice(idx, idx + size).map((m) => m.address));
         }
     });
 
@@ -111,8 +122,8 @@ describe("Test for Transition", () => {
     });
 
     it("postScore", async () => {
-        for (const voter of deployments.accounts.voters) {
-            client.useSigner(voter);
+        for (const evaluator of deployments.accounts.evaluators) {
+            client.useSigner(evaluator);
             for await (const step of client.methods.postScore(proposalData.proposalId, [10, 10, 5, 5, 5])) {
                 switch (step.key) {
                     case NormalSteps.PREPARED:
@@ -134,15 +145,15 @@ describe("Test for Transition", () => {
 
     it("getAssessmentSummary", async () => {
         expect(await client.methods.getScoreLength(proposalData.proposalId)).toEqual(
-            deployments.accounts.voters.length
+            deployments.accounts.evaluators.length
         );
         const summary = await client.methods.getAssessmentSummary(proposalData.proposalId);
         expect(summary).toEqual([
-            10 * deployments.accounts.voters.length,
-            10 * deployments.accounts.voters.length,
-            5 * deployments.accounts.voters.length,
-            5 * deployments.accounts.voters.length,
-            5 * deployments.accounts.voters.length
+            10 * deployments.accounts.evaluators.length,
+            10 * deployments.accounts.evaluators.length,
+            5 * deployments.accounts.evaluators.length,
+            5 * deployments.accounts.evaluators.length,
+            5 * deployments.accounts.evaluators.length
         ]);
     });
 

@@ -16,7 +16,7 @@ import {
 } from "../../src";
 import { Deployments } from "../helper/Deployments";
 
-import { ParticipantManager } from "votera-contracts-lib";
+import { EvaluatorManager, ParticipantManager } from "votera-contracts-lib";
 
 import { BigNumber } from "@ethersproject/bignumber";
 
@@ -25,6 +25,7 @@ describe("Test for System Params", () => {
     let deployments: Deployments;
     let server: Server;
     let participantManager: ParticipantManager;
+    let evaluatorManager: EvaluatorManager;
     let endVoteTimeStamp: number;
 
     beforeAll(async () => {
@@ -33,6 +34,7 @@ describe("Test for System Params", () => {
         deployments = new Deployments();
         await deployments.doDeployAll();
         participantManager = deployments.getContract("ParticipantManager") as ParticipantManager;
+        evaluatorManager = deployments.getContract("EvaluatorManager") as EvaluatorManager;
     });
 
     afterAll(async () => {
@@ -77,6 +79,15 @@ describe("Test for System Params", () => {
                 await participantManager
                     .connect(deployments.accounts.deployer)
                     .addParticipants(deployments.accounts.validators.slice(idx, idx + size));
+            }
+        });
+
+        it("addEvaluator", async () => {
+            const size = 24;
+            for (let idx = 0; idx < deployments.accounts.evaluators.length; idx += size) {
+                await evaluatorManager
+                    .connect(deployments.accounts.owner)
+                    .addMembers(deployments.accounts.evaluators.slice(idx, idx + size).map((m) => m.address));
             }
         });
 

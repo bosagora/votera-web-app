@@ -102,6 +102,18 @@ export class NoParticipantStorageAddress extends Error {
     }
 }
 
+export class NoEvaluatorStorageAddress extends Error {
+    constructor() {
+        super("EvaluatorStorage address is needed");
+    }
+}
+
+export class NoEvaluatorManagerAddress extends Error {
+    constructor() {
+        super("EvaluatorManager address is needed");
+    }
+}
+
 export class NoExecutionManagerAddress extends Error {
     constructor() {
         super("ExecutionManager address is needed");

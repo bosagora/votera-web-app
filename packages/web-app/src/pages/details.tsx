@@ -482,7 +482,7 @@ const Details: React.FC = () => {
     if (!proposal || !myScore || !address || !isVoter) return false;
 
     // 내가 이미 점수를 평가했는지 확인
-    const didAssessed = myScore.voter === address && myScore.timestamp > 0;
+    const didAssessed = myScore.evaluator === address && myScore.timestamp > 0;
     return !didAssessed;
   }, [proposal, myScore, address, isVoter]);
 

@@ -14,13 +14,14 @@ import {
     SortType
 } from "../../src";
 import { Deployments } from "../helper/Deployments";
-import { ParticipantManager } from "votera-contracts-lib";
+import { EvaluatorManager, ParticipantManager } from "votera-contracts-lib";
 
 describe("Test for Vote", () => {
     const [, owner] = GanacheServer.accounts();
     let deployments: Deployments;
     let server: Server;
     let participantManager: ParticipantManager;
+    let evaluatorManager: EvaluatorManager;
 
     const proposalData = {
         proposalType: ProposalType.SYSTEM,
@@ -42,6 +43,7 @@ describe("Test for Vote", () => {
         deployments = new Deployments();
         await deployments.doDeployAll();
         participantManager = deployments.getContract("ParticipantManager") as ParticipantManager;
+        evaluatorManager = deployments.getContract("EvaluatorManager") as EvaluatorManager;
         proposalData.proposer = deployments.accounts.voters[0].address;
     });
 
@@ -71,6 +73,15 @@ describe("Test for Vote", () => {
             await participantManager
                 .connect(deployments.accounts.deployer)
                 .addParticipants(deployments.accounts.validators.slice(idx, idx + size));
+        }
+    });
+
+    it("addEvaluator", async () => {
+        const size = 24;
+        for (let idx = 0; idx < deployments.accounts.evaluators.length; idx += size) {
+            await evaluatorManager
+                .connect(deployments.accounts.owner)
+                .addMembers(deployments.accounts.evaluators.slice(idx, idx + size).map((m) => m.address));
         }
     });
 

@@ -14,13 +14,14 @@ import {
     SortType
 } from "../../src";
 import { Deployments } from "../helper/Deployments";
-import { ParticipantManager } from "votera-contracts-lib";
+import { EvaluatorManager, ParticipantManager } from "votera-contracts-lib";
 
 describe("Test for Assessment", () => {
     const [, owner] = GanacheServer.accounts();
     let deployments: Deployments;
     let server: Server;
     let participantManager: ParticipantManager;
+    let evaluatorManager: EvaluatorManager;
 
     const proposalData = {
         proposalType: ProposalType.FUND,
@@ -42,6 +43,7 @@ describe("Test for Assessment", () => {
         deployments = new Deployments();
         await deployments.doDeployAll();
         participantManager = deployments.getContract("ParticipantManager") as ParticipantManager;
+        evaluatorManager = deployments.getContract("EvaluatorManager") as EvaluatorManager;
         proposalData.proposer = deployments.accounts.voters[0].address;
     });
 
@@ -71,6 +73,15 @@ describe("Test for Assessment", () => {
             await participantManager
                 .connect(deployments.accounts.deployer)
                 .addParticipants(deployments.accounts.validators.slice(idx, idx + size));
+        }
+    });
+
+    it("addEvaluator", async () => {
+        const size = 24;
+        for (let idx = 0; idx < deployments.accounts.evaluators.length; idx += size) {
+            await evaluatorManager
+                .connect(deployments.accounts.owner)
+                .addMembers(deployments.accounts.evaluators.slice(idx, idx + size).map((m) => m.address));
         }
     });
 
@@ -113,7 +124,7 @@ describe("Test for Assessment", () => {
     });
 
     it("postScore", async () => {
-        client.useSigner(deployments.accounts.voters[0]);
+        client.useSigner(deployments.accounts.evaluators[0]);
         for await (const step of client.methods.postScore(proposalData.proposalId, [5, 5, 5, 5, 5])) {
             switch (step.key) {
                 case NormalSteps.PREPARED:
@@ -131,7 +142,7 @@ describe("Test for Assessment", () => {
             }
         }
 
-        client.useSigner(deployments.accounts.voters[1]);
+        client.useSigner(deployments.accounts.evaluators[1]);
         for await (const step of client.methods.postScore(proposalData.proposalId, [6, 6, 6, 6, 6])) {
             switch (step.key) {
                 case NormalSteps.PREPARED:
@@ -148,7 +159,7 @@ describe("Test for Assessment", () => {
                     throw new Error("Unexpected step: " + JSON.stringify(step, null, 2));
             }
         }
-        client.useSigner(deployments.accounts.voters[2]);
+        client.useSigner(deployments.accounts.evaluators[2]);
         for await (const step of client.methods.postScore(proposalData.proposalId, [7, 7, 7, 7, 7])) {
             switch (step.key) {
                 case NormalSteps.PREPARED:
@@ -169,29 +180,32 @@ describe("Test for Assessment", () => {
 
     it("getScore", async () => {
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[0].address)).voter
-        ).toEqual(deployments.accounts.voters[0].address);
+            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[0].address))
+                .evaluator
+        ).toEqual(deployments.accounts.evaluators[0].address);
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[1].address)).voter
-        ).toEqual(deployments.accounts.voters[1].address);
+            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[1].address))
+                .evaluator
+        ).toEqual(deployments.accounts.evaluators[1].address);
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[2].address)).voter
-        ).toEqual(deployments.accounts.voters[2].address);
+            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[2].address))
+                .evaluator
+        ).toEqual(deployments.accounts.evaluators[2].address);
 
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[0].address)).items.map(
-                (m) => m
-            )
+            (
+                await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[0].address)
+            ).items.map((m) => m)
         ).toEqual([5, 5, 5, 5, 5]);
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[1].address)).items.map(
-                (m) => m
-            )
+            (
+                await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[1].address)
+            ).items.map((m) => m)
         ).toEqual([6, 6, 6, 6, 6]);
         expect(
-            (await client.methods.getScore(proposalData.proposalId, deployments.accounts.voters[2].address)).items.map(
-                (m) => m
-            )
+            (
+                await client.methods.getScore(proposalData.proposalId, deployments.accounts.evaluators[2].address)
+            ).items.map((m) => m)
         ).toEqual([7, 7, 7, 7, 7]);
     });
     it("getAssessmentSummary", async () => {
@@ -205,27 +219,27 @@ describe("Test for Assessment", () => {
 
     it("getScoreList", async () => {
         expect(
-            (await client.methods.getScoreList(proposalData.proposalId, 0, 1, SortType.ASC)).map((m) => m.voter)
-        ).toEqual([deployments.accounts.voters[0].address]);
+            (await client.methods.getScoreList(proposalData.proposalId, 0, 1, SortType.ASC)).map((m) => m.evaluator)
+        ).toEqual([deployments.accounts.evaluators[0].address]);
         expect(
-            (await client.methods.getScoreList(proposalData.proposalId, 0, 2, SortType.ASC)).map((m) => m.voter)
-        ).toEqual([deployments.accounts.voters[0].address, deployments.accounts.voters[1].address]);
+            (await client.methods.getScoreList(proposalData.proposalId, 0, 2, SortType.ASC)).map((m) => m.evaluator)
+        ).toEqual([deployments.accounts.evaluators[0].address, deployments.accounts.evaluators[1].address]);
         expect(
-            (await client.methods.getScoreList(proposalData.proposalId, 1, 3, SortType.ASC)).map((m) => m.voter)
-        ).toEqual([deployments.accounts.voters[1].address, deployments.accounts.voters[2].address]);
+            (await client.methods.getScoreList(proposalData.proposalId, 1, 3, SortType.ASC)).map((m) => m.evaluator)
+        ).toEqual([deployments.accounts.evaluators[1].address, deployments.accounts.evaluators[2].address]);
         expect(
-            (await client.methods.getScoreList(proposalData.proposalId, 0, 3, SortType.ASC)).map((m) => m.voter)
+            (await client.methods.getScoreList(proposalData.proposalId, 0, 3, SortType.ASC)).map((m) => m.evaluator)
         ).toEqual([
-            deployments.accounts.voters[0].address,
-            deployments.accounts.voters[1].address,
-            deployments.accounts.voters[2].address
+            deployments.accounts.evaluators[0].address,
+            deployments.accounts.evaluators[1].address,
+            deployments.accounts.evaluators[2].address
         ]);
         expect(
-            (await client.methods.getScoreList(proposalData.proposalId, 0, 4, SortType.ASC)).map((m) => m.voter)
+            (await client.methods.getScoreList(proposalData.proposalId, 0, 4, SortType.ASC)).map((m) => m.evaluator)
         ).toEqual([
-            deployments.accounts.voters[0].address,
-            deployments.accounts.voters[1].address,
-            deployments.accounts.voters[2].address
+            deployments.accounts.evaluators[0].address,
+            deployments.accounts.evaluators[1].address,
+            deployments.accounts.evaluators[2].address
         ]);
     });
 

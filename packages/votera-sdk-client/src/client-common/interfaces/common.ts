@@ -12,6 +12,7 @@ export type NetworkDeployment = {
     BudgetManager: string;
     ParamStorage: string;
     ParticipantStorage: string;
+    EvaluatorStorage: string;
     ProposalStorage: string;
     AssessmentStorage: string;
     VoteStorage: string;
@@ -19,6 +20,7 @@ export type NetworkDeployment = {
     AssessmentController: string;
     VoteController: string;
     ParticipantManager: string;
+    EvaluatorManager: string;
     ExecutionManager: string;
 };
 export type GenericRecord = Record<string, string | number | boolean | null | undefined>;

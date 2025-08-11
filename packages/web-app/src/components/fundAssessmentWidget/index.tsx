@@ -309,7 +309,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
 
               {/* <div className="text-3xl font-bold text-red-500">제안 탈락</div> */}
             </div>
-            {myScore && myScore.timestamp > 0 && myScore.voter === address && (
+            {myScore && myScore.timestamp > 0 && myScore.evaluator === address && (
               <div className="flex gap-8 justify-center mb-3">
                 <div className="text-sm font-bold text-blue-400">
                   {t('assessmentWidget.myScore')}

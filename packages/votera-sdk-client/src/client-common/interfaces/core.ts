@@ -19,6 +19,7 @@ export interface IClientWeb3Core {
     getBudgetManagerAddress: () => string;
     getParamStorageAddress: () => string;
     getParticipantStorageAddress: () => string;
+    getEvaluatorStorageAddress: () => string;
     getProposalStorageAddress: () => string;
     getAssessmentStorageAddress: () => string;
     getVoteStorageAddress: () => string;
@@ -26,6 +27,7 @@ export interface IClientWeb3Core {
     getAssessmentControllerAddress: () => string;
     getVoteControllerAddress: () => string;
     getParticipantManagerAddress: () => string;
+    getEvaluatorManagerAddress: () => string;
     getExecutionManagerAddress: () => string;
 }
 

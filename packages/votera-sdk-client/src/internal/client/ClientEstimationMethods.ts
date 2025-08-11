@@ -9,7 +9,7 @@ import {
     ReceptionController,
     ReceptionController__factory,
     VoteController,
-    VoteController__factory,
+    VoteController__factory
 } from "votera-contracts-lib";
 import { NoSignerError } from "votera-sdk-common";
 
@@ -61,7 +61,7 @@ export class ClientEstimationMethods extends ClientCore implements IClientEstima
             votePeriod,
             documentId,
             systemType,
-            params,
+            params
         });
         return this.web3.getApproximateGasFee(gasEstimation.toBigInt());
     }
@@ -108,6 +108,11 @@ export class ClientEstimationMethods extends ClientCore implements IClientEstima
 
     public async postBallot(proposalId: BytesLike, choice: Candidate): Promise<GasFeeEstimation> {
         const gasEstimation = await this.getVoteControllerWithSigner().estimateGas.postBallot(proposalId, choice);
+        return this.web3.getApproximateGasFee(gasEstimation.toBigInt());
+    }
+
+    public async sendVoteCost(proposalId: BytesLike): Promise<GasFeeEstimation> {
+        const gasEstimation = await this.getVoteControllerWithSigner().estimateGas.sendVoteCost(proposalId);
         return this.web3.getApproximateGasFee(gasEstimation.toBigInt());
     }
 }

@@ -14,12 +14,13 @@ import {
     ProposalPeriod,
     ProposalStates,
     ProposalType,
+    SendVoteCostStepValue,
     SortType,
     SystemProposalType,
     TransitionStepValue,
     VotePostBallotStepValue,
     VoteResult,
-    ParamValue,
+    ParamValue
 } from "../interfaces";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 
@@ -369,4 +370,44 @@ export interface IClientMethods extends IClientCore {
      * @param voter
      */
     getValidatorKeyOf: (voter: string) => Promise<string>;
+
+    /**
+     * 인덱스에 해당하는 사전평가 구성원의 지갑주소를 제공한다
+     * @param proposalId
+     * @param idx
+     * @param sortType
+     */
+    getEvaluatorByIndex: (proposalId: BytesLike, idx: number, sortType: SortType) => Promise<string>;
+
+    /**
+     * 전체 사전평가 구성원들 중 지정된 범위에 존재하는 사전평가 구성원들을 제공한다
+     * @param proposalId 제안아이디
+     * @param startIndex 시작 인덱스
+     * @param endIndex 마지막 인덱스
+     * @param sortType 정렬방식
+     */
+    getEvaluatorList: (
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ) => Promise<string[]>;
+
+    /**
+     * 전체 사전평가 구성원들의 갯수를 제공한다
+     * @param proposalId 제안아이디
+     */
+    getEvaluatorLength: (proposalId: BytesLike) => Promise<number>;
+
+    /**
+     * 사전평가 구성원인지 체크한다
+     * @param proposalId 제안아이디
+     * @param item 검사할 지갑의 주소
+     */
+    isEvaluator: (proposalId: BytesLike, item: string) => Promise<boolean>;
+    // --
+
+    sendVoteCost: (proposalId: BytesLike) => AsyncGenerator<SendVoteCostStepValue>;
+
+    canSendVoteCost: (proposalId: BytesLike) => Promise<boolean>;
 }

@@ -26,6 +26,7 @@ export const contextParamsMainnet: ContextParams = {
     BudgetManager: AddressZero,
     ParamStorage: AddressZero,
     ParticipantStorage: AddressZero,
+    EvaluatorStorage: AddressZero,
     ProposalStorage: AddressZero,
     AssessmentStorage: AddressZero,
     VoteStorage: AddressZero,
@@ -33,6 +34,7 @@ export const contextParamsMainnet: ContextParams = {
     AssessmentController: AddressZero,
     VoteController: AddressZero,
     ParticipantManager: AddressZero,
+    EvaluatorManager: AddressZero,
     ExecutionManager: AddressZero
 };
 
@@ -44,6 +46,7 @@ export const contextParamsTestnet: ContextParams = {
     BudgetManager: AddressZero,
     ParamStorage: AddressZero,
     ParticipantStorage: AddressZero,
+    EvaluatorStorage: AddressZero,
     ProposalStorage: AddressZero,
     AssessmentStorage: AddressZero,
     VoteStorage: AddressZero,
@@ -51,6 +54,7 @@ export const contextParamsTestnet: ContextParams = {
     AssessmentController: AddressZero,
     VoteController: AddressZero,
     ParticipantManager: AddressZero,
+    EvaluatorManager: AddressZero,
     ExecutionManager: AddressZero
 };
 
@@ -62,6 +66,7 @@ export const contextParamsLocalChain: ContextParams = {
     BudgetManager: AddressZero,
     ParamStorage: AddressZero,
     ParticipantStorage: AddressZero,
+    EvaluatorStorage: AddressZero,
     ProposalStorage: AddressZero,
     AssessmentStorage: AddressZero,
     VoteStorage: AddressZero,
@@ -69,6 +74,7 @@ export const contextParamsLocalChain: ContextParams = {
     AssessmentController: AddressZero,
     VoteController: AddressZero,
     ParticipantManager: AddressZero,
+    EvaluatorManager: AddressZero,
     ExecutionManager: AddressZero
 };
 
@@ -80,6 +86,7 @@ export const contextParamsFailing: ContextParams = {
     BudgetManager: AddressZero,
     ParamStorage: AddressZero,
     ParticipantStorage: AddressZero,
+    EvaluatorStorage: AddressZero,
     ProposalStorage: AddressZero,
     AssessmentStorage: AddressZero,
     VoteStorage: AddressZero,
@@ -87,5 +94,6 @@ export const contextParamsFailing: ContextParams = {
     AssessmentController: AddressZero,
     VoteController: AddressZero,
     ParticipantManager: AddressZero,
+    EvaluatorManager: AddressZero,
     ExecutionManager: AddressZero
 };

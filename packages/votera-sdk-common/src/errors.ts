@@ -74,3 +74,9 @@ export class UnsupportedNetworkError extends Error {
         super("Unsupported network: " + network);
     }
 }
+
+export class PostSendVoteCostError extends Error {
+    constructor() {
+        super("Failed to send vote cost");
+    }
+}

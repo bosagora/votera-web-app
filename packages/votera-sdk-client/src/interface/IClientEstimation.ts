@@ -70,4 +70,6 @@ export interface IClientEstimationMethods {
      * @param choice
      */
     postBallot: (proposalId: BytesLike, choice: Candidate) => Promise<GasFeeEstimation>;
+
+    sendVoteCost: (proposalId: BytesLike) => Promise<GasFeeEstimation>;
 }

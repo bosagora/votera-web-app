@@ -102,6 +102,10 @@ export class Context {
         return this.state.ParticipantStorage;
     }
 
+    get EvaluatorStorage(): string | undefined {
+        return this.state.EvaluatorStorage;
+    }
+
     get ProposalStorage(): string | undefined {
         return this.state.ProposalStorage;
     }
@@ -128,6 +132,10 @@ export class Context {
 
     get ParticipantManager(): string | undefined {
         return this.state.ParticipantManager;
+    }
+
+    get EvaluatorManager(): string | undefined {
+        return this.state.EvaluatorManager;
     }
 
     get ExecutionManager(): string | undefined {
@@ -234,6 +242,8 @@ export class Context {
             throw new Error("Missing ParamStorage contract address");
         } else if (!contextParams.ParticipantStorage) {
             throw new Error("Missing ParticipantStorage contract address");
+        } else if (!contextParams.EvaluatorStorage) {
+            throw new Error("Missing EvaluatorStorage contract address");
         } else if (!contextParams.ProposalStorage) {
             throw new Error("Missing ProposalStorage  contract address");
         } else if (!contextParams.AssessmentStorage) {
@@ -248,6 +258,8 @@ export class Context {
             throw new Error("Missing VoteController contract address");
         } else if (!contextParams.ParticipantManager) {
             throw new Error("Missing ParticipantManager contract address");
+        } else if (!contextParams.EvaluatorManager) {
+            throw new Error("Missing EvaluatorManager contract address");
         } else if (!contextParams.ExecutionManager) {
             throw new Error("Missing ExecutionManager contract address");
         }
@@ -263,6 +275,7 @@ export class Context {
             BudgetManager: contextParams.BudgetManager,
             ParamStorage: contextParams.ParamStorage,
             ParticipantStorage: contextParams.ParticipantStorage,
+            EvaluatorStorage: contextParams.EvaluatorStorage,
             ProposalStorage: contextParams.ProposalStorage,
             AssessmentStorage: contextParams.AssessmentStorage,
             VoteStorage: contextParams.VoteStorage,
@@ -270,6 +283,7 @@ export class Context {
             AssessmentController: contextParams.AssessmentController,
             VoteController: contextParams.VoteController,
             ParticipantManager: contextParams.ParticipantManager,
+            EvaluatorManager: contextParams.EvaluatorManager,
             ExecutionManager: contextParams.ExecutionManager,
             gasFeeEstimationFactor: Context.resolveGasFeeEstimationFactor(contextParams.gasFeeEstimationFactor)
         };
@@ -316,6 +330,13 @@ export class Context {
                 activeContractsList[
                     this.state.network.toString() as keyof typeof activeContractsList
                 ].ParticipantStorage;
+        }
+
+        if (contextParams.EvaluatorStorage) {
+            this.state.EvaluatorStorage = contextParams.EvaluatorStorage;
+        } else if (this.state.network.toString() in activeContractsList) {
+            this.state.EvaluatorStorage =
+                activeContractsList[this.state.network.toString() as keyof typeof activeContractsList].EvaluatorStorage;
         }
 
         if (contextParams.ProposalStorage) {
@@ -373,6 +394,13 @@ export class Context {
                 activeContractsList[
                     this.state.network.toString() as keyof typeof activeContractsList
                 ].ParticipantManager;
+        }
+
+        if (contextParams.EvaluatorManager) {
+            this.state.EvaluatorManager = contextParams.EvaluatorManager;
+        } else if (this.state.network.toString() in activeContractsList) {
+            this.state.EvaluatorManager =
+                activeContractsList[this.state.network.toString() as keyof typeof activeContractsList].EvaluatorManager;
         }
 
         if (contextParams.ExecutionManager) {
