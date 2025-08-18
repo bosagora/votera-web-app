@@ -39,34 +39,13 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     voteData !== undefined && voteProcessState === TransactionState.WAITING;
 
   const estimateVoteFees = useCallback(async () => {
-    try {
-      const baseGasLimit = BigInt(60000); // 투표를 위한 기본 가스 한도
-
-      const feeData = await provider?.getFeeData();
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
-      const maxPriorityFeePerGas = BigInt(
-        feeData.maxPriorityFeePerGas?.toString() || '0'
+    if (voteData !== undefined) {
+      return client?.estimation.postBallot(
+        voteData.proposalId,
+        voteData.choice
       );
-
-      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
-      const estimatedFee = totalFeePerGas * baseGasLimit;
-
-      return {
-        average: estimatedFee,
-        max: (estimatedFee * BigInt(120)) / BigInt(100),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1000000000),
-        max: BigInt(1000000000),
-      };
     }
-  }, [provider]);
+  }, [client?.estimation, voteData]);
 
   const handlePublishVote = async (params: VoteParams) => {
     setVoteProcessState(TransactionState.WAITING);
@@ -93,7 +72,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     setVoteProcessState(TransactionState.LOADING);
 
     if (voteData.openExpiredVote) {
-      const voteIterator = await client.methods.transition(voteData.proposalId);
+      const voteIterator = client.methods.transition(voteData.proposalId);
 
       try {
         for await (const step of voteIterator) {

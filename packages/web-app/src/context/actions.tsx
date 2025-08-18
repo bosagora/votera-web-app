@@ -22,10 +22,13 @@ type ActionsContextType = {
 };
 
 type ActionsProviderProps = {
-  daoId: string;
+  proposalId: string;
 };
 
-const ActionsProvider: React.FC<ActionsProviderProps> = ({daoId, children}) => {
+const ActionsProvider: React.FC<ActionsProviderProps> = ({
+  proposalId,
+  children,
+}) => {
   const [actions, setActions] = useState<ActionsContextType['actions']>([]);
   const [selectedActionIndex, setSelectedActionIndex] =
     useState<ActionsContextType['selectedActionIndex']>(0);
@@ -94,7 +97,7 @@ const ActionsProvider: React.FC<ActionsProviderProps> = ({daoId, children}) => {
 
   const value = useMemo(
     (): ActionsContextType => ({
-      proposalId: daoId,
+      proposalId,
       actions,
       addAction,
       removeAction,
@@ -103,7 +106,7 @@ const ActionsProvider: React.FC<ActionsProviderProps> = ({daoId, children}) => {
       setSelectedActionIndex,
     }),
     [
-      daoId,
+      proposalId,
       actions,
       addAction,
       removeAction,

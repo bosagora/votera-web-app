@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {FullScreenStepper, Step} from 'components/fullScreenStepper';
 import {
   OverviewProposalHeader,
-  OverviewDAOStep,
+  OverviewProposalStep,
 } from '../containers/proposalOverview';
 import DefineMetadata from 'containers/defineMetadata';
 import GoLive, {GoLiveFooter, GoLiveHeader} from '../containers/goLive';
@@ -162,7 +162,7 @@ const CreateProposal: React.FC = () => {
             }
             customFooter={<></>}
           >
-            <OverviewDAOStep />
+            <OverviewProposalStep />
           </Step>
           <Step
             wizardTitle={t('createProposal.step1.title')}

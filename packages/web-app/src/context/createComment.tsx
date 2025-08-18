@@ -28,7 +28,7 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
-  const {isOnWrongNetwork, provider} = useWallet();
+  const {isOnWrongNetwork} = useWallet();
 
   const [commentProcessState, setCommentProcessState] =
     useState<TransactionState>(TransactionState.WAITING);
@@ -41,34 +41,13 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
     commentProcessState === TransactionState.WAITING;
 
   const estimateCommentFees = useCallback(async () => {
-    try {
-      const baseGasLimit = BigInt(50000); // 코멘트 제출을 위한 기본 가스 한도
-
-      const feeData = await provider?.getFeeData();
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
-      const maxPriorityFeePerGas = BigInt(
-        feeData.maxPriorityFeePerGas?.toString() || '0'
+    if (commentCreationData !== undefined) {
+      return client?.estimation.postComment(
+        commentCreationData.proposalId,
+        commentCreationData.message
       );
-
-      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
-      const estimatedFee = totalFeePerGas * baseGasLimit;
-
-      return {
-        average: estimatedFee,
-        max: (estimatedFee * BigInt(120)) / BigInt(100),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1000000000),
-        max: BigInt(1000000000),
-      };
     }
-  }, [provider]);
+  }, [client?.estimation, commentCreationData]);
 
   const handlePublishComment = async (params: CommentParams) => {
     setCommentProcessState(TransactionState.WAITING);
@@ -99,7 +78,7 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
     setCommentProcessState(TransactionState.LOADING);
 
     try {
-      const commentIterator = await client.methods.postComment(
+      const commentIterator = client.methods.postComment(
         commentCreationData.proposalId,
         commentCreationData.message
       );

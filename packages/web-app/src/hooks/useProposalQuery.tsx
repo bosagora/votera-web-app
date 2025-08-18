@@ -88,24 +88,6 @@ export const useProposalWithUseQuery = (
   });
 };
 
-export const useProposalsQuery = () => {
-  const navigate = useNavigate();
-  const apiResponse = useProposalWithUseQuery();
-
-  useEffect(() => {
-    if (apiResponse.isFetched) {
-      console.log('apiResponse.error', apiResponse.error);
-      if (apiResponse.error || apiResponse.data === null) {
-        navigate(NotFound, {
-          replace: true,
-          state: {incorrectDao: 'test'},
-        });
-      }
-    }
-  }, [apiResponse.data, apiResponse.error, apiResponse.isFetched, navigate]);
-  return apiResponse;
-};
-
 export const useProposalQuery = (proposalId?: string, page?: number) => {
   const navigate = useNavigate();
   const apiResponse = useProposalWithUseQuery(proposalId, page);

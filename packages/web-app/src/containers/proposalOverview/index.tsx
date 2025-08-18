@@ -71,7 +71,7 @@ export const OverviewProposalHeader: React.FC<OverviewProposalHeaderProps> = ({
   );
 };
 
-export const OverviewDAOStep: React.FC = () => {
+export const OverviewProposalStep: React.FC = () => {
   const {isDesktop} = useScreen();
   const {t} = useTranslation();
 

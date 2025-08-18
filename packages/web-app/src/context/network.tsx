@@ -14,6 +14,7 @@ import {
   SupportedNetworks,
   toSupportedNetwork,
 } from 'utils/constants';
+import {NotFound} from 'utils/paths';
 
 /* CONTEXT PROVIDER ========================================================= */
 
@@ -114,7 +115,7 @@ export function NetworkProvider({children}: NetworkProviderProps) {
     // unsupported network based on the networkUrlSegment network
     if (networkState === 'unsupported' && networkUrlSegment) {
       console.warn('network unsupported : ', networkUrlSegment);
-      //navigate(NotFound, {replace: true});
+      navigate(NotFound, {replace: true});
     }
   }, [networkState, navigate, networkUrlSegment]);
 

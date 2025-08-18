@@ -83,4 +83,4 @@ export const PROPOSAL_STATE_LABELS = [
 ];
 
 // Storage and cacheing keys
-export const FAVORITE_DAOS_KEY = 'favoriteVoteraProposals';
+export const FAVORITE_VOTERA_PROPOSAL_KEY = 'favoriteVoteraProposals';

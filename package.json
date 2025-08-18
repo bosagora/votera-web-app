@@ -1,7 +1,7 @@
 {
   "name": "@votera/apps",
   "version": "0.1.0",
-  "description": "Votera DAO Clients",
+  "description": "Votera Clients",
   "repository": "https://github.com/votera/apps",
   "author": "Votera",
   "license": "GNU",

@@ -44,34 +44,10 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
     executeProcessState === TransactionState.WAITING;
 
   const estimateExecuteFees = useCallback(async () => {
-    try {
-      const baseGasLimit = BigInt(80000);
-
-      const feeData = await provider?.getFeeData();
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
-      const maxPriorityFeePerGas = BigInt(
-        feeData.maxPriorityFeePerGas?.toString() || '0'
-      );
-
-      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
-      const estimatedFee = totalFeePerGas * baseGasLimit;
-
-      return {
-        average: estimatedFee,
-        max: (estimatedFee * BigInt(120)) / BigInt(100),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1000000000),
-        max: BigInt(1000000000),
-      };
+    if (executeData !== undefined) {
+      return client?.estimation.execute(executeData.proposalId);
     }
-  }, [provider]);
+  }, [client?.estimation, executeData]);
 
   const handlePublishExecution = async (params: ExecuteParams) => {
     setExecuteProcessState(TransactionState.WAITING);
@@ -102,9 +78,7 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
     setExecuteProcessState(TransactionState.LOADING);
 
     try {
-      const executeIterator = await client.methods.execute(
-        executeData.proposalId
-      );
+      const executeIterator = client.methods.execute(executeData.proposalId);
 
       for await (const step of executeIterator) {
         switch (step.key) {

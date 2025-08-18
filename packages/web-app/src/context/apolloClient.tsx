@@ -1,7 +1,7 @@
 import {InMemoryCache, makeVar} from '@apollo/client';
 import {CachePersistor, LocalStorageWrapper} from 'apollo3-cache-persist';
 
-import {FAVORITE_DAOS_KEY, SupportedChainID} from 'utils/constants';
+import {FAVORITE_VOTERA_PROPOSAL_KEY, SupportedChainID} from 'utils/constants';
 import {PRIVACY_KEY} from './privacyContext';
 import {ProposalType} from 'votera-sdk-client';
 import {VoteraProposalData} from '../utils/votera/sdk-client-types';
@@ -85,7 +85,7 @@ export type NavigationVoteraProposal = Omit<
   chain: SupportedChainID;
 };
 const favoriteVoteraProposals = JSON.parse(
-  localStorage.getItem(FAVORITE_DAOS_KEY) || '[]'
+  localStorage.getItem(FAVORITE_VOTERA_PROPOSAL_KEY) || '[]'
 );
 const favoriteVoteraProposalsVar = makeVar<Array<NavigationVoteraProposal>>(
   favoriteVoteraProposals

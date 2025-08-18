@@ -11,6 +11,7 @@ import {GasFeeEstimation} from 'votera-sdk-client';
  * does not yet poll for the gas fees on interval
  *
  * @param estimationFunction function that estimates gas fee
+ * @param shouldPoll
  * @returns the average and maximum gas fee estimations, native token price
  * in USD, an error object if an error occurred while estimating,
  * and a function to stop the interval polling
@@ -27,22 +28,12 @@ export const usePollGasFee = (
 
   // estimate gas for DAO creation
   useEffect(() => {
-    async function getFeesAndPrice() {
+    async function getFees() {
       try {
         const estimation = await estimationFunction();
         setMaxFee(estimation?.max);
         setAverageFee(estimation?.average);
         setError(undefined);
-        // const results = await Promise.all([
-        //   estimationFunction(),
-        //   fetchTokenPrice(constants.AddressZero, network),
-        // ]);
-        //
-        // console.log('usePollGasFee > results :', results);
-        // setTokenPrice(results[1] || 0);
-        // setMaxFee(results[0]?.max);
-        // setAverageFee(results[0]?.average);
-        // setError(undefined);
       } catch (err) {
         setError(err as Error);
         setMaxFee(undefined);
@@ -50,7 +41,7 @@ export const usePollGasFee = (
         console.log('Error fetching gas fees and price', err);
       }
     }
-    if (shouldPoll) getFeesAndPrice();
+    if (shouldPoll) getFees();
   }, [estimationFunction, network, shouldPoll]);
 
   // stop polling in anticipation for polling at interval

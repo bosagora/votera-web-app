@@ -52,7 +52,7 @@ const CACHE_VERSION = 1;
 const onLoad = () => {
   // Wipe local storage cache if its structure is out of date and clashes
   // with this version of the app.
-  const cacheVersion = localStorage.getItem('AragonCacheVersion');
+  const cacheVersion = localStorage.getItem('VoteraCacheVersion');
   const retainKeys = [
     'privacy-policy-preferences',
     'favoriteVoteraProposals',
@@ -64,7 +64,7 @@ const onLoad = () => {
         localStorage.removeItem(localStorage.key(i)!);
       }
     }
-    localStorage.setItem('AragonCacheVersion', CACHE_VERSION.toString());
+    localStorage.setItem('VoteraCacheVersion', CACHE_VERSION.toString());
   }
 
   // 언어 설정이 없는 경우 기본값 설정

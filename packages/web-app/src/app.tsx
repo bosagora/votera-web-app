@@ -41,7 +41,9 @@ function App() {
     // This check would prevent the wallet selection modal from opening up if the user hasn't logged in previously.
     // But if the injected wallet like Metamask is locked and the user has logged in before using that wallet, there will be a prompt for password.
     if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
-      methods.selectWallet();
+      methods.selectWallet().then(() => {
+        return;
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -62,13 +64,13 @@ function App() {
               element={<Navigate to="proposal/dashboard" replace />}
             />
 
-            <Route element={<DaoWrapper />}>
+            <Route element={<VoteraWrapper />}>
               <Route path="proposal/dashboard" element={<DashboardPage />} />
               <Route
                 path="proposal/details/:network/:id"
                 element={<ProposalDetailsWrapper />}
               />
-              <Route path="/create-proposal" element={<CreateProposal />} />
+              <Route path="/create" element={<CreateProposal />} />
             </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />
@@ -121,8 +123,8 @@ const ExploreWrapper: React.FC = () => (
   </>
 );
 
-const DaoWrapper: React.FC = () => {
-  // const {data: walletDetails} = useDaoDetailsQuery();
+const VoteraWrapper: React.FC = () => {
+  // const {data: ProposalData} = useVoteraProposalDetailsQuery();
 
   // using isOpen to conditionally render TransactionDetail so that
   // api call is not made on mount regardless of whether the user
@@ -132,7 +134,7 @@ const DaoWrapper: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen pt-12 desktop:pt-0">
+      <div className="pt-12 desktop:pt-0 min-h-screen">
         <GridLayout>
           <Outlet />
         </GridLayout>

@@ -19,6 +19,9 @@ import {
   NormalSteps,
   Amount,
 } from 'votera-sdk-client';
+import {BytesLike} from '@ethersproject/bytes';
+import {BigNumberish} from '@ethersproject/bignumber';
+import {GasFeeEstimation} from 'votera-sdk-client/dist/client-common/interfaces/common';
 
 type CreateProposalContextType = {
   /** Prepares the proposal creation data and awaits user confirmation */
@@ -68,90 +71,21 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
     !proposalCreationData && creationProcessState !== TransactionState.SUCCESS;
 
   const estimateCreationFees = useCallback(async () => {
-    if (proposalCreationData === undefined) {
-      return {
-        average: BigInt(1500000000),
-        max: BigInt(1500000000),
-      };
-    }
-
-    try {
-      // 기본 가스 한도 설정
-      let baseGasLimit = BigInt(21000); // 기본 이더리움 트랜잭션
-
-      // 제안서 타입에 따른 가스 한도 조정
-      if (proposalCreationData.proposalType === ProposalType.FUND) {
-        baseGasLimit = BigInt(100000); // 펀딩 제안서는 더 높은 가스 필요
-      } else if (proposalCreationData.proposalType === ProposalType.SYSTEM) {
-        baseGasLimit = BigInt(80000); // 시스템 제안서에 대한 가스 설정
-      }
-
-      // 펀딩 금액에 따른 가스 조정
-      if (proposalCreationData.fundAmount) {
-        const fundAmountBigNumber = BigNumber.from(
-          proposalCreationData.fundAmount
-        );
-        const fundAmountFactor = fundAmountBigNumber.toBigInt() / BigInt(1e18);
-        baseGasLimit += fundAmountFactor * BigInt(1000); // 펀딩 금액에 따른 추가 가스
-      }
-
-      // 파라미터가 있는 경우 추가 가스 계산ㅂ
-      if (
-        proposalCreationData.params &&
-        proposalCreationData.params.length > 0
-      ) {
-        baseGasLimit += BigInt(50000 * proposalCreationData.params.length);
-      }
-
-      // 설명 길이에 따른 가스 추가
-      const descriptionLength = proposalCreationData.description.length;
-      if (descriptionLength > 1000) {
-        baseGasLimit += BigInt(100000); // 긴 설명에 대한 추가 가스
-      }
-
-      const feeData = await provider?.getFeeData();
-
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigNumber.from(feeData.gasPrice ?? 0);
-      const maxPriorityFeePerGas = BigNumber.from(
-        feeData.maxPriorityFeePerGas ?? 0
+    if (proposalCreationData !== undefined) {
+      return client?.estimation.createProposal(
+        proposalCreationData.proposalType,
+        proposalCreationData.title,
+        proposalCreationData.description,
+        proposalCreationData.proposalId,
+        proposalCreationData.fundAmount,
+        proposalCreationData.assessmentPeriod,
+        proposalCreationData.votePeriod,
+        proposalCreationData.documentId,
+        proposalCreationData.systemType,
+        proposalCreationData.params
       );
-
-      const totalFeePerGas = baseFee.add(maxPriorityFeePerGas);
-      const estimatedFee = totalFeePerGas.mul(baseGasLimit);
-
-      // 네트워크 혼잡도에 따른 추가 버퍼
-      const networkBusyMultiplier =
-        baseFee > ethers.utils.parseUnits('100', 'gwei')
-          ? BigInt(130)
-          : BigInt(120);
-
-      return {
-        average: estimatedFee.toBigInt(),
-        max: estimatedFee
-          .mul(BigNumber.from(networkBusyMultiplier))
-          .div(100)
-          .toBigInt(),
-        gasLimit: baseGasLimit,
-        maxFeePerGas: totalFeePerGas.toBigInt(),
-        maxPriorityFeePerGas: maxPriorityFeePerGas.toBigInt(),
-        baseFee: baseFee.toBigInt(),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1500000000),
-        max: BigInt(1500000000),
-        gasLimit: BigInt(21000),
-        maxFeePerGas: BigInt(0),
-        maxPriorityFeePerGas: BigInt(0),
-        baseFee: BigInt(0),
-      };
     }
-  }, [proposalCreationData, provider]);
+  }, [client?.estimation, proposalCreationData]);
 
   const getProposalCreationParams = useCallback(async () => {
     const [
@@ -228,7 +162,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
         throw new Error('Proposal ID is already in use');
       }
       console.log('proposalCreationData :', proposalCreationData);
-      const proposalIterator = await client.methods.createProposal(
+      const proposalIterator = client.methods.createProposal(
         proposalCreationData.proposalType,
         proposalCreationData.title,
         proposalCreationData.description,

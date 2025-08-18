@@ -3,7 +3,7 @@
 // For now most of these methods will be passed the reactive
 // variables from Apollo-client
 import {NavigationVoteraProposal} from 'context/apolloClient';
-import {FAVORITE_DAOS_KEY, SupportedChainID} from 'utils/constants';
+import {FAVORITE_VOTERA_PROPOSAL_KEY, SupportedChainID} from 'utils/constants';
 import {sleepFor} from 'utils/library';
 
 /**
@@ -19,7 +19,7 @@ export async function getFavoritedDaosFromCache(options: {
   const {skip, limit} = options;
 
   const favoriteVoteraProposals = JSON.parse(
-    localStorage.getItem(FAVORITE_DAOS_KEY) || '[]'
+    localStorage.getItem(FAVORITE_VOTERA_PROPOSAL_KEY) || '[]'
   ) as NavigationVoteraProposal[];
 
   // sleeping for 600 ms because the immediate apparition of DAOS creates a flickering issue
@@ -65,7 +65,7 @@ export async function addFavoriteDaoToCache(
   const cache = await getFavoritedDaosFromCache({skip: 0});
   const newCache = [proposal, ...cache];
 
-  localStorage.setItem(FAVORITE_DAOS_KEY, JSON.stringify(newCache));
+  localStorage.setItem(FAVORITE_VOTERA_PROPOSAL_KEY, JSON.stringify(newCache));
 }
 
 /**
@@ -85,7 +85,7 @@ export async function removeFavoriteDaoFromCache(
       fd.chain !== proposal.chain
   );
 
-  localStorage.setItem(FAVORITE_DAOS_KEY, JSON.stringify(newCache));
+  localStorage.setItem(FAVORITE_VOTERA_PROPOSAL_KEY, JSON.stringify(newCache));
 }
 
 /**
@@ -107,6 +107,9 @@ export async function updateFavoritedDaoInCache(
     const newCache = [...cache];
     newCache[daoFound] = {...proposal};
 
-    localStorage.setItem(FAVORITE_DAOS_KEY, JSON.stringify(newCache));
+    localStorage.setItem(
+      FAVORITE_VOTERA_PROPOSAL_KEY,
+      JSON.stringify(newCache)
+    );
   }
 }

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import {Loading} from 'components/temporary';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
-import {useSpecificProvider} from 'context/providers';
 import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
 import {CHAIN_METADATA} from 'utils/constants';
@@ -320,7 +319,6 @@ const Details: React.FC = () => {
   );
   const {network} = useNetwork();
 
-  const provider = useSpecificProvider(CHAIN_METADATA[network].id);
   const statusRef = useRef({wasNotLoggedIn: false, wasOnWrongNetwork: false});
 
   const {address, isConnected, isOnWrongNetwork} = useWallet();

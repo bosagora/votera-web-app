@@ -50,7 +50,7 @@ export const useProposalQuery = (
   }, [client, proposalId]);
 
   return useQuery<ProposalData | null>({
-    queryKey: ['daoDetails', proposalId, queryNetwork],
+    queryKey: ['voteraProposalDetails', proposalId, queryNetwork],
     queryFn,
     select: addAvatarToWallet(network),
     enabled,
@@ -70,7 +70,7 @@ export const useVoteraProposalDetailsQuery = () => {
       if (apiResponse.error || apiResponse.data === null) {
         navigate(NotFound, {
           replace: true,
-          state: {incorrectDao: proposalId},
+          state: {incorrectVoteraProposal: proposalId},
         });
       }
     }

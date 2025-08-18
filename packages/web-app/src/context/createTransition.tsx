@@ -38,34 +38,10 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
     transitionProcessState === TransactionState.WAITING;
 
   const estimateTransitionFees = useCallback(async () => {
-    try {
-      const baseGasLimit = BigInt(80000); // 기본 가스 한도
-
-      const feeData = await provider?.getFeeData();
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
-      const maxPriorityFeePerGas = BigInt(
-        feeData.maxPriorityFeePerGas?.toString() || '0'
-      );
-
-      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
-      const estimatedFee = totalFeePerGas * baseGasLimit;
-
-      return {
-        average: estimatedFee,
-        max: (estimatedFee * BigInt(120)) / BigInt(100),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1000000000),
-        max: BigInt(1000000000),
-      };
+    if (transitionData !== undefined) {
+      return client?.estimation.transition(transitionData.proposalId);
     }
-  }, [provider]);
+  }, [client?.estimation, transitionData]);
 
   const handlePublishTransition = async (params: TransitionParams) => {
     setTransitionProcessState(TransactionState.WAITING);
@@ -97,7 +73,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
 
     setProposalId(transitionData.proposalId);
     try {
-      const transitionIterator = await client.methods.transition(
+      const transitionIterator = client.methods.transition(
         transitionData.proposalId
       );
 
