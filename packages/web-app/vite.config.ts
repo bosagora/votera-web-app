@@ -5,6 +5,7 @@ import {defineConfig, loadEnv} from 'vite';
 import {resolve} from 'path';
 import analyze from 'rollup-plugin-analyzer';
 
+// @ts-ignore
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, 'env');
 
