@@ -23,5 +23,5 @@ ENV NODE_OPTIONS=${NODE_OPTIONS}
 COPY caddyfile.webapp.dev /etc/caddy/Caddyfile
 ## Copy generated static site to Caddy
 WORKDIR /website
-COPY packages/web-app/dist .
+COPY packages/votera-web-app/dist .
 EXPOSE 9080

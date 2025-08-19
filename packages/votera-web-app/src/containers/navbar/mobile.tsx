@@ -1,0 +1,116 @@
+import {ButtonWallet} from 'votera-ui-components';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import styled from 'styled-components';
+
+import {useWallet} from 'hooks/useWallet';
+import NetworkIndicator from './networkIndicator';
+import VoteraLogo from 'public/votera_color_logo.png';
+import {Landing} from 'utils/paths';
+import {useNavigate, useLocation} from 'react-router-dom';
+
+type MobileNavProps = {
+  isProcess?: boolean;
+  onDaoSelect: () => void;
+  onWalletClick: () => void;
+};
+
+const MobileNav: React.FC<MobileNavProps> = props => {
+  const {t} = useTranslation();
+  const {isConnected, address} = useWallet();
+  const navigate = useNavigate();
+  const location = useLocation();
+  if (props.isProcess)
+    return (
+      <Container>
+        <NetworkIndicator />
+      </Container>
+    );
+
+  return (
+    <>
+      <Container data-testid="navbar">
+        <Menu>
+          <FlexOne>
+            {/* {isMobile ? (
+              <ButtonIcon
+                mode="secondary"
+                size="large"
+                icon={<IconMenu />}
+                onClick={() => open('mobileMenu')}
+              />
+            ) : (
+              <ButtonText
+                css={{}}
+                size="large"
+                mode="secondary"
+                label={t('menu')}
+                iconLeft={<IconMenu />}
+                onClick={() => open('mobileMenu')}
+              />
+            )} */}
+
+            {location.pathname.includes('/proposals') && (
+              <div className="flex gap-3 items-center">
+                <div
+                  className="font-bold text-primary-500 cursor-pointer ft-text-xl"
+                  onClick={() => navigate(Landing)}
+                >
+                  {' < Back '}
+                </div>
+              </div>
+            )}
+          </FlexOne>
+          <FlexOne className="justify-center">
+            {/* <DaoContainer>
+              <AvatarDao
+                proposalTitle={currentDao.metadata.name}
+                onClick={props.onDaoSelect}
+              />
+              <DaoName>{currentDao.metadata.name}</DaoName>
+            </DaoContainer> */}
+
+            <img
+              src={VoteraLogo}
+              alt="Votera 로고"
+              className="h-4"
+              onClick={() => navigate(Landing)}
+            />
+          </FlexOne>
+          <FlexOne className="justify-end">
+            <ButtonWallet
+              src={address}
+              onClick={props.onWalletClick}
+              isConnected={isConnected}
+              label={isConnected ? address : t('navButtons.connectWallet')}
+            />
+          </FlexOne>
+        </Menu>
+        <NetworkIndicator />
+      </Container>
+      {/* <MobileMenu /> */}
+    </>
+  );
+};
+
+export default MobileNav;
+
+const FlexOne = styled.div.attrs({
+  className: 'flex flex-1' as string | undefined,
+})``;
+
+const Container = styled.div.attrs({
+  className: 'flex flex-col fixed left-0 top-0 w-full z-10',
+})``;
+
+const Menu = styled.nav.attrs({
+  className: `flex justify-between items-center px-2 tablet:px-3 py-1
+     tablet:py-1.5`,
+})`
+  background: linear-gradient(
+    180deg,
+    rgba(245, 247, 250, 0) 0%,
+    rgba(245, 247, 250, 1) 100%
+  );
+  backdrop-filter: blur(24px);
+`;

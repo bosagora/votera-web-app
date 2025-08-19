@@ -18,4 +18,4 @@ To run the web-app, change into the respective package folder and run `yarn dev`
 
 ### Storybook
 
-To run the story book that documents the `ui-components`, change into the respective package folder and run `yarn storybook`.
+To run the story book that documents the `votera-ui-components`, change into the respective package folder and run `yarn storybook`.
