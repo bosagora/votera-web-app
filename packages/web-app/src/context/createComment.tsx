@@ -8,6 +8,9 @@ import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {NormalSteps} from 'votera-sdk-client';
+import {generatePath, useNavigate} from 'react-router-dom';
+import {Details} from '../utils/paths';
+import {useNetwork} from './network';
 
 type CommentParams = {
   proposalId: string;
@@ -28,6 +31,8 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
+  const navigate = useNavigate();
+  const {network} = useNetwork();
   const {isOnWrongNetwork} = useWallet();
 
   const [commentProcessState, setCommentProcessState] =
@@ -110,10 +115,16 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        setShowModal(false);
+        navigate(
+          generatePath(Details, {
+            network,
+            id: commentCreationData?.proposalId,
+          })
+        );
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
@@ -122,6 +133,7 @@ const CreateCommentProvider: React.FC<{children: React.ReactNode}> = ({
     tokenPrice,
     maxFee,
     averageFee,
+    stopPolling,
     error: gasEstimationError,
   } = usePollGasFee(estimateCommentFees, shouldPoll);
 

@@ -11,9 +11,7 @@ import {useActionsContext} from 'context/actions';
 import {useNetwork} from 'context/network';
 import useScreen from 'hooks/useScreen';
 import {useWalletConnectInterceptor} from 'hooks/useWalletConnectInterceptor';
-import {getEtherscanVerifiedContract} from 'services/etherscanAPI';
 import {WcRequest} from 'services/walletConnectInterceptor';
-import {addABI, decodeMethod} from 'utils/abiDecoder';
 import {getEncodedActionInputs} from 'utils/library';
 
 type Props = {
@@ -64,12 +62,6 @@ const ActionListenerModal: React.FC<Props> = ({
     // and parsed outside of the map, getting rid of the unnecessary
     // async requests. F.F. - [07-10-2023]
     actionsReceived.map(async (action, currentIndex) => {
-      // verify and decode
-      const etherscanData = await getEtherscanVerifiedContract(
-        action.params[0].to,
-        network
-      );
-
       // increment the index so multiple actions can be added at once
       const index = actionIndex + currentIndex;
 
@@ -79,37 +71,16 @@ const ActionListenerModal: React.FC<Props> = ({
       setValue(`actions.${index}.raw`, action.params[0]);
       setValue(`actions.${index}.contractAddress`, action.params[0].to);
 
-      // fill out the wallet connect action based on verification/encoded status
-      if (
-        etherscanData.status === '1' &&
-        etherscanData.result[0].ABI !== 'Contract source code not verified'
-      ) {
-        setValue(`actions.${index}.verified`, true);
+      // unverified & encoded
+      setValue(`actions.${index}.decoded`, false);
+      setValue(`actions.${index}.verified`, false);
+      setValue(`actions.${index}.contractName`, action.params[0].to);
+      setValue(`actions.${index}.functionName`, action.method);
 
-        addABI(JSON.parse(etherscanData.result[0].ABI));
-        const decodedData = decodeMethod(action.params[0].data);
-
-        if (decodedData) {
-          //verified & decoded, use decoded params
-          setValue(`actions.${index}.decoded`, true);
-          setValue(
-            `actions.${index}.contractName`,
-            etherscanData.result[0].ContractName
-          );
-          setValue(`actions.${index}.functionName`, decodedData.name);
-        }
-      } else {
-        // unverified & encoded
-        setValue(`actions.${index}.decoded`, false);
-        setValue(`actions.${index}.verified`, false);
-        setValue(`actions.${index}.contractName`, action.params[0].to);
-        setValue(`actions.${index}.functionName`, action.method);
-
-        setValue(
-          `actions.${index}.inputs`,
-          getEncodedActionInputs(action.params[0], network, t)
-        );
-      }
+      setValue(
+        `actions.${index}.inputs`,
+        getEncodedActionInputs(action.params[0], network, t)
+      );
     });
 
     removeAction(actionIndex);

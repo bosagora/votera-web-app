@@ -140,6 +140,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
@@ -148,6 +149,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     tokenPrice,
     maxFee,
     averageFee,
+    stopPolling,
     error: gasEstimationError,
   } = usePollGasFee(estimateVoteFees, shouldPoll);
 

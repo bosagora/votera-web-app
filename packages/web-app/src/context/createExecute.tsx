@@ -108,15 +108,16 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
         break;
       case TransactionState.SUCCESS:
         window.location.reload();
-        // navigate(
-        //   generatePath(Details, {
-        //     network,
-        //     id: executeData?.proposalId,
-        //   })
-        // );
+        navigate(
+          generatePath(Details, {
+            network,
+            id: executeData?.proposalId,
+          })
+        );
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
@@ -125,6 +126,7 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
     tokenPrice,
     maxFee,
     averageFee,
+    stopPolling,
     error: gasEstimationError,
   } = usePollGasFee(estimateExecuteFees, shouldPoll);
 

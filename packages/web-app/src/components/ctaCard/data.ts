@@ -1,6 +1,6 @@
-import {CreateDAO} from 'utils/paths';
+import {CreateProposal} from 'utils/paths';
 
-import createDaoImg from '../../public/createDao.svg';
+import createProposalImg from '../../public/createProposal.svg';
 import {i18n} from '../../../i18n.config';
 
 // temporary for review
@@ -8,8 +8,8 @@ const CTACards = [
   {
     actionAvailable: true,
     actionLabel: i18n.t('cta.create.actionLabel'),
-    path: CreateDAO,
-    imgSrc: createDaoImg,
+    path: CreateProposal,
+    imgSrc: createProposalImg,
     subtitle: i18n.t('cta.create.description'),
     title: i18n.t('cta.create.title'),
   },

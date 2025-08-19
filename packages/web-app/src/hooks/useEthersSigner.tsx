@@ -42,7 +42,7 @@ export function useBOSagoraSigner(chainId: number, chainName: string) {
     chainName = 'bosagora_testnet';
   } else if (chainId === 2151) {
     chainName = 'bosagora_mainnet';
-  } else if (chainId === 24600) {
+  } else if (chainId === 24680) {
     chainName = 'bosagora_devnet';
   }
 

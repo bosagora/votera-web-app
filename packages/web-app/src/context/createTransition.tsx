@@ -116,6 +116,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
@@ -124,6 +125,7 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
     tokenPrice,
     maxFee,
     averageFee,
+    stopPolling,
     error: gasEstimationError,
   } = usePollGasFee(estimateTransitionFees, shouldPoll);
 

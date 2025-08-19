@@ -9,7 +9,7 @@ import {useNetwork} from 'context/network';
 import {usePrivacyContext} from 'context/privacyContext';
 import {useVoteraProposalDetailsQuery} from 'hooks/useVoteraProposalDetails';
 import useScreen from 'hooks/useScreen';
-import {CreateDAO, Landing} from 'utils/paths';
+import {CreateProposal, Landing} from 'utils/paths';
 import {i18n} from '../../../i18n.config';
 import DesktopNav from './desktop';
 import MobileNav from './mobile';
@@ -100,10 +100,13 @@ export const NavigationBar = styled.nav.attrs({
 /* PROCESS ================================================================= */
 type StringIndexed = {[key: string]: {processLabel: string; returnURL: string}};
 
-export const processPaths = [{path: CreateDAO}];
+export const processPaths = [{path: CreateProposal}];
 
 export const processes: StringIndexed = {
-  [CreateDAO]: {processLabel: i18n.t('createDAO.title'), returnURL: Landing},
+  [CreateProposal]: {
+    processLabel: i18n.t('createDAO.title'),
+    returnURL: Landing,
+  },
 };
 
 type ProcessInfo = {
@@ -129,7 +132,7 @@ function getProcessInfo(
 
 function getExitProcessType(processPath: string): ProcessType | undefined {
   switch (processPath) {
-    case CreateDAO:
+    case CreateProposal:
       return 'DaoCreation';
   }
 }

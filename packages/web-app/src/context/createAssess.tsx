@@ -1,6 +1,6 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
+import {generatePath, useNavigate} from 'react-router-dom';
 
 import PublishModal from 'containers/transactionModals/publishModal';
 import {useClient} from 'hooks/useClient';
@@ -10,6 +10,7 @@ import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
+import {Details} from '../utils/paths';
 
 type Assessment = {
   completeness: number;
@@ -37,6 +38,8 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
+  const navigate = useNavigate();
+  const {network} = useNetwork();
   const {isOnWrongNetwork} = useWallet();
 
   const [assessmentProcessState, setAssessmentProcessState] =
@@ -159,18 +162,16 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        window.location.reload();
-        // navigate(
-        //   generatePath(Proposal, {
-        //     network,
-        //     id: proposalId,
-        //   })
-        // );
-        // setShowModal(false);
-        // setProposalId(undefined);
+        navigate(
+          generatePath(Details, {
+            network,
+            id: proposalId,
+          })
+        );
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
@@ -179,6 +180,7 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
     tokenPrice,
     maxFee,
     averageFee,
+    stopPolling,
     error: gasEstimationError,
   } = usePollGasFee(estimateAssessmentFees, shouldPoll);
 

@@ -6,7 +6,6 @@ import {HashRouter as Router} from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 
 import {AlertProvider} from 'context/alert';
-// import {APMProvider} from 'context/elasticAPM';
 import {GlobalModalsProvider} from 'context/globalModals';
 import {NetworkProvider} from 'context/network';
 import {PrivacyContextProvider} from 'context/privacyContext';
@@ -15,20 +14,18 @@ import {TransactionDetailProvider} from 'context/transactionDetail';
 import {WalletMenuProvider} from 'context/walletMenu';
 import {UseCacheProvider} from 'hooks/useCache';
 import {UseClientProvider} from 'hooks/useClient';
-import {infuraApiKey, walletConnectProjectID} from 'utils/constants';
+import {walletConnectProjectID} from 'utils/constants';
 import App from './app';
 
 import {EthereumClient, w3mConnectors, w3mProvider} from '@web3modal/ethereum';
 import {Web3Modal} from '@web3modal/react';
 import {configureChains, createConfig, WagmiConfig} from 'wagmi';
 import {mainnet, goerli, polygon, polygonMumbai} from 'wagmi/chains';
-import {infuraProvider} from 'wagmi/providers/infura';
 
 const chains = [mainnet, goerli, polygon, polygonMumbai];
 
 const {publicClient} = configureChains(chains, [
   w3mProvider({projectId: walletConnectProjectID}),
-  infuraProvider({apiKey: infuraApiKey}),
 ]);
 
 const wagmiConfig = createConfig({
@@ -53,11 +50,7 @@ const onLoad = () => {
   // Wipe local storage cache if its structure is out of date and clashes
   // with this version of the app.
   const cacheVersion = localStorage.getItem('VoteraCacheVersion');
-  const retainKeys = [
-    'privacy-policy-preferences',
-    'favoriteVoteraProposals',
-    'uselang',
-  ];
+  const retainKeys = ['privacy-policy-preferences', 'uselang'];
   if (!cacheVersion || parseInt(cacheVersion) < CACHE_VERSION) {
     for (let i = 0; i < localStorage.length; i++) {
       if (!retainKeys.includes(localStorage.key(i)!)) {

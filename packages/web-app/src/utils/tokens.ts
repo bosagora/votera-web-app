@@ -11,7 +11,3 @@ import {constants} from 'ethers';
 export const isNativeToken = (tokenAddress: string) => {
   return tokenAddress === constants.AddressZero;
 };
-
-export function gTokenSymbol(tokenSymbol: string): string {
-  return `g${tokenSymbol}`;
-}

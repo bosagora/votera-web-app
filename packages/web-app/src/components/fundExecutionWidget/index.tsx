@@ -1,28 +1,13 @@
-import {
-  AlertCard,
-  AlertInline,
-  ButtonText,
-  IconAdd,
-  IconLinkExternal,
-  Label,
-} from '@aragon/ui-components';
+import {AlertInline, ButtonText} from '@aragon/ui-components';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {StateEmpty} from 'components/stateEmpty';
-import {useNetwork} from 'context/network';
-import {CHAIN_METADATA} from 'utils/constants';
-import {Action, ProposalPhase} from 'utils/types';
-import IncreaseAmount from 'components/increaseAmount';
-import AssessmentResult from 'components/assessmentResult';
+import {ProposalPhase} from 'utils/types';
 import {ProposalPhaseExtended} from '../../pages/details';
 import {ProposalPeriod} from 'votera-sdk-client';
-import {Client, NoAssessmentControllerAddress} from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
-import {BigNumber} from 'ethers';
 
-import {useForm} from 'react-hook-form';
 import {useCreateExecuteContext} from 'context/createExecute';
 import {CreateExecuteProvider} from 'context/createExecute';
 const Card = styled.div.attrs({
@@ -71,8 +56,6 @@ export const FundExecutionWidget: React.FC<ExecutionProps> = ({
   proposalId,
 }) => {
   const {t} = useTranslation();
-
-  const {client} = useClient();
 
   useEffect(() => {
     console.log('exPhase', exPhase);

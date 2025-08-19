@@ -10,8 +10,7 @@ export const useFileUpload = () => {
     setError(null);
 
     try {
-      const cid = await uploadToIPFS(file);
-      return cid;
+      return await uploadToIPFS(file);
     } catch (err) {
       setError(err as Error);
       throw err;

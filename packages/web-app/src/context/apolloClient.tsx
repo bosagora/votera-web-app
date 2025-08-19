@@ -1,7 +1,7 @@
 import {InMemoryCache, makeVar} from '@apollo/client';
 import {CachePersistor, LocalStorageWrapper} from 'apollo3-cache-persist';
 
-import {FAVORITE_VOTERA_PROPOSAL_KEY, SupportedChainID} from 'utils/constants';
+import {SupportedChainID} from 'utils/constants';
 import {PRIVACY_KEY} from './privacyContext';
 import {ProposalType} from 'votera-sdk-client';
 import {VoteraProposalData} from '../utils/votera/sdk-client-types';
@@ -39,7 +39,7 @@ if (value && JSON.parse(value).functional) {
               const entities = rootQuery[key].map(
                 (item: Record<string, unknown>) => item.__ref
               );
-              persistEntities.push(...entities);
+              persistEntities.push(...(entities as string[]));
             } else {
               const entity = rootQuery[key].__ref;
               persistEntities.push(entity);
@@ -84,12 +84,6 @@ export type NavigationVoteraProposal = Omit<
   address: string;
   chain: SupportedChainID;
 };
-const favoriteVoteraProposals = JSON.parse(
-  localStorage.getItem(FAVORITE_VOTERA_PROPOSAL_KEY) || '[]'
-);
-const favoriteVoteraProposalsVar = makeVar<Array<NavigationVoteraProposal>>(
-  favoriteVoteraProposals
-);
 
 const selectedVoteraProposalVar = makeVar<NavigationVoteraProposal>({
   proposalType: ProposalType.FUND,
@@ -98,7 +92,7 @@ const selectedVoteraProposalVar = makeVar<NavigationVoteraProposal>({
   proposer: '',
   proposalId: '',
   address: '',
-  chain: 5,
+  chain: 1,
 });
 
-export {favoriteVoteraProposalsVar, selectedVoteraProposalVar};
+export {selectedVoteraProposalVar};

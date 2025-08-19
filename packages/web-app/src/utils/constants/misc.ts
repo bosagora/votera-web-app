@@ -81,6 +81,3 @@ export const PROPOSAL_STATE_LABELS = [
   i18n.t('governance.proposals.states.succeeded'),
   i18n.t('governance.proposals.states.defeated'),
 ];
-
-// Storage and cacheing keys
-export const FAVORITE_VOTERA_PROPOSAL_KEY = 'favoriteVoteraProposals';

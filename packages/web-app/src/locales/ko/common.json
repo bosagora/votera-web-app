@@ -5,17 +5,17 @@
     "dashboard": "대시보드",
     "governance": "제안",
     "explore": "탐색",
-    "learn": "학습",
-    "build": "구축",
+    "learn": "배우기",
+    "build": "만들기",
     "help": "도움말",
     "terms": "이용약관",
     "privacy": "개인정보 보호정책",
     "settings": "설정",
     "exploreLinkLabel": "탐색",
     "exploreLinkURL": "/",
-    "learnLinkLabel": "학습",
+    "learnLinkLabel": "배우기",
     "learnLinkURL": "https://aragon.org/education-portal",
-    "buildLinkLabel": "구축",
+    "buildLinkLabel": "만들기",
     "buildLinkURL": "https://devs.aragon.org/",
     "helpLinkLabel": "도움말",
     "helpLinkURL": "https://discord.gg/AhzsGmh7fK",
@@ -1263,10 +1263,10 @@
     },
     "deploy": {
       "title": "제안 배포하기",
-      "description": "조직을 출시하기 전에 모든 것이 올바른지 다시 한 번 확인하세요.",
+      "description": "제안 배포하기 전에 모든 것이 올바른지 다시 한 번 확인하세요.",
       "transactionModal": {
         "title": "제안 배포",
-        "description": "거래를 승인하여 제안을 배포하세요."
+        "description": "트랜잭션을 승인하여 제안을 배포하세요."
       }
     },
     "buttonLabelSuccess": "대시보드로 이동"

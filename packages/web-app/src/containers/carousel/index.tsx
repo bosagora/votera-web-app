@@ -21,10 +21,10 @@ const Carousel: React.FC = () => {
   // when the rest of CTAs are enabled
   const handleCTAClick = useCallback(
     (path: string) => {
-      // if (path === '/create') {
-      //   trackEvent('landing_createDaoBtn_clicked');
-      // }
-      //
+      if (path === '/create') {
+        trackEvent('landing_createProposalBtn_clicked');
+      }
+
       if (path.startsWith('http')) {
         window.open(path, '_blank');
         return;

@@ -99,7 +99,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-tailwindcss": "^1.14.1",
     "jest": "^26",
-    "postcss": "^8.3.5",
+    "postcss": "8.4.31",
     "prettier": "2.3.2",
     "react-test-renderer": "^17.0.2",
     "rollup-plugin-analyzer": "^4.0.0",

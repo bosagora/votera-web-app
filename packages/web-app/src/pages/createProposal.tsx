@@ -92,11 +92,6 @@ const CreateProposal: React.FC = () => {
     mode: 'onChange',
     defaultValues,
   });
-  const {errors, dirtyFields} = useFormState({control: formMethods.control});
-  const [title, proposalId] = useWatch({
-    control: formMethods.control,
-    name: ['title', 'proposalId'],
-  });
   const watchedValues = useWatch({control: formMethods.control});
   // Note: The wallet network determines the expected network when entering
   // the flow so that the process is more convenient for already logged in
@@ -195,8 +190,8 @@ const CreateProposal: React.FC = () => {
             <DefineMetadata />
           </Step>
           <Step
-            wizardTitle={t('createDAO2.step3.title')}
-            wizardDescription={htmlIn(t)('createDAO2.step3.description')}
+            wizardTitle={t('createProposal.step3.title')}
+            wizardDescription={htmlIn(t)('createProposal.step3.description')}
             isNextButtonDisabled={
               !formMethods.getValues('votePeriod') ||
               (formMethods.getValues('proposalType') === ProposalType.FUND &&

@@ -1,8 +1,6 @@
 /* SUPPORTED NETWORK TYPES ================================================== */
 
-import {infuraApiKey} from './api';
-
-export const SUPPORTED_CHAIN_ID = [1, 5, 2019, 2151, 24680, 11155111] as const;
+export const SUPPORTED_CHAIN_ID = [1, 2019, 2151, 24680, 11155111] as const;
 export type SupportedChainID = typeof SUPPORTED_CHAIN_ID[number];
 
 export function isSupportedChainId(
@@ -15,7 +13,6 @@ export const ENS_SUPPORTED_NETWORKS = [];
 
 const SUPPORTED_NETWORKS = [
   'ethereum',
-  'goerli',
   'sepolia',
   'bosagora_mainnet',
   'bosagora_testnet',
@@ -80,15 +77,8 @@ export type ChainData = {
   logo: string;
   rpc: string[];
   nativeCurrency: NativeTokenData;
-  etherscanApi: string;
-  etherscanApiKey?: string;
-  covalentApi?: string;
-  alchemyApi: string;
   supportsEns: boolean;
-  ipfs?: string;
 };
-
-const etherscanApiKey = import.meta.env.VITE_ETHERSCAN_API_KEY;
 
 export type ChainList = Record<SupportedNetworks, ChainData>;
 export const CHAIN_METADATA: ChainList = {
@@ -99,44 +89,13 @@ export const CHAIN_METADATA: ChainList = {
     logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
     explorer: 'https://etherscan.io/',
     testnet: false,
-    rpc: [
-      `https://mainnet.infura.io/v3/${infuraApiKey}`,
-      `wss://mainnet.infura.io/ws/v3/${infuraApiKey}`,
-    ],
+    rpc: [`https://eth.llamarpc.com`],
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',
       decimals: 18,
     },
-    etherscanApi: 'https://api.etherscan.io/api',
-    etherscanApiKey: etherscanApiKey,
-    covalentApi: 'https://api.covalenthq.com/v1/eth-mainnet',
-    alchemyApi: 'https://eth-mainnet.g.alchemy.com/v2',
     supportsEns: false,
-    ipfs: 'https://prod.ipfs.aragon.network',
-  },
-  goerli: {
-    id: 5,
-    name: 'Goerli',
-    domain: 'Main Chain',
-    logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-    explorer: 'https://goerli.etherscan.io/',
-    testnet: true,
-    rpc: [
-      `https://goerli.infura.io/v3/${infuraApiKey}`,
-      `wss://goerli.infura.io/ws/v3/${infuraApiKey}`,
-    ],
-    nativeCurrency: {
-      name: 'Goerli Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    etherscanApi: 'https://api-goerli.etherscan.io/api',
-    etherscanApiKey: etherscanApiKey,
-    covalentApi: 'https://api.covalenthq.com/v1/eth-goerli',
-    alchemyApi: 'https://eth-goerli.g.alchemy.com/v2',
-    supportsEns: false,
-    ipfs: 'https://test.ipfs.aragon.network',
   },
   sepolia: {
     id: 11155111,
@@ -145,20 +104,13 @@ export const CHAIN_METADATA: ChainList = {
     logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
     explorer: 'https://sepolia.etherscan.io/',
     testnet: true,
-    rpc: [
-      `https://sepolia.infura.io/v3/${infuraApiKey}`,
-      `wss://sepolia.infura.io/ws/v3/${infuraApiKey}`,
-    ],
+    rpc: [`https://eth-sepolia.public.blastapi.io`],
     nativeCurrency: {
       name: 'SepoliaETH',
       symbol: 'ETH',
       decimals: 18,
     },
-    etherscanApi: 'https://api-sepolia.etherscan.io/api',
-    etherscanApiKey: etherscanApiKey,
-    alchemyApi: 'https://eth-sepolia.g.alchemy.com/v2',
     supportsEns: false,
-    ipfs: 'https://test.ipfs.aragon.network',
   },
   bosagora_mainnet: {
     id: 2151,
@@ -167,18 +119,13 @@ export const CHAIN_METADATA: ChainList = {
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
     explorer: 'https://boascan.io/',
     testnet: false,
-    rpc: ['https://mainnet.bosagora.org'],
+    rpc: ['https://mainnet.bosagora.org', 'https://rpc.bosagora.org'],
     nativeCurrency: {
       name: 'BOA',
       symbol: 'BOA',
       decimals: 18,
     },
-    etherscanApi: '',
-    etherscanApiKey: '',
-    covalentApi: '',
-    alchemyApi: '',
     supportsEns: false,
-    ipfs: '',
   },
   bosagora_testnet: {
     id: 2019,
@@ -193,12 +140,7 @@ export const CHAIN_METADATA: ChainList = {
       symbol: 'BOA',
       decimals: 18,
     },
-    etherscanApi: '',
-    etherscanApiKey: '',
-    covalentApi: '',
-    alchemyApi: '',
     supportsEns: false,
-    ipfs: '',
   },
   bosagora_devnet: {
     id: 24680,
@@ -213,12 +155,7 @@ export const CHAIN_METADATA: ChainList = {
       symbol: 'BOA',
       decimals: 18,
     },
-    etherscanApi: '',
-    etherscanApiKey: '',
-    covalentApi: '',
-    alchemyApi: '',
     supportsEns: false,
-    ipfs: '',
   },
   unsupported: {
     id: 1,
@@ -233,10 +170,7 @@ export const CHAIN_METADATA: ChainList = {
       symbol: '',
       decimals: 18,
     },
-    etherscanApi: '',
-    alchemyApi: '',
     supportsEns: false,
-    ipfs: '',
   },
 };
 

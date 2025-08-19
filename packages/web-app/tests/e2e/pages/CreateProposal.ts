@@ -1,5 +1,5 @@
-export default class CreateDAO {
-  goToCreateDAOPage() {
+export default class CreateProposal {
+  goToCreateProposalPage() {
     cy.visit('/#/create');
 
     // Clicks Build your DAO on DAO Overview page

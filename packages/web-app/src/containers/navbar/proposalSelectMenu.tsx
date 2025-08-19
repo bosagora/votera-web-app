@@ -12,39 +12,16 @@ import styled from 'styled-components';
 
 import {useReactiveVar} from '@apollo/client';
 import ModalBottomSheetSwitcher from 'components/modalBottomSheetSwitcher';
-import {
-  favoriteVoteraProposalsVar,
-  NavigationVoteraProposal,
-  selectedVoteraProposalVar,
-} from 'context/apolloClient';
+import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import useScreen from 'hooks/useScreen';
-import {getSupportedNetworkByChainId} from 'utils/constants';
-import {Dashboard} from 'utils/paths';
 
 const ProposalSelectMenu: React.FC = () => {
   const {t} = useTranslation();
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const currentVoteraProposal = useReactiveVar(selectedVoteraProposalVar);
-  const favoriteVoteraProposalCache = useReactiveVar(
-    favoriteVoteraProposalsVar
-  );
   const {isSelectDaoOpen, close, open} = useGlobalModalContext();
-
-  const handleDaoSelect = useCallback(
-    (dao: NavigationVoteraProposal) => {
-      selectedVoteraProposalVar(dao);
-      navigate(
-        generatePath(Dashboard, {
-          network: getSupportedNetworkByChainId(dao.chain),
-          dao: dao.address,
-        })
-      );
-      close('selectDao');
-    },
-    [close, navigate]
-  );
 
   const handleBackButtonClick = useCallback(() => {
     close('selectDao');
@@ -78,24 +55,6 @@ const ProposalSelectMenu: React.FC = () => {
               proposalTitle={currentVoteraProposal?.title}
               onClick={() => close('selectDao')}
             />
-            {favoriteVoteraProposalCache.flatMap(msw => {
-              if (
-                msw.address.toLowerCase() ===
-                  currentVoteraProposal.address.toLowerCase() &&
-                msw.chain === currentVoteraProposal.chain
-              ) {
-                return [];
-              } else {
-                return (
-                  <ListItemDao
-                    key={msw.address}
-                    proposalId={msw.address}
-                    proposalTitle={msw.title}
-                    onClick={() => handleDaoSelect(msw)}
-                  />
-                );
-              }
-            })}
           </ListGroup>
         </ModalContentContainer>
         <div className="p-3">

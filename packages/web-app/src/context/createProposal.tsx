@@ -9,7 +9,7 @@ import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Dashboard} from '../utils/paths';
+import {Details} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {
@@ -212,7 +212,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
         break;
       case TransactionState.SUCCESS:
         navigate(
-          generatePath(Dashboard, {
+          generatePath(Details, {
             network,
             id: proposalId,
           })
@@ -220,6 +220,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
         break;
       default: {
         setShowModal(false);
+        stopPolling();
       }
     }
   };
