@@ -337,6 +337,7 @@ const Details: React.FC = () => {
   const [extendedPhase, setExtendedPhase] = useState<ProposalPhaseExtended>(
     ProposalPhaseExtended.UNKNOWN
   );
+  const [isEvaluator, setIsEvaluator] = useState(false);
   const [isVoter, setIsVoter] = useState(false);
 
   const [fetchedProposal, setFetchedProposal] = useState<
@@ -378,6 +379,12 @@ const Details: React.FC = () => {
         const voterLength = await client?.methods.getVoterLength(
           fetchedProposal?.proposalId || ''
         );
+
+        const isEvaluatorTmp = await client?.methods.isEvaluator(
+          fetchedProposal?.proposalId || '',
+          address || ''
+        );
+        setIsEvaluator(isEvaluatorTmp || false);
 
         const isVoterTmp = await client?.methods.isVoter(
           fetchedProposal?.proposalId || '',
@@ -477,12 +484,12 @@ const Details: React.FC = () => {
 
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
-    if (!proposal || !myScore || !address || !isVoter) return false;
+    if (!proposal || !myScore || !address || !isEvaluator) return false;
 
     // 내가 이미 점수를 평가했는지 확인
     const didAssessed = myScore.evaluator === address && myScore.timestamp > 0;
     return !didAssessed;
-  }, [proposal, myScore, address, isVoter]);
+  }, [proposal, myScore, address, isEvaluator]);
 
   const canVote = useMemo(() => {
     if (!proposal || !myBallot || !address || !isVoter) return false;

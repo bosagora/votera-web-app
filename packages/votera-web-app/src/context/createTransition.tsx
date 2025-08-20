@@ -8,6 +8,9 @@ import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {NormalSteps} from 'votera-sdk-client';
+import {generatePath, useNavigate} from 'react-router-dom';
+import {Details} from '../utils/paths';
+import {useNetwork} from './network';
 
 type TransitionParams = {
   proposalId: string;
@@ -26,22 +29,48 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
+  const {network} = useNetwork();
+  const navigate = useNavigate();
   const {isOnWrongNetwork, provider} = useWallet();
-  const [proposalId, setProposalId] = useState<string>();
   const [transitionProcessState, setTransitionProcessState] =
     useState<TransactionState>(TransactionState.WAITING);
   const [showModal, setShowModal] = useState(false);
   const [transitionData, setTransitionData] = useState<TransitionParams>();
+  const [proposalId, setProposalId] = useState<string>();
 
   const shouldPoll =
     transitionData !== undefined &&
     transitionProcessState === TransactionState.WAITING;
 
   const estimateTransitionFees = useCallback(async () => {
-    if (transitionData !== undefined) {
-      return client?.estimation.transition(transitionData.proposalId);
+    try {
+      const baseGasLimit = BigInt(80000); // 기본 가스 한도
+
+      const feeData = await provider?.getFeeData();
+      if (!feeData || !provider) {
+        throw new Error('가스 데이터를 가져올 수 없습니다.');
+      }
+
+      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
+      const maxPriorityFeePerGas = BigInt(
+        feeData.maxPriorityFeePerGas?.toString() || '0'
+      );
+
+      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
+      const estimatedFee = totalFeePerGas * baseGasLimit;
+
+      return {
+        average: estimatedFee,
+        max: (estimatedFee * BigInt(120)) / BigInt(100),
+      };
+    } catch (error) {
+      console.error('가스 수수료 계산 중 오류:', error);
+      return {
+        average: BigInt(1000000000),
+        max: BigInt(1000000000),
+      };
     }
-  }, [client?.estimation, transitionData]);
+  }, [provider]);
 
   const handlePublishTransition = async (params: TransitionParams) => {
     setTransitionProcessState(TransactionState.WAITING);
@@ -71,8 +100,8 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
 
     setTransitionProcessState(TransactionState.LOADING);
 
-    setProposalId(transitionData.proposalId);
     try {
+      setProposalId(transitionData.proposalId);
       const transitionIterator = client.methods.transition(
         transitionData.proposalId
       );
@@ -104,15 +133,13 @@ const CreateTransitionProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        window.location.reload();
-        // navigate(
-        //   generatePath(Proposal, {
-        //     network,
-        //     id: proposalId,
-        //   })
-        // );
-        // setShowModal(false);
-        // setProposalId(undefined);
+        navigate(
+          generatePath(Details, {
+            network,
+            id: proposalId,
+          })
+        );
+        setShowModal(false);
         break;
       default: {
         setShowModal(false);

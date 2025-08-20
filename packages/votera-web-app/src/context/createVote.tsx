@@ -8,6 +8,9 @@ import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {NormalSteps} from 'votera-sdk-client';
+import {generatePath, useNavigate} from 'react-router-dom';
+import {Details} from '../utils/paths';
+import {useNetwork} from './network';
 
 type VoteParams = {
   proposalId: string;
@@ -27,7 +30,10 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
   const {t} = useTranslation();
   const {open} = useGlobalModalContext();
   const {client} = useClient();
+  const {network} = useNetwork();
+  const navigate = useNavigate();
   const {isOnWrongNetwork, provider} = useWallet();
+  const [proposalId, setProposalId] = useState<string>();
 
   const [voteProcessState, setVoteProcessState] = useState<TransactionState>(
     TransactionState.WAITING
@@ -39,13 +45,34 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     voteData !== undefined && voteProcessState === TransactionState.WAITING;
 
   const estimateVoteFees = useCallback(async () => {
-    if (voteData !== undefined) {
-      return client?.estimation.postBallot(
-        voteData.proposalId,
-        voteData.choice
+    try {
+      const baseGasLimit = BigInt(60000); // 투표를 위한 기본 가스 한도
+
+      const feeData = await provider?.getFeeData();
+      if (!feeData || !provider) {
+        throw new Error('가스 데이터를 가져올 수 없습니다.');
+      }
+
+      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
+      const maxPriorityFeePerGas = BigInt(
+        feeData.maxPriorityFeePerGas?.toString() || '0'
       );
+
+      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
+      const estimatedFee = totalFeePerGas * baseGasLimit;
+
+      return {
+        average: estimatedFee,
+        max: (estimatedFee * BigInt(120)) / BigInt(100),
+      };
+    } catch (error) {
+      console.error('가스 수수료 계산 중 오류:', error);
+      return {
+        average: BigInt(1000000000),
+        max: BigInt(1000000000),
+      };
     }
-  }, [client?.estimation, voteData]);
+  }, [provider]);
 
   const handlePublishVote = async (params: VoteParams) => {
     setVoteProcessState(TransactionState.WAITING);
@@ -72,6 +99,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
     setVoteProcessState(TransactionState.LOADING);
 
     if (voteData.openExpiredVote) {
+      setProposalId(voteData.proposalId);
       const voteIterator = client.methods.transition(voteData.proposalId);
 
       try {
@@ -97,7 +125,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
       }
     } else {
       try {
-        const voteIterator = await client.methods.postBallot(
+        const voteIterator = client.methods.postBallot(
           voteData.proposalId,
           voteData.choice
         );
@@ -130,13 +158,13 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
-        window.location.reload();
-        // navigate(
-        //   generatePath(Proposal, {
-        //     network,
-        //     id: voteData?.proposalId,
-        //   })
-        // );
+        navigate(
+          generatePath(Details, {
+            network,
+            id: proposalId,
+          })
+        );
+        setShowModal(false);
         break;
       default: {
         setShowModal(false);
