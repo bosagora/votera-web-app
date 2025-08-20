@@ -21,14 +21,12 @@ import {NotFound} from 'utils/paths';
 type NetworkContext = {
   network: SupportedNetworks;
   setNetwork: (network: SupportedNetworks) => void;
-  isL2Network: boolean;
   networkUrlSegment: string | undefined;
 };
 
 const NetworkContext = createContext<NetworkContext>({
   network: 'ethereum',
   setNetwork: () => {},
-  isL2Network: false,
   networkUrlSegment: undefined,
 });
 
@@ -91,14 +89,12 @@ export function NetworkProvider({children}: NetworkProviderProps) {
   const status = wagmiStatus === 'reconnecting' ? 'connecting' : wagmiStatus;
   const [networkState, setNetworkState] = useState<
     SupportedNetworks | 'unsupported'
-  >('unsupported');
+  >(determineNetwork(networkUrlSegment, chainId, status));
 
   useEffect(() => {
     if (!isCreatePage)
       setNetworkState(determineNetwork(networkUrlSegment, chainId, status));
   }, [chainId, isCreatePage, networkUrlSegment, status]);
-
-  const isL2Network = ['polygon', 'mumbai'].includes(networkState);
 
   const changeNetwork = useCallback(
     (network: SupportedNetworks) => {
@@ -124,7 +120,6 @@ export function NetworkProvider({children}: NetworkProviderProps) {
       value={{
         network: networkState,
         setNetwork: changeNetwork,
-        isL2Network,
         networkUrlSegment,
       }}
     >
