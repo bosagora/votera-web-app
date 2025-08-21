@@ -1,0 +1,52 @@
+{
+  "name": "votera-sdk-client-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bosagora/votera-sdk.git",
+  "author": "BOSagora Foundation",
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "00-checkWeb3": "npx ts-node scripts/00-check/checkWeb3.ts",
+    "01-createFundingProposal": "npx ts-node scripts/01-proposal/createFundingProposal.ts",
+    "01-createSystemProposal": "npx ts-node scripts/01-proposal/createSystemProposal.ts",
+    "01-getProposal": "npx ts-node scripts/01-proposal/getProposal.ts",
+    "01-getProposalStates": "npx ts-node scripts/01-proposal/getProposalStates.ts",
+    "02-postScore": "npx ts-node scripts/02-assessment/postScore.ts",
+    "02-getScoreSummary": "npx ts-node scripts/02-assessment/getScoreSummary.ts",
+    "03-transition": "npx ts-node scripts/03-transition/transition.ts",
+    "04-postBallot": "npx ts-node scripts/04-vote/postBallot.ts",
+    "04-getBallotSummary": "npx ts-node scripts/04-vote/getBallotSummary.ts",
+    "05-transition": "npx ts-node scripts/05-transition/transition.ts",
+    "06-withdrawal": "npx ts-node scripts/06-execution/withdrawal.ts"
+  },
+  "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^12.20.43"
+  },
+  "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/abstract-signer": "^5.7.0",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/constants": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "@ethersproject/experimental": "^5.7.0",
+    "@ethersproject/hash": "^5.7.0",
+    "@ethersproject/keccak256": "^5.7.0",
+    "@ethersproject/providers": "^5.7.0",
+    "@ethersproject/random": "^5.7.0",
+    "@ethersproject/wallet": "^5.7.0",
+    "assert": "^2.1.0",
+    "beautify": "^0.0.8",
+    "chai": "^4.3.7",
+    "ethers": "^5.7.0",
+    "mocha": "10.1.0",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5",
+    "votera-sdk-client": "^1.5.1"
+  }
+}
