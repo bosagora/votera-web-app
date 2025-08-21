@@ -281,13 +281,13 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
+        setShowModal(false);
         navigate(
           generatePath(Details, {
             network,
             id: proposalId,
           })
         );
-        setShowModal(false);
         break;
       default: {
         setShowModal(false);

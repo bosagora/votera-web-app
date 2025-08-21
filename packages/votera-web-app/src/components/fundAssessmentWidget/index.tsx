@@ -80,8 +80,6 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
   proposalId,
 }) => {
   const {t} = useTranslation();
-  const [value, setValue] = useState(10);
-  const maxValue = 10;
   const [assessment, setAssessment] = useState<Assessment>({
     completeness: 5,
     possibility: 5,
@@ -97,21 +95,20 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
     attractiveness: 0,
     scalability: 0,
   });
-
-  const defaultValues: AssessmentFormData = {
-    completeness: 1,
-    possibility: 1,
-    profitability: 1,
-    attractiveness: 1,
-    scalability: 1,
-  };
-
   const [assessmentLength, setAssessmentLength] = useState(0);
-
   const {client} = useClient();
   const {address} = useWallet();
 
   useEffect(() => {
+    if (myScore !== null) {
+      assessment.completeness = myScore.items[0];
+      assessment.possibility = myScore.items[1];
+      assessment.profitability = myScore.items[2];
+      assessment.attractiveness = myScore.items[3];
+      assessment.scalability = myScore.items[4];
+
+      setAssessment(assessment);
+    }
     console.log('exPhase', exPhase);
     console.log('exPhaseMessage', exPhaseMessage);
 
@@ -136,22 +133,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
       }
     };
     getAssessmentList();
-  }, [proposalId]);
-
-  const handleValueChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const targetValue = Number(event.target.value);
-    const CORRECTION_DELAY = 1000;
-
-    if (targetValue > maxValue) {
-      setTimeout(() => {}, CORRECTION_DELAY);
-    } else if (targetValue <= 0) {
-      setTimeout(() => {}, CORRECTION_DELAY);
-    } else {
-      event.target.value = targetValue.toString();
-    }
-
-    setValue(targetValue);
-  };
+  }, [proposalId, canAssess]);
 
   const handleCompletenessChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -196,25 +178,6 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
       ...prev,
       scalability: Number(event.target.value),
     }));
-  };
-
-  // 전체 평가 점수 계산 (필요한 경우)
-  const calculateTotalScore = (): number => {
-    const {
-      completeness,
-      possibility,
-      profitability,
-      attractiveness,
-      scalability,
-    } = assessment;
-    return (
-      (completeness +
-        possibility +
-        profitability +
-        attractiveness +
-        scalability) /
-      5
-    );
   };
 
   return (

@@ -180,13 +180,14 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
+        setShowModal(false);
+        window.location.reload();
         navigate(
           generatePath(Details, {
             network,
             id: proposalId,
           })
         );
-        setShowModal(false);
         break;
       default: {
         setShowModal(false);

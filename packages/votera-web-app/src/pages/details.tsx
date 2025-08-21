@@ -484,20 +484,12 @@ const Details: React.FC = () => {
 
   // 투표와 평가 가능 여부를 확인하는 함수들
   const canAssess = useMemo(() => {
-    if (!proposal || !myScore || !address || !isEvaluator) return false;
-
-    // 내가 이미 점수를 평가했는지 확인
-    const didAssessed = myScore.evaluator === address && myScore.timestamp > 0;
-    return !didAssessed;
-  }, [proposal, myScore, address, isEvaluator]);
+    return !(!proposal || !address || !isEvaluator);
+  }, [proposal, address, isEvaluator]);
 
   const canVote = useMemo(() => {
-    if (!proposal || !myBallot || !address || !isVoter) return false;
-
-    // 내가 이미 투표했는지 확인
-    const didVote = myBallot.voter === address && myBallot.timestamp > 0;
-    return !didVote;
-  }, [proposal, myBallot, address, isVoter]);
+    return !(!proposal || !address || !isVoter);
+  }, [proposal, address, isVoter]);
 
   // voting process effect
   useEffect(() => {
@@ -558,21 +550,6 @@ const Details: React.FC = () => {
   return (
     <Container>
       <HeaderContainer>
-        {/* {!isDesktop && (
-          <Breadcrumb
-            onClick={(path: string) =>
-              navigate(
-                generatePath(path, {
-                  network,
-                  id: '',
-                })
-              )
-            }
-            crumbs={breadcrumbs}
-            icon={<IconGovernance />}
-            tag={tag}
-          />
-        )} */}
         <ProposalTitle>{proposal?.title}</ProposalTitle>
         <ContentWrapper>
           <ProposerLink>
@@ -588,7 +565,6 @@ const Details: React.FC = () => {
             />
           </ProposerLink>
         </ContentWrapper>
-
         <SummaryText>{proposal?.description}</SummaryText>
       </HeaderContainer>
 
@@ -596,7 +572,6 @@ const Details: React.FC = () => {
         <ProposalContainer>
           {proposal.description && expandedProposal && (
             <>
-              {/*<StyledEditorContent editor={editor} />*/}
               <ButtonText
                 css={{}}
                 className="mt-3 w-full tablet:w-max"

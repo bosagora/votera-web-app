@@ -133,6 +133,7 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.LOADING:
         break;
       case TransactionState.SUCCESS:
+        setShowModal(false);
         window.location.reload();
         navigate(
           generatePath(Details, {
@@ -140,7 +141,6 @@ const CreateExecuteProvider: React.FC<{children: React.ReactNode}> = ({
             id: proposalId,
           })
         );
-        setShowModal(false);
         break;
       default: {
         setShowModal(false);
