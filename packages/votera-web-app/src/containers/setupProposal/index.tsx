@@ -28,7 +28,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
         <FormItem>
           <Label
             label={t('labels.assessmentPeriod')}
-            helpText={t('createDAO2.step3.assessmentPeriodDesc')}
+            helpText={t('createProposal.step3.assessmentPeriodDesc')}
           />
 
           <Controller
@@ -63,7 +63,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
       <FormItem>
         <Label
           label={t('labels.votePeriod')}
-          helpText={t('createDAO2.step3.votePeriodDesc')}
+          helpText={t('createProposal.step3.votePeriodDesc')}
         />
         <Controller
           name="votePeriod"

@@ -44,7 +44,7 @@ const ProposalSelectMenu: React.FC = () => {
             icon={<IconChevronLeft />}
             onClick={handleBackButtonClick}
           />
-          <Title>{t('daoSwitcher.title')}</Title>
+          <Title>{t('voteraSwitcher.title')}</Title>
           <div role="presentation" className="w-4 h-4" />
         </ModalHeader>
         <ModalContentContainer>
@@ -62,7 +62,7 @@ const ProposalSelectMenu: React.FC = () => {
             css={{}}
             mode="secondary"
             size="large"
-            label={t('daoSwitcher.subtitle')}
+            label={t('voteraSwitcher.subtitle')}
             iconLeft={<IconLinkExternal />}
             className="w-full"
             onClick={() => {

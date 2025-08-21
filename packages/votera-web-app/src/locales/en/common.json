@@ -3,7 +3,7 @@
   "menu": "Menu",
   "navLinks": {
     "dashboard": "Dashboard",
-    "governance": "Proposals",
+    "governance": "Governance",
     "explore": "Explore",
     "learn": "Learn",
     "build": "Build",
@@ -20,11 +20,11 @@
     "helpLinkLabel": "Help",
     "helpLinkURL": "https://discord.gg/AhzsGmh7fK",
     "termsLinkLabel": "Terms of service",
-    "termsLinkURL": "https://aragon.org/terms-and-conditions",
+    "termsLinkURL": "https://bosagora.io/terms-and-conditions",
     "privacyLinkLabel": "Privacy",
-    "privacyLinkURL": "https://aragon.org/privacy-policy"
+    "privacyLinkURL": "https://bosagora.io/privacy-policy"
   },
-  "daoSwitcher": {
+  "voteraSwitcher": {
     "title": "Select your proposal",
     "subtitle": "Go back to explorer page"
   },
@@ -140,8 +140,6 @@
     "withdraw": "Withdraw",
     "externalContract": "External contract",
     "all": "All",
-    "daoTreasury": "DAO treasury",
-    "treasuryValue": "Treasury value",
     "searchPlaceholder": "Type to search ...",
     "result": "1 result",
     "nResults": "{{count}} results",
@@ -150,7 +148,6 @@
     "notChangeable": "Not changeable",
     "changeableVote": "Changeable with a vote",
     "changeable": "Changeable",
-    "etherscan": "Etherscan",
     "whitelistWallets": {
       "address": "Address",
       "addresses": "{{count}} addresses",
@@ -197,7 +194,7 @@
     "step": "Step",
     "of": "of",
     "edit": "Edit",
-    "daoSettings": "Multisig wallet settings",
+    "voteraSettings": "Multisig wallet settings",
     "selectWallets": "Select wallets",
     "cancel": "Cancel",
     "addSingleWallet": "Add 1 wallet",
@@ -230,11 +227,10 @@
     "minimumApprovalAdditionalInfo": "When new wallets gets added or removed to the Multisig DAO, you have to review the Minimum Approval.",
     "minimumApprovalProgressInfo": "of {{amount}} addresses",
     "anyWallet": "Any wallet",
-    "aragonOSx": "Aragon OSx",
     "disconnectWallet": "Disconnect wallet",
     "submitProposal": "Publish proposal",
     "addWalletsDescriptionLinkLabel": "read our guide",
-    "addWalletsDescription": "Wallets can create proposals, propose to send funds in and out of the treasury, and vote in your DAO.",
+    "addWalletsDescription": "Wallets can create proposals, propose to send funds in and out of the treasury, and vote in your Votera.",
     "daoEnsName": "ENS Subdomain",
     "ens": "ENS",
     "currentTokenSupply": "Current token supply",
@@ -252,8 +248,7 @@
     "walletOrEns": "Type wallet address …",
     "searchTokens": "Type to search …",
     "proposalTitle": "Type your proposal's name …",
-    "ensName": "aragon",
-    "daoDescription": "Type your summary …",
+    "description": "Type your summary …",
     "addResource": "Lens, Discord, etc."
   },
   "finance": {
@@ -265,13 +260,13 @@
     "emptyState": {
       "title": "Make your first deposit",
       "description": "Begin by making your first treasury deposit. Learn more about managing a DAO treasury {{link}}.",
-      "descriptionLinkURL": "https://aragon.org/how-to/manage-a-dao-treasury",
+      "descriptionLinkURL": "",
       "descriptionLinkLabel": "in this guide",
       "buttonLabel": "Deposit funds"
     }
   },
   "governance": {
-    "title": "Proposals",
+    "title": "Governance",
     "subtitle": "{{activeProposalCount}} active proposals",
     "subtitleSingular": "1 active proposal",
     "action": "New proposal",
@@ -279,10 +274,10 @@
       "title": "Create your first proposal",
       "subtitle": "What's the first thing your community needs to decide? ",
       "subtitleLinkLabel": "read this guide",
-      "subtitleLinkURL": "https://aragon.org/how-to/structure-dao-proposals-and-build-proposal-processes",
+      "subtitleLinkURL": "https://bosagora.io/how-to/structure-dao-proposals-and-build-proposal-processes",
       "description": "Get your community involved in the decision-making process.",
       "descriptionLinkLabel": "proposal guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/structure-dao-proposals-and-build-proposal-processes"
+      "descriptionLinkURL": "https://bosagora.io/how-to/structure-dao-proposals-and-build-proposal-processes"
     },
     "proposals": {
       "publishedBy": "Published by",
@@ -348,10 +343,8 @@
     "voteDHMDuration": "The minimum duration of {{days}} days, {{hours}} hours, and {{minutes}} minutes is defined by DAO governance settings. To change the minimum duration a vote is required",
     "newVotingTypes": {
       "description": "We'll be adding more voting types in the future.",
-      "title": "New votings types soon"
-    },
-    "ensAvailable": "DAO name available",
-    "checkingEns": "Checking DAO name …"
+      "title": "New voting types soon"
+    }
   },
   "errors": {
     "proposalSetup": "Proposal setup is required",
@@ -421,7 +414,6 @@
       "time": "Time is required",
       "timezone": "Timezone is required",
       "name": "DAO name is mandatory",
-      "ensName": "DAO Ens Subdomain is mandatory",
       "title": "Title is required",
       "summary": "Summary is required",
       "minApproval": "At least one authorized address is required in order to approve a proposal."
@@ -649,175 +641,6 @@
       "alertCritical": "You can't withdraw money to your own DAO treasury."
     }
   },
-  "createDAO": {
-    "title": "Create your Multisig wallet",
-    "overview": {
-      "title": "Build your Multisig wallet",
-      "description": "You can easily create them as you go step by step.",
-      "button": "Build"
-    },
-    "step1": {
-      "label": "Step 1",
-      "title": "Select blockchain",
-      "description": "The chain you choose is where your tokens and assets are stored. If you already have a token, choose the chain your token is minted on. This cannot be changed later.",
-      "descriptionLinkLabel": "blockchain for your DAO",
-      "descriptionLinkURL": "https://aragon.org/how-to/choose-the-right-blockchain-for-your-dao"
-    },
-    "step2": {
-      "label": "Step 2",
-      "title": "Describe your Multisig wallet",
-      "description": "Name and define your Multisig wallet so new contributors know they've come to the right place. This information is displayed on the Multisig wallet Explore page.",
-      "nameSubtitle": "Maximum of 128 characters",
-      "logoSubtitle": "JPG, PNG, GIF, or SVG of no more than 3MB. We recommend 1024x1024px.",
-      "descriptionSubtitle": "Describe your DAO's purpose in a few sentences. This is listed on the Explore page so new contributors can find you.",
-      "linksSubtitle": "Links to your DAO's website, social media profiles, Discord, or other places your community gathers.",
-      "metadataOverviewGuide": "read our guide",
-      "descriptionLinkLabel": "read our guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/build-a-dao-brand-identity",
-      "ensNameSubtitle": "This will be your DAO’s unique ENS subdomain, created automatically for you. Lowercase letters, numbers, and the dash '-' are all acceptable characters; ideally, the character count should be under 128."
-    },
-    "step3": {
-      "label": "Step 3",
-      "title": "Define membership",
-      "description": "Decide the type of voting your Multisig wallet uses. You can change these settings with a vote. ",
-      "communityOverviewGuide": "read this guide",
-      "newToken": "No",
-      "authorisedWalletsSubtitle": "Add wallets of members who are authorized to participate in governance",
-      "warningTitle": "Changing the list",
-      "warningSubtitle": "If you want to add addresses after creating your DAO, you will need to create a proposal to be voted by the members.",
-      "newTokenSubtitle": "No, I would like to create a token.",
-      "existingToken": {
-        "title": "Import your existing token",
-        "description": "Import the existing ERC-20 token  that your community uses for governance. We recommend to read about why this is important in {{link}}.",
-        "descriptionLinkLabel": "our guide",
-        "questionLabel": "Does your community already have an ERC-20 token to govern your DAO?",
-        "answerNegative": "No",
-        "answerPositive": "Yes",
-        "inputLabel": "Contract address",
-        "inputDescription": "Enter the contract address. We recommend pasting it directly from a block explorer.",
-        "verificationLabelStandard": "Standard",
-        "verificationLabelSupply": "Total supply",
-        "verificationLabelHolders": "Current holders",
-        "verificationAlertSuccessTitle": "Supported token",
-        "verificationAlertSuccessDescription": "This token can be used to participate in your DAO's governance because it follows the ERC20Votes extension to the ERC-20 standard.",
-        "verificationLoading": "Verifying governance compatibility …",
-        "verificationStandardUnknown": "Unknown",
-        "verificationGovernanceSupported": "Supported",
-        "verificationAlertWarningTitle": "Requires wrapping",
-        "verificationAlertCriticalTitle": "Not supported token",
-        "verificationAlertWarningDescription": "This token must be wrapped by its holders to be participate in your DAO's governance.\n\nToken holders can wrap their tokens within the Aragon App at any time to receive equivalent governance tokens (1 {{tokenSymbol}} = 1 {{gTokenSymbol}}). These can then be used to vote on proposals in your DAO. They can unwrap at any time to receive their original tokens.",
-        "verificationAlertCriticalDescription": "This token is not supported in the Aragon App. Try a different token or specify that you don't have a governance token yet.",
-        "descriptionLinkURL": "https://aragon.org/how-to/import-existing-tokens",
-        "verificationLabelBlockchain": "Blockchain",
-        "verificationAlertCriticalBlockchainTitle": "Incorrect blockchain",
-        "verificationAlertCriticalBlockchainDescription": "This token is deployed on a different blockchain than the one you chose for your DAO. Use a token deployed on {{blockchainName}}."
-      },
-      "existingTokenSubtitle": "Yes, we already have a token.",
-      "tokenMembership": "Token holders",
-      "multisigMembership": "Multisig members",
-      "multisigMembershipSubtitle": "Only multisig members can vote. 1 wallet address equals 1 approval.",
-      "multisigMembers": "Multisig members",
-      "multisigMembersHelptext": "There is a limit of 50 addresses in a multisig. Addresses can create proposals, create and approve transactions after creation. ",
-      "multisigMembersWalletAlert": "Your connected wallet was automatically added to the list. You can remove it if you like.",
-      "multisigEligibilityTitle": "Proposal creation",
-      "multisigEligibilitySubtitle": "Specify who is permitted to create proposals.",
-      "multisigEligibilityMobileTitle": "Who is elegible?",
-      "multisigEligibilityAlert": "With anyone being able to propose, there is a risk of proposal spam. Consider only authorized addresses.",
-      "tokenName": "Token name",
-      "tokenMembershipSubtitle": "Tokens act as voting chips. The more tokens you hold, the more weight your vote has. 1 token equals 1 vote.",
-      "walletMemberShip": "Authorized wallets",
-      "walletMemberShipSubtitle": "Allowlist wallet addresses of trusted members, so voting is 1 wallet = 1 vote. Allowlisted wallets can also create proposals. ",
-      "nameSubtitle": "The full name of the token. Example: Uniswap",
-      "symbolSubtitle": "The abbreviation of the token. Example: UNI",
-      "addExistingTokenHelptext": "We don't currently support existing tokens in Aragon App. ",
-      "tokenHelptextLink": "token distribution guide",
-      "tokenContractSubtitlePart1": "Copy the contract address directly from the ",
-      "tokenContractSubtitlePart2": "This way you can ensure that the address is correct.",
-      "distributeTokensHelpertext": "Add the wallets you'd like to distribute tokens to. If you need help distributing tokens, {{link}}.",
-      "proposalCreationHelpertext": "Specify who is permitted to create proposals and what the minimum token requirement is.",
-      "distributionWalletAlertText": "Your connected wallet was automatically added to the distribution list. You can remove it if you like.",
-      "whiteListWalletAlertText": "Your connected wallet was automatically added to the list. You can remove it if you like.",
-      "createTokenHelptext": "Define the token details and distribute tokens to a core team and DAO treasury. For more on token minting best practices, {{link}}",
-      "createTokenHelptextLinkLabel": "read this guide",
-      "createTokenHelptextLinkURL": "https://aragon.org/how-to/mint-dao-governance-tokens",
-      "membership": "Who can participate in governance?",
-      "eligibility": {
-        "optionTitle": "Who is eligible?",
-        "inputTitle": "Minimum tokens required",
-        "anyWallet": {
-          "title": "Any wallet",
-          "description": "Any wallet can create proposals."
-        },
-        "multisigMembers": {
-          "description": "Only the addresses added above can create proposals.",
-          "title": "Multisig members"
-        },
-        "tokenHolders": {
-          "description": "Only token holders with at least a certain number of tokens can create proposals.",
-          "title": "Token holders"
-        },
-        "anyone": {
-          "warning": "With anyone being able to propose, there is a risk of proposal spam. Consider having a minimum token threshold."
-        }
-      },
-      "membershipSubtitle": "You can always start with a multisig and mint tokens later.",
-      "descriptionLinkLabel": "read this guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/set-up-your-dao-governance-in-8-steps",
-      "distributeTokensHelpertextLinkLabel": "read our guide",
-      "distributeTokensHelpertextLinkURL": "https://aragon.org/how-to/distribute-a-dao-governance-token"
-    },
-    "step4": {
-      "label": "Step 4",
-      "title": "Select governance settings",
-      "description": "These are the rules that define how decisions are made in your Multisig wallet. How many people have to participate? How much support is needed?",
-      "bestPractices": "best practices on governance",
-      "supportThresholdSubtitle": "The percentage of tokens that vote \"Yes\" in support of a proposal, out of all tokens that have voted, must be greater than this value for the proposal to pass.",
-      "minimumParticipationSubtitle": "The percentage of tokens that participate in a proposal, out of the total {{gTokenSymbol}} supply, must be greater than or equal to this value for the proposal to pass.",
-      "supportSubtitle": "Support is the relative percentage of tokens or wallets that are required to vote “Yes” for a proposal to be approved.",
-      "durationSubtitle": "The shortest period of time a proposal is open for voting. Proposals can be created with a longer duration, but not shorter.",
-      "days": "Days",
-      "hours": "Hours",
-      "minutes": "Minutes",
-      "minimumApprovalSubtitle": "Minimum approval is the amount of addresses in the authorized list that must approve a proposal for it to pass. ",
-      "minApprovalAddressCount": "of {{count}} addresses",
-      "alerts": {
-        "minimumApprovalAlert": "of {{amount}} {{tokenSymbol}}",
-        "minimumParticipationAlert": "Rounded up to {{percentage}}% equals {{walletCount}} wallets have to vote",
-        "minority": "Proposals could be approved by a minority rather than a majority.",
-        "majority": "Proposal will be approved by majority",
-        "absoluteMajority": "This approval threshold might be too high to reach regularly. Consider setting something lower. "
-      },
-      "descriptionLinkLabel": "this guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/governance-ii-setting-dao-governance-thresholds",
-      "shortTitle": "Select governance settings",
-      "wrappedReferenceTitle": "Reference values",
-      "wrappedReferenceDesc": "The amount of {{gTokenSymbol}} that must vote to meet minimum participation depends on the amount of {{tokenSymbol}} that is wrapped. The values on this screen with an asterisk are for reference only. You can evaluate different scenarios by adjusting the following value. Learn more about {{link}}.",
-      "wrappedReferenceAlertInfo": "These values are for reference only and do not affect your \"governance settings\"!",
-      "wrappedReferenceLabel": "Amount of wrapped {{tokenSymbol}}",
-      "wrappedReferenceSupply": "Total supply {{tokenSymbol}}",
-      "wrappedReferenceFullParticipation": "Full participation",
-      "wrappedReferenceParticipationDesc": "100% of {{gTokenSymbol}} total supply",
-      "wrappedReferenceMinParticipation": "Minimum participation",
-      "wrappedReferenceMinParticipationDesc": "{{minParticipationValue}} of {{gTokenSymbol}} total supply",
-      "wrappedReferenceDescLinkLabel": "in our guide",
-      "wrappedReferenceDescLinkURL": "https://aragon.org/how-to/import-existing-tokens",
-      "wrappedReferenceValueLabel": "{{tokenSymbol}}",
-      "wrappedReferenceParticipationValueLabel": "{{gTokenSymbol}} *"
-    },
-    "review": {
-      "title": "Deploy your Multisig wallet",
-      "description": "Double-check that everything is correct before launching your organization.",
-      "network": "{{network}} net",
-      "distributionLink": "See {{count}} addresses",
-      "days": "{{days}} days",
-      "hours": "{{hours}} hours",
-      "minutes": "{{minutes}} minutes",
-      "daoUpdates": "For the chain you choose and the members you add, you can't change all these values later in your Multisig wallet.",
-      "acceptContent": "Accept proposed content.",
-      "valuesCorrect": "These values are correct",
-      "proposalCreation": "Token holders with ≥{{token}} {{symbol}}"
-    }
-  },
   "newProposal": {
     "title": "New proposal",
     "configureActions": {
@@ -946,7 +769,7 @@
     },
     "learn": {
       "linkLabel": "다중 서명 지갑에 대해서 학습하기",
-      "linkURL": "https://aragon.org/education-portal"
+      "linkURL": "https://bosagora.io/education-portal"
     }
   },
   "privacyPolicy": {
@@ -961,7 +784,7 @@
     "acceptSelectedCookies": "Accept",
     "content": "We use cookies and similar technologies to improve your experience, enable certain features, and analyze our application usage. You may opt-out of cookies here. Learn more in our {{link}}.",
     "linkLabel": "privacy policy",
-    "linkURL": "https://aragon.org/privacy-policy"
+    "linkURL": "https://bosagora.io/privacy-policy"
   },
   "transactionDetail": {
     "title": "Transaction detail",
@@ -999,8 +822,8 @@
     "proposeSettings": "Propose new settings",
     "reviewProposal": "Review proposal",
     "proposeSettingsSubtitle": "Confirm the new settings that will be included in your proposal.",
-    "editDaoSettings": "Edit DAO settings",
-    "editSubtitle": "To edit settings such as the logo and description, you'll need to create a proposal and put it to vote in your DAO.",
+    "editDaoSettings": "Edit Votera Proposal settings",
+    "editSubtitle": "To edit settings such as the logo and description, you'll need to create a proposal and put it to vote in your Votera Proposal.",
     "resetChanges": "Reset changes",
     "edit": "Edit settings",
     "newSettings": "New settings",
@@ -1024,7 +847,7 @@
     }
   },
   "logo": {
-    "linkURL": "https://aragon.org/"
+    "linkURL": "https://bosagora.io/"
   },
   "modal": {
     "deposit": {
@@ -1146,7 +969,7 @@
       "title": "No smart contract added",
       "description": "Add a smart contract to interact with it. To learn more, read {{link}}.",
       "modalTitle": "Smart contract composer",
-      "descriptionLinkURL": "https://aragon.org/how-to/interact-with-external-contracts-from-your-dao",
+      "descriptionLinkURL": "https://bosagora.io/how-to/interact-with-external-contracts-from-your-dao",
       "descriptionLinkLabel": "our guide"
     },
     "abi": {
@@ -1168,7 +991,7 @@
       "contractAmountActions": "{{amount}} actions",
       "ctaLabel": "Connect smart contract",
       "learnLinkLabel": "Learn more",
-      "learnLinkURL": "https://aragon.org/how-to/interact-with-external-contracts-from-your-dao"
+      "learnLinkURL": "https://bosagora.io/how-to/interact-with-external-contracts-from-your-dao"
     },
     "detailContract": {
       "dropdownExplorerLinkLabel": "View on block explorer",
@@ -1203,7 +1026,7 @@
       "desc": "Wrap your {{tokenSymbol}} to become a member of the DAO community. This will enable you to participate in governance. Learn more about it {{link}}.",
       "ctaLabel": "Join the DAO",
       "descLinkLabel": "in our guide",
-      "descLinkURL": "https://aragon.org/how-to/import-existing-tokens"
+      "descLinkURL": "https://bosagora.io/how-to/import-existing-tokens"
     },
     "ctaMain": {
       "wrappedLabel": "Join the DAO"
@@ -1216,7 +1039,7 @@
       "ctaLabel": "Wrap tokens",
       "cancleLabel": "Cancel",
       "descLinkLabel": "our guide",
-      "descLinkURL": "https://aragon.org/how-to/import-existing-tokens"
+      "descLinkURL": "https://bosagora.io/how-to/import-existing-tokens"
     }
   },
   "wc": {
@@ -1288,17 +1111,42 @@
     "step2": {
       "label": "Step 2",
       "title": "Define Metadata",
-      "description": "Define the metadata for your proposal."
+      "description": "Define the metadata for your proposal.",
+      "metaTitle": "Define your proposal in one sentence.",
+      "proposalType": "Select the purpose of your proposal.",
+      "nameSubtitle": "Maximum of 128 characters",
+      "documentSubtitle": "Only PDF files are accepted. Please prepare your proposal or related documents in PDF format. Maximum file size is limited to 10MB.",
+      "descriptionSubtitle": "Describe your proposal's purpose in a few sentences. This is listed on the dashboard page so new contributors can find you.",
+      "linksSubtitle": "Links to your DAO's website, social media profiles, Discord, or other places your community gathers.",
+      "metadataOverviewGuide": "read our guide",
+      "descriptionLinkLabel": "read our guide",
+      "descriptionLinkURL": "https://bosagora.io/how-to/build-a-dao-brand-identity",
+      "ensNameSubtitle": "This will be your DAO’s unique ENS subdomain, created automatically for you. Lowercase letters, numbers, and the dash '-' are all acceptable characters; ideally, the character count should be under 128."
+
     },
     "step3": {
       "label": "Step 3",
-      "title": "Authorised Wallets",
-      "description": "Define the authorised wallets for your proposal."
+      "title": "Select Voting Period",
+      "description": "Select the period required to evaluate the proposal.",
+      "assessmentPeriod": "Assessment period",
+      "assessmentPeriodDesc": "The assessment period is the period during which the proposal is evaluated. It should be set between 7 and 14 days.",
+      "votePeriod": "Vote period",
+      "votePeriodDesc": "The vote period is the period during which the proposal is voted on. It should be set between 14 and 28 days.",
+      "fundAmount": "Fund amount",
+      "fundAmountDesc": "The fund amount is the amount of BOA that is supported by the proposal."
     },
     "step4": {
       "label": "Step 4",
       "title": "Fund Proposal",
       "description": "Fund the proposal with BOA."
+    },
+    "deploy": {
+      "title": "제안 배포하기",
+      "description": "제안 배포하기 전에 모든 것이 올바른지 다시 한 번 확인하세요.",
+      "transactionModal": {
+        "title": "제안 배포",
+        "description": "트랜잭션을 승인하여 제안을 배포하세요."
+      }
     },
     "review": {
       "title": "Deploy your Multisig wallet",
@@ -1311,58 +1159,10 @@
       "daoUpdates": "For the chain you choose and the members you add, you can't change all these values later in your Multisig wallet.",
       "acceptContent": "Accept proposed content.",
       "valuesCorrect": "These values are correct",
-      "proposalCreation": "Token holders with ≥{{token}} {{symbol}}"
-    }
-  },
-  "createDAO2": {
-    "title": "Create your proposal",
-    "overview": {
-      "title": "Build your proposal",
-      "description": "You can easily create them as you go step by step.",
-      "button": "Build"
+      "proposalCreation": "Token holders with ≥{{token}} {{symbol}}",
+      "minApprovalAddressCount": "of {{count}} addresses"
     },
-    "step1": {
-      "label": "Step 1",
-      "title": "Select blockchain",
-      "description": "The chain you choose is where your tokens and assets are stored. If you already have a token, choose the chain your token is minted on. This cannot be changed later.",
-      "descriptionLinkLabel": "blockchain for your DAO",
-      "descriptionLinkURL": "https://aragon.org/how-to/choose-the-right-blockchain-for-your-dao"
-    },
-    "step2": {
-      "label": "Step 2",
-      "title": "Describe your proposal",
-      "metaTitle": "Define your proposal in one sentence.",
-      "proposalType": "Select the purpose of your proposal.",
-      "description": "Name and define your proposal so new contributors know they've come to the right place. This information is displayed on the dashboard page.",
-      "nameSubtitle": "Maximum of 128 characters",
-      "documentSubtitle": "Only PDF files are accepted. Please prepare your proposal or related documents in PDF format. Maximum file size is limited to 10MB.",
-      "descriptionSubtitle": "Describe your proposal's purpose in a few sentences. This is listed on the dashboard page so new contributors can find you.",
-      "linksSubtitle": "Links to your DAO's website, social media profiles, Discord, or other places your community gathers.",
-      "metadataOverviewGuide": "read our guide",
-      "descriptionLinkLabel": "read our guide",
-      "descriptionLinkURL": "https://aragon.org/how-to/build-a-dao-brand-identity",
-      "ensNameSubtitle": "This will be your DAO’s unique ENS subdomain, created automatically for you. Lowercase letters, numbers, and the dash '-' are all acceptable characters; ideally, the character count should be under 128."
-    },
-    "step3": {
-      "label": "Step 3",
-      "title": "Setup your proposal",
-      "assessmentPeriod": "Assessment period",
-      "assessmentPeriodDesc": "The assessment period is the period during which the proposal is evaluated. It should be set between 7 and 14 days.",
-      "votePeriod": "Vote period",
-      "votePeriodDesc": "The vote period is the period during which the proposal is voted on. It should be set between 14 and 28 days.",
-      "fundAmount": "Fund amount",
-      "fundAmountDesc": "The fund amount is the amount of BOA that is supported by the proposal. It should be set between 100 and 1000 BOA.",
-      "description": "Setup your proposal so new contributors know they've come to the right place. This information is displayed on the proposal detail page."
-    },
-    "deploy": {
-      "title": "Deploy your proposal",
-      "description": "Double-check that everything is correct before launching your organization.",
-      "transactionModal": {
-        "title": "Deploy proposal",
-        "description": "Approve the transaction to deploy the proposal."
-      }
-    },
-    "buttonLabelSuccess": "Go to dashboard"
+    "buttonLabelSuccess": "제안으로 이동"
   },
   "voteSteps": {
     "step1": {
@@ -1414,7 +1214,7 @@
   "assessmentWidget": {
     "title": "Assessment result",
     "description": "Check the assessment result.",
-    "assessNodeCount": "Assessed nodes",
+    "assessNodeCount": "Assessed members",
     "completeness": "Completeness",
     "possibility": "Possibility",
     "profitability": "Profitability",

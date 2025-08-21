@@ -49,7 +49,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.proposalType')}
-          helpText={t('createDAO2.step2.proposalType')}
+          helpText={t('createProposal.step2.proposalType')}
         />
         <Controller
           name="proposalType"
@@ -98,7 +98,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.title')}
-          helpText={t('createDAO2.step2.metaTitle')}
+          helpText={t('createProposal.step2.metaTitle')}
         />
 
         <Controller
@@ -130,7 +130,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.description')}
-          helpText={t('createDAO2.step2.descriptionSubtitle')}
+          helpText={t('createProposal.step2.descriptionSubtitle')}
         />
         <Controller
           name="description"
@@ -144,7 +144,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
             <>
               <TextareaSimple
                 {...field}
-                placeholder={t('placeHolders.daoDescription')}
+                placeholder={t('placeHolders.description')}
               />
               <InputCount>{`${field.value.length}/1024`}</InputCount>
               {error?.message && (
@@ -159,7 +159,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
       <FormItem>
         <Label
           label={t('labels.uploadDocument')}
-          helpText={t('createDAO2.step2.documentSubtitle')}
+          helpText={t('createProposal.step2.documentSubtitle')}
         />
         <Controller
           name="documentId"

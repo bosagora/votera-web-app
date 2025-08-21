@@ -31,7 +31,7 @@ const SelectChain: React.FC = () => {
         <DescriptionListContainer
           title={t('labels.review.blockchain')}
           onEditClick={() => setStep(2)}
-          checkBoxErrorMessage={t('createDAO.review.acceptContent')}
+          checkBoxErrorMessage={t('createProposal.review.acceptContent')}
           checkedState={
             value ? 'active' : reviewCheckError ? 'error' : 'default'
           }

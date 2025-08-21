@@ -1,134 +1,192 @@
 {
-  "testnetIndicator": "TESTNET ACTIVE",
+  "testnetIndicator": "Testnet active",
   "menu": "Menu",
   "navLinks": {
     "dashboard": "Dashboard",
-    "governance": "Governança",
+    "governance": "Governance",
     "explore": "Explore",
     "learn": "Learn",
     "build": "Build",
     "help": "Help",
-    "terms": "Terms of Service",
+    "terms": "Terms of service",
     "privacy": "Privacy",
-    "settings": "Settings"
+    "settings": "Settings",
+    "exploreLinkLabel": "Explore",
+    "exploreLinkURL": "/",
+    "learnLinkLabel": "Learn",
+    "learnLinkURL": "https://bosagora.io",
+    "buildLinkLabel": "Build",
+    "buildLinkURL": "https://devs.aragon.org/",
+    "helpLinkLabel": "Help",
+    "helpLinkURL": "https://discord.gg/AhzsGmh7fK",
+    "termsLinkLabel": "Terms of service",
+    "termsLinkURL": "https://bosagora.io/terms-and-conditions",
+    "privacyLinkLabel": "Privacy",
+    "privacyLinkURL": "https://bosagora.io/privacy-policy"
   },
-  "daoSwitcher": {
-    "title": "Selecione sua proposal",
-    "subtitle": "Go back to Explorer page"
+  "voteraSwitcher": {
+    "title": "Select your proposal",
+    "subtitle": "Go back to explorer page"
   },
   "navButtons": {
-    "connectWallet": "Login",
+    "connectWallet": "Connect wallet",
     "giveFeedback": "Give feedback"
   },
   "labels": {
+    "title": "Title",
+    "uploadDocument": "Upload document",
+    "fund": "Fund",
+    "fundAmount": "Fund amount",
+    "system": "System",
+    "proposalType": "Type",
+    "assessmentPeriod": "Assessment period",
+    "votePeriod": "Vote period",
+    "document": "Upload document",
+    "approvals": "Approvals",
+    "loading": "Loading …",
     "members": "Members",
-    "addMember": "Add Members",
-    "manageMember": "Manage Members",
-    "addedMembers": "Added Members",
+    "tokenHolders": "Token holders",
+    "addMember": "Add members",
+    "manageMember": "Manage members",
+    "addedMembers": "Added members",
     "wallets": "Wallets",
-    "addWallets": "Add Wallets",
-    "removeWallets": "Remove Wallets",
-    "removedMembers": "Removed Members",
-    "addWalletsDescription": "Add as many wallets as you like to the DAO. These are authorized to create proposals, request transactions or suggest changes to the DAO settings from the time of initial creation.",
-    "removeWalletsDescription": "Remove existing wallets from the authorised list of this particular DAO.",
-    "totalWallets": "Total Wallets",
-    "mintTokens": "Mint Tokens",
-    "seeAllHolders": "See All Holders",
-    "seeCommunity": "See Community",
-    "viewTransactions": "View Transactions",
+    "addWallets": "Add wallets",
+    "removeWallets": "Remove wallets",
+    "removedMembers": "Removed members",
+    "removeWalletsDescription": "Revoke these wallets' permissions.",
+    "totalWallets": "Total wallets",
+    "totalNewMembers": "Total new members",
+    "mintTokens": "Mint tokens",
+    "seeAllHolders": "See all holders",
+    "seeCommunity": "See community",
+    "supportThreshold": "Support threshold",
+    "viewTransactions": "View transactions",
     "seeAll": "See all",
-    "seeAllTokens": "See All Tokens",
-    "seeAllTransfers": "See All Transfers",
+    "seeAllTokens": "See all tokens",
+    "seeAllTransfers": "See all transfers",
     "to": "To",
+    "recipient": "Recipient",
     "from": "From",
     "token": "Token",
     "amount": "Amount",
+    "tokenAmount": "Token amount",
     "reference": "Reference",
-    "address": "Token Contract Address",
+    "address": "Token contract address",
     "clear": "Clear",
     "copy": "Copy",
     "paste": "Paste",
     "max": "Max",
-    "maxBalance": "Max Balance",
+    "maxBalance": "Max balance",
     "back": "Back",
     "continue": "Continue",
     "next": "Next",
-    "submitDeposit": "Submit Deposit",
+    "submitDeposit": "Submit deposit",
     "resources": "Resources",
+    "startDate": "Start date",
+    "endDate": "End date",
     "days": "Days",
-    "dateTime": "Date + Time",
-    "resourcesHelptext": "Link to external resources, such as documents, forum links, chats or similar.",
+    "date": "Date",
+    "time": "Time",
+    "now": "Now",
+    "timezone": "Your timezone",
+    "dateTime": "Specific date & time",
+    "resourcesHelptext": "Share external resources here.",
     "sortBy": "Sort by",
-    "mainNet": "Main Net",
-    "testNet": "Test Net",
-    "cheapest": "cheapest",
-    "safest": "safest",
-    "mostPopular": "most popular",
-    "networkCost": "Network Cost",
+    "mainNet": "Mainnet",
+    "testNet": "Testnet",
+    "cheapest": "Cheapest",
+    "safest": "Safest",
+    "mostPopular": "Most popular",
+    "networkCost": "Network cost",
     "security": "Security",
     "popularity": "Popularity",
-    "proposalTitle": "DAO Name",
-    "summary": "Summary",
-    "addLink": "Add Link",
-    "addWallet": "Add Wallet",
-    "selectWallet": "Select Wallet",
+    "proposalTitle": "Proposal name",
+    "summary": "Description",
+    "description": "Description",
+    "addLink": "Add link",
+    "addWallet": "Add wallet",
+    "selectWallet": "Select wallet",
     "removeLink": "Remove Link",
-    "removeWallet": "Delete This Address",
-    "resetDistribution": "Reset Token Distribution",
-    "deleteAllAddresses": "Delete All Addresses",
-    "addResource": "Add Resource",
+    "removeWallet": "Delete this address",
+    "resetDistribution": "Reset token distribution",
+    "deleteAllAddresses": "Delete all addresses",
+    "addResource": "Add resource",
     "link": "Link",
     "links": "Links",
     "label": "Name / Description",
     "logo": "Logo",
     "optional": "Optional",
-    "minimumApproval": "Minimum Approval",
-    "minimumParticipation": "Minimum Participation",
-    "minimumDuration": "Minimum Duration",
+    "minimumApprovalThreshold": "Approval threshold",
+    "multisigMembers": "Multisig members",
+    "minimumApproval": "Minimum approval",
+    "minimumParticipation": "Minimum participation",
+    "minimumDuration": "Minimum duration",
+    "voteReplacement": "Vote change",
     "support": "Support",
     "duration": "Duration",
     "communityToken": "Does your community have a token?",
-    "authorisedWallets": "Authorised Wallets / Addresses",
-    "addExistingToken": "Add existing Token",
+    "authorisedWallets": "Authorized wallets / addresses",
+    "addExistingToken": "Add existing token",
     "tokenName": "Name",
     "tokenSymbol": "Symbol",
     "supply": "Supply",
-    "distributeTokens": "Distribute Tokens",
-    "duplicateAction": "Duplicate Action",
-    "resetAction": "Reset Action",
-    "removeEntireAction": "Remove Entire Action",
+    "distributeTokens": "Distribute tokens",
+    "proposalCreation": "Proposal creation",
+    "mintToken": "Mint your token",
+    "duplicateAction": "Duplicate action",
+    "resetAction": "Reset action",
+    "removeEntireAction": "Remove entire action",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
-    "externalContract": "External Contract",
+    "externalContract": "External contract",
     "all": "All",
-    "daoTreasury": "DAO Treasury",
-    "treasuryValue": "Treasury Value",
     "searchPlaceholder": "Type to search ...",
     "result": "1 result",
     "nResults": "{{count}} results",
     "noResults": "No results to show",
     "noResultsSubtitle": "Try to modify your search to find the corresponding wallets.",
-    "notChangeable": "Not Changeable",
+    "notChangeable": "Not changeable",
+    "changeableVote": "Changeable with a vote",
+    "changeable": "Changeable",
     "whitelistWallets": {
       "address": "Address",
-      "addresses": "{{count}} Addresses",
+      "addresses": "{{count}} addresses",
       "addAddress": "Add address",
       "uploadCSV": "Upload CSV",
       "duplicateEntry": "Duplicate Entry",
-      "resetEntry": "Reset Address",
-      "deleteEntry": "Remove Address",
-      "resetAllEntries": "Reset All Addresses",
-      "deleteAllEntries": "Delete All Addresses",
-      "noWallets": "No Wallets",
-      "addWalletsSubtitle": "Add a wallet to your DAO"
+      "resetEntry": "Reset address",
+      "deleteEntry": "Remove address",
+      "resetAllEntries": "Reset all addresses",
+      "deleteAllEntries": "Delete all addresses",
+      "noWallets": "Choose a wallet to remove",
+      "addWalletsSubtitle": "Add a wallet to your DAO",
+      "totalWallets": "Total wallets"
     },
     "review": {
       "blockchain": "Blockchain",
+      "proposalMetadata": "Proposal metadata",
+      "setupProposal": "Proposal setup",
+      "voters": "Voters",
+      "votingParameters": "Voting parameters",
       "governance": "Governance",
       "network": "Network",
+      "eligibleVoters": "Eligible voters",
       "distribution": "Distribution",
-      "distributionLink": "See all {{walletCount}} Addresses",
-      "minimumParticipation": "{{walletCount}} Wallets"
+      "distributionLink": "See all {{walletCount}} addresses",
+      "minimumParticipation": "{{walletCount}} wallets",
+      "proposalThreshold": "Proposal threshold",
+      "tokenHoldersWithTkns": "Token holders with ≥ {{tokenAmount}} {{tokenSymbol}}",
+      "earlyExecution": "Early execution",
+      "voteReplacement": "Vote change",
+      "multisigMinimumApprovals": "of {{count}} authorized addresses",
+      "existingTokens": {
+        "currentHolders": "Current Holders"
+      },
+      "distributionLinkLabel": "View on block explorer",
+      "no": "No",
+      "yes": "Yes",
+      "tokenWrapped": "Wrapped",
+      "tokenSymbolGovernance": "Governance"
     },
     "author": "Author",
     "sec": "sec",
@@ -136,46 +194,97 @@
     "step": "Step",
     "of": "of",
     "edit": "Edit",
-    "daoSettings": "DAO Settings",
-    "selectWallets": "Select Wallets",
+    "voteraSettings": "Multisig wallet settings",
+    "selectWallets": "Select wallets",
     "cancel": "Cancel",
-    "addSingleWallet": "Add 1 Wallet",
-    "singleAddressSelected": "1 Address selected",
-    "addNWallets": "Add {{walletCount}} Wallets",
-    "nAddressesSelected": "{{walletCount}} Addresses selected",
+    "addSingleWallet": "Add 1 wallet",
+    "singleAddressSelected": "1 address selected",
+    "addNWallets": "Add {{walletCount}} wallets",
+    "nAddressesSelected": "{{walletCount}} addresses selected",
     "noAddressSelected": "No address selected",
     "you": "you",
-    "noResources": "No Resources were added",
-    "newTokens": "New Tokens",
-    "newHolders": "New Holders",
-    "totalTokens": "Total Tokens",
-    "totalHolders": "Total Holders",
+    "noResources": "No resources were added",
+    "newTokens": "New tokens",
+    "newHolders": "New holders",
+    "totalTokens": "Total new token supply",
+    "totalHolders": "Total new holders",
     "mintable": "Mintable",
     "new": "New",
-    "pendingTransaction": "Pending Transaction..."
+    "pendingTransaction": "Pending transaction …",
+    "signVote": "Sign vote",
+    "signExecuteProposal": "Execute proposal",
+    "yes": "Yes",
+    "no": "No",
+    "earlyExecution": "Early execution",
+    "earlyExecutionDescription": "Allows a proposal to be executed before the voting period ends if the support threshold is surpassed, the minimum participation is met, and the outcome cannot be changed by more voters participating.",
+    "voteReplacementDescription": "Allows voters to change their vote during the voting period. This setting can’t be enabled if early execution is enabled.",
+    "updateGovernanceAction": "Update governance settings",
+    "updateGovernanceActionDescription": "Change your DAO governance settings",
+    "updateMetadataAction": "Update DAO metadata",
+    "updateMetadataActionDescription": "Change your DAO metadata",
+    "name": "Name",
+    "minimumApprovalDescription": "Participation is the number of addresses in the authorized list that approve a proposal. The minimum is how many have to approve it for the result to be valid.",
+    "minimumApprovalAdditionalInfo": "When new wallets gets added or removed to the Multisig DAO, you have to review the Minimum Approval.",
+    "minimumApprovalProgressInfo": "of {{amount}} addresses",
+    "anyWallet": "Any wallet",
+    "disconnectWallet": "Disconnect wallet",
+    "submitProposal": "Publish proposal",
+    "addWalletsDescriptionLinkLabel": "read our guide",
+    "addWalletsDescription": "Wallets can create proposals, propose to send funds in and out of the treasury, and vote in your Votera.",
+    "daoEnsName": "ENS Subdomain",
+    "ens": "ENS",
+    "currentTokenSupply": "Current token supply",
+    "helptext": {
+      "snapshot": "Based on this proposal snapshot"
+    },
+    "currentHolders": "Current holders",
+    "supplyPotential": "Potential supply",
+    "supplyPotentialHelptext": "Based on {{tokenSymbol}} Total Supply"
   },
   "placeHolders": {
-    "selectToken": "Select a Token ...",
-    "walletOrEns": "Type wallet address or ENS ...",
-    "searchTokens": "Type to search ...",
-    "proposalTitle": "Type your DAOs name ...",
-    "daoDescription": "Type your summary ...",
-    "addResource": "e.g. Website, Discord, etc"
+    "assessmentPeriod": "Assessment period",
+    "votePeriod": "Vote period",
+    "selectToken": "Select a token …",
+    "walletOrEns": "Type wallet address …",
+    "searchTokens": "Type to search …",
+    "proposalTitle": "Type your proposal's name …",
+    "description": "Type your summary …",
+    "addResource": "Lens, Discord, etc."
   },
   "finance": {
     "tokenSection": "Tokens",
-    "transferSection": "Latest Transfers",
+    "transferSection": "Latest transfers",
     "unknownUSDValue": "Value unknown",
     "tokens": "Tokens",
-    "allocation": "Allocation"
+    "allocation": "Allocation",
+    "emptyState": {
+      "title": "Make your first deposit",
+      "description": "Begin by making your first treasury deposit. Learn more about managing a DAO treasury {{link}}.",
+      "descriptionLinkURL": "",
+      "descriptionLinkLabel": "in this guide",
+      "buttonLabel": "Deposit funds"
+    }
   },
   "governance": {
+    "title": "Governance",
+    "subtitle": "{{activeProposalCount}} active proposals",
+    "subtitleSingular": "1 active proposal",
+    "action": "New proposal",
     "emptyState": {
-      "title": "Create your very first proposal now"
+      "title": "Create your first proposal",
+      "subtitle": "What's the first thing your community needs to decide? ",
+      "subtitleLinkLabel": "read this guide",
+      "subtitleLinkURL": "https://bosagora.io/how-to/structure-dao-proposals-and-build-proposal-processes",
+      "description": "Get your community involved in the decision-making process.",
+      "descriptionLinkLabel": "proposal guide",
+      "descriptionLinkURL": "https://bosagora.io/how-to/structure-dao-proposals-and-build-proposal-processes"
     },
     "proposals": {
       "publishedBy": "Published by",
-      "voteTitle": "Winning Option",
+      "Pending": "Starts in {{timeDiff}}",
+      "Active": "{{timeDiff}} left",
+      "voteTitle": "Winning option",
+      "voteTitleMultisig": "Approval progress",
       "states": {
         "draft": "Draft",
         "pending": "Pending",
@@ -185,48 +294,71 @@
         "defeated": "Defeated"
       },
       "buttons": {
-        "read": "Read Proposal",
+        "read": "Read proposal",
         "vote": "Vote now",
-        "execute": "Execute Now",
-        "edit": "Edit Proposal",
-        "readFullProposal": "Read Full Proposal",
-        "closeFullProposal": "Close Full Proposal"
+        "execute": "Execute now",
+        "edit": "Edit proposal",
+        "readFullProposal": "Read full proposal",
+        "closeFullProposal": "Close full proposal"
+      },
+      "alert": {
+        "voted": "You have already voted."
       }
     },
     "settings": {
-      "preview": "{{days}} Days {{hours}} Hours {{minutes}} Minutes"
+      "preview": "{{days}} days {{hours}} hours {{minutes}} minutes"
     },
     "noProposals": "No proposals found!",
     "statusWidget": {
-      "published": "Proposal has been published",
-      "active": "Voting is active...",
-      "failed": "Proposal execution failed",
-      "executed": "Proposal has been executed successfully",
-      "succeeded": "Proposal is ready to execute",
-      "defeated": "Proposal has been defeated"
+      "published": "Published",
+      "active": "Running",
+      "failed": "Execution failed",
+      "executed": "Executed",
+      "succeeded": "Succeeded",
+      "defeated": "Rejected",
+      "expired": "Expired",
+      "finished": "Finished"
     },
     "executionCard": {
-      "title": "Execution",
-      "description": "These smart actions are executed when the proposal reaches sufficient support.",
-      "addAction": "Add Action",
-      "seeTransaction": "See Transaction",
+      "title": "Actions",
+      "description": "These actions can be executed if the parameters you set for them are met.",
+      "addAction": "Add action",
+      "seeTransaction": "See transaction",
       "status": {
         "succeeded": "Proposal has passed and is ready to be executed",
-        "executed": "Proposal has been executed successfully",
-        "defeated": "Proposal has been defeated",
-        "failed": " Execution failed"
+        "executed": "Actions executed",
+        "defeated": "Proposal defeated",
+        "failed": " Execution failed",
+        "expired": "Proposal expired"
+      },
+      "statusMultisig": {
+        "expiredTitle": "Execution not anymore available",
+        "expiredDesc": "The execution is no longer possible because the expiration time has passed. If you want to carry out this action, you must create a new proposal and possibly set a longer expiration time."
       }
     }
   },
   "infos": {
-    "voteDuration": "The minimum duration of 5 days is defined by DAO Governance Settings",
-    "newVotingTypes": "New voting types will be released soon"
+    "voteDuration": "The minimum duration of {{days}} days is defined by DAO governance settings. To change the minimum duration a vote is required.",
+    "voteDHDuration": "The minimum duration of {{days}} days and {{hours}} hours is defined by DAO governance settings. To change the minimum duration a vote is required",
+    "voteDHMDuration": "The minimum duration of {{days}} days, {{hours}} hours, and {{minutes}} minutes is defined by DAO governance settings. To change the minimum duration a vote is required",
+    "newVotingTypes": {
+      "description": "We'll be adding more voting types in the future.",
+      "title": "New voting types soon"
+    }
   },
   "errors": {
+    "proposalSetup": "Proposal setup is required",
+    "proposalMetadata": "Proposal metadata is required",
+    "setupProposal": "Proposal setup is required",
+    "acceptContent": "Please accept all the content",
+    "assessmentPeriod": "Assessment period is required",
+    "votePeriod": "Vote period is required",
+    "fundAmount": "Fund amount is required",
+    "proposalType": "Proposal type is required",
     "amountWithInvalidToken": "Cannot validate amount with invalid token address",
     "defaultAmountValidationError": "Error validating amount",
-    "durationTooShort": "Duration must be at least 5 days",
-    "endPast": "End date must be more then 5 days from the start",
+    "durationTooShort": "Duration too short",
+    "endPast": "Duration too short",
     "exceedsFractionalParts": "The number of decimals in the amount must not exceed the number of decimals of the token({{decimals}})",
     "includeDecimals": "Include decimals, e.g. 10.0",
     "includeExactAmount": "The token doesn't contain decimals. Please enter the exact amount",
@@ -242,16 +374,31 @@
     "notERC20Token": "Token address is not ERC20 compliant",
     "noTokenSelected": "A token must be selected",
     "duplicateAddress": "Address must not be reused",
+    "duplicateAddressOnCurrentMembersList": "This wallet address is already a member of this Multisig.",
     "distributionMinutes": "Minutes should be between 0 and 59",
     "emptyDistributionMinutes": "Minutes can't be empty",
     "distributionHours": "Hours should be between 0 and 23",
     "emptyDistributionHours": "Hours can't be empty",
-    "distributionDays": "Days Can't be negative",
-    "emptyDistributionDays": "Days Can't be empty",
+    "distributionDays": "Days can't be negative",
+    "emptyDistributionDays": "Days can't be empty",
     "percentage": "Percentage amount should be between 0 and 100",
     "totalSupplyZero": "Total token supply can not be 0",
+    "requiredTokenAddressZero": "Required token amount can not be 0",
     "onlyAlphaNumeric": "{{field}} can only contain alphanumeric characters",
+    "ensDuplication": "ENS subdomain is already taken. Try a different name.",
+    "ensNameInvalidFormat": "Please only use Lowercase letters, numbers, and the dash '-'",
+    "ensNetworkIssue": "Failed to resolve ENS",
+    "ensNameLength": "DAO name must be less than 128 characters",
+    "notValidContractAddress": "Smart contract address not valid",
+    "duplicateContractAddress": "Smart contract has already been added",
+    "biggerThanTotalSupply": "Minimum tokens must be less than total supply",
     "required": {
+      "proposalSetup": "Proposal setup is required",
+      "proposalMetadata": "Proposal metadata is required",
+      "setupProposal": "Proposal setup is required",
+      "acceptContent": "Please accept all the content",
+      "proposalType": "Proposal type is required",
+      "minValue": "Minimum value is required",
       "tokenAddress": "Token address is required",
       "tokenName": "Token name is required",
       "tokenSymbol": "Token symbol is required",
@@ -268,57 +415,108 @@
       "timezone": "Timezone is required",
       "name": "DAO name is mandatory",
       "title": "Title is required",
-      "summary": "Summary is required"
+      "summary": "Summary is required",
+      "minApproval": "At least one authorized address is required in order to approve a proposal."
     },
     "startPast": "Process must not start in the past",
-    "ensUnsupported": "Network does not support ens name",
+    "ensUnsupported": "Network does not support ENS",
     "fields": {
       "tokenName": "Token name",
       "tokenSymbol": "Token symbol"
+    },
+    "minimumApproval": {
+      "required": "Minimal approval has to be set.",
+      "lessThanOne": "Minimum approval can not be less than one address.",
+      "exceedMaxThreshold": "Minimum approval threshold cannot exceed total members.",
+      "membersRequired": "A multisig requires members."
     }
   },
   "alert": {
-    "durationAlert": "We recommend a minimum duration of 1 day if it does not have to be a quick financial decision.",
-    "wrongWalletNetwork": "Wrong Wallet Network",
+    "tokenVoting": {
+      "proposalMinDuration": "{{days}} days, {{hours}} hours, and {{minutes}} minutes  is the lowest vote time.",
+      "proposalMaxDuration": "{{days}} days is the highest vote time. Consider lowering the duration, otherwise this proposal may never pass.",
+      "acceptableProposalDuration": "The minimum duration of {{days}} days, {{hours}} hours, and {{minutes}} minutes is defined by DAO governance settings",
+      "dateTimeMinDuration": "The proposal's end date cannot be less than {{days}} days, {{hours}} hours, and {{minutes}} minutes in the future. Corrected to minimum duration set on the DAO settings."
+    },
+    "multisig": {
+      "proposalMinDuration": "One hour is the minimum expiration time.",
+      "proposalMaxDuration": "To keep your DAO secure, it's not recommended to have an expiration time longer than 2 weeks. ",
+      "accepTableProposalDuration": "It’s recommended to have an expiration time of five days, so you have a clean proposal list.",
+      "dateTimeMinDuration": "Duration cannot be less than one hour."
+    },
+    "durationAlert": "Set this to a duration that is long enough for your members to have sufficient time to vote. It’s recommended to set this to at least 1 day.",
+    "maxDurationAlert": "The maximum duration is 365 days.",
+    "minDurationAlert": "The minimum duration is one hour.",
+    "startDateInPastAlert": "Start time can’t be in the past. ",
+    "wrongWalletNetwork": "Wrong wallet network",
     "wrongNetwork": {
-      "title": "Wrong Network",
-      "description": "The action can’t be executed because you are in the wrong network. Change to the <1>{{network}}</1> on your wallet and try again.",
+      "title": "Wrong network",
+      "description": "The action can't be executed because you are in the wrong network. Change to the <1>{{network}}</1> on your wallet and try again.",
       "buttonLabel": "Switch to {{network}}"
     },
     "loginRequired": {
-      "headerTitle": "Login to continue",
+      "headerTitle": "Connect wallet to continue",
       "title": "Wallet connection",
-      "description": "To continue with this action, a wallet must be connected.",
-      "buttonLabel": "Login Now"
+      "description": "Connect your wallet to continue.",
+      "buttonLabel": "Connect wallet now"
     },
-    "tokenBasedMembers": "The DAO members listed here have interacted with the DAO at least once"
+    "gatingUsers": {
+      "tokenTitle": "Token not found",
+      "tokenDescription": "The wallet does not contain '{{tokenName}}' token. Please ensure that you have the necessary tokens in order to continue.",
+      "walletTitle1": "You can't create a proposal",
+      "walletDescription1": "You are not a member. Creating proposals in test can only be done by addresses that have been added to its member list.",
+      "walletTitle": "Wallet not allowlisted",
+      "walletDescription": "The connected wallet is not allowlisted. Please connect a valid wallet in order to proceed with the process.",
+      "buttonLabel": "Ok, understood"
+    },
+    "tokenBasedMembers": "The DAO members listed here have interacted with the DAO at least once",
+    "chip": {
+      "removedLink": "Link removed",
+      "removedAddress": "Address removed",
+      "distributionReset": "Token distribution reset",
+      "removedAllAddresses": "All addresses removed",
+      "duplicateAction": "Action duplicated",
+      "resetAction": "Action reset",
+      "resetAddress": "Address reset",
+      "resetAllAddresses": "All addresses reset",
+      "removedAction": "Action removed",
+      "addressAdded": "New address added",
+      "inputCleared": "Cleared",
+      "inputCopied": "Copied",
+      "inputPasted": "Pasted",
+      "walletConnected": "Wallet connected",
+      "walletDisconnected": "Wallet disconnected",
+      "max": "Max balance applied",
+      "favorited": "Multisig wallet favorited",
+      "unfavorite": "Multisig wallet removed from favorites"
+    }
   },
   "warnings": {
     "amountGtDaoToken": "Withdraw amount is greater than the current token balance"
   },
   "success": {
-    "contract": "Smart Contract Validated"
+    "contract": "Smart contract validated"
   },
   "allTransfer": {
-    "thisWeek": "This Week",
+    "thisWeek": "This week",
     "tokens": "Tokens",
-    "newTransfer": "New Transfer",
-    "allTransfers": "All Transfers",
+    "newTransfer": "New transfer",
+    "allTransfers": "All transfers",
     "noTransfers": "No transfer information available.",
     "totalVolume": "Total Volume"
   },
   "allTokens": {
-    "title": "All Tokens",
-    "subtitle": "{{count}} Tokens",
-    "subtitleSingular": "1 Token",
-    "callToAction": "New Transfer",
+    "title": "All tokens",
+    "subtitle": "{{count}} tokens",
+    "subtitleSingular": "1 token",
+    "callToAction": "New transfer",
     "noTokens": "No token information available."
   },
   "TransferModal": {
-    "allTransfers": "All Transfers",
-    "newTransfer": "New Transfer",
+    "allTransfers": "All transfers",
+    "newTransfer": "New transfer",
     "item2Title": "Withdraw assets",
-    "item2Subtitle": "Propose to withdraw assets from the DAO treasury"
+    "item2Subtitle": "Create a proposal to withdraw assets to a wallet."
   },
   "TokenModal": {
     "noTokens": "No tokens available",
@@ -330,181 +528,149 @@
     "tokenNotAvailableSubtitleDao": "Update the tokens or add a custom token to transfer."
   },
   "AddressModal": {
-    "noAddresses": "No address Found"
+    "noAddresses": "No address found"
   },
   "TransactionModal": {
-    "approveSubtitle": "To sign your first transaction, you must approve Aragon App to make a transaction with your token.",
+    "createProposalSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
+    "approveSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
     "approveToken": "Approve token",
-    "depositTitle": "Sign Deposit",
+    "depositTitle": "Sign deposit",
+    "goToProposal": "Open your proposal",
+    "launchGovernancePage": "Launch governance page",
+    "launchDaoDashboard": "Launch DAO Dashboard",
     "errorLabel": "Error while confirming transaction",
-    "estimatedFees": "Estimated Gas Fees",
-    "maxFee": "Max Fee",
-    "publishDaoButtonLabel": "Publish DAO Now",
-    "signDeposit": "Sign Deposit",
-    "successLabel": "Transaction successfully executed",
+    "gasEstimationErrorLabel": "Failed to estimate gas fee. You can still proceed. ",
+    "estimatedFees": "Estimated gas fees",
+    "maxFee": "Max fee",
+    "publishDaoSubtitle": "The fees below are the cost of using the selected blockchain.",
+    "publishDaoButtonLabel": "Approve transaction",
+    "signDeposit": "Sign deposit",
+    "successLabel": "Transaction executed",
     "synced": "Synced {{time}} sec ago",
-    "totalCost": "Total Cost",
-    "tryAgain": "Try Again",
-    "createProposal": "Create Proposal",
-    "createProposalNow": "Create Proposal Now",
-    "waiting": "Waiting for Confirmation"
+    "totalCost": "Total cost",
+    "tryAgain": "Try again",
+    "createProposal": "Create proposal",
+    "createProposalNow": "Create proposal now",
+    "waiting": "Waiting for confirmation"
   },
   "AddActionModal": {
-    "title": "Add Action",
-    "addAddresses": "Add Authorized Wallets",
-    "addAddressesSubtitle": "Propose to add addresses to this DAO",
-    "removeAddresses": "Remove Authorized Wallets",
-    "removeAddressesSubtitle": "Propose to remove addresses from this DAO",
-    "mintTokens": "Mint Tokens",
-    "mintTokensSubtitle": "Mint new tokens and distribute",
-    "withdrawAssets": "Withdraw Assets",
-    "withdrawAssetsSubtitle": "Propose to withdraw assets from the DAO treasury",
-    "withdrawAssetsActionSubtitle": "Withdraw assets from the DAO treasury",
-    "externalContract": "External Contract",
-    "externalContractSubtitle": "Interact with any contract on the blockchain and access any functionality"
+    "title": "Add action",
+    "addAddresses": "Authorize wallets",
+    "addAddressesSubtitle": "Create a proposal to authorize new wallets to vote in your DAO.",
+    "removeAddresses": "Remove wallets",
+    "removeAddressesSubtitle": "Create a proposal to unauthorize wallets from voting in your DAO.",
+    "mintTokens": "Mint tokens",
+    "mintTokensSubtitle": "Mint more DAO tokens and distribute to wallets.",
+    "withdrawAssetsSubtitle": "Create a proposal to withdraw assets to a wallet.",
+    "withdrawAssetsActionSubtitle": "Withdraw assets from the Multisig wallet treasury",
+    "externalContract": "Smart contract composer",
+    "externalContractSubtitle": "Interact with an external contract on the chain your DAO is deployed on.",
+    "changeMinimumApproval": "Change minimum approval",
+    "changeMinimumApprovalSubtitle": "Modify minimum approval of this DAO.",
+    "connectdAppsTitle": "Connect dApps",
+    "withdrawAddresses": {
+      "subtitle": "Create a proposal to withdraw assets to a wallet."
+    },
+    "withdrawAssets": "Withdraw assets",
+    "connectdAppsSubtitle": "Interact with external dApps via WalletConnect on the chain your DAO is deployed on."
   },
   "newDeposit": {
-    "depositAssets": "Deposit Assets",
-    "configureDepositSubtitle": "Enter the desired token and its number for transmission. Furthermore, a reception address is necessary.",
-    "reviewTransferSubtitle": "Check your details and make sure everything is correct. After confirmation, no more changes can be made and your token will be transferred.",
-    "toSubtitle": "The recipient of the tokens is the DAO in which you are currently operating.",
-    "tokenSubtitle": "Select Token to deposit in DAO",
+    "depositAssets": "Deposit assets",
+    "configureDepositSubtitle": "A proposal is not needed to deposit assets into the treasury",
+    "reviewDeposit": "Review deposit",
+    "reviewTransferSubtitle": "After confirming, you can't edit or reverse the transaction.",
+    "toSubtitle": "The recipient is automatically set to your DAO address.",
+    "tokenSubtitle": "Token to deposit",
     "contractAddressSubtitle": "You have selected a custom token. Enter the contract address of this token to interact with it.",
-    "amountSubtitle": "Define amount to deposit",
-    "referenceSubtitle": "Add a reference copy to identify this transaction later on"
+    "amountSubtitle": "Amount is calculated in number of tokens, not dollar value",
+    "referenceSubtitle": "Add a description so you can easily identify the transaction later. "
   },
   "newWithdraw": {
     "configureWithdraw": {
-      "title": "Configure Withdraw",
-      "subtitle": "Enter the desired token and its number for transmission. Furthermore, a reception address is necessary.",
-      "toSubtitle": "Define receiver of tokens",
-      "tokenSubtitle": "Select token you'd like to withdraw",
-      "amountSubtitle": "Define amount to withdraw",
+      "title": "Initiate withdrawal",
+      "subtitle": "To withdraw assets from the treasury, your proposal will need to pass a vote.",
+      "toSubtitle": "The wallet that receives the tokens",
+      "tokenSubtitle": "Token to withdraw",
+      "amountSubtitle": "Amount is calculated in number of tokens, not dollar value",
       "utcMenu": {
-        "title": "Select a UTC Timezone"
-      }
+        "title": "Select a UTC timezone"
+      },
+      "ctaAddAnother": "Add another withdrawal"
     },
     "setupVoting": {
-      "title": "Setup Voting",
-      "description": "For a withdraw, a vote is necessary so that the majority can determine whether your proposal is legitimate. For this, you need this configuration.",
+      "title": "Initiate the vote",
+      "description": "Set the choices, start date, and end date for your vote.",
       "optionLabel": {
         "title": "Options"
       },
       "yesNoLabel": {
-        "title": "Yes, Abstain & No"
+        "title": "Yes, no, or abstain",
+        "helpText": "Members can vote for, against, or abstain."
+      },
+      "tokenVoting": {
+        "endDateDescription": "Define how long the voting should last in days, or add an exact date and time for it to conclude."
+      },
+      "multisig": {
+        "optionDescription": "Options for voting",
+        "votingOption": {
+          "label": "Approve",
+          "description": "Each multisig member has the ability to approve the proposal and any associated optional actions. The proposal will be executed if {{amountMembers}} out of {{totalAmountMembers}} members approve it.",
+          "alert": "Approval is the only option for Multisig DAOs."
+        },
+        "startLabel": "Start time",
+        "startDescription": "Define when a proposal should be active to receive approvals. If now is selected, the proposal is immediately active after publishing.",
+        "expiration": "Expiration time",
+        "expirationDescription": "Define when a proposal should expire. After the expiration time, there is no way to approve or execute the proposal."
       }
     },
     "defineProposal": {
-      "heading": "Define Proposal",
-      "description": "A proposal is necessary so that the community understands why you want to execute this withdraw. Fill in the necessary fields and be as detailed but as concise as possible.",
+      "heading": "Create a proposal",
+      "description": "Provide the information voters will need to make their decision here.",
       "title": "Title",
-      "titlePlaceholder": "Type meaningful title",
-      "summaryPlaceholder": "Type your description ...",
+      "titlePlaceholder": "Give your proposal a title",
+      "summaryPlaceholder": "Describe your proposal in 2-3 sentences. This will appear in in the proposal overview.",
       "proposal": "Proposal",
-      "proposalPlaceholder": "Type your proposal ..."
+      "body": "Body",
+      "proposalPlaceholder": "Write the body of the proposal here."
     },
     "reviewProposal": {
-      "heading": "Review Proposal",
-      "description": "A proposal is necessary so that the community understands why you want to execute this withdraw. Fill in the necessary fields and be as detailed but as concise as possible."
-    }
-  },
-  "createDAO": {
-    "title": "Create your DAO",
-    "overview": {
-      "title": "Get started with your DAO",
-      "description": "Start simple and learn as a team. You and your community can always decide how to evolve your DAO as you go.",
-      "button": "Setup your DAO"
+      "heading": "Review proposal",
+      "description": "Check to make sure everything is correct before putting it to vote. You can't edit a proposal once it's published."
     },
-    "step1": {
-      "label": "Step 1",
-      "title": "Choose Blockchain",
-      "description": "Your DAO should live on the blockchain where you expect most of your transactions to happen - where will you trade coins, make payments, etc.  If you already have a token, use the same chain.  The chain cannot be changed later, though you can create a new DAO if you want to. For more details on chains, layer 1 and layer 2, etc see our "
-    },
-    "step2": {
-      "label": "Step 2",
-      "title": "Describe your DAO",
-      "description": "Name and define your DAO so people know they have come to the right place. These choices can be changed by a proposal and vote in the DAO.",
-      "nameSubtitle": "This name shows on lists, best if under 128 characters.",
-      "logoSubtitle": "This is the Logo which represents your DAO. We support SVG, JPG, PNG or GIFs with max 3MB in size and must have 1:1 ratio. We suggest dimension of 1024x1024px.",
-      "descriptionSubtitle": "What is your DAO's mission or goal?  This description appears on detail pages where your DAO is listed publicly.",
-      "linksSubtitle": "Link out to websites, community forums, repositories or documents. Point people to where your mission and proposal discussions live."
-    },
-    "step3": {
-      "label": "Step 3",
-      "title": "Define your Community",
-      "description": "This section defines who is allowed to create proposals in your DAO and vote on them. You can identify specific people based on their wallet addresses or let people cast a vote for each of your tokens they hold. If you have a token already, use that. Otherwise you can create a new token here.",
-      "newToken": "No",
-      "authorisedWalletsSubtitle": "Add as many addresses as you like to the DAO. These are authorised to create proposals, transactions or suggest changes to the DAO settings after its creation. Upload a CSV with <a href='https://aragon.org' external>this template</a> if you want.",
-      "warningTitle": "Changing the list",
-      "warningSubtitle": "If you want to add addresses after creating your DAO, you will need to create a proposal to be voted by the members.",
-      "newTokenSubtitle": "No, I would like to create a token.",
-      "existingToken": "Yes",
-      "existingTokenSubtitle": "Yes, we already have a token.",
-      "tokenMembership": "Token Holders",
-      "tokenName": "Token Name",
-      "tokenMembershipSubtitle": "All those who have a token are entitled to participate. 1 token equals 1 vote.",
-      "walletMemberShip": "Authorized Wallets",
-      "walletMemberShipSubtitle": "Only authorised wallets are entitled to particpiate. 1 Wallet equals 1 vote.",
-      "nameSubtitle": "The full name of the token eg. Aragon",
-      "symbolSubtitle": "The symbol of your token e.g. ANT (good practice is to use 3-4 letters)",
-      "addExistingTokenHelptext": "Hinterlege einen bestehenden Token, welcher deine Community für die Governance verwendet. To learn more about what it’s important if you use an existing Token, read first the ",
-      "tokenHelptextLink": "Token Distribution Guide",
-      "tokenContractSubtitlePart1": "Copy the contract address directly from the ",
-      "tokenContractSubtitlePart2": "This way you can ensure that the address is correct.",
-      "distributeTokensHelpertext": "Determine who receives how many tokens. Unless otherwise specified, the treasury receives the rest tokens for the future distribution of tokens (these tokens have no voting rights and do not influence the quorum).",
-      "distributionWalletAlertText": "Your connected wallet got automatically added to the token distribution.",
-      "whiteListWalletAlertText": "Your connected wallet got automatically added to the list.",
-      "createTokenHelptext": "Mint a community token on a variable or fixed supply. To learn more about how to mint the token and how to use it, read the "
-    },
-    "step4": {
-      "label": "Step 4",
-      "title": "Rules for Deciding",
-      "description": "These are the rules that set how voting works in your DAO. How many people have to participate? What percent counts as winning? How long may a proposal be open for voting? Learn more about ",
-      "shortTitle": "Configure Governance",
-      "bestPractices": "Best practices on governance.",
-      "minimumApprovalSubtitle": "Support is the percentage of tokens or addresses that are required to vote “Yes” for a proposal to be approved, calculated based on total tokens or addresses that voted.",
-      "minimumParticipationSubtitle": "Participation is the percentage of the token supply or addresses in the authorized list that vote on a proposal (either yes or no). The minimum is how many have to vote for the result to be valid.",
-      "supportSubtitle": "Support is the relative percentage of tokens or wallets that are required to vote “Yes” for a proposal to be approved.",
-      "durationSubtitle": "Duration is the length of time that a proposal will be open for participation. The duration applies to each proposal in the DAO. Proposal creators can extend the time if necessary, but not shorten it!",
-      "days": "Days",
-      "hours": "Hours",
-      "minutes": "Minutes",
-      "alerts": {
-        "minimumApprovalAlert": "{{amount}} {{symbol}} tokens",
-        "minimumParticipationAlert": "Rounded up to {{percentage}}% equals {{walletCount}} Wallets have to vote"
-      }
-    },
-    "review": {
-      "title": "Go Live",
-      "description": "Take your DAO public by reviewing the following information and cross-checking the values.",
-      "network": "{{network}} net",
-      "distributionLink": "See {{count}} Addresses",
-      "days": "{{days}} Days",
-      "hours": "{{hours}} Hours",
-      "minutes": "{{minutes}} Minutes",
-      "daoUpdates": "DAO updates are doable",
-      "acceptContent": "You have to accept your proposed content.",
-      "valuesCorrect": "These values are correct"
+    "proposalId": {
+      "alertCritical": "You can't withdraw money to your own DAO treasury."
     }
   },
   "newProposal": {
-    "title": "New Proposal",
+    "title": "New proposal",
     "configureActions": {
-      "heading": "Configure Actions",
-      "description": "If the response is to execute a transaction, store your desired actions at the corresponding response. These can be simple transactions or any smart contract methods you can find (e.g. Uniswap or similar).",
-      "yesOption": "Yes",
-      "addFirstAction": "Add First Action",
-      "addFirstActionSubtitle": "Add your very first optional action if you wish to perform on-chain executions",
-      "addAction": "Add Action",
-      "actionsInfo": "Based on the voting options setup, it is only possible to add actions to the option \"Yes\"."
+      "heading": "Set actions",
+      "description": "These actions are executed if the parameters you set for them are met. ",
+      "yesOption": "If option \"Yes\" wins",
+      "addFirstAction": "Add action",
+      "addFirstActionSubtitle": "This action will execute if the vote passes. A common automatic action is transferring funds to a guild or person if their proposal passes a vote.",
+      "addAction": "Add action",
+      "actionsInfo": "More options for parameters are coming soon. ",
+      "actionAlertCritical": {
+        "title": "Action may fail",
+        "desc": "Even if the proposal was approved, this action may fail if it is not executed within the time limit."
+      },
+      "addFirstActionTitle": "Add first Action",
+      "addFirstActionDesc": "Add your very first optional action if you wish to peform on-chain executions",
+      "alertInfo": "Based on the voting options setup, it is only possible to add actions to the option \"Yes\".",
+      "stepCounter": "Step {{x}} of {{x}}",
+      "actionAlertWarning": {
+        "title": "Action not decoded",
+        "desc": "Because the smart contract is not verified, the actions could not be decoded."
+      }
     },
     "mintTokens": {
-      "methodDescription": "Which wallet addresses should get tokens, and how much? Add the wallets you want here, and then choose the distribution. Upload a CSV with <1>this template</1> if you want.",
-      "additionalInfo": "The total token supply is inclusive of the already distributed tokens of the existing holders."
+      "methodDescription": "Create a proposal to mint more governance tokens. Select the wallets that should receive tokens and determine how many.",
+      "additionalInfo": "The total token supply includes all tokens you've already minted."
     },
     "manageWallets": {
-      "title": "Manage authorised wallets",
-      "description": "TBD Description, but something like: To add and/or remove new members to this wallet-based DAO …"
+      "title": "Add or remove wallets",
+      "description": "Authorized wallets can create proposals, propose to move funds in and out of the treasury, and vote in your DAO"
     }
   },
   "votingTerminal": {
@@ -515,113 +681,597 @@
     "yes": "Yes",
     "abstain": "Abstain",
     "no": "No",
-    "yesHelptext": "Your choice will be counted for option yes",
-    "abstainHelptext": "Your choice will be counted for option abstain",
-    "noHelptext": "Your choice will be counted for option no",
+    "approve": "Approve",
+    "approvedBy": "Approved by",
+    "ofMemberCount": " of {{memberCount}} Members",
+    "ofAddressCount": "{{value}} of {{total}} Addresses",
+    "yesHelptext": "Your choice will be counted for \"Yes\"",
+    "abstainHelptext": "Your choice will be counted for \"Abstain\"",
+    "noHelptext": "Your choice will be counted for \"No\"",
     "token": "Token",
-    "inputPlaceholder": "Type Address, ENS or E-Mail",
+    "inputPlaceholder": "Wallet ",
     "options": "Options",
-    "yes+no": "Yes, No, or Abstain",
+    "yes+no": "Yes, no, or abstain",
     "strategy": "Strategy",
-    "tokenVoting": "1 Token -> 1 Vote",
-    "multisig": "1 Wallet -> 1 Vote",
-    "uniqueVoters": "Unique Voters",
+    "tokenVoting": "1 token → 1 vote",
+    "multisig": "1 wallet → 1 vote",
+    "supportThreshold": "Minimum support",
+    "minParticipation": "Minimum participation (Quorum)",
+    "currentParticipation": "Current participation",
+    "currentApproval": "Current approval",
+    "noVotesMissing": "No votes missing",
+    "noApprovalsMissing": "No approvals missing",
+    "missingVotes": "{{votes}} missing votes",
+    "missingApprovals": "{{approvals}} Approvals missing",
+    "reached": "Reached",
+    "uniqueVoters": "Unique voters",
     "duration": "Duration",
+    "decision": "Rules of decision",
+    "activity": "Voting activity",
+    "startDate": "Start",
+    "endDate": "End",
     "participationErc20": "{{participation}} of {{totalWeight}} {{tokenSymbol}} ({{percentage}}%)",
     "chooseOption": "Choose your option",
-    "chooseOptionHelptext": "To vote, you must select one of the following options. Afterwards, a confirmation with your wallet is necessary. Once the transaction is completed, your vote will be counted and displayed.",
+    "chooseOptionHelptext": "To vote, you must select one of the following options and confirm in your wallet. Once the transaction is completed, your vote will be counted and displayed.",
     "submit": "Submit your vote",
     "cancel": "Cancel",
+    "concluded": "Concluded",
     "status": {
-      "draft": "Publish to enable voting.",
-      "pending": "Voting begins in {{startDate}}",
-      "succeeded": "Proposal has passed",
-      "executed": "Proposal has been accepted",
-      "defeated": "Proposal has been defeated",
-      "active": "Voting ends in {{endDate}}",
+      "draft": "Publish proposal to enable voting",
+      "pending": "Voting begins in {{timeUntilNow}}",
+      "succeeded": "Proposal passed",
+      "executed": "Proposal executed",
+      "defeated": "Proposal defeated",
+      "active": "Voting ends in {{timeUntilEnd}}",
       "ineligibleWhitelist": "You had to be a member before the proposal was created to be able to vote",
       "ineligibleTokenBased": "You had to hold {{token}} when proposal was created to be able to vote",
-      "voteSubmitted": "Vote submitted"
+      "voteSubmitted": "Vote submitted",
+      "revote": "Revote",
+      "expired": "Proposal has expired",
+      "approved": "Approved"
     },
+    "voteOver": "Vote over",
     "voteNow": "Vote now",
     "emptyState": {
       "titleSearch": "No result found for {{query}}",
-      "title": "There are no voters yet",
-      "subtitle": "Search for another wallet or ENS address"
+      "title": "No voters yet",
+      "subtitle": "Search for another wallet address"
+    },
+    "label": {
+      "in": "In"
     }
   },
   "explore": {
     "hero": {
-      "title": "EXPLORE THE DAO WORLD",
-      "subtitle1": "Welcome to the Aragon Explore Portal."
+      "title": "Votera",
+      "subtitle1": "Create a proposal."
     },
     "explorer": {
-      "title": "Explore DAOs",
-      "myDaos": "My DAOs",
+      "title": "Explore Wallets",
+      "myDaos": "Favorites",
       "popular": "Popular",
-      "newest": "Newest",
-      "walletBased": "Wallet-Based",
-      "showMore": "Show More",
-      "tokenBased": "Token-Based"
+      "newest": "My Wallets",
+      "walletBased": "Wallet-based",
+      "showMore": "Show more",
+      "tokenBased": "Token-based"
     },
-    "activeProposals": "Active Proposals",
-    "showMore": "Show More",
+    "activeProposals": "Active proposals",
+    "showMore": "Show more",
     "emptyStateProposal": {
       "title": "There are no active proposals",
-      "description": "You can still check upcoming or past proposals on your DAOs."
+      "description": "You can still check upcoming or past proposals in your DAOs."
+    },
+    "statistics": {
+      "daosCreated": "DAOs created",
+      "aragonMembers": "Members in Aragon App DAOs",
+      "activeProposals": "Active proposals",
+      "securedByAragon": "Secured by Aragon OSx"
+    },
+    "learn": {
+      "linkLabel": "다중 서명 지갑에 대해서 학습하기",
+      "linkURL": "https://bosagora.io/education-portal"
     }
   },
   "privacyPolicy": {
     "title": "Privacy policy",
     "analytics": "Analytics cookies",
-    "analyticsHelpText": "It will allow to collect information of how you use our app.",
+    "analyticsHelpText": "Collects information on how you use the App.",
     "functional": "Functional cookies",
     "functionalHelpText": "Used to store your preferences in the application.",
     "cookieSettings": "Cookie settings",
     "acceptAllCookies": "Accept all",
     "rejectAllCookies": "Reject all",
     "acceptSelectedCookies": "Accept",
-    "content": "We use cookies and similar technologies to improve your browsing experience in our application, enabling certain features, and analyzing our application usage. You may choose below to opt-out for some specific behaviors. Know more by reading our"
+    "content": "We use cookies and similar technologies to improve your experience, enable certain features, and analyze our application usage. You may opt-out of cookies here. Learn more in our {{link}}.",
+    "linkLabel": "privacy policy",
+    "linkURL": "https://bosagora.io/privacy-policy"
   },
   "transactionDetail": {
-    "title": "Transaction Detail",
-    "viewTransaction": "View on Block Explorer"
+    "title": "Transaction detail",
+    "viewTransaction": "View on block explorer"
   },
   "cookiePreferences": {
     "title": "Cookie Preferences",
-    "content": "In order to use this feature you need to allow the usage of functional cookies so we can store your preferences within our app.",
+    "content": "To access this feature, we need to store your preferences. Enable cookies to continue.",
     "accept": "Accept",
     "cancel": "Cancel"
   },
   "cta": {
     "create": {
-      "title": "Create a DAO",
-      "description": "Create your Decentralized Autonomous Organization on open-source infrastructure with governance plugins.",
-      "actionLabel": "Create a DAO"
+      "title": "Create your multisig wallet",
+      "description": "A multisig wallet is a technology that enhances security by requiring more than one signature for a transaction.",
+      "actionLabel": "Create a multisig wallet"
     },
     "learn": {
-      "title": "Learn about DAO",
-      "description": "Explore and learn through our “How-to Guides”, DAO Education, Educational Articles and more!",
-      "actionLabel": "Learn about DAO"
+      "title": "학습하기",
+      "description": "다중 서명 지갑을 생성하고 사용하는 방법을 학습합니다.",
+      "actionLabel": "다중 서명 지갑에 관해 배우기"
     },
     "build": {
       "title": "Build faster",
-      "description": "Build something something on open-source infrastructure with governance plugins.",
+      "description": "Use our governance plugins to build a DAO, dApp, or anything you can imagine on the Aragon OSx protocol.",
       "actionLabel": "Coming soon"
+    },
+    "404": {
+      "titleLine1": "Oh no,",
+      "titleLine2": "you found a wormhole in the DAO space!",
+      "backToExplore": "Back to Explore"
     }
   },
   "settings": {
     "proposeSettings": "Propose new settings",
-    "proposeSettingsSubtitle": "Confirm the new settings that will be presented to the community in your proposal.",
-    "editDaoSettings": "Edit DAO Settings",
-    "editSubtitle": "To edit the DAO settings, fill the new data and then you have to propose this to the DAO community. If it gets approved, the new settings will get applied.",
-    "resetChanges": "Reset Changes",
-    "edit": "Edit Settings",
-    "newSettings": "New Settings",
-    "oldSettings": "Old Settings",
-    "proposeSettingsInfo": "To make changes to the settings of this DAO, a vote must be taken via the community."
+    "reviewProposal": "Review proposal",
+    "proposeSettingsSubtitle": "Confirm the new settings that will be included in your proposal.",
+    "editDaoSettings": "Edit Votera Proposal settings",
+    "editSubtitle": "To edit settings such as the logo and description, you'll need to create a proposal and put it to vote in your Votera Proposal.",
+    "resetChanges": "Reset changes",
+    "edit": "Edit settings",
+    "newSettings": "New settings",
+    "oldSettings": "Old settings",
+    "proposeSettingsInfo": "To make changes to the settings, create a proposal and put it to vote in your DAO."
   },
   "dashboard": {
-    "proposalsTitle": "Proposals created"
+    "proposalsTitle": "Proposals created",
+    "emptyState": {
+      "title": "We're building your DAO!",
+      "subtitle": "The on-chain data is being deployed and published. This won't take very long.",
+      "daoReady": "Your DAO is ready",
+      "openDao": "Open your DAO",
+      "buildingDAO": "Building your DAO"
+    }
+  },
+  "app": {
+    "feedback": {
+      "linkLabel": "Give feedback",
+      "linkURL": "https://form.typeform.com/to/apg4gHYO"
+    }
+  },
+  "logo": {
+    "linkURL": "https://bosagora.io/"
+  },
+  "modal": {
+    "deposit": {
+      "headerTitle": "Deposit assets",
+      "headerDescription": "Send assets to the Multisig wallet treasury",
+      "inputLabelEns": "Multisig wallet treasury",
+      "inputHelptextEns": "Copy the address below and use your wallet's send feature to send money to your Multisig wallet's treasury.",
+      "ctaLabel": "View all transfers",
+      "cancelLabel": "Cancel",
+      "inputLabelBlockchain": "Blockchain",
+      "inputHelptextBlockchain": "Use the appropriate blockchain. Funds cannot be restored once they have been sent.",
+      "ctaBlockchain": "Connect",
+      "statusBlockchain": "Connected"
+    },
+    "exitProcess": {
+      "description": "If you leave the process, you'll lose all the information you've put in. Would you like to exit the process?",
+      "ctaLabel": "Yes, exit now",
+      "cancelLabel": "No, stay",
+      "titleProposalCreation": "Exit proposal creation",
+      "titleDaoCreation": "Exit Multisig wallet creation"
+    },
+    "claimPoap": {
+      "ctaLabel": "Claim POAP now",
+      "ctaURL": "https://poap-claim-app.aragon.org/",
+      "title": "Claim your DAO Builder POAP"
+    },
+    "mintTokensToTreasury": {
+      "title": "Minting tokens to the DAO treasury",
+      "description": "The DAO cannot cast votes. Beware of minting too many tokens to your DAO treasury, because you may not be able to reach minimum participation and thus will be unable to execute any proposal actions.",
+      "alertTitle": "Potential risk for your DAO",
+      "alertDescription": "Instead of minting tokens to your DAO treasury, consider minting them to a member's wallet address so the tokens can be used for voting. ",
+      "step1CtaLabel": "Back to token minting",
+      "step1CancelLabel": "Proceed with DAO address",
+      "inputLabel": "Confirm with DAO address",
+      "inputHelptext": "To confirm, fill in the DAO contract address below.",
+      "step2CtaLabel": "Confirm",
+      "step2CancelLabel": "Cancel",
+      "alertChipSuccess": "DAO treasury removed",
+      "alertChipCritical": "DAO treasury added"
+    },
+    "wrapToken": {
+      "title": "Join the DAO",
+      "desc": "Wrap {{tokenSymbol}} to get {{gTokenSymbol}}, which is used to participate in governance. You can unwrap {{gTokenSymbol}} at any time (1 {{tokenSymbol}} = 1 {{gTokenSymbol}}).",
+      "inputModeLabel": "What do you want to do with your tokens?",
+      "inputSelectWrap": "Wrap",
+      "inputSelectUnwrap": "Unwrap",
+      "inputAmountLabel": "Amount",
+      "inputAmountDesc": "Define amount to wrap to get your governance-compatible {{tokenSymbol}}.",
+      "inputAmountBalance": "Your balance: {{amount}} {{tokenSymbol}}",
+      "footerTitle": "Approve tokens",
+      "footerSteps": "Step {{step}} of {{steps}}",
+      "footerDesc": "To wrap this {{tokenSymbol}}, you must first approve the amount to be usable by Aragon App.",
+      "footerCtaFirst": "Approve tokens",
+      "footerCtaSecond": "Wrap tokens",
+      "footerCtaError": "Try again",
+      "footerAlertCriticalApprove": "Error while approving your tokens. Try again.",
+      "footerAlertCriticalWrap": "Error while wrapping your tokens. Try again.",
+      "successTitle": "Tokens successfully wrapped",
+      "successDesc": "You have received {{amount}}  {{gTokenSymbol}} in your wallet. You are now a member of the DAO can use these tokens to participate in governance.",
+      "successCtaLabel": "See community",
+      "successBtnSecondaryLabel": "Add token symbol",
+      "inputAmountBalanceWrapped": "Your balance: {{amount}} g{{tokenSymbol}}",
+      "footerWrappedCancelLabel": "Cancel",
+      "footerWrappedCtaLabel": "Unwrap tokens"
+    },
+    "unwrapToken": {
+      "successTitle": "Tokens successfully unwrapped",
+      "successDesc": "You have received {{amount}} {{tokenSymbol}} in your wallet.",
+      "successCtaLabel": "See community"
+    }
+  },
+  "scc": {
+    "labels": {
+      "connect": "Connect smart contract",
+      "singleContractConnected": "One connected contract",
+      "nContractsConnected": "{{numConnected}} Connected smart contracts",
+      "searchPlaceholder": "Type to find any action …",
+      "singleActionAvailable": "One write action",
+      "nActionsAvailable": "{{numConnected}} write actions"
+    },
+    "addressValidation": {
+      "modalTitle": "Connect smart contract",
+      "title": "Smart contract address",
+      "description": "Enter the smart contract address. It's best to copy this address directly from",
+      "actionLabelWaiting": "Validate smart contract",
+      "actionLabelLoading": "Validating smart contract …",
+      "actionLabelSuccess": "Compose actions",
+      "successLabel": "Smart contract validated -> {{contractName}}"
+    },
+    "selectionEmptyState": {
+      "title": "Select smart contract",
+      "description": "Select a smart contract to compose any actions or connect a new smart contract if ..."
+    },
+    "validation": {
+      "sourcifyStatusPending": "Validating on Sourcify …",
+      "etherscanStatusPending": "Validating on Etherscan …",
+      "sourcifyStatusSuccess": "Verified on Sourcify",
+      "etherscanStatusSuccess": "Verified on Etherscan",
+      "sourcifyStatusWarning": "Partially verified on Sourcify",
+      "sourcifyStatusCritical": "Not verified on Sourcify",
+      "etherscanStatusCritical": "Not verified on Etherscan",
+      "addressInputHelp": "Enter the contract address. We recommend pasting it directly from a block explorer.",
+      "cancelLabel": "Cancel validation",
+      "explorerLinkLabel": "View details",
+      "ctaLabelWaiting": "Validate contract address",
+      "ctaLabelSuccess": "Create action",
+      "ctaLabelWarning": "Add ABI function",
+      "modalTitle": "Connect smart contract",
+      "addressInputLabel": "Contract address",
+      "addressInput": {
+        "alertCritical": "Address not valid."
+      },
+      "explorerLinkEtherscanURL": "https://etherscan.io/address/{contractAddress}#code",
+      "explorerLinkSourcifyURL": "https://sourcify.dev/#/lookup/{contractAddress}",
+      "explorerLinkPolyscanURL": "https://polygonscan.com/address/{contractAddress}#code"
+    },
+    "emptyState": {
+      "ctaLabel": "Connect smart contract",
+      "title": "No smart contract added",
+      "description": "Add a smart contract to interact with it. To learn more, read {{link}}.",
+      "modalTitle": "Smart contract composer",
+      "descriptionLinkURL": "https://bosagora.io/how-to/interact-with-external-contracts-from-your-dao",
+      "descriptionLinkLabel": "our guide"
+    },
+    "abi": {
+      "abiInputLabel": "ABI function",
+      "abiInputHelp": "To generate actions for an unverified smart contract, add ABI functions. To learn how to add ABI functions, read {{link}}.",
+      "ctaLabelWaiting": "Validate ABI Function",
+      "ctaLabelLoading": "Validating ABI Function …",
+      "abiInputHelpLinkURL": "https://",
+      "abiInputHelpLinkLabel": "our guide",
+      "ctaLabelCritical": "Retry ABI validation",
+      "abiInput": {
+        "alertWarning": "Function validated",
+        "alertCritical": "Input failed. Try again."
+      }
+    },
+    "listContracts": {
+      "searchInputPlaceholder": "Type to find an action",
+      "pretitle": "{{amount}} connected smart contracts",
+      "contractAmountActions": "{{amount}} actions",
+      "ctaLabel": "Connect smart contract",
+      "learnLinkLabel": "Learn more",
+      "learnLinkURL": "https://bosagora.io/how-to/interact-with-external-contracts-from-your-dao"
+    },
+    "detailContract": {
+      "dropdownExplorerLinkLabel": "View on block explorer",
+      "dropdownCopyLabel": "Copy contract address",
+      "dropdownRemoveLabel": "Remove smart contract",
+      "ctaLabel": "Add action",
+      "checkboxMultipleLabel": "Add another action"
+    },
+    "inputPayableAmount": {
+      "description": "Enter the required amount of {{tokenSymbol}} to be paid.",
+      "label": "Payable Amount"
+    }
+  },
+  "inputWallet": {
+    "placeholder": "0x…",
+    "ensAlertSuccess": "ENS resolved successfully",
+    "addressAlertSuccess": "Address resolved successfully",
+    "ensAlertWarning": "This network does not support ENS domains",
+    "ensAlertCirtical": "Invalid ENS",
+    "addressAlertCritical": "Invalid address"
+  },
+  "modalWarning": {
+    "mintToken": {
+      "title": "Another proposal is active",
+      "description": "Beware of another proposal that mints additional tokens. This implies that the token supply may not be the final one and that it may affect future votes.",
+      "ctaLabel": "OK, understood"
+    }
+  },
+  "community": {
+    "emptyState": {
+      "title": "Become the first member",
+      "desc": "Wrap your {{tokenSymbol}} to become a member of the DAO community. This will enable you to participate in governance. Learn more about it {{link}}.",
+      "ctaLabel": "Join the DAO",
+      "descLinkLabel": "in our guide",
+      "descLinkURL": "https://bosagora.io/how-to/import-existing-tokens"
+    },
+    "ctaMain": {
+      "wrappedLabel": "Join the DAO"
+    }
+  },
+  "modalAlert": {
+    "wrapToken": {
+      "title": "No governance tokens found",
+      "desc": "Wrap your {{tokenSymbol}} to become a member of the DAO community. This will enable you to participate in governance. Learn more {{link}}.",
+      "ctaLabel": "Wrap tokens",
+      "cancleLabel": "Cancel",
+      "descLinkLabel": "our guide",
+      "descLinkURL": "https://bosagora.io/how-to/import-existing-tokens"
+    }
+  },
+  "wc": {
+    "emptyState": {
+      "modalTitle": "Connect dApps",
+      "title": "WalletConnect",
+      "desc": "Connect any dApps to add its actions to your proposal. Learn more about {{link}}.",
+      "ctaLabel": "Connect first dApp",
+      "descLinkLabel": "in our guide",
+      "descLinkURL": "https://"
+    },
+    "listdApps": {
+      "pretitle": {
+        "searchResults": "{{amount}} dApps results"
+      },
+      "emptyStateSearch": {
+        "title": "No results to show",
+        "desc": "No connected dApps found for this search term.",
+        "ctaLabel": "Reset search"
+      },
+      "listTitle": "{{amount}} connected dApps",
+      "learnLinkURL": "https://",
+      "learnLinkLabel": "Learn more",
+      "ctaLabelDefault": "Connect dApp"
+    },
+    "validation": {
+      "modalTitle": "Connect dApp",
+      "codeInputHelp": "Copy the QR Code to your Clipboard and past it below to connect to your desired dApp.",
+      "codeInputLabel": "WalletConnect QR code",
+      "codeInputPlaceholder": "wc: …",
+      "ctaLabel": "Connect dApp",
+      "addressInput": {
+        "alertCritical": "Failure in connecting the dApp. Try again"
+      },
+      "codeInput": {
+        "statusSuccess": "{{dappName}} connected"
+      },
+      "ctaLabelSuccess": "Start adding actions",
+      "ctaLabelCritical": "Retry",
+      "ctaLabelVerifying": "Connecting dApp …"
+    },
+    "detaildApp": {
+      "spinnerLabel": "Listening for actions...",
+      "desc": "Simply open {{dappName}} and interact with it. The actions will be added to this proposal.",
+      "noActionsTag": "No actions received yet",
+      "amountActionsTag": "{{amountActions}} actions received",
+      "ctaLabel": {
+        "opendApp": "Open {{dappName}}",
+        "disconnectdApp": "Disconnect {{dappName}}",
+        "addAmountActions": "Add {{amountActions}} actions"
+      }
+    },
+    "modalHeaderSearch": {
+      "placeholder": "Type to find any action …"
+    }
+  },
+  "createProposal": {
+    "title": "Create Proposal",
+    "overview": {
+      "title": "Build your Multisig wallet",
+      "description": "You can easily create them as you go step by step.",
+      "button": "Build"
+    },
+    "step1": {
+      "label": "Step 1",
+      "title": "Select Blockchain",
+      "description": "Select the blockchain you want to create a proposal on."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Define Metadata",
+      "description": "Define the metadata for your proposal.",
+      "metaTitle": "Define your proposal in one sentence.",
+      "proposalType": "Select the purpose of your proposal.",
+      "nameSubtitle": "Maximum of 128 characters",
+      "documentSubtitle": "Only PDF files are accepted. Please prepare your proposal or related documents in PDF format. Maximum file size is limited to 10MB.",
+      "descriptionSubtitle": "Describe your proposal's purpose in a few sentences. This is listed on the dashboard page so new contributors can find you.",
+      "linksSubtitle": "Links to your DAO's website, social media profiles, Discord, or other places your community gathers.",
+      "metadataOverviewGuide": "read our guide",
+      "descriptionLinkLabel": "read our guide",
+      "descriptionLinkURL": "https://bosagora.io/how-to/build-a-dao-brand-identity",
+      "ensNameSubtitle": "This will be your DAO’s unique ENS subdomain, created automatically for you. Lowercase letters, numbers, and the dash '-' are all acceptable characters; ideally, the character count should be under 128."
+
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Select Voting Period",
+      "description": "Select the period required to evaluate the proposal.",
+      "assessmentPeriod": "Assessment period",
+      "assessmentPeriodDesc": "The assessment period is the period during which the proposal is evaluated. It should be set between 7 and 14 days.",
+      "votePeriod": "Vote period",
+      "votePeriodDesc": "The vote period is the period during which the proposal is voted on. It should be set between 14 and 28 days.",
+      "fundAmount": "Fund amount",
+      "fundAmountDesc": "The fund amount is the amount of BOA that is supported by the proposal."
+    },
+    "step4": {
+      "label": "Step 4",
+      "title": "Fund Proposal",
+      "description": "Fund the proposal with BOA."
+    },
+    "deploy": {
+      "title": "제안 배포하기",
+      "description": "제안 배포하기 전에 모든 것이 올바른지 다시 한 번 확인하세요.",
+      "transactionModal": {
+        "title": "제안 배포",
+        "description": "트랜잭션을 승인하여 제안을 배포하세요."
+      }
+    },
+    "review": {
+      "title": "Deploy your Multisig wallet",
+      "description": "Double-check that everything is correct before launching your organization.",
+      "network": "{{network}} net",
+      "distributionLink": "See {{count}} addresses",
+      "days": "{{days}} days",
+      "hours": "{{hours}} hours",
+      "minutes": "{{minutes}} minutes",
+      "daoUpdates": "For the chain you choose and the members you add, you can't change all these values later in your Multisig wallet.",
+      "acceptContent": "Accept proposed content.",
+      "valuesCorrect": "These values are correct",
+      "proposalCreation": "Token holders with ≥{{token}} {{symbol}}",
+      "minApprovalAddressCount": "of {{count}} addresses"
+    },
+    "buttonLabelSuccess": "제안으로 이동"
+  },
+  "voteSteps": {
+    "step1": {
+      "label": "Step 1",
+      "title": "Assessment",
+      "description": "Define the assessment step for your proposal."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Vote",
+      "description": "Define the vote step for your proposal."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Execution",
+      "description": "Define the execution step for your proposal."
+    }
+  },
+  "proposalStatusMessage": {
+    "openedAssessment": "Assessment is ongoing.",
+    "openedVote": "Vote is ongoing.",
+    "openedExecution": "Execution is ongoing.",
+    "openedExpiredAssessment": "Assessment period has expired. The vote step must be transitioned.",
+    "closedExpiredAssessment": "The vote step was not transitioned within the vote period.",
+    "openedExpiredVote": "Vote period has expired. The execution step must be transitioned.",
+    "closedExpiredVote": "Vote period has expired. The execution step was not transitioned.",
+    "closedRejectedAssessment": "Assessment step rejected.",
+    "closedRejectedVote": "Vote rejected.",
+    "closedInvalidQuorumVote": "Vote rejected due to invalid quorum.",
+    "closedFinished": "Proposal completed successfully.",
+    "error": "An error occurred.",
+    "undefined": "Unknown status."
+  },
+  "proposalInfo": {
+    "currentStatus": "Current phase",
+    "proposalType": "Proposal type",
+    "fundAmount": "Fund amount",
+    "assessmentPeriod": "Assessment period",
+    "votePeriod": "Vote period",
+    "executionPeriod": "Execution period",
+    "proposalDocument": "Proposal document",
+    "systemProposal": "System proposal",
+    "fundingProposal": "Funding proposal",
+    "download": "Download",
+    "daysLeft": "{{days}} day(s) left",
+    "hoursLeft": "{{hours}} hour(s) left",
+    "minutesLeft": "{{minutes}} minute(s) left"
+  },
+  "assessmentWidget": {
+    "title": "Assessment result",
+    "description": "Check the assessment result.",
+    "assessNodeCount": "Assessed members",
+    "completeness": "Completeness",
+    "possibility": "Possibility",
+    "profitability": "Profitability",
+    "attractiveness": "Attractiveness",
+    "scalability": "Scalability",
+    "totalScore": "Total score",
+    "totalScoreDesc": "The total score is the sum of the assessment results.",
+    "doAssessment": "Assessment",
+    "passConditionDesc": "Passing criteria: 5 or more points for each item, with an average of 7 or more points.",
+    "emptyComment": "No comments have been registered.",
+    "enterComment": "Enter a comment.",
+    "myScore": "(You have completed the assessment.)",
+    "transactionModal": {
+      "title": "Assessment",
+      "description": "Approve the transaction to assess the proposal.",
+      "commentModal": {
+        "title": "Assessment comment",
+        "description": "Approve the transaction to assess the proposal."
+      }
+    },
+    "buttonLabelSuccess": "Go to proposal"
+  },
+  "voteWidget": {
+    "vote": "Vote",
+    "yes": "Support",
+    "no": "Against",
+    "abstain": "Abstain",
+    "yesDesc": "(You voted in favor of this proposal.)",
+    "noDesc": "(You voted against this proposal.)",
+    "abstainDesc": "(You voted to abstain from this proposal.)",
+    "voterCount": "{{count}} participants",
+    "voteStatus": "Voter list",
+    "emptyState": "No participants have voted yet.",
+    "voteStatusDesc": "Passing criteria: 1/3 participation, 60% approval",
+    "myVote": "(You voted for {{vote}} on this proposal.)",
+    "transactionModal": {
+      "title": "Vote",
+      "description": "Approve the transaction to vote."
+    },
+    "buttonLabelSuccess": "Go to proposal"
+  },
+  "executionWidget": {
+    "title": "Withdrawal request",
+    "description": "The proposal has passed. Request a withdrawal.",
+    "transactionModal": {
+      "title": "Withdrawal request",
+      "description": "Approve the transaction to request a withdrawal."
+    },
+    "buttonLabelSuccess": "Go to proposal"
+  },
+  "transitionWidget": {
+    "title": "Transition",
+    "description": "Transition to the next step.",
+    "transactionModal": {
+      "title": "Execute transition",
+      "description": "Approve the transaction to execute the transition."
+    },
+    "buttonLabelSuccess": "Go to proposal"
   }
 }

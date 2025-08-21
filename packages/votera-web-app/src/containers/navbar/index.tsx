@@ -104,7 +104,7 @@ export const processPaths = [{path: CreateProposal}];
 
 export const processes: StringIndexed = {
   [CreateProposal]: {
-    processLabel: i18n.t('createDAO.title'),
+    processLabel: i18n.t('createProposal.title'),
     returnURL: Landing,
   },
 };

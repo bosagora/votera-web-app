@@ -97,7 +97,7 @@ const PublishModal: React.FC<PublishModalProps> = ({
   return (
     <ModalBottomSheetSwitcher
       {...{isOpen, onClose, closeOnDrag}}
-      title={title || t('createDAO.review.title')}
+      title={title || t('createProposal.review.title')}
       subtitle={subtitle}
     >
       <GasCostTableContainer>

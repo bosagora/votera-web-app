@@ -30,7 +30,7 @@ const SetupProposal: React.FC = () => {
         <DescriptionListContainer
           title={t('labels.review.setupProposal')}
           onEditClick={() => setStep(4)}
-          checkBoxErrorMessage={t('createDAO.review.acceptContent')}
+          checkBoxErrorMessage={t('createProposal.review.acceptContent')}
           checkedState={
             value ? 'active' : reviewCheckError ? 'error' : 'default'
           }

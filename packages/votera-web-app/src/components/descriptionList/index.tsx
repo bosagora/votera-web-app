@@ -65,7 +65,7 @@ export const DescriptionListContainer: React.FC<DescriptionListProps> = ({
         <div className="ml-auto space-y-1.5 tablet:w-3/4">
           <div className="tablet:flex">
             <CheckboxListItem
-              label={t('createDAO.review.valuesCorrect')}
+              label={t('createProposal.review.valuesCorrect')}
               multiSelect
               onClick={() => onChecked?.()}
               type={checkedState}

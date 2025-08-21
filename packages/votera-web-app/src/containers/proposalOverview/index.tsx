@@ -43,10 +43,10 @@ export const OverviewProposalHeader: React.FC<OverviewProposalHeaderProps> = ({
       <div className="tablet:flex items-end tablet:space-x-6">
         <div className="w-full">
           <h1 className="font-bold text-ui-800 ft-text-3xl">
-            {t('createDAO2.overview.title')}
+            {t('createProposal.overview.title')}
           </h1>
           <p className="mt-2 text-ui-600 ft-text-lg">
-            {t('createDAO2.overview.description')}
+            {t('createProposal.overview.description')}
           </p>
         </div>
         <div className="flex mt-2 tablet:mt-0 space-x-2">
@@ -61,7 +61,7 @@ export const OverviewProposalHeader: React.FC<OverviewProposalHeaderProps> = ({
             size="large"
             className="w-full tablet:w-max whitespace-nowrap"
             iconRight={<IconChevronRight />}
-            label={t('createDAO.overview.button')}
+            label={t('createProposal.overview.button')}
             onClick={handleSetupClick}
             css={{}}
           />
@@ -79,20 +79,20 @@ export const OverviewProposalStep: React.FC = () => {
     <CardWithImage
       key="SelectBlockchain"
       imgSrc={<IlluObject object="chain" />}
-      caption={t('createDAO2.step1.label')}
-      title={t('createDAO2.step1.title')}
+      caption={t('createProposal.step1.label')}
+      title={t('createProposal.step1.title')}
     />,
     <CardWithImage
       key="DefineMetadata"
       imgSrc={<IlluObject object="labels" />}
-      caption={t('createDAO2.step2.label')}
-      title={t('createDAO2.step2.title')}
+      caption={t('createProposal.step2.label')}
+      title={t('createProposal.step2.title')}
     />,
     <CardWithImage
       key="SetupCommunity"
       imgSrc={<IlluObject object="users" />}
-      caption={t('createDAO2.step3.label')}
-      title={t('createDAO2.step3.title')}
+      caption={t('createProposal.step3.label')}
+      title={t('createProposal.step3.title')}
     />,
   ];
 

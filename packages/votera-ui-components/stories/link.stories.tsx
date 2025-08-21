@@ -12,7 +12,7 @@ const Template: Story<LinkProps> = args => <Link {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   label: 'Link text',
-  href: 'https://aragon.org/',
+  href: 'https://bosagora.io/',
   type: 'primary',
 };
 
@@ -20,7 +20,7 @@ export const IconRight = Template.bind({});
 IconRight.args = {
   iconRight: <IconChevronDown />,
   label: 'Link text',
-  href: 'https://aragon.org/',
+  href: 'https://bosagora.io/',
   type: 'secondary',
 };
 
@@ -28,7 +28,7 @@ export const IconLeft = Template.bind({});
 IconLeft.args = {
   iconLeft: <IconChevronDown />,
   label: 'Link text',
-  href: 'https://aragon.org/',
+  href: 'https://bosagora.io/',
   disabled: true,
   type: 'neutral',
 };

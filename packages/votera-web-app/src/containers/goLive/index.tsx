@@ -26,17 +26,17 @@ export const GoLiveHeader: React.FC = () => {
     <div className="tablet:p-3 desktop:p-6 px-2 pt-2 desktop:pt-3 pb-3 bg-ui-0 tablet:rounded-xl">
       <div className="desktop:hidden">
         <Breadcrumb
-          crumbs={{label: t('createDAO.title'), path: Landing}}
+          crumbs={{label: t('createProposal.title'), path: Landing}}
           onClick={clickHandler}
         />
       </div>
       <div className="flex justify-between">
         <div className="pt-3 w-full">
           <h1 className="text-3xl font-bold text-ui-800">
-            {t('createDAO2.deploy.title')}
+            {t('createProposal.deploy.title')}
           </h1>
           <p className="mt-2 text-lg text-ui-600">
-            {t('createDAO2.deploy.description')}
+            {t('createProposal.deploy.description')}
           </p>
         </div>
         <ImageContainer src={goLive} />
@@ -93,7 +93,7 @@ export const GoLiveFooter: React.FC = () => {
           css={{}}
           size="large"
           iconRight={<IconChevronRight />}
-          label={t('createDAO2.deploy.title')}
+          label={t('createProposal.deploy.title')}
           onClick={publishDao}
           disabled={IsButtonDisabled()}
         />
