@@ -100,7 +100,7 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
   const {address} = useWallet();
 
   useEffect(() => {
-    if (myScore !== null) {
+    if (myScore !== null && myScore.timestamp !== 0) {
       assessment.completeness = myScore.items[0];
       assessment.possibility = myScore.items[1];
       assessment.profitability = myScore.items[2];
@@ -109,8 +109,6 @@ export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
 
       setAssessment(assessment);
     }
-    console.log('exPhase', exPhase);
-    console.log('exPhaseMessage', exPhaseMessage);
 
     const getAssessmentList = async () => {
       const assessmentLength = await client?.methods.getScoreLength(

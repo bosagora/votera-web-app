@@ -27732,10 +27732,10 @@ void-elements@3.1.0:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
-votera-contracts-lib@~1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/votera-contracts-lib/-/votera-contracts-lib-1.4.0.tgz#acd134eba53796466ddd2254eaa2da12cb6eeff0"
-  integrity sha512-1d+YdTstj7GQtzf0xpwrsWKhrh5Om6PlJFm0qd8fstPFyuGRM6IQCHjLgNaqD+3AKL8lGYOfnSiH81MetcErrQ==
+votera-contracts-lib@~1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/votera-contracts-lib/-/votera-contracts-lib-1.5.0.tgz#88c73a507b34a1185b8befa925d91428b9e89bc8"
+  integrity sha512-Q5I3o3t8rPvmDoa74VvXufMx+BaHUaRQ1waYYW1eLsg54qel+/mlNPHOQzBlZVEcoFlZxYodn7ptlKWsXcQAPQ==
   dependencies:
     ethers "^5.7.0"
 

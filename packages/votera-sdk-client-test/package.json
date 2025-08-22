@@ -47,6 +47,6 @@
     "mocha": "10.1.0",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5",
-    "votera-sdk-client": "^1.5.1"
+    "votera-sdk-client": "^1.6.0"
   }
 }

@@ -176,7 +176,6 @@ const CommentListContent: React.FC<CommentListProps> = ({
 };
 
 const CommentList: React.FC<CommentListProps> = props => {
-  console.log('commentList >>>>>>>>>>>>');
   return (
     <CreateCommentProvider>
       <CommentListContent {...props} />

@@ -56,23 +56,16 @@ export const FundTransitionWidget: React.FC<TransitionProps> = ({
   proposalId,
 }) => {
   const {t} = useTranslation();
-
   const {client} = useClient();
-
-  useEffect(() => {
-    console.log('exPhase', exPhase);
-    console.log('exPhaseMessage', exPhaseMessage);
-  }, [proposalId]);
+  //
+  // useEffect(() => {
+  //   console.log('exPhase', exPhase);
+  //   console.log('exPhaseMessage', exPhaseMessage);
+  // }, [proposalId]);
 
   return (
     <CreateTransitionProvider>
       <Card>
-        {/* <Header>
-      {/* <Header>
-        <Title>{t('governance.executionCard.title')}</Title>
-        <Description>{t('governance.executionCard.description')}</Description>
-      </Header> */}
-
         <Content>
           <div className="p-4 bg-white rounded-lg border">
             <WidgetFooter proposalId={proposalId} exPhase={exPhase} />

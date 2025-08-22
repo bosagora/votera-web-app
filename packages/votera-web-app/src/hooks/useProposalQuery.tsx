@@ -45,11 +45,9 @@ async function fetchProposal(
   client: Client | undefined,
   proposalId: string
 ): Promise<ProposalData | null> {
-  console.log('client 4444 :', client?.web3.getProvider()?.network.name);
   if (!client) return Promise.reject(new Error('client must be defined'));
 
   if (!client) return Promise.reject(new Error('client must be defined'));
-  console.log('fetching proposal single > ', proposalId);
 
   try {
     return await client.methods.getProposal(proposalId);

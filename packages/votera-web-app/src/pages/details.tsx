@@ -617,7 +617,7 @@ const Details: React.FC = () => {
               proposalId={proposal.id}
             />
           )}
-          {isVoter &&
+          {(isVoter || isEvaluator) &&
             extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
               <FundTransitionWidget
                 period={proposal.period}
@@ -640,8 +640,6 @@ const Details: React.FC = () => {
         </ProposalContainer>
 
         <AdditionalInfoContainer>
-          {/*<ResourceList links={proposal?.metadata.resources} />*/}
-          {/* <WidgetStatus steps={proposalSteps} /> */}
           {proposal &&
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
               <CommentList proposalId={proposal.id} isVoter={isVoter} />

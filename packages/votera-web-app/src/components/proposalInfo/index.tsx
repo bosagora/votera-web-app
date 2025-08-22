@@ -63,15 +63,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 }) => {
   const {t} = useTranslation();
 
-  console.log('ProposalInfo phase', phase);
-
   return (
     <Container>
       <VStackSection>
-        {/* <Header style={{borderBottom: '1px solid #E0E0E0'}}>
-          <Heading1>단계 정보</Heading1>
-        </Header> */}
-
         {/* 현재 상태 */}
         <InfoLine>
           <p>{t('proposalInfo.currentStatus')}</p>

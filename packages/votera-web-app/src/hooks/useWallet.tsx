@@ -84,11 +84,8 @@ export const useWallet = (): IUseWallet => {
   }, [disconnect]);
 
   if (signer !== undefined) {
-    signer.getAddress().then((address: string) => {
-      console.log(`signer: ${address}`);
-    });
+    signer.getAddress().then((address: string) => {});
   } else {
-    console.log('signer: undefined');
   }
 
   const provider = useMemo(() => {

@@ -1,11 +1,12 @@
 import {AlertInline, Label, ValueInput} from 'votera-ui-components';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
 import IncreaseAmount from 'components/increaseAmount';
 import {ProposalType} from 'pages/createProposal';
+import {useNetwork} from 'context/network';
 
 export type SetupProposalProps = {
   arrayName?: string;
@@ -13,14 +14,69 @@ export type SetupProposalProps = {
   bgWhite?: boolean;
 };
 
+type PeriodData = {
+  default: number;
+  min: number;
+  max: number;
+};
+
 const SetupProposal: React.FC<SetupProposalProps> = () => {
   const {t} = useTranslation();
   const {control} = useFormContext();
+  const {network} = useNetwork();
+  const [assessmentPeriodData, setAssessmentPeriodData] = useState({
+    default: 7,
+    min: 7,
+    max: 14,
+  });
+
+  const [votePeriodData, setVotePeriodData] = useState({
+    default: 7,
+    min: 14,
+    max: 28,
+  });
 
   const proposalType = useWatch({
     control,
     name: 'proposalType',
   });
+
+  useEffect(() => {
+    if (network === 'bosagora_devnet') {
+      setAssessmentPeriodData({
+        default: 30,
+        min: 10,
+        max: 14400,
+      });
+      setVotePeriodData({
+        default: 30,
+        min: 10,
+        max: 14400,
+      });
+    } else if (network === 'bosagora_testnet') {
+      setAssessmentPeriodData({
+        default: 7,
+        min: 7,
+        max: 14,
+      });
+      setVotePeriodData({
+        default: 7,
+        min: 14,
+        max: 28,
+      });
+    } else {
+      setAssessmentPeriodData({
+        default: 7,
+        min: 7,
+        max: 14,
+      });
+      setVotePeriodData({
+        default: 7,
+        min: 14,
+        max: 28,
+      });
+    }
+  }, [network]);
 
   return (
     <>
@@ -34,7 +90,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           <Controller
             name="assessmentPeriod"
             control={control}
-            defaultValue={7}
+            defaultValue={assessmentPeriodData.default}
             rules={{
               required: t('errors.required.name'),
               min: {value: 0, message: t('errors.required.minValue')},
@@ -48,8 +104,8 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   {...{name, value, onBlur}}
                   onChange={onChange}
                   placeholder={''}
-                  min={7}
-                  max={14}
+                  min={assessmentPeriodData.min}
+                  max={assessmentPeriodData.max}
                   label={''}
                 />
                 {error?.message && (
@@ -68,7 +124,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
         <Controller
           name="votePeriod"
           control={control}
-          defaultValue={7}
+          defaultValue={votePeriodData.default}
           rules={{
             required: t('errors.required.name'),
             min: {value: 0, message: t('errors.required.minValue')},
@@ -82,8 +138,8 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                 {...{name, value, onBlur}}
                 onChange={onChange}
                 placeholder={''}
-                min={14}
-                max={28}
+                min={votePeriodData.min}
+                max={votePeriodData.max}
                 label={''}
               />
               {error?.message && (
