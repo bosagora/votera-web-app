@@ -20,21 +20,60 @@ type PeriodData = {
   max: number;
 };
 
+const makeAssessmentPeriodData = (network: string): PeriodData => {
+  if (network === 'bosagora_devnet') {
+    return {
+      default: 7,
+      min: 7,
+      max: 100,
+    };
+  } else if (network === 'bosagora_testnet') {
+    return {
+      default: 7,
+      min: 7,
+      max: 14,
+    };
+  } else {
+    return {
+      default: 7,
+      min: 7,
+      max: 14,
+    };
+  }
+};
+
+const makeVotePeriodData = (network: string): PeriodData => {
+  if (network === 'bosagora_devnet') {
+    return {
+      default: 14,
+      min: 14,
+      max: 100,
+    };
+  } else if (network === 'bosagora_testnet') {
+    return {
+      default: 14,
+      min: 14,
+      max: 28,
+    };
+  } else {
+    return {
+      default: 14,
+      min: 14,
+      max: 28,
+    };
+  }
+};
+
 const SetupProposal: React.FC<SetupProposalProps> = () => {
   const {t} = useTranslation();
   const {control} = useFormContext();
   const {network} = useNetwork();
-  const [assessmentPeriodData, setAssessmentPeriodData] = useState({
-    default: 7,
-    min: 7,
-    max: 14,
-  });
-
-  const [votePeriodData, setVotePeriodData] = useState({
-    default: 7,
-    min: 14,
-    max: 28,
-  });
+  const [assessmentPeriodData, setAssessmentPeriodData] = useState(
+    makeAssessmentPeriodData(network)
+  );
+  const [votePeriodData, setVotePeriodData] = useState(
+    makeVotePeriodData(network)
+  );
 
   const proposalType = useWatch({
     control,
@@ -42,40 +81,8 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
   });
 
   useEffect(() => {
-    if (network === 'bosagora_devnet') {
-      setAssessmentPeriodData({
-        default: 30,
-        min: 10,
-        max: 14400,
-      });
-      setVotePeriodData({
-        default: 30,
-        min: 10,
-        max: 14400,
-      });
-    } else if (network === 'bosagora_testnet') {
-      setAssessmentPeriodData({
-        default: 7,
-        min: 7,
-        max: 14,
-      });
-      setVotePeriodData({
-        default: 7,
-        min: 14,
-        max: 28,
-      });
-    } else {
-      setAssessmentPeriodData({
-        default: 7,
-        min: 7,
-        max: 14,
-      });
-      setVotePeriodData({
-        default: 7,
-        min: 14,
-        max: 28,
-      });
-    }
+    setAssessmentPeriodData(makeAssessmentPeriodData(network));
+    setVotePeriodData(makeVotePeriodData(network));
   }, [network]);
 
   return (
@@ -86,14 +93,16 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
             label={t('labels.assessmentPeriod')}
             helpText={t('createProposal.step3.assessmentPeriodDesc')}
           />
-
           <Controller
             name="assessmentPeriod"
             control={control}
             defaultValue={assessmentPeriodData.default}
             rules={{
               required: t('errors.required.name'),
-              min: {value: 0, message: t('errors.required.minValue')},
+              min: {
+                value: 0,
+                message: t('errors.required.minValue'),
+              },
             }}
             render={({
               field: {onBlur, onChange, value, name},
@@ -104,6 +113,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   {...{name, value, onBlur}}
                   onChange={onChange}
                   placeholder={''}
+                  defaultValue={assessmentPeriodData.default}
                   min={assessmentPeriodData.min}
                   max={assessmentPeriodData.max}
                   label={''}
@@ -138,6 +148,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                 {...{name, value, onBlur}}
                 onChange={onChange}
                 placeholder={''}
+                defaultValue={votePeriodData.default}
                 min={votePeriodData.min}
                 max={votePeriodData.max}
                 label={''}
@@ -149,7 +160,6 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           )}
         />
       </FormItem>
-
       {proposalType === ProposalType.FUND && (
         <FormItem>
           <Label
@@ -162,7 +172,6 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
             defaultValue={0}
             rules={{
               required: t('errors.required.amount'),
-              // validate: amountValidator,
             }}
             render={({
               field: {name, onBlur, onChange, value},
@@ -178,22 +187,13 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   onBlur={onBlur}
                   onChange={onChange}
                   adornmentText={'BOA'}
-                  // onAdornmentClick={() => handleMaxClicked(onChange)}
                 />
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     {error?.message && (
                       <AlertInline label={error.message} mode="critical" />
                     )}
-                    {/* {renderWarning(value)} */}
                   </div>
-                  {/* {tokenBalance && (
-                    <TokenBalance>
-                      {`${t(
-                        'labels.maxBalance'
-                      )}: ${tokenBalance} ${tokenSymbol}`}
-                    </TokenBalance>
-                  )} */}
                 </div>
               </>
             )}
@@ -205,10 +205,6 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
 };
 
 export default SetupProposal;
-
-const InputCount = styled.div.attrs({
-  className: 'ft-text-sm mt-1',
-})``;
 
 const FormItem = styled.div.attrs({
   className: 'space-y-1.5',
