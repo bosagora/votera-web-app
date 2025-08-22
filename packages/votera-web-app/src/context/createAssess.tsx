@@ -54,34 +54,16 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
     assessmentProcessState === TransactionState.WAITING;
 
   const estimateAssessmentFees = useCallback(async () => {
-    try {
-      const baseGasLimit = BigInt(80000); // 평가 제출을 위한 기본 가스 한도
-
-      const feeData = await provider?.getFeeData();
-      if (!feeData || !provider) {
-        throw new Error('가스 데이터를 가져올 수 없습니다.');
-      }
-
-      const baseFee = BigInt(feeData.gasPrice?.toString() || '0');
-      const maxPriorityFeePerGas = BigInt(
-        feeData.maxPriorityFeePerGas?.toString() || '0'
-      );
-
-      const totalFeePerGas = baseFee + maxPriorityFeePerGas;
-      const estimatedFee = totalFeePerGas * baseGasLimit;
-
-      return {
-        average: estimatedFee,
-        max: (estimatedFee * BigInt(120)) / BigInt(100),
-      };
-    } catch (error) {
-      console.error('가스 수수료 계산 중 오류:', error);
-      return {
-        average: BigInt(1000000000),
-        max: BigInt(1000000000),
-      };
+    if (assessmentCreationData !== undefined) {
+      return client?.estimation.postScore(assessmentCreationData.proposalId, [
+        assessmentCreationData.assessment.completeness,
+        assessmentCreationData.assessment.possibility,
+        assessmentCreationData.assessment.profitability,
+        assessmentCreationData.assessment.attractiveness,
+        assessmentCreationData.assessment.scalability,
+      ]);
     }
-  }, [provider]);
+  }, [client?.estimation, assessmentCreationData]);
 
   const handlePublishAssessment = async (params: AssessmentParams) => {
     setAssessmentProcessState(TransactionState.WAITING);

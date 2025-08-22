@@ -44,6 +44,21 @@ async function main() {
   });
   const client = new Client(ctx);
 
+  const feeValue = await client.estimation.createProposal(
+    proposalData.proposalType,
+    proposalData.title,
+    proposalData.description,
+    proposalData.proposalId,
+    proposalData.fundAmount,
+    proposalData.assessmentPeriod,
+    proposalData.votePeriod,
+    proposalData.documentId,
+    proposalData.systemType,
+    proposalData.params
+  );
+
+  console.log(`feeValue - max: ${feeValue.max}, average: ${feeValue.average}`);
+
   for await (const step of client.methods.createProposal(
     proposalData.proposalType,
     proposalData.title,
