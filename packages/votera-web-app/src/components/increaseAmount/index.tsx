@@ -5,7 +5,6 @@ import {
   NumberInputProps,
 } from 'votera-ui-components';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
 type Props = NumberInputProps & {
@@ -16,8 +15,6 @@ type Props = NumberInputProps & {
   error?: any;
 };
 const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
-  const {t} = useTranslation();
-
   const value = Number(rest.value);
 
   return (
@@ -29,13 +26,7 @@ const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
           </p>
         </LabelWrapper>
         <InputWrapper>
-          <NumberInput
-            {...rest}
-            max={max}
-            min={min}
-            // disableIncrement={max === value}
-            // disableDecrement={min === value}
-          />
+          <NumberInput {...rest} max={max} min={min} />
         </InputWrapper>
 
         <ProgressWrapper>
@@ -49,10 +40,7 @@ const IncreaseAmount: React.FC<Props> = ({max, min, ...rest}) => {
               >
                 {value <= max ? value : max}
               </ApprovalAddresses>
-              <TotalAddresses>
-                {/* {t('createProposal.step4.minApprovalAddressCount', {count: max})} */}
-                {max}
-              </TotalAddresses>
+              <TotalAddresses>{max}</TotalAddresses>
             </ProgressInfo>
           </LinearProgressContainer>
         </ProgressWrapper>
