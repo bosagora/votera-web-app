@@ -25,7 +25,7 @@ type NetworkContext = {
 };
 
 const NetworkContext = createContext<NetworkContext>({
-  network: 'ethereum',
+  network: 'bosagora_mainnet',
   setNetwork: () => {},
   networkUrlSegment: undefined,
 });

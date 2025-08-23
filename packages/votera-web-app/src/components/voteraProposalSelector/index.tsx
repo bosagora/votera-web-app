@@ -12,9 +12,7 @@ import useScreen from 'hooks/useScreen';
 
 type VoteraProposalSelectorProps = {
   proposalTitle: string;
-  /** Dao's ethereum address **or** ENS name */
   proposalId: string;
-  /** Handler for the switch button. Will be called when the button is clicked. */
   onClick: () => void;
 } & Pick<AvatarDaoProps, 'src'>;
 

@@ -58,7 +58,7 @@ const PublishModal: React.FC<PublishModalProps> = ({
 
   const label = {
     [TransactionState.WAITING]:
-      buttonLabel || t('TransactionModal.publishDaoButtonLabel'),
+      buttonLabel || t('TransactionModal.publishVoteraButtonLabel'),
     [TransactionState.LOADING]: t('TransactionModal.waiting'),
     [TransactionState.SUCCESS]:
       buttonLabelSuccess || t('TransactionModal.goToProposal'),

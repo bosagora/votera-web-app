@@ -36,7 +36,6 @@ export type MenuTypes =
   | 'wallet'
   | 'network'
   | 'mobileMenu'
-  | 'network'
   | 'manageWallet'
   | 'gating'
   | 'deposit'

@@ -20,89 +20,152 @@ type PeriodData = {
   max: number;
 };
 
-const makeAssessmentPeriodData = (network: string): PeriodData => {
-  if (network === 'bosagora_devnet') {
-    return {
-      default: 7,
-      min: 7,
-      max: 100,
-    };
-  } else if (network === 'bosagora_testnet') {
-    return {
-      default: 7,
-      min: 7,
-      max: 14,
-    };
-  } else {
-    return {
-      default: 7,
-      min: 7,
-      max: 14,
-    };
-  }
-};
-
-const makeVotePeriodData = (network: string): PeriodData => {
-  if (network === 'bosagora_devnet') {
-    return {
-      default: 14,
-      min: 14,
-      max: 100,
-    };
-  } else if (network === 'bosagora_testnet') {
-    return {
-      default: 14,
-      min: 14,
-      max: 28,
-    };
-  } else {
-    return {
-      default: 14,
-      min: 14,
-      max: 28,
-    };
-  }
-};
-
 const SetupProposal: React.FC<SetupProposalProps> = () => {
   const {t} = useTranslation();
   const {control} = useFormContext();
-  const {network} = useNetwork();
-  const [assessmentPeriodData, setAssessmentPeriodData] = useState(
-    makeAssessmentPeriodData(network)
-  );
-  const [votePeriodData, setVotePeriodData] = useState(
-    makeVotePeriodData(network)
-  );
 
   const proposalType = useWatch({
     control,
     name: 'proposalType',
   });
 
-  useEffect(() => {
-    setAssessmentPeriodData(makeAssessmentPeriodData(network));
-    setVotePeriodData(makeVotePeriodData(network));
-  }, [network]);
+  const blockchain = useWatch({
+    control,
+    name: 'blockchain',
+  });
 
   return (
     <>
-      {proposalType === ProposalType.FUND && (
+      {proposalType === ProposalType.FUND &&
+        blockchain.label === 'bosagora_devnet' && (
+          <FormItem>
+            <Label
+              label={t('labels.assessmentPeriod')}
+              helpText={t('createProposal.step3.assessmentPeriodDesc_DevNet')}
+            />
+            <Controller
+              name="assessmentPeriod"
+              control={control}
+              rules={{
+                required: t('errors.required.name'),
+                min: {
+                  value: 0,
+                  message: t('errors.required.minValue'),
+                },
+              }}
+              render={({
+                field: {onBlur, onChange, value, name},
+                fieldState: {error},
+              }) => (
+                <>
+                  <IncreaseAmount
+                    {...{name, value, onBlur}}
+                    onChange={onChange}
+                    placeholder={''}
+                    defaultValue={1}
+                    min={1}
+                    max={100}
+                    label={''}
+                  />
+                  {error?.message && (
+                    <AlertInline label={error.message} mode="critical" />
+                  )}
+                </>
+              )}
+            />
+          </FormItem>
+        )}
+      {proposalType === ProposalType.FUND &&
+        blockchain.label === 'bosagora_testnet' && (
+          <FormItem>
+            <Label
+              label={t('labels.assessmentPeriod')}
+              helpText={t('createProposal.step3.assessmentPeriodDesc_TestNet')}
+            />
+            <Controller
+              name="assessmentPeriod"
+              control={control}
+              rules={{
+                required: t('errors.required.name'),
+                min: {
+                  value: 0,
+                  message: t('errors.required.minValue'),
+                },
+              }}
+              render={({
+                field: {onBlur, onChange, value, name},
+                fieldState: {error},
+              }) => (
+                <>
+                  <IncreaseAmount
+                    {...{name, value, onBlur}}
+                    onChange={onChange}
+                    placeholder={''}
+                    defaultValue={1}
+                    min={1}
+                    max={14}
+                    label={''}
+                  />
+                  {error?.message && (
+                    <AlertInline label={error.message} mode="critical" />
+                  )}
+                </>
+              )}
+            />
+          </FormItem>
+        )}
+      {proposalType === ProposalType.FUND &&
+        blockchain.label === 'bosagora_mainnet' && (
+          <FormItem>
+            <Label
+              label={t('labels.assessmentPeriod')}
+              helpText={t('createProposal.step3.assessmentPeriodDesc_MainNet')}
+            />
+            <Controller
+              name="assessmentPeriod"
+              control={control}
+              rules={{
+                required: t('errors.required.name'),
+                min: {
+                  value: 0,
+                  message: t('errors.required.minValue'),
+                },
+              }}
+              render={({
+                field: {onBlur, onChange, value, name},
+                fieldState: {error},
+              }) => (
+                <>
+                  <IncreaseAmount
+                    {...{name, value, onBlur}}
+                    onChange={onChange}
+                    placeholder={''}
+                    defaultValue={7}
+                    min={7}
+                    max={14}
+                    label={''}
+                  />
+                  {error?.message && (
+                    <AlertInline label={error.message} mode="critical" />
+                  )}
+                </>
+              )}
+            />
+          </FormItem>
+        )}
+
+      {blockchain.label === 'bosagora_devnet' && (
         <FormItem>
           <Label
-            label={t('labels.assessmentPeriod')}
-            helpText={t('createProposal.step3.assessmentPeriodDesc')}
+            label={t('labels.votePeriod')}
+            helpText={t('createProposal.step3.votePeriodDesc_DevNet')}
           />
           <Controller
-            name="assessmentPeriod"
+            name="votePeriod"
             control={control}
-            defaultValue={assessmentPeriodData.default}
             rules={{
               required: t('errors.required.name'),
-              min: {
-                value: 0,
-                message: t('errors.required.minValue'),
-              },
+              min: {value: 0, message: t('errors.required.minValue')},
             }}
             render={({
               field: {onBlur, onChange, value, name},
@@ -113,9 +176,9 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
                   {...{name, value, onBlur}}
                   onChange={onChange}
                   placeholder={''}
-                  defaultValue={assessmentPeriodData.default}
-                  min={assessmentPeriodData.min}
-                  max={assessmentPeriodData.max}
+                  defaultValue={1}
+                  min={1}
+                  max={100}
                   label={''}
                 />
                 {error?.message && (
@@ -126,40 +189,76 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           />
         </FormItem>
       )}
-      <FormItem>
-        <Label
-          label={t('labels.votePeriod')}
-          helpText={t('createProposal.step3.votePeriodDesc')}
-        />
-        <Controller
-          name="votePeriod"
-          control={control}
-          defaultValue={votePeriodData.default}
-          rules={{
-            required: t('errors.required.name'),
-            min: {value: 0, message: t('errors.required.minValue')},
-          }}
-          render={({
-            field: {onBlur, onChange, value, name},
-            fieldState: {error},
-          }) => (
-            <>
-              <IncreaseAmount
-                {...{name, value, onBlur}}
-                onChange={onChange}
-                placeholder={''}
-                defaultValue={votePeriodData.default}
-                min={votePeriodData.min}
-                max={votePeriodData.max}
-                label={''}
-              />
-              {error?.message && (
-                <AlertInline label={error.message} mode="critical" />
-              )}
-            </>
-          )}
-        />
-      </FormItem>
+      {blockchain.label === 'bosagora_testnet' && (
+        <FormItem>
+          <Label
+            label={t('labels.votePeriod')}
+            helpText={t('createProposal.step3.votePeriodDesc_TestNet')}
+          />
+          <Controller
+            name="votePeriod"
+            control={control}
+            rules={{
+              required: t('errors.required.name'),
+              min: {value: 0, message: t('errors.required.minValue')},
+            }}
+            render={({
+              field: {onBlur, onChange, value, name},
+              fieldState: {error},
+            }) => (
+              <>
+                <IncreaseAmount
+                  {...{name, value, onBlur}}
+                  onChange={onChange}
+                  placeholder={''}
+                  defaultValue={1}
+                  min={1}
+                  max={28}
+                  label={''}
+                />
+                {error?.message && (
+                  <AlertInline label={error.message} mode="critical" />
+                )}
+              </>
+            )}
+          />
+        </FormItem>
+      )}
+      {blockchain.label === 'bosagora_mainnet' && (
+        <FormItem>
+          <Label
+            label={t('labels.votePeriod')}
+            helpText={t('createProposal.step3.votePeriodDesc_MainNet')}
+          />
+          <Controller
+            name="votePeriod"
+            control={control}
+            rules={{
+              required: t('errors.required.name'),
+              min: {value: 0, message: t('errors.required.minValue')},
+            }}
+            render={({
+              field: {onBlur, onChange, value, name},
+              fieldState: {error},
+            }) => (
+              <>
+                <IncreaseAmount
+                  {...{name, value, onBlur}}
+                  onChange={onChange}
+                  placeholder={''}
+                  defaultValue={14}
+                  min={14}
+                  max={28}
+                  label={''}
+                />
+                {error?.message && (
+                  <AlertInline label={error.message} mode="critical" />
+                )}
+              </>
+            )}
+          />
+        </FormItem>
+      )}
       {proposalType === ProposalType.FUND && (
         <FormItem>
           <Label
