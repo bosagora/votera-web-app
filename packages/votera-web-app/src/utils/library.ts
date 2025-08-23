@@ -25,6 +25,7 @@ export function formatUnits(amount: BigNumberish, decimals: number) {
  * Handles copying and pasting to and from the clipboard respectively
  * @param currentValue field value
  * @param onChange on value change callback
+ * @param alert
  */
 export async function handleClipboardActions(
   currentValue: string,
@@ -89,10 +90,6 @@ export const translateToAppNetwork = (
 export function translateToNetworkishName(
   appNetwork: SupportedNetworks
 ): SdkSupportedNetworks | 'unsupported' {
-  if (typeof appNetwork !== 'string') {
-    return 'unsupported';
-  }
-
   switch (appNetwork) {
     case 'bosagora_mainnet':
       return SdkSupportedNetworks.MAINNET;

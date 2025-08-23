@@ -101,7 +101,7 @@ export const CardProposal: React.FC<CardProposalDataProps> = ({
   progressLabel,
 }) => {
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
-  console.log('progressLabel', progressLabel);
+  // console.log('progressLabel', progressLabel);
   return (
     <Card
       data-testid="cardProposal"

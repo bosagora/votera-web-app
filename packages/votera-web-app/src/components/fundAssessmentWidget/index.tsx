@@ -289,7 +289,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
   const handleAssessSubmit = async () => {
     if (!canAssess || !proposalId || !assessment) return;
 
-    console.log('assessment', assessment);
+    // console.log('assessment', assessment);
     const open_expired_assessment =
       exPhase === ProposalPhaseExtended.OPENED_EXPIRED_ASSESSMENT;
     await handlePublishAssessment({

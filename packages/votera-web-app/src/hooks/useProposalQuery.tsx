@@ -17,14 +17,14 @@ async function fetchProposals(
 
   const startIndex = (page - 1) * PROPOSALS_PER_PAGE;
   const endIndex = startIndex + PROPOSALS_PER_PAGE;
-  console.log(
-    'fetching proposals list > page:',
-    page,
-    'startIndex:',
-    startIndex,
-    'endIndex:',
-    endIndex
-  );
+  // console.log(
+  //   'fetching proposals list > page:',
+  //   page,
+  //   'startIndex:',
+  //   startIndex,
+  //   'endIndex:',
+  //   endIndex
+  // );
   if (page === 0) {
     return [];
   }
@@ -36,7 +36,7 @@ async function fetchProposals(
       SortType.DSC
     );
   } catch (e) {
-    console.log('fetchProposals error', e);
+    // console.log('fetchProposals error', e);
     return Promise.reject(new Error('getProposalList failed'));
   }
 }
@@ -92,7 +92,7 @@ export const useProposalQuery = (proposalId?: string, page?: number) => {
 
   useEffect(() => {
     if (apiResponse.isFetched) {
-      console.log('useProposalQuery isFetched', apiResponse.isFetched);
+      // console.log('useProposalQuery isFetched', apiResponse.isFetched);
       if (apiResponse.error || apiResponse.data === null) {
         navigate(NotFound, {
           replace: true,

@@ -56,7 +56,7 @@ const determineNetwork = (
         ([, v]) => v.id === chainId
       )?.[0] as SupportedNetworks;
     } else {
-      console.log('*NETWORK UNSUPPORTED');
+      // console.log('*NETWORK UNSUPPORTED');
       return 'unsupported';
     }
   }

@@ -35,7 +35,7 @@ const DefineMetadata: React.FC<DefineMetadataProps> = () => {
   const handleFileUpload = async (file: File) => {
     try {
       const cid = await uploadFile(file);
-      console.log('File uploaded with CID:', cid);
+      // console.log('File uploaded with CID:', cid);
       formMethods.setValue('documentId', cid);
       // CID를 폼 상태에 저장하거나 다른 처리
     } catch (error) {

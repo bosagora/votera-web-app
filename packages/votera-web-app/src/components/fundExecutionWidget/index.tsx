@@ -57,10 +57,10 @@ export const FundExecutionWidget: React.FC<ExecutionProps> = ({
 }) => {
   const {t} = useTranslation();
 
-  useEffect(() => {
-    console.log('exPhase', exPhase);
-    console.log('exPhaseMessage', exPhaseMessage);
-  }, [proposalId]);
+  // useEffect(() => {
+  //   console.log('exPhase', exPhase);
+  //   console.log('exPhaseMessage', exPhaseMessage);
+  // }, [proposalId]);
 
   return (
     <CreateExecuteProvider>

@@ -350,7 +350,7 @@ const Details: React.FC = () => {
   // queryResult를 처리하는 useEffect
   useEffect(() => {
     if (queryResult) {
-      console.log('queryResult :', queryResult);
+      // console.log('queryResult :', queryResult);
       setFetchedProposal(
         Array.isArray(queryResult) ? queryResult[0] : queryResult
       );
@@ -464,7 +464,7 @@ const Details: React.FC = () => {
           : null;
 
         setProposal(extendedProposalData);
-        console.log('extendedProposalData :', extendedProposalData);
+        // console.log('extendedProposalData :', extendedProposalData);
         const extendedPhaseTmp = getExtendedPhase(extendedProposalData);
         setExtendedPhase(extendedPhaseTmp);
         setProposalError(null);
@@ -537,7 +537,7 @@ const Details: React.FC = () => {
 
       // show voting in process
       if (canVote) {
-        console.log('set vip true');
+        // console.log('set vip true');
         setVotingInProcess(true);
       }
     }

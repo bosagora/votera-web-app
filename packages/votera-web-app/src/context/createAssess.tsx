@@ -156,8 +156,8 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
   };
 
   const handleCloseModal = () => {
-    console.log('assessmentProcessState', assessmentProcessState);
-    console.log('proposalId', proposalId);
+    // console.log('assessmentProcessState', assessmentProcessState);
+    // console.log('proposalId', proposalId);
     switch (assessmentProcessState) {
       case TransactionState.LOADING:
         break;

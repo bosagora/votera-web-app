@@ -31,7 +31,7 @@ export class ExpiringPromiseCache<T, K = string> {
    * @param {Promise<T> | undefined} promise The promise to store, allowed to be undefined
    * @returns {Promise<T> | undefined} The promise passed in for chaining
    */
-  add(key: K, promise: Promise<T> | undefined) {
+  add(key: K, promise: Promise<T> | undefined): Promise<T> | undefined {
     if (!promise) return promise;
 
     this.expireItems();
@@ -53,7 +53,6 @@ export class ExpiringPromiseCache<T, K = string> {
    * @returns {Promise<T> | undefined} The promise or undefined if it's not present in cache
    */
   get(key: K): Promise<T> | undefined {
-    const foundPromise = this.cache.get(key);
-    return foundPromise;
+    return this.cache.get(key);
   }
 }

@@ -45,14 +45,14 @@ export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
   const {client} = useClient();
   const [voteSummary, setVoteSummary] = useState<Array<number>>([0, 0, 0]);
   const {address} = useWallet();
-  console.log('canVote', canVote);
+  // console.log('canVote', canVote);
   useEffect(() => {
-    console.log('proposalId', proposalId);
+    // console.log('proposalId', proposalId);
     const fetchVoteSummary = async () => {
       const voteSummary = await client?.methods.getVoteSummary(
         proposalId.toString()
       );
-      console.log('voteSummary', voteSummary);
+      // console.log('voteSummary', voteSummary);
       setVoteSummary(voteSummary || [0, 0, 0]);
     };
     fetchVoteSummary();

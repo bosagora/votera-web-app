@@ -109,7 +109,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       'fundAmount',
     ]);
 
-    console.log('fundAmount', fundAmount);
+    // console.log('fundAmount', fundAmount);
     return {
       proposalType: proposalType,
       title,
@@ -163,7 +163,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       if (!isAvailable) {
         throw new Error('Proposal ID is already in use');
       }
-      console.log('proposalCreationData :', proposalCreationData);
+      // console.log('proposalCreationData :', proposalCreationData);
       const proposalIterator = client.methods.createProposal(
         proposalCreationData.proposalType,
         proposalCreationData.title,

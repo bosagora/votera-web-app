@@ -38,7 +38,7 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
       SortType.DSC
     );
 
-    console.log('newBallots >>>>>>>>>>>>', newBallots);
+    // console.log('newBallots >>>>>>>>>>>>', newBallots);
     if (newBallots) {
       if (page === 0) {
         setBallots(newBallots);
@@ -71,7 +71,7 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   }, [proposalId, client]);
 
   const handleLoadMore = async () => {
-    console.log('handleLoadMore >>>>>>>>>>>>');
+    // console.log('handleLoadMore >>>>>>>>>>>>');
     const nextPage = currentPage + 1;
     await fetchBallots(nextPage);
     setCurrentPage(nextPage);
@@ -113,12 +113,11 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
                   </VoteChoice>
                 </HeaderLeft>
                 <CreatedAt>
-                  {
-                    new Date(Number(ballot.timestamp) * 1000)
-                      .toISOString()
-                      .split('T')[0]
-                  }
+                  {new Date(Number(ballot.timestamp) * 1000).toLocaleString()}
                 </CreatedAt>
+              </CommentHeader>
+              <CommentHeader>
+                <ValidatorPublicKey>0x00000...000100</ValidatorPublicKey>
               </CommentHeader>
               <Divider />
             </CommentItem>
@@ -164,6 +163,10 @@ const ShowMoreButton = styled.button.attrs({
 
 const HeaderLeft = styled.div.attrs({
   className: 'flex items-center gap-3',
+})``;
+
+const ValidatorPublicKey = styled.div.attrs({
+  className: 'flex items-center',
 })``;
 
 const VoteChoice = styled.span<{vote: Candidate}>`

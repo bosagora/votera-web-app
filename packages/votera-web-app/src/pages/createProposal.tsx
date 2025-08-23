@@ -98,7 +98,7 @@ const CreateProposal: React.FC = () => {
   // users and so that the process doesn't start with a warning. Afterwards,
   // the select blockchain form dictates the expected network
   useEffect(() => {
-    // get the default expected network using the connected wallet, use ethereum
+    // get the default expected network using the connected wallet, use bosagora
     // mainnet in case user accesses the flow without wallet connection. Ideally,
     // this should not happen
 
@@ -114,9 +114,9 @@ const CreateProposal: React.FC = () => {
     });
   }, [chainId, formMethods, setNetwork]);
 
-  useEffect(() => {
-    console.log('Form values changed:', watchedValues);
-  }, [watchedValues]); // watchedValues가 변경될 때마다 실행
+  // useEffect(() => {
+  //   console.log('Form values changed:', watchedValues);
+  // }, [watchedValues]); // watchedValues가 변경될 때마다 실행
 
   /*************************************************
    *             Step Validation States            *
@@ -127,7 +127,7 @@ const CreateProposal: React.FC = () => {
     stepName: string,
     properties: Record<string, unknown>
   ) => {
-    trackEvent('daoCreation_continueBtn', {
+    trackEvent('proposalCreation_continueBtn', {
       step: stepName,
       settings: properties,
     });
