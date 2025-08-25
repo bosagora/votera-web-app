@@ -1241,7 +1241,12 @@
         "description": "Approve the transaction to assess the proposal."
       }
     },
-    "buttonLabelSuccess": "Go to proposal"
+    "buttonLabelSuccess": "Go to proposal",
+    "evaluatorCount": "{{count}}/{{total}} participants",
+    "evaluationStatus": "Evaluator list",
+    "emptyState": "No participants have voted yet.",
+    "before": "before",
+    "after": "after"
   },
   "voteWidget": {
     "vote": "Vote",

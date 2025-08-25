@@ -20,7 +20,8 @@ import {
     TransitionStepValue,
     VotePostBallotStepValue,
     VoteResult,
-    ParamValue
+    ParamValue,
+    EvaluationData,
 } from "../interfaces";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 
@@ -410,4 +411,11 @@ export interface IClientMethods extends IClientCore {
     sendVoteCost: (proposalId: BytesLike) => AsyncGenerator<SendVoteCostStepValue>;
 
     canSendVoteCost: (proposalId: BytesLike) => Promise<boolean>;
+
+    getEvaluationOfAllMembersList: (
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ) => Promise<EvaluationData[]>;
 }

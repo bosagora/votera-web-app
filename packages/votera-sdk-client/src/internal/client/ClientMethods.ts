@@ -63,6 +63,7 @@ import {
     TransitionStepValue,
     VotePostBallotStepValue,
     VoteResult,
+    EvaluationData,
 } from "../../interfaces";
 import { ContractUtils } from "../../utils/ContractUtils";
 import { ResponseMessage } from "../../utils/ResponseMessage";
@@ -940,5 +941,39 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         }
 
         return !(proposalData.assessmentResult !== AssessmentResult.APPROVED || proposalData.sendVoteCost);
+    }
+
+    public async getEvaluationOfAllMembersList(
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ): Promise<EvaluationData[]> {
+        try {
+            const evaluations: EvaluationData[] = [];
+            const evaluators = await this.getEvaluatorList(proposalId, startIndex, endIndex, sortType);
+            for (const evaluator of evaluators) {
+                const scoreData = await this.getScore(proposalId, evaluator);
+                if (scoreData.evaluator === evaluator) {
+                    evaluations.push({
+                        evaluator,
+                        isEvaluated: true,
+                        timestamp: scoreData.timestamp,
+                        items: scoreData.items,
+                    });
+                } else {
+                    evaluations.push({
+                        evaluator,
+                        isEvaluated: false,
+                        timestamp: scoreData.timestamp,
+                        items: scoreData.items,
+                    });
+                }
+            }
+            return evaluations;
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
     }
 }

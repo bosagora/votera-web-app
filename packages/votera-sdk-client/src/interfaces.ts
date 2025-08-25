@@ -4,7 +4,7 @@ import { BytesLike } from "@ethersproject/bytes";
 export enum ProposalStates {
     INVALID,
     OPENED,
-    CLOSED
+    CLOSED,
 }
 
 export enum ProposalPeriod {
@@ -12,37 +12,37 @@ export enum ProposalPeriod {
     ASSESSMENT,
     VOTE,
     EXECUTION,
-    FINISHED
+    FINISHED,
 }
 
 export enum AssessmentResult {
     NONE,
     APPROVED,
-    REJECTED
+    REJECTED,
 }
 
 export enum VoteResult {
     NONE,
     APPROVED,
     REJECTED,
-    INVALID_QUORUM
+    INVALID_QUORUM,
 }
 
 export enum ExecutionStates {
     NONE,
     IN_PROCESS,
-    FINISHED
+    FINISHED,
 }
 
 export enum ProposalType {
     SYSTEM,
-    FUND
+    FUND,
 }
 
 export enum Candidate {
     BLANK,
     YES,
-    NO
+    NO,
 }
 
 export enum VoteraComponentID {
@@ -55,17 +55,17 @@ export enum VoteraComponentID {
     PARTICIPANT_STORAGE = "ParticipantStorage",
     PROPOSAL_STORAGE = "ProposalStorage",
     VOTE_STORAGE = "VoteStorage",
-    PARTICIPANT_MANAGER = "ParticipantManager"
+    PARTICIPANT_MANAGER = "ParticipantManager",
 }
 
 export enum SystemProposalType {
     NORMAL,
-    PARAMETER
+    PARAMETER,
 }
 
 export enum SortType {
     ASC,
-    DSC
+    DSC,
 }
 
 export interface ParamValue {
@@ -108,6 +108,13 @@ export interface ScoreData {
     items: [number, number, number, number, number];
 }
 
+export interface EvaluationData {
+    evaluator: string;
+    isEvaluated: boolean;
+    timestamp: number;
+    items: [number, number, number, number, number];
+}
+
 export interface CommentData {
     writer: string;
     timestamp: number;
@@ -123,7 +130,7 @@ export interface VoteBallotData {
 export enum NormalSteps {
     PREPARED = "prepare",
     SENT = "sent",
-    DONE = "done"
+    DONE = "done",
 }
 
 export type ExecutionStepValue =
@@ -210,7 +217,7 @@ export type Pagination = {
 
 export enum SortDirection {
     ASC = "asc",
-    DESC = "desc"
+    DESC = "desc",
 }
 
 export type QueryOption = {

@@ -16,6 +16,7 @@
     "01-getProposalStates": "npx ts-node scripts/01-proposal/getProposalStates.ts",
     "02-postScore": "npx ts-node scripts/02-assessment/postScore.ts",
     "02-getScoreSummary": "npx ts-node scripts/02-assessment/getScoreSummary.ts",
+    "03-getEvaluationOfAllMembersList": "npx ts-node scripts/02-assessment/getEvaluationOfAllMember.ts",
     "03-transition": "npx ts-node scripts/03-transition/transition.ts",
     "04-postBallot": "npx ts-node scripts/04-vote/postBallot.ts",
     "04-getBallotSummary": "npx ts-node scripts/04-vote/getBallotSummary.ts",

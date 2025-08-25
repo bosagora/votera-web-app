@@ -35,6 +35,7 @@ import {useClient} from 'hooks/useClient';
 import {FundTransitionWidget} from 'components/fundTransitionWidget';
 import {FundExecutionWidget} from 'components/fundExecutionWidget';
 import {useProposalQuery} from 'hooks/useProposalQuery';
+import EvaluatorList from '../components/evaluatorList';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -640,9 +641,13 @@ const Details: React.FC = () => {
         </ProposalContainer>
 
         <AdditionalInfoContainer>
+          {/*{proposal &&*/}
+          {/*  extendedPhase.toLocaleLowerCase().includes('assessment') && (*/}
+          {/*    <CommentList proposalId={proposal.id} isVoter={isVoter} />*/}
+          {/*  )}*/}
           {proposal &&
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
-              <CommentList proposalId={proposal.id} isVoter={isVoter} />
+              <EvaluatorList proposalId={proposal.id} />
             )}
           {proposal && proposal.period >= ProposalPeriod.VOTE && (
             <VoterList proposalId={proposal.id} />

@@ -1154,7 +1154,12 @@
         "description": "거래를 승인하여 평가 댓글을 등록하세요."
       }
     },
-    "buttonLabelSuccess": "제안으로 이동"
+    "buttonLabelSuccess": "제안으로 이동",
+    "evaluatorCount": "{{count}}/{{total}}명 참여",
+    "evaluationStatus": "평가자 목록",
+    "emptyState": "참여한 평가자ㅂ 없습니다.",
+    "before": "평가 잔",
+    "after": "평가 후"
   },
   "voteWidget": {
     "vote": "투표하기",
