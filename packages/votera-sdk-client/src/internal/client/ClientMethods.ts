@@ -594,9 +594,10 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         };
     }
 
-    private toIVoteBallotData(res: any): VoteBallotData {
+    private async toIVoteBallotData(res: any): Promise<VoteBallotData> {
         return {
             voter: res.voter,
+            validatorKey: await this.getValidatorKeyOf(res.voter),
             timestamp: res.timestamp.toNumber(),
             choice: res.choice,
         };
@@ -605,7 +606,7 @@ export class ClientMethods extends ClientCore implements IClientMethods {
     public async getBallot(proposalId: BytesLike, voter: string): Promise<VoteBallotData> {
         try {
             const res = await this.getVoteController().getBallot(proposalId, voter);
-            return this.toIVoteBallotData(res);
+            return await this.toIVoteBallotData(res);
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
             throw new EVMException(message.code, message.error.message);
@@ -620,7 +621,7 @@ export class ClientMethods extends ClientCore implements IClientMethods {
     ): Promise<VoteBallotData[]> {
         try {
             const res = await this.getVoteController().getBallotList(proposalId, startIndex, endIndex, sortType);
-            return res.map((m) => this.toIVoteBallotData(m));
+            return await Promise.all(res.map((m) => this.toIVoteBallotData(m)));
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
             throw new EVMException(message.code, message.error.message);

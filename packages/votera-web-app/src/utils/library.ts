@@ -296,9 +296,26 @@ export function shortenAddress(address: string | null) {
   if (address === null) return '';
   if (isAddress(address))
     return (
-      address.substring(0, 7) +
+      address.substring(0, 6) +
       '…' +
       address.substring(address.length - 4, address.length)
     );
   else return address;
+}
+
+export function shortenValidatorKey(address: string | null) {
+  if (address === null) return '';
+  if (address.length > 20)
+    return (
+      address.substring(0, 6) +
+      '…' +
+      address.substring(address.length - 5, address.length)
+    );
+  else return address;
+}
+
+export function getValidatorKeyForLink(address: string | null) {
+  if (address === null) return '';
+  if (address.substring(0, 2) === '0x') return address.substring(2);
+  else address;
 }

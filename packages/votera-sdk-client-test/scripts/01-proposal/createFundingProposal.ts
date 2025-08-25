@@ -31,7 +31,7 @@ async function main() {
       'This is a sample proposal.\nFor more information, please refer to the document',
     proposalId: ContractUtils.getRandomId(),
     fundAmount: Amount.make(1000000, 18).value,
-    assessmentPeriod: 20,
+    assessmentPeriod: 2,
     votePeriod: 100,
     documentId: ContractUtils.getRandomId(),
     systemType: SystemProposalType.NORMAL,

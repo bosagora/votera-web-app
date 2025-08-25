@@ -1169,7 +1169,7 @@
     "yesDesc": "(당신은 이 제안에 찬성했습니다)",
     "noDesc": "(당신은 이 제안에 반대했습니다)",
     "abstainDesc": "(당신은 이 제안에 기권했습니다)",
-    "voterCount": "{{count}}명 참여",
+    "voterCount": "{{count}}/{{total}}명 참여",
     "voteStatus": "투표자 목록",
     "emptyState": "참여한 투표자가 없습니다.",
     "voteStatusDesc": "통과 기준 : 1/3 이상 참여, 60% 이상 찬성",

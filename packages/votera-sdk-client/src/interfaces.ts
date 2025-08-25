@@ -123,6 +123,7 @@ export interface CommentData {
 
 export interface VoteBallotData {
     voter: string;
+    validatorKey: string;
     timestamp: number;
     choice: Candidate;
 }

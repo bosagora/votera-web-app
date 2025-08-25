@@ -74,6 +74,7 @@ export type ChainData = {
   domain: NetworkDomain;
   testnet: boolean;
   explorer: string;
+  explorer2: string;
   logo: string;
   rpc: string[];
   nativeCurrency: NativeTokenData;
@@ -87,7 +88,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'Ethereum',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-    explorer: 'https://etherscan.io/',
+    explorer: 'https://etherscan.io',
+    explorer2: 'https://beaconscan.com',
     testnet: false,
     rpc: [`https://eth.llamarpc.com`],
     nativeCurrency: {
@@ -102,7 +104,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'Ethereum Sepolia',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-    explorer: 'https://sepolia.etherscan.io/',
+    explorer: 'https://sepolia.etherscan.io',
+    explorer2: 'https://beaconscan.com',
     testnet: true,
     rpc: [`https://eth-sepolia.public.blastapi.io`],
     nativeCurrency: {
@@ -117,7 +120,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'bosagora_mainnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'https://boascan.io/',
+    explorer: 'https://boascan.io',
+    explorer2: 'https://agorascan.io',
     testnet: false,
     rpc: ['https://mainnet.bosagora.org', 'https://rpc.bosagora.org'],
     nativeCurrency: {
@@ -132,7 +136,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'bosagora_testnet',
     domain: 'Test Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'https://testnet.boascan.io/',
+    explorer: 'https://testnet.boascan.io',
+    explorer2: 'https://testnet.agorascan.io',
     testnet: true,
     rpc: ['https://testnet.bosagora.org'],
     nativeCurrency: {
@@ -147,7 +152,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'bosagora_devnet',
     domain: 'Dev Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'http://localhost:14000/',
+    explorer: 'http://localhost:14000',
+    explorer2: 'https://testnet.agorascan.io',
     testnet: true,
     rpc: ['http://localhost:8545'],
     nativeCurrency: {
@@ -163,6 +169,7 @@ export const CHAIN_METADATA: ChainList = {
     domain: 'Main Chain',
     logo: '',
     explorer: '',
+    explorer2: '',
     testnet: false,
     rpc: [],
     nativeCurrency: {

@@ -4,7 +4,11 @@ import {FiChevronDown} from 'react-icons/fi';
 import {Link} from 'votera-ui-components';
 import {useNetwork} from 'context/network';
 import {CHAIN_METADATA} from 'utils/constants';
-import {shortenAddress} from 'utils/library';
+import {
+  getValidatorKeyForLink,
+  shortenAddress,
+  shortenValidatorKey,
+} from 'utils/library';
 import {useClient} from 'hooks/useClient';
 import {SortType, VoteBallotData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
@@ -21,6 +25,7 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   const PAGE_SIZE = 10;
 
   const [ballotLength, setBallotLength] = useState<number>(0);
+  const [voterLength, setVoterLength] = useState<number>(0);
   const [ballots, setBallots] = useState<VoteBallotData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -59,10 +64,12 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
     const initializeBallots = async () => {
       if (!client || !proposalId) return;
 
-      const length = await client.methods.getBallotLength(proposalId);
-      setBallotLength(length || 0);
+      const ballotLength = await client.methods.getBallotLength(proposalId);
+      setBallotLength(ballotLength || 0);
+      const voterLength = await client.methods.getVoterLength(proposalId);
+      setVoterLength(voterLength || 0);
 
-      if (length && length > 0) {
+      if (ballotLength && ballotLength > 0) {
         await fetchBallots(0);
       }
     };
@@ -93,7 +100,10 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
       <Header>
         <HeaderTitle>{t('voteWidget.voteStatus')}</HeaderTitle>
         <VoterCount>
-          {t('voteWidget.voterCount', {count: ballotLength})}
+          {t('voteWidget.voterCount', {
+            count: ballotLength,
+            total: voterLength,
+          })}
         </VoterCount>
       </Header>
 
@@ -108,6 +118,13 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
                     label={shortenAddress(ballot.voter)}
                     href={`${CHAIN_METADATA[network].explorer}/address/${ballot.voter}`}
                   />
+                  <Link
+                    external
+                    label={shortenValidatorKey(ballot.validatorKey)}
+                    href={`${
+                      CHAIN_METADATA[network].explorer2
+                    }/validator/${getValidatorKeyForLink(ballot.validatorKey)}`}
+                  />
                   <VoteChoice vote={ballot.choice}>
                     {getVoteText(ballot.choice, t)}
                   </VoteChoice>
@@ -115,9 +132,6 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
                 <CreatedAt>
                   {new Date(Number(ballot.timestamp) * 1000).toLocaleString()}
                 </CreatedAt>
-              </CommentHeader>
-              <CommentHeader>
-                <ValidatorPublicKey>0x00000...000100</ValidatorPublicKey>
               </CommentHeader>
               <Divider />
             </CommentItem>
@@ -165,10 +179,6 @@ const HeaderLeft = styled.div.attrs({
   className: 'flex items-center gap-3',
 })``;
 
-const ValidatorPublicKey = styled.div.attrs({
-  className: 'flex items-center',
-})``;
-
 const VoteChoice = styled.span<{vote: Candidate}>`
   ${({vote}) => `
     padding: 2px 8px;
@@ -210,52 +220,6 @@ const HeaderTitle = styled.h2.attrs({
 const VoterCount = styled.span.attrs({
   className: 'text-sm text-[#666]',
 })``;
-
-const VoteStatsContainer = styled.div.attrs({
-  className:
-    'flex flex-col items-center gap-3 mb-3 p-3 bg-gray-50 rounded-lg max-w-[300px] mx-auto w-full',
-})``;
-
-const VoteStatItem = styled.div.attrs({
-  className: 'flex items-center justify-between w-full px-4',
-})``;
-
-const VoteLabel = styled.span<{vote: Candidate}>`
-  ${({vote}) => `
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 16px;
-    min-width: 80px;
-    text-align: center;
-    ${
-      vote === Candidate.YES &&
-      `
-      background-color: #E8FFF1;
-      color: #16A34A;
-    `
-    }
-    ${
-      vote === Candidate.NO &&
-      `
-      background-color: #FFE8E8;
-      color: #DC2626;
-    `
-    }
-    ${
-      vote === Candidate.BLANK &&
-      `
-      background-color: #F3F4F6;
-      color: #6B7280;
-    `
-    }
-  `}
-`;
-
-const VoteCount = styled.span.attrs({
-  className: 'text-sm text-[#666] font-medium',
-})`
-  font-size: 16px;
-`;
 
 const EmptyMessage = styled.div`
   text-align: center;
