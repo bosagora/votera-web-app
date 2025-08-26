@@ -3,13 +3,13 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {Action, ProposalPhase} from 'utils/types';
+import {ProposalPhase} from 'utils/types';
 import {ProposalPhaseExtended} from '../../pages/details';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
 
-import {useCreateTransitionContext} from 'context/createTransition';
-import {CreateTransitionProvider} from 'context/createTransition';
+import {useCreateExecuteContext} from 'context/createExecute';
+import {CreateExecuteProvider} from 'context/createExecute';
 const Card = styled.div.attrs({
   className:
     'w-84 flex-col bg-white rounded-xl py-3 px-2 desktop:p-3 space-y-3',
@@ -40,15 +40,15 @@ const StyledButtonText = styled(ButtonText).attrs({
   className: 'w-full tablet:w-max',
 })``;
 
-type TransitionProps = {
+type ExecutionProps = {
+  period: ProposalPeriod;
   proposalId: string;
   phase: ProposalPhase;
   exPhase: ProposalPhaseExtended;
   exPhaseMessage: string;
-  period: ProposalPeriod;
 };
 
-export const FundTransitionWidget: React.FC<TransitionProps> = ({
+export const StageExecutionWidget: React.FC<ExecutionProps> = ({
   period,
   phase,
   exPhase,
@@ -56,23 +56,28 @@ export const FundTransitionWidget: React.FC<TransitionProps> = ({
   proposalId,
 }) => {
   const {t} = useTranslation();
-  const {client} = useClient();
-  //
+
   // useEffect(() => {
   //   console.log('exPhase', exPhase);
   //   console.log('exPhaseMessage', exPhaseMessage);
   // }, [proposalId]);
 
   return (
-    <CreateTransitionProvider>
+    <CreateExecuteProvider>
       <Card>
+        {/* <Header>
+      {/* <Header>
+        <Title>{t('governance.executionCard.title')}</Title>
+        <Description>{t('governance.executionCard.description')}</Description>
+      </Header> */}
+
         <Content>
           <div className="p-4 bg-white rounded-lg border">
             <WidgetFooter proposalId={proposalId} exPhase={exPhase} />
           </div>
         </Content>
       </Card>
-    </CreateTransitionProvider>
+    </CreateExecuteProvider>
   );
 };
 
@@ -83,17 +88,17 @@ type FooterProps = {
 
 const WidgetFooter: React.FC<FooterProps> = ({proposalId, exPhase}) => {
   const {t} = useTranslation();
-  const {handlePublishTransition} = useCreateTransitionContext();
+  const {handlePublishExecution} = useCreateExecuteContext();
 
-  const handleTransitionSubmit = async () => {
+  const handleExecutionSubmit = async () => {
     if (!proposalId) return;
 
     try {
-      await handlePublishTransition({
+      await handlePublishExecution({
         proposalId: proposalId,
       });
     } catch (error) {
-      console.error('단계 전환 중 오류 발생:', error);
+      console.error('출금 요청 중 오류 발생:', error);
     }
   };
 
@@ -101,11 +106,11 @@ const WidgetFooter: React.FC<FooterProps> = ({proposalId, exPhase}) => {
     <Footer>
       <StyledButtonText
         css={{}}
-        label={t('transitionWidget.title')}
+        label={t('executionWidget.title')}
         size="large"
-        onClick={handleTransitionSubmit}
+        onClick={handleExecutionSubmit}
       />
-      <AlertInline label={t('transitionWidget.description')} />
+      <AlertInline label={t('executionWidget.description')} />
     </Footer>
   );
 };

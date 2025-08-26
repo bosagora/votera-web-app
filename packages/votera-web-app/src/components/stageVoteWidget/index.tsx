@@ -30,7 +30,7 @@ type VoteWidgetProps = {
   period: ProposalPeriod;
 };
 
-export const FundVoteWidget: React.FC<VoteWidgetProps> = ({
+export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
   period,
   phase,
   txhash,

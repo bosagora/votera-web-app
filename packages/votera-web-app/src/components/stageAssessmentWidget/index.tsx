@@ -70,7 +70,7 @@ export type AssessmentFormData = {
   scalability: number;
 };
 
-export const FundAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
+export const StageAssessmentWidget: React.FC<FundAssessmentWidgetProps> = ({
   period,
   phase,
   canAssess,

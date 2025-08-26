@@ -16,8 +16,8 @@ import {NotFound} from 'utils/paths';
 
 import {ProposalId} from 'utils/types';
 
-import {FundVoteWidget} from 'components/fundVoteWidget';
-import {FundAssessmentWidget} from 'components/fundAssessmentWidget';
+import {StageVoteWidget} from 'components/stageVoteWidget';
+import {StageAssessmentWidget} from 'components/stageAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
 import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
@@ -32,8 +32,8 @@ import {
   VoteResult,
 } from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
-import {FundTransitionWidget} from 'components/fundTransitionWidget';
-import {FundExecutionWidget} from 'components/fundExecutionWidget';
+import {StageTransitionWidget} from 'components/stageTransitionWidget';
+import {StageExecutionWidget} from 'components/stageExecutionWidget';
 import {useProposalQuery} from 'hooks/useProposalQuery';
 import EvaluatorList from '../components/evaluatorList';
 
@@ -597,7 +597,7 @@ const Details: React.FC = () => {
             voteEndDate={new Date(proposal.endVote * 1000)}
           />
           {proposal.period === ProposalPeriod.ASSESSMENT ? (
-            <FundAssessmentWidget
+            <StageAssessmentWidget
               period={proposal.period}
               phase={proposal.phase}
               canAssess={canAssess}
@@ -607,7 +607,7 @@ const Details: React.FC = () => {
               proposalId={proposal.id}
             />
           ) : (
-            <FundVoteWidget
+            <StageVoteWidget
               period={proposal.period}
               phase={proposal.phase}
               txhash={transactionHash || proposal?.executionTxHash || undefined}
@@ -620,7 +620,7 @@ const Details: React.FC = () => {
           )}
           {(isVoter || isEvaluator) &&
             extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
-              <FundTransitionWidget
+              <StageTransitionWidget
                 period={proposal.period}
                 phase={proposal.phase}
                 exPhase={extendedPhase}
@@ -630,7 +630,7 @@ const Details: React.FC = () => {
             )}
           {extendedPhase.toLocaleLowerCase().includes('opened_execution') &&
             proposal.creator === address && (
-              <FundExecutionWidget
+              <StageExecutionWidget
                 period={proposal.period}
                 phase={proposal.phase}
                 exPhase={extendedPhase}
