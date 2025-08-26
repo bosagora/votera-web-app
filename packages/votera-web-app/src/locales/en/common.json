@@ -1284,5 +1284,14 @@
       "description": "Approve the transaction to execute the transition."
     },
     "buttonLabelSuccess": "Go to proposal"
+  },
+  "sendVoteCostWidget": {
+    "title": "Send Vote Cost",
+    "description": "It provides voting costs to all validators.",
+    "transactionModal": {
+      "title": "Send voting costs",
+      "description": "Please approve the deal and provide voting costs."
+    },
+    "buttonLabelSuccess": "Go to proposal"
   }
 }

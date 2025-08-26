@@ -1197,5 +1197,14 @@
       "description": "거래를 승인하여 전환을 실행하세요."
     },
     "buttonLabelSuccess": "제안으로 이동"
+  },
+  "sendVoteCostWidget": {
+    "title": "투표비용전송",
+    "description": "모든 검증자들에게 투표비용을 제공합니다.",
+    "transactionModal": {
+      "title": "투표비용전송",
+      "description": "거래를 승인하여 투표비용을 제공해 주세요."
+    },
+    "buttonLabelSuccess": "제안으로 이동"
   }
 }
