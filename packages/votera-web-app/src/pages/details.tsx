@@ -19,7 +19,6 @@ import {ProposalId} from 'utils/types';
 import {StageVoteWidget} from 'components/stageVoteWidget';
 import {StageAssessmentWidget} from 'components/stageAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
-import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
 import {
   VoteBallotData,
@@ -620,23 +619,11 @@ const Details: React.FC = () => {
           )}
           {(isVoter || isEvaluator) &&
             extendedPhase.toLocaleLowerCase().includes('opened_expired') && (
-              <StageTransitionWidget
-                period={proposal.period}
-                phase={proposal.phase}
-                exPhase={extendedPhase}
-                exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
-                proposalId={proposal.id}
-              />
+              <StageTransitionWidget proposalId={proposal.id} />
             )}
           {extendedPhase.toLocaleLowerCase().includes('opened_execution') &&
             proposal.creator === address && (
-              <StageExecutionWidget
-                period={proposal.period}
-                phase={proposal.phase}
-                exPhase={extendedPhase}
-                exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}
-                proposalId={proposal.id}
-              />
+              <StageExecutionWidget proposalId={proposal.id} />
             )}
         </ProposalContainer>
 
