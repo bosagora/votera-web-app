@@ -6,6 +6,7 @@ import {TFunction, useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import {IPFS_ENDPOINT} from 'utils/constants';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
+import moment from 'moment';
 
 const Icon = styled(IconReload).attrs({className: 'ml-1 w-1.5 h-1.5'})``;
 
@@ -24,11 +25,7 @@ interface ProposalInfoProps {
 }
 
 const formatDate = (date: Date) => {
-  return date.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 const getTimeRemaining = (endDate: Date, t: TFunction) => {

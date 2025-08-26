@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import {FiChevronDown} from 'react-icons/fi';
 import {Link} from 'votera-ui-components';
 import {useNetwork} from 'context/network';
-import {CHAIN_METADATA} from 'utils/constants';
+import {
+  chainExplorer2AddressLink,
+  chainExplorerAddressLink,
+} from 'utils/constants';
 import {
   getValidatorKeyForLink,
   shortenAddress,
@@ -12,6 +15,7 @@ import {
 import {useClient} from 'hooks/useClient';
 import {SortType, VoteBallotData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
+import moment from 'moment/moment';
 
 interface VoteListProps {
   proposalId: string;
@@ -116,22 +120,31 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
                   <Link
                     external
                     label={shortenAddress(ballot.voter)}
-                    href={`${CHAIN_METADATA[network].explorer}/address/${ballot.voter}`}
-                  />
-                  <Link
-                    external
-                    label={shortenValidatorKey(ballot.validatorKey)}
-                    href={`${
-                      CHAIN_METADATA[network].explorer2
-                    }/validator/${getValidatorKeyForLink(ballot.validatorKey)}`}
+                    href={chainExplorerAddressLink(network, ballot.voter)}
                   />
                   <VoteChoice vote={ballot.choice}>
                     {getVoteText(ballot.choice, t)}
                   </VoteChoice>
                 </HeaderLeft>
                 <CreatedAt>
-                  {new Date(Number(ballot.timestamp) * 1000).toLocaleString()}
+                  {ballot.timestamp != 0
+                    ? moment(new Date(Number(ballot.timestamp) * 1000)).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                      )
+                    : ''}
                 </CreatedAt>
+              </CommentHeader>
+              <CommentHeader>
+                <HeaderLeft>
+                  <Link
+                    external
+                    label={shortenValidatorKey(ballot.validatorKey)}
+                    href={chainExplorer2AddressLink(
+                      network,
+                      getValidatorKeyForLink(ballot.validatorKey)
+                    )}
+                  />
+                </HeaderLeft>
               </CommentHeader>
               <Divider />
             </CommentItem>

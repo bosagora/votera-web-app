@@ -187,3 +187,10 @@ export const chainExplorerAddressLink = (
 ) => {
   return `${CHAIN_METADATA[network].explorer}address/${address}`;
 };
+
+export const chainExplorer2AddressLink = (
+  network: SupportedNetworks,
+  address: string
+) => {
+  return `${CHAIN_METADATA[network].explorer2}validator/${address}`;
+};

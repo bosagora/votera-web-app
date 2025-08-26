@@ -35,6 +35,7 @@ import {StageTransitionWidget} from 'components/stageTransitionWidget';
 import {StageExecutionWidget} from 'components/stageExecutionWidget';
 import {useProposalQuery} from 'hooks/useProposalQuery';
 import EvaluatorList from '../components/evaluatorList';
+import {StageSendVoteCostWidget} from '../components/stageSendVoteCostWidget';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -339,6 +340,7 @@ const Details: React.FC = () => {
   );
   const [isEvaluator, setIsEvaluator] = useState(false);
   const [isVoter, setIsVoter] = useState(false);
+  const [isCanSendVoteCost, setIsCanSendVoteCost] = useState(false);
 
   const [fetchedProposal, setFetchedProposal] = useState<
     ProposalData | null | undefined
@@ -460,6 +462,7 @@ const Details: React.FC = () => {
               voteResult: fetchedProposal?.voteResult || VoteResult.NONE,
               executionStates:
                 fetchedProposal?.executionStates || ExecutionStates.NONE,
+              sendVoteCost: fetchedProposal?.sendVoteCost || false,
             }
           : null;
 
@@ -468,6 +471,20 @@ const Details: React.FC = () => {
         const extendedPhaseTmp = getExtendedPhase(extendedProposalData);
         setExtendedPhase(extendedPhaseTmp);
         setProposalError(null);
+
+        if (fetchedProposal) {
+          if (
+            !fetchedProposal.sendVoteCost &&
+            fetchedProposal.assessmentResult === AssessmentResult.APPROVED &&
+            fetchedProposal.period === ProposalPeriod.VOTE
+          ) {
+            setIsCanSendVoteCost(true);
+          } else {
+            setIsCanSendVoteCost(false);
+          }
+        } else {
+          setIsCanSendVoteCost(false);
+        }
       } catch (error) {
         setProposalError(error as Error);
         setProposal(null);
@@ -490,6 +507,18 @@ const Details: React.FC = () => {
   const canVote = useMemo(() => {
     return !(!proposal || !address || !isVoter);
   }, [proposal, address, isVoter]);
+
+  const canSendVoteCost = useMemo(() => {
+    if (!proposal || !address) {
+      return false;
+    }
+    console.log(proposal);
+    return (
+      !proposal.sendVoteCost &&
+      proposal.assessmentResult === AssessmentResult.APPROVED &&
+      proposal.period === ProposalPeriod.VOTE
+    );
+  }, [proposal, address]);
 
   // voting process effect
   useEffect(() => {
@@ -625,6 +654,9 @@ const Details: React.FC = () => {
             proposal.creator === address && (
               <StageExecutionWidget proposalId={proposal.id} />
             )}
+          {isCanSendVoteCost && (isVoter || isEvaluator) && (
+            <StageSendVoteCostWidget proposalId={proposal.id} />
+          )}
         </ProposalContainer>
 
         <AdditionalInfoContainer>

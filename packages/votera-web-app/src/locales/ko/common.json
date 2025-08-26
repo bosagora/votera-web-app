@@ -60,7 +60,7 @@
     "seeAllHolders": "전체 보유자 보기",
     "seeCommunity": "커뮤니티 보기",
     "supportThreshold": "지지 임계값",
-    "viewTransactions": "거래 내역 보기",
+    "viewTransactions": "트랜잭션 내역 보기",
     "seeAll": "전체 보기",
     "seeAllTokens": "전체 토큰 보기",
     "seeAllTransfers": "전체 이체 보기",
@@ -210,7 +210,7 @@
     "totalHolders": "전체 새 보유자",
     "mintable": "발행 가능",
     "new": "신규",
-    "pendingTransaction": "거래 처리 중 …",
+    "pendingTransaction": "트랜잭션 처리 중 …",
     "signVote": "투표 서명",
     "signExecuteProposal": "제안 실행",
     "yes": "예",
@@ -323,7 +323,7 @@
       "title": "작업",
       "description": "설정한 매개변수가 충족되면 이러한 작업을 실행할 수 있습니다.",
       "addAction": "작업 추가",
-      "seeTransaction": "거래 보기",
+      "seeTransaction": "트랜잭션 보기",
       "status": {
         "succeeded": "제안이 통과되어 실행 준비가 되었습니다",
         "executed": "작업 실행됨",
@@ -455,14 +455,14 @@
     "goToProposal": "제안 열기",
     "launchGovernancePage": "거버넌스 페이지 실행",
     "launchDaoDashboard": "DAO 대시보드 실행",
-    "errorLabel": "거래 확인 중 오류 발생",
+    "errorLabel": "트랜잭션 확인 중 오류 발생",
     "gasEstimationErrorLabel": "가스비 추정에 실패했습니다. 계속 진행할 수 있습니다. ",
     "estimatedFees": "예상 가스비",
     "maxFee": "최대 수수료",
     "publishDaoSubtitle": "아래 수수료는 선택한 블록체인 사용 비용입니다.",
-    "publishVoteraButtonLabel": "거래 승인",
+    "publishVoteraButtonLabel": "트랜잭션 승인",
     "signDeposit": "입금 서명",
-    "successLabel": "거래 실행됨",
+    "successLabel": "트랜잭션 실행됨",
     "synced": "{{time}}초 전에 동기화됨",
     "totalCost": "총 비용",
     "tryAgain": "다시 시도",
@@ -704,7 +704,7 @@
     "linkURL": "https://bosagora.io/privacy-policy"
   },
   "transactionDetail": {
-    "title": "거래 상세 정보",
+    "title": "트랜잭션 상세 정보",
     "viewTransaction": "블록 탐색기에서 보기"
   },
   "cookiePreferences": {
@@ -721,7 +721,7 @@
     },
     "create": {
       "title": "Votera 제안 생성하기",
-      "description": "Votera 제안 생성은 거래에 두 개 이상의 서명이 필요하도록 하여 보안을 강화하는 기술입니다.",
+      "description": "Votera 제안 생성은 트랜잭션에 두 개 이상의 서명이 필요하도록 하여 보안을 강화하는 기술입니다.",
       "actionLabel": "Votera 제안 생성하기"
     },
     "learn": {
@@ -1111,7 +1111,7 @@
     "closedRejectedAssessment": "평가 단계에서 거절되었습니다.",
     "closedRejectedVote": "투표가 부결되었습니다.",
     "closedInvalidQuorumVote": "정족수 미달로 투표가 부결되었습니다.",
-    "closedFinished": "제안이 성공적으로 완료되었습니다.",
+    "closedFinished": "제안의 모든 과정이 성공적으로 완료되었습니다.",
     "error": "오류가 발생했습니다.",
     "undefined": "알 수 없는 상태입니다."
   },
@@ -1148,17 +1148,17 @@
     "myScore": "(당신은 평가를 완료했습니다.)",
     "transactionModal": {
       "title": "평가 실행",
-      "description": "거래를 승인하여 평가를 실행하세요.",
+      "description": "트랜잭션을 승인하여 평가를 실행하세요.",
       "commentModal": {
         "title": "평가 댓글 등록",
-        "description": "거래를 승인하여 평가 댓글을 등록하세요."
+        "description": "트랜잭션을 승인하여 평가 댓글을 등록하세요."
       }
     },
     "buttonLabelSuccess": "제안으로 이동",
     "evaluatorCount": "{{count}}/{{total}}명 참여",
     "evaluationStatus": "평가자 목록",
     "emptyState": "참여한 평가자ㅂ 없습니다.",
-    "before": "평가 잔",
+    "before": "평가 전",
     "after": "평가 후"
   },
   "voteWidget": {
@@ -1172,11 +1172,11 @@
     "voterCount": "{{count}}/{{total}}명 참여",
     "voteStatus": "투표자 목록",
     "emptyState": "참여한 투표자가 없습니다.",
-    "voteStatusDesc": "통과 기준 : 1/3 이상 참여, 60% 이상 찬성",
+    "voteStatusDesc": "통과 기준 : 1/3 이상 투표 참여하여야 하고, 찬성과 반대의 표차이가 전체정족수의 10%이상일때",
     "myVote": "(당신은 제안에 {{vote}} 투표했습니다.)",
     "transactionModal": {
       "title": "투표 실행",
-      "description": "거래를 승인하여 투표를 실행하세요."
+      "description": "트랜잭션을 승인하여 투표를 실행하세요."
     },
     "buttonLabelSuccess": "제안으로 이동"
   },
@@ -1185,7 +1185,7 @@
     "description": "제안이 통과되었습니다. 출금 요청을 하세요.",
     "transactionModal": {
       "title": "출금 요청",
-      "description": "거래를 승인하여 출금 요청을 하세요."
+      "description": "트랜잭션을 승인하여 출금 요청을 하세요."
     },
     "buttonLabelSuccess": "제안으로 이동"
   },
@@ -1194,7 +1194,7 @@
     "description": "제안을 다음 단계로 전환하세요.",
     "transactionModal": {
       "title": "전환 실행",
-      "description": "거래를 승인하여 전환을 실행하세요."
+      "description": "트랜잭션을 승인하여 전환을 실행하세요."
     },
     "buttonLabelSuccess": "제안으로 이동"
   },
@@ -1203,7 +1203,7 @@
     "description": "모든 검증자들에게 투표비용을 제공합니다.",
     "transactionModal": {
       "title": "투표비용전송",
-      "description": "거래를 승인하여 투표비용을 제공해 주세요."
+      "description": "트랜잭션을 승인하여 투표비용을 제공해 주세요."
     },
     "buttonLabelSuccess": "제안으로 이동"
   }

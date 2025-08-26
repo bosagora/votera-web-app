@@ -307,15 +307,15 @@ export function shortenValidatorKey(address: string | null) {
   if (address === null) return '';
   if (address.length > 20)
     return (
-      address.substring(0, 6) +
+      address.substring(0, 12) +
       '…' +
-      address.substring(address.length - 5, address.length)
+      address.substring(address.length - 12, address.length)
     );
   else return address;
 }
 
-export function getValidatorKeyForLink(address: string | null) {
+export function getValidatorKeyForLink(address: string | null): string {
   if (address === null) return '';
   if (address.substring(0, 2) === '0x') return address.substring(2);
-  else address;
+  else return address;
 }

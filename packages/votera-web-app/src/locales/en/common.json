@@ -1259,7 +1259,7 @@
     "voterCount": "{{count}}/{{total}} participants",
     "voteStatus": "Voter list",
     "emptyState": "No participants have voted yet.",
-    "voteStatusDesc": "Passing criteria: 1/3 participation, 60% approval",
+    "voteStatusDesc": "Passing criteria: At least one-third must vote, margin ≥10% of quorum.",
     "myVote": "(You voted for {{vote}} on this proposal.)",
     "transactionModal": {
       "title": "Vote",

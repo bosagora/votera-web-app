@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import {FiChevronDown} from 'react-icons/fi';
 import {Link} from 'votera-ui-components';
 import {useNetwork} from 'context/network';
-import {CHAIN_METADATA} from 'utils/constants';
+import {chainExplorerAddressLink} from 'utils/constants';
 import {shortenAddress} from 'utils/library';
 import {useClient} from 'hooks/useClient';
 import {SortType, EvaluationData, Candidate} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
+import moment from 'moment';
 
 interface EvaluationListProps {
   proposalId: string;
@@ -112,7 +113,10 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
                   <Link
                     external
                     label={shortenAddress(evaluation.evaluator)}
-                    href={`${CHAIN_METADATA[network].explorer}/address/${evaluation.evaluator}`}
+                    href={chainExplorerAddressLink(
+                      network,
+                      evaluation.evaluator
+                    )}
                   />
                   <IsEvaluated done={evaluation.isEvaluated}>
                     {getEvaluationText(evaluation.isEvaluated, t)}
@@ -122,10 +126,11 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
                   </Values>
                 </HeaderLeft>
                 <CreatedAt>
-                  {evaluation.isEvaluated &&
-                    new Date(
-                      Number(evaluation.timestamp) * 1000
-                    ).toLocaleString()}
+                  {evaluation.timestamp != 0
+                    ? moment(
+                        new Date(Number(evaluation.timestamp) * 1000)
+                      ).format('YYYY-MM-DD HH:mm:ss')
+                    : ''}
                 </CreatedAt>
               </CommentHeader>
               <Divider />
