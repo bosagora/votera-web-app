@@ -1,9 +1,10 @@
 import {withTransaction} from '@elastic/apm-rum-react';
-import React, {useEffect, useMemo} from 'react';
-import {FormProvider, useForm, useFormState, useWatch} from 'react-hook-form';
+import React, {useEffect} from 'react';
+import {FormProvider, useForm, useWatch} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
 import {FullScreenStepper, Step} from 'components/fullScreenStepper';
+import {useGlobalModalContext} from 'context/globalModals';
 import {
   OverviewProposalHeader,
   OverviewProposalStep,
@@ -66,7 +67,16 @@ export type CreateProposalFormData = {
 const CreateProposal: React.FC = () => {
   const {t} = useTranslation();
   const {network, setNetwork} = useNetwork();
-  const {address, chainId} = useWallet();
+  const {open, close} = useGlobalModalContext();
+  const {address, chainId, isConnected, isOnWrongNetwork} = useWallet();
+
+  useEffect(() => {
+    if (!isConnected) open('wallet');
+    else {
+      if (isOnWrongNetwork) open('network');
+      else close('network');
+    }
+  }, [close, isConnected, isOnWrongNetwork, open]);
 
   const defaultValues: CreateProposalFormData = {
     blockchain: {

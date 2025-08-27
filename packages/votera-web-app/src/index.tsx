@@ -47,8 +47,6 @@ export const queryClient = new QueryClient();
 
 const CACHE_VERSION = 1;
 const onLoad = () => {
-  // Wipe local storage cache if its structure is out of date and clashes
-  // with this version of the app.
   const cacheVersion = localStorage.getItem('VoteraCacheVersion');
   const retainKeys = ['privacy-policy-preferences', 'uselang'];
   if (!cacheVersion || parseInt(cacheVersion) < CACHE_VERSION) {
@@ -72,7 +70,6 @@ ReactDOM.render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <PrivacyContextProvider>
-          {/*<APMProvider>*/}
           <Router>
             <AlertProvider>
               <WagmiConfig config={wagmiConfig}>
@@ -95,7 +92,6 @@ ReactDOM.render(
               </WagmiConfig>
             </AlertProvider>
           </Router>
-          {/*</APMProvider>*/}
         </PrivacyContextProvider>
       </QueryClientProvider>
     </React.StrictMode>

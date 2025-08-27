@@ -448,8 +448,8 @@
     "noAddresses": "주소를 찾을 수 없음"
   },
   "TransactionModal": {
-    "createProposalSubtitle": "첫 거래에 서명하려면 지갑에서 Aragon App을 승인해야 합니다.",
-    "approveSubtitle": "첫 거래에 서명하려면 지갑에서 Aragon App을 승인해야 합니다.",
+    "createProposalSubtitle": "첫 거래에 서명하려면 지갑에서 Votera App을 승인해야 합니다.",
+    "approveSubtitle": "첫 거래에 서명하려면 지갑에서 Votera App을 승인해야 합니다.",
     "approveToken": "토큰 승인",
     "depositTitle": "입금 서명",
     "goToProposal": "제안 열기",
@@ -680,7 +680,7 @@
     },
     "statistics": {
       "daosCreated": "생성된 DAO",
-      "aragonMembers": "Aragon App DAO 멤버",
+      "aragonMembers": "Votera App DAO 멤버",
       "activeProposals": "진행 중인 제안",
       "securedByAragon": "Aragon OSx로 보호됨"
     },
@@ -816,7 +816,7 @@
       "inputAmountBalance": "보유량: {{amount}} {{tokenSymbol}}",
       "footerTitle": "토큰 승인",
       "footerSteps": "{{steps}}단계 중 {{step}}단계",
-      "footerDesc": "이 {{tokenSymbol}}을(를) 래핑하려면 먼저 Aragon App에서 사용할 수 있도록 수량을 승인해야 합니다.",
+      "footerDesc": "이 {{tokenSymbol}}을(를) 래핑하려면 먼저 Votera App에서 사용할 수 있도록 수량을 승인해야 합니다.",
       "footerCtaFirst": "토큰 승인",
       "footerCtaSecond": "토큰 래핑",
       "footerCtaError": "다시 시도",

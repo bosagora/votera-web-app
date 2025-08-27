@@ -19,13 +19,6 @@ export interface DecodedParam {
   value: object | string | BigNumber;
 }
 
-// Note: this code is dangerous if multiple ABIs are decoded at once in different
-// async call chains
-
-// Note: large numbers are not returned as strings but as BigNumber objects
-
-// Code derived from Consensys's abi-decoder
-
 const abiCoder = new utils.AbiCoder();
 
 const state = {

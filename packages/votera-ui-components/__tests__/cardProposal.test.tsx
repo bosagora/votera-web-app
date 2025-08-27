@@ -37,6 +37,6 @@ const properties = {
     'Defeated',
   ],
   onClick: () => {
-    alert('Pressing this button would allow to change DAO.');
+    alert('Pressing this button would allow to change Votera.');
   },
 };

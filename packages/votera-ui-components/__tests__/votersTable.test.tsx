@@ -5,7 +5,7 @@ import {VotersTable} from '../src';
 
 const voters = [
   {
-    wallet: 'DAO XYZ',
+    wallet: 'Votera XYZ',
     option: 'Yes',
     votingPower: '40%',
     tokenAmount: '1,000TN',

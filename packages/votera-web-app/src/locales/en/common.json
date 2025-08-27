@@ -531,8 +531,8 @@
     "noAddresses": "No address found"
   },
   "TransactionModal": {
-    "createProposalSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
-    "approveSubtitle": "To sign your first transaction, you must approve Aragon App in your wallet.",
+    "createProposalSubtitle": "To sign your first transaction, you must approve Votera App in your wallet.",
+    "approveSubtitle": "To sign your first transaction, you must approve Votera App in your wallet.",
     "approveToken": "Approve token",
     "depositTitle": "Sign deposit",
     "goToProposal": "Open your proposal",
@@ -763,7 +763,7 @@
     },
     "statistics": {
       "daosCreated": "DAOs created",
-      "aragonMembers": "Members in Aragon App DAOs",
+      "aragonMembers": "Members in Votera App DAOs",
       "activeProposals": "Active proposals",
       "securedByAragon": "Secured by Aragon OSx"
     },
@@ -899,7 +899,7 @@
       "inputAmountBalance": "Your balance: {{amount}} {{tokenSymbol}}",
       "footerTitle": "Approve tokens",
       "footerSteps": "Step {{step}} of {{steps}}",
-      "footerDesc": "To wrap this {{tokenSymbol}}, you must first approve the amount to be usable by Aragon App.",
+      "footerDesc": "To wrap this {{tokenSymbol}}, you must first approve the amount to be usable by Votera App.",
       "footerCtaFirst": "Approve tokens",
       "footerCtaSecond": "Wrap tokens",
       "footerCtaError": "Try again",

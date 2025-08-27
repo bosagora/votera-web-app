@@ -7,15 +7,12 @@ import {Navigate, Outlet, Route, Routes, useLocation} from 'react-router-dom';
 // work properly on the pages.
 import {GridLayout} from 'components/layout';
 import {Loading} from 'components/temporary/loading';
-import ExploreFooter from 'containers/exploreFooter';
 import Footer from 'containers/footer';
 import Navbar from 'containers/navbar';
 import ProposalSelectMenu from 'containers/navbar/proposalSelectMenu';
-import ExploreNav from 'containers/navbar/exploreNav';
 import NetworkErrorMenu from 'containers/networkErrorMenu';
 import {WalletMenu} from 'containers/walletMenu';
 import {useWallet} from 'hooks/useWallet';
-import {FormProvider, useForm} from 'react-hook-form';
 import {identifyUser, trackPage} from 'services/analytics';
 import {NotFound} from 'utils/paths';
 import '../i18n.config';
@@ -26,7 +23,6 @@ const ProposalPage = lazy(() => import('./pages/details'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
 function App() {
-  // TODO this needs to be inside a Routes component. Will be moved there with
   // further refactoring of layout (see further below).
   const {pathname} = useLocation();
   const {methods, status, network, address, provider} = useWallet();
@@ -55,7 +51,6 @@ function App() {
 
   return (
     <>
-      {/* TODO: replace with loading indicator */}
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/">
@@ -63,14 +58,15 @@ function App() {
               index
               element={<Navigate to="proposal/dashboard" replace />}
             />
-
+            <Route element={<VoteraWrapper />}>
+              <Route path="/create" element={<CreateProposal />} />
+            </Route>
             <Route element={<VoteraWrapper />}>
               <Route path="proposal/dashboard" element={<DashboardPage />} />
               <Route
                 path="proposal/details/:network/:id"
                 element={<ProposalDetailsWrapper />}
               />
-              <Route path="/create" element={<CreateProposal />} />
             </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />
@@ -85,26 +81,6 @@ function App() {
   );
 }
 
-const NewSettingsWrapper: React.FC = () => {
-  const formMethods = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      links: [{name: '', url: ''}],
-      startSwitch: 'now',
-      durationSwitch: 'duration',
-      durationDays: '1',
-      durationHours: '0',
-      durationMinutes: '0',
-    },
-  });
-
-  return (
-    <FormProvider {...formMethods}>
-      <Outlet />
-    </FormProvider>
-  );
-};
-
 const ProposalDetailsWrapper: React.FC = () => <ProposalPage />;
 
 const NotFoundWrapper: React.FC = () => {
@@ -113,24 +89,7 @@ const NotFoundWrapper: React.FC = () => {
   return <Navigate to={NotFound} state={{incorrectPath: pathname}} replace />;
 };
 
-const ExploreWrapper: React.FC = () => (
-  <>
-    <div className="min-h-screen">
-      <ExploreNav />
-      <Outlet />
-    </div>
-    <ExploreFooter />
-  </>
-);
-
 const VoteraWrapper: React.FC = () => {
-  // const {data: ProposalData} = useVoteraProposalDetailsQuery();
-
-  // using isOpen to conditionally render TransactionDetail so that
-  // api call is not made on mount regardless of whether the user
-  // wants to open the modal
-  // const {isOpen} = useTransactionDetailContext();
-
   return (
     <>
       <Navbar />

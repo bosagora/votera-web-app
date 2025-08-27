@@ -309,7 +309,7 @@ const getProposalStatusMessage = (
 
 const Details: React.FC = () => {
   const {t} = useTranslation();
-  const {open} = useGlobalModalContext();
+  const {open, close} = useGlobalModalContext();
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {client} = useClient();
@@ -345,6 +345,14 @@ const Details: React.FC = () => {
   const [fetchedProposal, setFetchedProposal] = useState<
     ProposalData | null | undefined
   >(null);
+
+  useEffect(() => {
+    if (!isConnected) open('wallet');
+    else {
+      if (isOnWrongNetwork) open('network');
+      else close('network');
+    }
+  }, [close, isConnected, isOnWrongNetwork, open]);
 
   // useProposalQuery를 컴포넌트 최상위 레벨에서 호출
   const {data: queryResult} = useProposalQuery(proposalId?.toString() || '');

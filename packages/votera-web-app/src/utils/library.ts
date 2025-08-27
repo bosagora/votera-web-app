@@ -20,7 +20,6 @@ export function formatUnits(amount: BigNumberish, decimals: number) {
   return ethers.utils.formatUnits(amount, decimals);
 }
 
-// (Temporary) Should be moved to ui-component perhaps
 /**
  * Handles copying and pasting to and from the clipboard respectively
  * @param currentValue field value

@@ -21,7 +21,6 @@ const SUPPORTED_NETWORKS = [
 
 export type availableNetworks =
   | 'mainnet'
-  | 'goerli'
   | 'sepolia'
   | 'bosagora_mainnet'
   | 'bosagora_testnet'
@@ -58,7 +57,7 @@ export function getSupportedNetworkByChainId(
   }
 }
 
-export type NetworkDomain = 'Main Chain' | 'Test Chain' | 'Dev Chain';
+export type NetworkDomain = 'Main Chain' | 'Side Chain';
 
 /* CHAIN DATA =============================================================== */
 
@@ -117,7 +116,7 @@ export const CHAIN_METADATA: ChainList = {
   },
   bosagora_mainnet: {
     id: 2151,
-    name: 'bosagora_mainnet',
+    name: 'BOSagora Mainnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
     explorer: 'https://boascan.io',
@@ -133,8 +132,8 @@ export const CHAIN_METADATA: ChainList = {
   },
   bosagora_testnet: {
     id: 2019,
-    name: 'bosagora_testnet',
-    domain: 'Test Chain',
+    name: 'BOSagora Testnet',
+    domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
     explorer: 'https://testnet.boascan.io',
     explorer2: 'https://testnet.agorascan.io',
@@ -149,8 +148,8 @@ export const CHAIN_METADATA: ChainList = {
   },
   bosagora_devnet: {
     id: 24680,
-    name: 'bosagora_devnet',
-    domain: 'Dev Chain',
+    name: 'BOSagora Devnet',
+    domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
     explorer: 'http://localhost:14000',
     explorer2: 'https://testnet.agorascan.io',

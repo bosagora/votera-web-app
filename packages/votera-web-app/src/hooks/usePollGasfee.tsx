@@ -38,7 +38,6 @@ export const usePollGasFee = (
         setError(err as Error);
         setMaxFee(undefined);
         setAverageFee(undefined);
-        // console.log('Error fetching gas fees and price', err);
       }
     }
     if (shouldPoll) getFees();

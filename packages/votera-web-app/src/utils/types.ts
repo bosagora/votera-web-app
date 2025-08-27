@@ -282,14 +282,6 @@ export type StringIndexed = {
   [key: string]: any;
 };
 
-export type SmartContractAction = {
-  name: string;
-  type: string;
-  stateMutability: string;
-  inputs: Input[];
-  notice?: string;
-};
-
 export interface Input {
   name: string;
   type: string;
@@ -299,13 +291,6 @@ export interface Input {
   notice?: string;
   value?: string;
 }
-
-export type SmartContract = {
-  actions: Array<SmartContractAction>;
-  address: string;
-  logo?: string;
-  name: string;
-};
 
 /**
  * Opaque class encapsulating a proposal id, which can

@@ -37,7 +37,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
   return (
     <>
       {proposalType === ProposalType.FUND &&
-        blockchain.label === 'bosagora_devnet' && (
+        blockchain.label === 'BOSagora Devnet' && (
           <FormItem>
             <Label
               label={t('labels.assessmentPeriod')}
@@ -76,7 +76,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           </FormItem>
         )}
       {proposalType === ProposalType.FUND &&
-        blockchain.label === 'bosagora_testnet' && (
+        blockchain.label === 'BOSagora Testnet' && (
           <FormItem>
             <Label
               label={t('labels.assessmentPeriod')}
@@ -115,7 +115,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           </FormItem>
         )}
       {proposalType === ProposalType.FUND &&
-        blockchain.label === 'bosagora_mainnet' && (
+        blockchain.label === 'BOSagora Mainnet' && (
           <FormItem>
             <Label
               label={t('labels.assessmentPeriod')}
@@ -154,7 +154,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           </FormItem>
         )}
 
-      {blockchain.label === 'bosagora_devnet' && (
+      {blockchain.label === 'BOSagora Devnet' && (
         <FormItem>
           <Label
             label={t('labels.votePeriod')}
@@ -189,7 +189,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           />
         </FormItem>
       )}
-      {blockchain.label === 'bosagora_testnet' && (
+      {blockchain.label === 'BOSagora Testnet' && (
         <FormItem>
           <Label
             label={t('labels.votePeriod')}
@@ -224,7 +224,7 @@ const SetupProposal: React.FC<SetupProposalProps> = () => {
           />
         </FormItem>
       )}
-      {blockchain.label === 'bosagora_mainnet' && (
+      {blockchain.label === 'BOSagora Mainnet' && (
         <FormItem>
           <Label
             label={t('labels.votePeriod')}

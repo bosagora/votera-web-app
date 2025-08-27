@@ -42,7 +42,7 @@ export const UseClientProvider: React.FC<{children: React.ReactNode}> = ({
   const [context, setContext] = useState<SdkContext>();
 
   useEffect(() => {
-    if (!network || !signer) return;
+    if (!network) return;
 
     const translatedNetwork = translateToNetworkishName(network);
     if (translatedNetwork === 'unsupported') return;
@@ -51,7 +51,7 @@ export const UseClientProvider: React.FC<{children: React.ReactNode}> = ({
 
     const contextParams: ContextParams = {
       network: translatedNetwork,
-      signer,
+      signer: signer ? signer : undefined,
       web3Providers: CHAIN_METADATA[network].rpc[0],
       AddressStorage: contracts.AddressStorage,
       BudgetManager: contracts.BudgetManager,

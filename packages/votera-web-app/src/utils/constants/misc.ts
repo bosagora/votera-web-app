@@ -3,15 +3,6 @@ import {IconDashboard, IconType} from 'votera-ui-components';
 import {i18n} from '../../../i18n.config';
 import {Dashboard} from '../paths';
 
-/** Time period options for token price change */
-export const enum TimeFilter {
-  day = 'day',
-  week = 'week',
-  month = 'month',
-  year = 'year',
-  // max = 'max',
-}
-
 export const enum TransactionState {
   WAITING = 'WAITING',
   LOADING = 'LOADING',
@@ -67,17 +58,3 @@ export const enum TransferTypes {
   Deposit = 'VaultDeposit',
   Withdraw = 'VaultWithdraw',
 }
-
-// date time
-export const HOURS_IN_DAY = 24;
-export const MINS_IN_HOUR = 60;
-export const MINS_IN_DAY = HOURS_IN_DAY * MINS_IN_HOUR;
-
-export const PROPOSAL_STATE_LABELS = [
-  i18n.t('governance.proposals.states.draft'),
-  i18n.t('governance.proposals.states.pending'),
-  i18n.t('governance.proposals.states.active'),
-  i18n.t('governance.proposals.states.executed'),
-  i18n.t('governance.proposals.states.succeeded'),
-  i18n.t('governance.proposals.states.defeated'),
-];

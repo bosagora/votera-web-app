@@ -10,6 +10,8 @@ import {useAccount, useNetwork as useWagmiNetwork} from 'wagmi';
 
 import {
   CHAIN_METADATA,
+  defaultChainID,
+  defaultChainName,
   isSupportedChainId,
   SupportedNetworks,
   toSupportedNetwork,
@@ -56,13 +58,11 @@ const determineNetwork = (
         ([, v]) => v.id === chainId
       )?.[0] as SupportedNetworks;
     } else {
-      // console.log('*NETWORK UNSUPPORTED');
       return 'unsupported';
     }
+  } else {
+    return defaultChainName;
   }
-
-  //NETWORK defaults to eth
-  return 'ethereum';
 };
 
 /**
@@ -84,7 +84,7 @@ export function NetworkProvider({children}: NetworkProviderProps) {
   const isCreatePage = Boolean(useMatch('create'));
   const networkUrlSegment = urlNetwork?.params?.network;
   const {chain} = useWagmiNetwork();
-  const chainId = chain?.id || 0;
+  const chainId = chain?.id || defaultChainID;
   const {status: wagmiStatus} = useAccount();
   const status = wagmiStatus === 'reconnecting' ? 'connecting' : wagmiStatus;
   const [networkState, setNetworkState] = useState<
