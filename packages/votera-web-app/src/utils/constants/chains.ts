@@ -103,8 +103,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'Ethereum Sepolia',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-    explorer: 'https://sepolia.etherscan.io',
-    explorer2: 'https://beaconscan.com',
+    explorer: 'https://sepolia.etherscan.io/',
+    explorer2: 'https://beaconscan.com/',
     testnet: true,
     rpc: [`https://eth-sepolia.public.blastapi.io`],
     nativeCurrency: {
@@ -119,8 +119,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'BOSagora Mainnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'https://boascan.io',
-    explorer2: 'https://agorascan.io',
+    explorer: 'https://boascan.io/',
+    explorer2: 'https://agorascan.io/',
     testnet: false,
     rpc: ['https://mainnet.bosagora.org', 'https://rpc.bosagora.org'],
     nativeCurrency: {
@@ -135,8 +135,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'BOSagora Testnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'https://testnet.boascan.io',
-    explorer2: 'https://testnet.agorascan.io',
+    explorer: 'https://testnet.boascan.io/',
+    explorer2: 'https://testnet.agorascan.io/',
     testnet: true,
     rpc: ['https://testnet.bosagora.org'],
     nativeCurrency: {
@@ -151,8 +151,8 @@ export const CHAIN_METADATA: ChainList = {
     name: 'BOSagora Devnet',
     domain: 'Main Chain',
     logo: 'https://assets.coingecko.com/coins/images/9202/standard/Picture1.png?1696509320',
-    explorer: 'http://localhost:14000',
-    explorer2: 'https://testnet.agorascan.io',
+    explorer: 'http://localhost:14000/',
+    explorer2: 'https://testnet.agorascan.io/',
     testnet: true,
     rpc: ['http://localhost:8545'],
     nativeCurrency: {

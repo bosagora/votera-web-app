@@ -66,6 +66,7 @@ const Dashboard: React.FC = () => {
       }
     }
   }, [proposalQuery.data, page]);
+  console.log(`Dashboard - proposals: ${JSON.stringify(proposals)}`);
 
   const handleLoadMore = () => {
     setPage(prev => prev + 1);

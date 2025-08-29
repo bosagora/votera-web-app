@@ -744,10 +744,13 @@
   "explore": {
     "hero": {
       "title": "Votera",
-      "subtitle1": "Create a proposal."
+      "subtitle1": "Votera, the official decision-making platform of BOSagora DAO, is a decentralized application that transparently supports the entire process from proposal creation to evaluation, voting, and execution.",
+      "subtitle2": "- Evaluators review and validate funding-related proposals to determine whether they can proceed to a formal vote.",
+      "subtitle3": "- Node operators (validators) can submit proposals and participate in the final voting under the one validator = one vote principle.",
+      "subtitle4": "Through this process, DAO members can take part in fair and open governance driven by collective intelligence."
     },
     "explorer": {
-      "title": "Explore Wallets",
+      "title": "Explore Proposals",
       "myDaos": "Favorites",
       "popular": "Popular",
       "newest": "My Wallets",
@@ -798,14 +801,14 @@
   },
   "cta": {
     "create": {
-      "title": "Create your multisig wallet",
-      "description": "A multisig wallet is a technology that enhances security by requiring more than one signature for a transaction.",
-      "actionLabel": "Create a multisig wallet"
+      "title": "Create your proposal",
+      "description": "Where decentralized collective intelligence gathers, write a proposal at Votera and decide the future together.",
+      "actionLabel": "Create a proposal"
     },
     "learn": {
       "title": "학습하기",
-      "description": "다중 서명 지갑을 생성하고 사용하는 방법을 학습합니다.",
-      "actionLabel": "다중 서명 지갑에 관해 배우기"
+      "description": "Votera 제안 설정을 생성하고 사용하는 방법을 학습합니다.",
+      "actionLabel": "Votera 제안 설정에 관해 배우기"
     },
     "build": {
       "title": "Build faster",
@@ -814,7 +817,7 @@
     },
     "404": {
       "titleLine1": "Oh no,",
-      "titleLine2": "you found a wormhole in the DAO space!",
+      "titleLine2": "you found a wormhole in the Votera space!",
       "backToExplore": "Back to Explore"
     }
   },

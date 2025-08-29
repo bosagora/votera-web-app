@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {AlertInline, IconBlock} from 'votera-ui-components';
-import {AvatarDao} from 'votera-ui-components';
-import {IconClock} from 'votera-ui-components';
+import {IconBlock} from 'votera-ui-components';
 import {Link} from 'votera-ui-components';
-import {Tag} from 'votera-ui-components';
+import {ProposalPeriod} from 'votera-sdk-client';
+import {TFunction, useTranslation} from 'react-i18next';
 
 type ProposalUseCase = 'list' | 'explore';
 
@@ -15,7 +14,7 @@ export function isExploreProposal(
   return proposalUseCase === 'explore';
 }
 
-export type CardProposalProps = {
+export type ProposalCardProps = {
   /** Proposal Title / Title of the card */
   title: string;
   /** Proposal Description / Description of the card */
@@ -29,99 +28,82 @@ export type CardProposalProps = {
    * the headers & buttons wil change to proper format also the progress
    * section only available on active state.
    * */
-  process:
-    | 'draft'
-    | 'pending'
-    | 'active'
-    | 'succeeded'
-    | 'executed'
-    | 'defeated';
-  /** Indicates whether the proposal is in being used in list or in its special form (see explore page) */
-  type?: ProposalUseCase;
-  /** Url for the dao avatar */
-  daoLogo?: 'string';
-  /** The title that appears at the top of the progress bar */
-  voteTitle: string;
-  /** Progress bar value in percentage (max: 100) */
-  voteProgress?: number | string;
-  /** Vote label that appears at bottom of the progress bar */
-  voteLabel?: string;
-  /** Label indicating that current user has voted */
-  votedAlertLabel?: string;
-  /** Breakdown of the wining option */
-  winningOptionValue?: string;
+  phase: ProposalPeriod;
+  blockchain?: string;
   /** Proposal token amount */
   tokenAmount?: string;
-  /** Proposal token symbol */
-  tokenSymbol?: string;
   /** Publish by sentence in any available languages */
   publishLabel: string;
   /** Publisher's ethereum address, ENS name **or** DAO address when type is
    * explore */
   publisherAddress?: string;
-  /** DAO name to display when type is explore */
-  proposalTitle?: string;
   /** Blockchain explorer URL */
   explorer?: string;
-
-  alertMessage?: string;
   /**
    * ['Draft', 'Pending', 'Active', 'Executed', 'Succeeded', 'Defeated']
    */
   stateLabel: string[];
+
+  addressLabel?: string;
+  progressLabel?: string;
 };
 
-export const CardProposal: React.FC<
-  CardProposalProps & {addressLabel: string}
-> = ({
-  process = 'pending',
+const getPhaseColor = (phase: ProposalPeriod) => {
+  switch (phase) {
+    case ProposalPeriod.ASSESSMENT:
+      return 'text-info-500';
+    case ProposalPeriod.VOTE:
+      return 'text-info-800';
+    case ProposalPeriod.EXECUTION:
+      return 'text-warning-500';
+    case ProposalPeriod.FINISHED:
+      return 'text-success-500';
+    default:
+      return 'text-neutral-500';
+  }
+};
+
+const getPhaseLabel = (phase: ProposalPeriod, t: TFunction) => {
+  switch (phase) {
+    case ProposalPeriod.ASSESSMENT:
+      return t('voteSteps.step1.title');
+    case ProposalPeriod.VOTE:
+      return t('voteSteps.step2.title');
+    case ProposalPeriod.EXECUTION:
+      return t('voteSteps.step3.title');
+    case ProposalPeriod.FINISHED:
+      return t('voteSteps.step3.title');
+    default:
+      return '';
+  }
+};
+
+export const ProposalCard: React.FC<ProposalCardProps> = ({
+  phase,
   title,
   description,
-  voteTitle,
-  voteProgress,
-  voteLabel,
-  votedAlertLabel,
-  tokenAmount,
-  tokenSymbol,
-  winningOptionValue,
-  publishLabel,
+  blockchain,
+  explorer,
   publisherAddress,
-  explorer = 'https://etherscan.io/',
-  alertMessage,
-  stateLabel,
-  type = 'list',
-  daoLogo,
-  proposalTitle,
-  onClick,
+  publishLabel,
   addressLabel,
-}: CardProposalProps & {addressLabel: string}) => {
+  onClick,
+  progressLabel,
+}: ProposalCardProps) => {
+  const {t} = useTranslation();
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
   return (
-    <Card data-testid="cardProposal" onClick={onClick}>
+    <Card data-testid="ProposalCard" onClick={onClick}>
       <TopContent>
-        <Header>
-          <HeaderOptions
-            process={process}
-            stateLabel={stateLabel}
-            alertMessage={alertMessage}
-            type={type}
-          />
-        </Header>
-
         <TextContent>
           <Title>{title}</Title>
-          <Description>{description}</Description>
+          <Description>
+            {description.length > 80
+              ? `${description.substring(0, 80)}...`
+              : description}
+          </Description>
           <Publisher>
-            {isExploreProposal(type) ? (
-              <AvatarDao
-                proposalTitle={proposalTitle!}
-                size="small"
-                src={daoLogo}
-              />
-            ) : (
-              <PublisherLabel>{publishLabel}</PublisherLabel>
-            )}
-
+            <PublisherLabel>{publishLabel}</PublisherLabel>
             <Link
               external
               href={addressExploreUrl}
@@ -133,80 +115,19 @@ export const CardProposal: React.FC<
           <ProposalMetadataWrapper>
             <IconWrapper>
               <StyledIconBlock />
-              <IconLabel>Ethereum</IconLabel>
+              <IconLabel>{blockchain}</IconLabel>
             </IconWrapper>
           </ProposalMetadataWrapper>
         </TextContent>
       </TopContent>
-
       <LoadingContent>
         <ProgressInfoWrapper>
-          <ProgressTitle>Assessmented by</ProgressTitle>
-          <Amount>1 of 10 members</Amount>
+          <PhaseTitle>{getPhaseLabel(phase, t)}</PhaseTitle>
+          <ProgressTitle>{progressLabel}</ProgressTitle>
         </ProgressInfoWrapper>
-        {votedAlertLabel && (
-          <VotedAlertWrapper>
-            <AlertInline mode="success" label={votedAlertLabel} />
-          </VotedAlertWrapper>
-        )}
       </LoadingContent>
     </Card>
   );
-};
-
-type HeaderOptionProps = Pick<
-  CardProposalProps,
-  'alertMessage' | 'process' | 'stateLabel'
-> & {
-  type: NonNullable<CardProposalProps['type']>;
-};
-
-const HeaderOptions: React.VFC<HeaderOptionProps> = ({
-  alertMessage,
-  process,
-  stateLabel,
-  type,
-}) => {
-  switch (process) {
-    case 'draft':
-      return <Tag label={stateLabel[0]} />;
-    case 'pending':
-      return (
-        <>
-          <Tag label={stateLabel[1]} />
-          {alertMessage && (
-            <AlertInline
-              label={alertMessage}
-              icon={<IconClock className="text-info-500" />}
-              mode="neutral"
-            />
-          )}
-        </>
-      );
-    case 'active':
-      return (
-        <>
-          {!isExploreProposal(type) && (
-            <Tag label={stateLabel[2]} colorScheme={'info'} />
-          )}
-          {/*{alertMessage && (*/}
-          {/*  <AlertInline*/}
-          {/*    label={alertMessage}*/}
-          {/*    icon={<IconClock className="text-info-500" />}*/}
-          {/*    mode="neutral"*/}
-          {/*  />*/}
-          {/*)}*/}
-        </>
-      );
-    case 'executed':
-      return <Tag label={stateLabel[3]} colorScheme={'success'} />;
-    case 'succeeded':
-      return <Tag label={stateLabel[4]} colorScheme={'success'} />;
-    case 'defeated':
-      return <Tag label={stateLabel[5]} colorScheme={'critical'} />;
-    default:
-      return null;
-  }
 };
 
 const Card = styled.button.attrs({
@@ -256,6 +177,10 @@ const ProgressInfoWrapper = styled.div.attrs({
   className: 'flex justify-between',
 })``;
 
+const PhaseTitle = styled.h3.attrs({
+  className: 'text-ui-800 ft-text-base font-bold',
+})``;
+
 const ProgressTitle = styled.h3.attrs({
   className: 'text-ui-800 ft-text-base font-bold',
 })``;
@@ -264,19 +189,7 @@ const Amount = styled.span.attrs({
   className: 'text-ui-500 ft-text-base',
 })``;
 
-const Vote = styled.span.attrs({
-  className: 'text-primary-500 font-bold ft-text-base',
-})``;
-
-const Percentage = styled.span.attrs({
-  className: 'text-primary-500 font-bold ft-text-base',
-})``;
-
 const PublisherLabel = styled.p.attrs({className: '-mr-0.5'})``;
-
-const VotedAlertWrapper = styled.div.attrs({
-  className: 'flex justify-center desktop:justify-start',
-})``;
 
 const ProposalMetadataWrapper = styled.div`
   flex: flex-row space-x-3;
@@ -288,10 +201,6 @@ const IconLabel = styled.p.attrs({
 
 const IconWrapper = styled.div.attrs({
   className: 'flex flex-row space-x-1',
-})``;
-
-const DaoDataWrapper = styled.div.attrs({
-  className: 'flex flex-col grow space-y-1.5 flex-1',
 })``;
 
 const StyledIconBlock = styled(IconBlock).attrs({

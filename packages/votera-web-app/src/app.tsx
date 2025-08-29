@@ -7,9 +7,11 @@ import {Navigate, Outlet, Route, Routes, useLocation} from 'react-router-dom';
 // work properly on the pages.
 import {GridLayout} from 'components/layout';
 import {Loading} from 'components/temporary/loading';
+import ExploreFooter from 'containers/exploreFooter';
 import Footer from 'containers/footer';
 import Navbar from 'containers/navbar';
 import ProposalSelectMenu from 'containers/navbar/proposalSelectMenu';
+import ExploreNav from 'containers/navbar/exploreNav';
 import NetworkErrorMenu from 'containers/networkErrorMenu';
 import {WalletMenu} from 'containers/walletMenu';
 import {useWallet} from 'hooks/useWallet';
@@ -19,6 +21,7 @@ import '../i18n.config';
 import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 
 import CreateProposal from 'pages/createProposal';
+const ExplorePage = lazy(() => import('pages/explore'));
 const ProposalPage = lazy(() => import('./pages/details'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
@@ -53,21 +56,18 @@ function App() {
     <>
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/">
+          <Route element={<ExploreWrapper />}>
+            <Route path="/" element={<ExplorePage />} />
+          </Route>
+          <Route element={<VoteraWrapper />}>
+            <Route path="/create" element={<CreateProposal />} />
+          </Route>
+          <Route element={<VoteraWrapper />}>
+            <Route path="proposal/dashboard" element={<DashboardPage />} />
             <Route
-              index
-              element={<Navigate to="proposal/dashboard" replace />}
+              path="proposal/details/:network/:id"
+              element={<ProposalDetailsWrapper />}
             />
-            <Route element={<VoteraWrapper />}>
-              <Route path="/create" element={<CreateProposal />} />
-            </Route>
-            <Route element={<VoteraWrapper />}>
-              <Route path="proposal/dashboard" element={<DashboardPage />} />
-              <Route
-                path="proposal/details/:network/:id"
-                element={<ProposalDetailsWrapper />}
-              />
-            </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundWrapper />} />
@@ -88,6 +88,16 @@ const NotFoundWrapper: React.FC = () => {
 
   return <Navigate to={NotFound} state={{incorrectPath: pathname}} replace />;
 };
+
+const ExploreWrapper: React.FC = () => (
+  <>
+    <div className="min-h-screen">
+      <ExploreNav />
+      <Outlet />
+    </div>
+    <ExploreFooter />
+  </>
+);
 
 const VoteraWrapper: React.FC = () => {
   return (
