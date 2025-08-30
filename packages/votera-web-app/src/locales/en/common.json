@@ -202,7 +202,7 @@
     "addNWallets": "Add {{walletCount}} wallets",
     "nAddressesSelected": "{{walletCount}} addresses selected",
     "noAddressSelected": "No address selected",
-    "you": "you",
+    "you": "Your wallet address",
     "noResources": "No resources were added",
     "newTokens": "New tokens",
     "newHolders": "New holders",

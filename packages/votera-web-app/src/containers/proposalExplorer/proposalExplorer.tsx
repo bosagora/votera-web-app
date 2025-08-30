@@ -130,10 +130,12 @@ export const ProposalExplorer = () => {
                   ].explorer
                 }
                 publisherAddress={p.proposer}
-                publishLabel={t('governance.proposals.publishedBy')}
                 addressLabel={
                   p.proposer.toLowerCase() === address?.toLowerCase()
-                    ? t('labels.you')
+                    ? t('labels.you') +
+                      ` (` +
+                      shortenAddress(p.proposer || '') +
+                      ')'
                     : shortenAddress(p.proposer || '')
                 }
                 progressLabel={getInProgressPhase(p, t)}

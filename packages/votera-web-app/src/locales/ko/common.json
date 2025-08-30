@@ -202,7 +202,7 @@
     "addNWallets": "{{walletCount}}개 지갑 추가",
     "nAddressesSelected": "{{walletCount}}개 주소 선택됨",
     "noAddressSelected": "선택된 주소 없음",
-    "you": "나",
+    "you": "사용자의 지갑주소",
     "noResources": "추가된 리소스 없음",
     "newTokens": "새 토큰",
     "newHolders": "새 보유자",
@@ -723,9 +723,9 @@
       "backToExplore": "탐색으로 돌아가기"
     },
     "create": {
-      "title": "Votera 제안 생성하기",
+      "title": "제안 생성하기",
       "description": "탈중앙 집단지성이 모이는 곳, Votera 에서 제안을 작성하고 미래를 함께 결정하세요.",
-      "actionLabel": "Votera 제안 생성하기"
+      "actionLabel": "제안 생성하기"
     },
     "learn": {
       "title": "학습하기",

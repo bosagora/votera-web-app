@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {
+  Avatar,
+  AvatarWallet,
   AvatarDao,
   IconBlock,
   IconCommunity,
   IconFinance,
   IconGovernance,
+  IconPerson,
   Link,
 } from 'votera-ui-components';
 import {Amount, ProposalPeriod} from 'votera-sdk-client';
@@ -43,8 +46,6 @@ export type ProposalCardProps = {
   blockchain?: string;
   /** Proposal token amount */
   tokenAmount?: string;
-  /** Publish by sentence in any available languages */
-  publishLabel: string;
   /** Publisher's ethereum address, ENS name **or** DAO address when type is
    * explore */
   publisherAddress?: string;
@@ -85,13 +86,13 @@ const getPhaseLabel = (phase: ProposalPeriod, t: TFunction) => {
 };
 
 export const ProposalCard: React.FC<ProposalCardProps> = ({
+  proposalId,
   phase,
   title,
   description,
   blockchain,
   explorer,
   publisherAddress,
-  publishLabel,
   addressLabel,
   onClick,
   progressLabel,
@@ -110,6 +111,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                 proposalTitle={
                   proposalType === ProposalType.FUND ? 'Fund' : 'System'
                 }
+                src={proposalId}
+                size={'medium'}
               />
               <div className="space-y-0.25 desktop:space-y-0.5 text-left">
                 <Title>{title}</Title>
@@ -120,18 +123,21 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                 ? `${description.substring(0, 80)}...`
                 : description}
             </Description>
-            <Publisher>
-              <PublisherLabel>{publishLabel}</PublisherLabel>
-              <Link
-                external
-                href={addressExploreUrl}
-                label={addressLabel}
-                className="text-sm"
-              />
-            </Publisher>
           </ProposalDataWrapper>
 
           <ProposalMetadataWrapper>
+            <IconWrapper>
+              <StyledIconWallet />
+              <IconLabel>
+                <Link
+                  external
+                  href={addressExploreUrl}
+                  label={addressLabel}
+                  className="text-sm"
+                />
+              </IconLabel>
+            </IconWrapper>
+
             <IconWrapper>
               <StyledIconGovernance />
               <IconLabel>
@@ -201,10 +207,6 @@ const Description = styled.p.attrs({
     'min-h-[4.5rem]',
 })``;
 
-const Publisher = styled.span.attrs({
-  className: 'flex space-x-1 text-ui-500 ft-text-sm',
-})``;
-
 const TextContent = styled.div.attrs({
   className: 'space-y-1.5',
 })``;
@@ -260,5 +262,9 @@ const StyledIconFinance = styled(IconFinance).attrs({
 })``;
 
 const StyledIconGovernance = styled(IconGovernance).attrs({
+  className: 'text-ui-600',
+})``;
+
+const StyledIconWallet = styled(IconPerson).attrs({
   className: 'text-ui-600',
 })``;

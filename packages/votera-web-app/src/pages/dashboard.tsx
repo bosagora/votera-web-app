@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import {Loading} from 'components/temporary';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
-import useScreen from 'hooks/useScreen';
 import {useWallet} from 'hooks/useWallet';
 import {CHAIN_METADATA} from 'utils/constants';
 import {shortenAddress} from 'utils/library';
@@ -310,7 +309,6 @@ const getProposalStatusMessage = (
 const Dashboard: React.FC = () => {
   const {t} = useTranslation();
   const {open, close} = useGlobalModalContext();
-  const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {client} = useClient();
   const {id: urlId} = useParams();
@@ -595,7 +593,10 @@ const Dashboard: React.FC = () => {
               external
               label={
                 proposal?.creator.toLowerCase() === address?.toLowerCase()
-                  ? t('labels.you')
+                  ? t('labels.you') +
+                    ` (` +
+                    shortenAddress(proposal?.creator || '') +
+                    ')'
                   : shortenAddress(proposal?.creator || '')
               }
               href={`${CHAIN_METADATA[network].explorer}/address/${proposal?.creator}`}
