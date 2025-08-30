@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import IncreaseAmount from 'components/increaseAmount';
 import AssessmentResult from 'components/assessmentResult';
-import {ProposalPhaseExtended} from '../../pages/details';
+import {ProposalPhaseExtended} from '../../pages/dashboard';
 import {ProposalPeriod} from 'votera-sdk-client';
 import {useClient} from 'hooks/useClient';
 import {

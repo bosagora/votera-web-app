@@ -10,7 +10,7 @@ import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
-import {Details} from '../utils/paths';
+import {Dashboard} from '../utils/paths';
 
 type Assessment = {
   completeness: number;
@@ -165,7 +165,7 @@ const CreateAssessProvider: React.FC<{children: React.ReactNode}> = ({
         setShowModal(false);
         window.location.reload();
         navigate(
-          generatePath(Details, {
+          generatePath(Dashboard, {
             network,
             id: proposalId,
           })

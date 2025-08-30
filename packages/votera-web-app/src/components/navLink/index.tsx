@@ -38,7 +38,7 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {network} = useNetwork();
-  const daoMatch = useMatch('proposal/:network/:id/*');
+  const proposalMatch = useMatch('proposals/:network/:id/*');
 
   // This logic is used to determine whether this NavLink is active or not.
   // I.e., whether the Navlink is the current page (or a subpage of it). It
@@ -48,7 +48,7 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   const matches = matchRoutes([{path: data.path}], basePath) !== null;
 
   const handleOnClick = () => {
-    const dao = daoMatch?.params?.dao;
+    const dao = proposalMatch?.params?.dao;
     onItemClick?.();
     navigate(generatePath(data.path, {network, dao}));
   };

@@ -12,20 +12,15 @@ import styled from 'styled-components';
 
 import {ProposalCard} from 'components/proposalCard';
 import {useWallet} from 'hooks/useWallet';
-import {
-  CHAIN_METADATA,
-  getSupportedNetworkByChainId,
-  SupportedChainID,
-} from 'utils/constants';
-import {Dashboard, Details} from 'utils/paths';
+import {CHAIN_METADATA, getSupportedNetworkByChainId} from 'utils/constants';
+import {Dashboard} from 'utils/paths';
 import {useProposalQuery, PROPOSALS_PER_PAGE} from 'hooks/useProposalQuery';
 import useScreen from '../../hooks/useScreen';
 import {useClient} from '../../hooks/useClient';
 import {ProposalData} from 'votera-sdk-client';
-import {proposal2CardDataProps} from '../../components/proposalList';
 import {useNetwork} from '../../context/network';
 import {shortenAddress} from '../../utils/library';
-import {getExtendedPhase} from '../../pages/details';
+import {getExtendedPhase} from '../../pages/dashboard';
 
 export const ProposalExplorer = () => {
   const {t} = useTranslation();
@@ -117,10 +112,13 @@ export const ProposalExplorer = () => {
           ) : (
             proposalList.map((p: ProposalData) => (
               <ProposalCard
-                key={p.proposalId}
-                phase={p.period}
+                proposalId={p.proposalId}
+                proposalType={p.proposalType}
+                fundAmount={p.fundAmount}
                 title={p.title}
                 description={p.description}
+                key={p.proposalId}
+                phase={p.period}
                 blockchain={
                   CHAIN_METADATA[
                     getSupportedNetworkByChainId(p.chain) || 'unsupported'
@@ -139,10 +137,9 @@ export const ProposalExplorer = () => {
                     : shortenAddress(p.proposer || '')
                 }
                 progressLabel={getInProgressPhase(p, t)}
-                stateLabel={['', '']}
                 onClick={() => {
                   navigate(
-                    generatePath(Details, {
+                    generatePath(Dashboard, {
                       network,
                       id: p.proposalId,
                     })

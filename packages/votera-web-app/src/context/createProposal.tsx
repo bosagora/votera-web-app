@@ -9,7 +9,7 @@ import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Details} from '../utils/paths';
+import {Dashboard} from 'utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {
@@ -19,9 +19,6 @@ import {
   NormalSteps,
   Amount,
 } from 'votera-sdk-client';
-import {BytesLike} from '@ethersproject/bytes';
-import {BigNumberish} from '@ethersproject/bignumber';
-import {GasFeeEstimation} from 'votera-sdk-client/dist/client-common/interfaces/common';
 
 type CreateProposalContextType = {
   /** Prepares the proposal creation data and awaits user confirmation */
@@ -215,7 +212,7 @@ const CreateProposalProvider: React.FC<{children: React.ReactNode}> = ({
       case TransactionState.SUCCESS:
         setShowModal(false);
         navigate(
-          generatePath(Details, {
+          generatePath(Dashboard, {
             network,
             id: proposalId,
           })

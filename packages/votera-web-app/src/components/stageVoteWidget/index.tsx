@@ -10,7 +10,7 @@ import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import SelectVoteForm from 'containers/selectVoteForm';
 import {ProposalPhase} from 'utils/types';
-import {ProposalPhaseExtended} from '../../pages/details';
+import {ProposalPhaseExtended} from '../../pages/dashboard';
 import VoteResults from 'components/voteResults';
 import {BigNumber} from 'ethers';
 import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';

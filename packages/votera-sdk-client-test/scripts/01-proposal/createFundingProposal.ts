@@ -26,7 +26,7 @@ async function main() {
   const proposalData = {
     proposalType: ProposalType.FUND,
     proposer: '',
-    title: 'proposal1',
+    title: 'The proposal for Web3 Project',
     description:
       'This is a sample proposal.\nFor more information, please refer to the document',
     proposalId: ContractUtils.getRandomId(),

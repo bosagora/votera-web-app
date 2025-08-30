@@ -22,7 +22,6 @@ import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 
 import CreateProposal from 'pages/createProposal';
 const ExplorePage = lazy(() => import('pages/explore'));
-const ProposalPage = lazy(() => import('./pages/details'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
 function App() {
@@ -62,12 +61,10 @@ function App() {
           <Route element={<VoteraWrapper />}>
             <Route path="/create" element={<CreateProposal />} />
           </Route>
-          <Route element={<VoteraWrapper />}>
-            <Route path="proposal/dashboard" element={<DashboardPage />} />
-            <Route
-              path="proposal/details/:network/:id"
-              element={<ProposalDetailsWrapper />}
-            />
+          <Route path="/proposals/:network/:id">
+            <Route element={<VoteraWrapper />}>
+              <Route path="dashboard" element={<DashboardPage />} />
+            </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundWrapper />} />
@@ -80,8 +77,6 @@ function App() {
     </>
   );
 }
-
-const ProposalDetailsWrapper: React.FC = () => <ProposalPage />;
 
 const NotFoundWrapper: React.FC = () => {
   const {pathname} = useLocation();

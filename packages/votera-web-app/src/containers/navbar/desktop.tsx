@@ -14,7 +14,7 @@ import ExitProcessMenu, {ProcessType} from 'containers/exitProcessMenu';
 import {useNetwork} from 'context/network';
 import {useWallet} from 'hooks/useWallet';
 import NetworkIndicator from './networkIndicator';
-import VoteraLogo from 'public/votera_color_logo.png';
+import VoteraLogo from 'public/logoBlue.svg';
 import {Landing} from 'utils/paths';
 import {changeLanguage} from '../../../i18n.config';
 
@@ -95,41 +95,15 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
       <NetworkIndicator />
       <Menu>
         <Content>
-          {/* <DaoSelector
-            proposalId={currentDao.address}
-            proposalTitle={currentDao?.metadata.name}
-            src={currentDao.address}
-            onClick={props.onDaoSelect}
-          />
-          <LinksWrapper>
-            {breadcrumbs.length < MIN_ROUTE_DEPTH_FOR_BREADCRUMBS ? (
-              <NavLinks />
-            ) : (
-              <>
-                <NavlinksDropdown />
-                <Breadcrumb
-                  icon={icon}
-                  crumbs={breadcrumbs}
-                  onClick={(path: string) =>
-                    navigate(generatePath(path, {network, dao}))
-                  }
-                  tag={tag}
-                />
-              </>
-            )}
-          </LinksWrapper> */}
           <img
             src={VoteraLogo}
             alt="Votera 로고"
-            className="h-4"
+            className="h-4  cursor-pointer"
             onClick={() => navigate(Landing)}
           />
           {location.pathname.includes('proposal') && (
             <div className="flex gap-3 items-center">
-              <div
-                className="font-bold text-primary-500 cursor-pointer ft-text-lg"
-                onClick={() => navigate(Landing)}
-              >
+              <div className="font-bold text-primary-500 cursor-default ft-text-lg">
                 {'< Dashboard'}
               </div>
             </div>

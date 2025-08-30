@@ -7,7 +7,7 @@ import {useClient} from './useClient';
 import {Client, ProposalData, SortType} from 'votera-sdk-client';
 import {useQuery} from '@tanstack/react-query';
 
-export const PROPOSALS_PER_PAGE = 9;
+export const PROPOSALS_PER_PAGE = 10;
 
 async function fetchProposals(
   client: Client | undefined,

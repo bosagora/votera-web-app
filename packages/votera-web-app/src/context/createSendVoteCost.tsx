@@ -7,7 +7,7 @@ import {useClient} from 'hooks/useClient';
 import {useWallet} from 'hooks/useWallet';
 import {usePollGasFee} from 'hooks/usePollGasfee';
 import {TransactionState} from 'utils/constants';
-import {Details} from '../utils/paths';
+import {Dashboard} from '../utils/paths';
 import {useGlobalModalContext} from './globalModals';
 import {useNetwork} from './network';
 import {NormalSteps} from 'votera-sdk-client';
@@ -114,7 +114,7 @@ const CreateSendVoteCostProvider: React.FC<{children: React.ReactNode}> = ({
         setShowModal(false);
         window.location.reload();
         navigate(
-          generatePath(Details, {
+          generatePath(Dashboard, {
             network,
             id: proposalId,
           })

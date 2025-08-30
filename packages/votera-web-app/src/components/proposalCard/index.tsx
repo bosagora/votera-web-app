@@ -1,10 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {IconBlock} from 'votera-ui-components';
-import {Link} from 'votera-ui-components';
-import {ProposalPeriod} from 'votera-sdk-client';
+import {
+  AvatarDao,
+  IconBlock,
+  IconCommunity,
+  IconFinance,
+  IconGovernance,
+  Link,
+} from 'votera-ui-components';
+import {Amount, ProposalPeriod} from 'votera-sdk-client';
 import {TFunction, useTranslation} from 'react-i18next';
+import {ProposalType} from 'votera-sdk-client/src/interfaces';
+import {BigNumber} from 'ethers';
 
 type ProposalUseCase = 'list' | 'explore';
 
@@ -15,6 +23,9 @@ export function isExploreProposal(
 }
 
 export type ProposalCardProps = {
+  proposalId: string;
+  proposalType: ProposalType;
+  fundAmount: BigNumber;
   /** Proposal Title / Title of the card */
   title: string;
   /** Proposal Description / Description of the card */
@@ -39,11 +50,6 @@ export type ProposalCardProps = {
   publisherAddress?: string;
   /** Blockchain explorer URL */
   explorer?: string;
-  /**
-   * ['Draft', 'Pending', 'Active', 'Executed', 'Succeeded', 'Defeated']
-   */
-  stateLabel: string[];
-
   addressLabel?: string;
   progressLabel?: string;
 };
@@ -89,6 +95,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   addressLabel,
   onClick,
   progressLabel,
+  proposalType,
+  fundAmount,
 }: ProposalCardProps) => {
   const {t} = useTranslation();
   const addressExploreUrl = `${explorer}address/${publisherAddress}`;
@@ -96,23 +104,51 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     <Card data-testid="ProposalCard" onClick={onClick}>
       <TopContent>
         <TextContent>
-          <Title>{title}</Title>
-          <Description>
-            {description.length > 80
-              ? `${description.substring(0, 80)}...`
-              : description}
-          </Description>
-          <Publisher>
-            <PublisherLabel>{publishLabel}</PublisherLabel>
-            <Link
-              external
-              href={addressExploreUrl}
-              label={addressLabel}
-              className="text-sm"
-            />
-          </Publisher>
+          <ProposalDataWrapper>
+            <HeaderContainer>
+              <AvatarDao
+                proposalTitle={
+                  proposalType === ProposalType.FUND ? 'Fund' : 'System'
+                }
+              />
+              <div className="space-y-0.25 desktop:space-y-0.5 text-left">
+                <Title>{title}</Title>
+              </div>
+            </HeaderContainer>
+            <Description>
+              {description.length > 80
+                ? `${description.substring(0, 80)}...`
+                : description}
+            </Description>
+            <Publisher>
+              <PublisherLabel>{publishLabel}</PublisherLabel>
+              <Link
+                external
+                href={addressExploreUrl}
+                label={addressLabel}
+                className="text-sm"
+              />
+            </Publisher>
+          </ProposalDataWrapper>
 
           <ProposalMetadataWrapper>
+            <IconWrapper>
+              <StyledIconGovernance />
+              <IconLabel>
+                {proposalType === ProposalType.FUND
+                  ? t('proposalInfo.fundingProposal')
+                  : t('proposalInfo.systemProposal')}
+              </IconLabel>
+            </IconWrapper>
+            <IconWrapper>
+              <StyledIconFinance />
+              <IconLabel>
+                {new Amount(BigNumber.from(fundAmount)).toDisplayString(
+                  true,
+                  0
+                ) + ' BOA'}
+              </IconLabel>
+            </IconWrapper>
             <IconWrapper>
               <StyledIconBlock />
               <IconLabel>{blockchain}</IconLabel>
@@ -129,6 +165,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     </Card>
   );
 };
+
+const HeaderContainer = styled.div.attrs({
+  className: 'flex flex-row space-x-2 items-center',
+})``;
 
 const Card = styled.button.attrs({
   className:
@@ -185,11 +225,11 @@ const ProgressTitle = styled.h3.attrs({
   className: 'text-ui-800 ft-text-base font-bold',
 })``;
 
-const Amount = styled.span.attrs({
-  className: 'text-ui-500 ft-text-base',
-})``;
-
 const PublisherLabel = styled.p.attrs({className: '-mr-0.5'})``;
+
+const ProposalDataWrapper = styled.div.attrs({
+  className: 'flex flex-col grow space-y-1.5 flex-1',
+})``;
 
 const ProposalMetadataWrapper = styled.div`
   flex: flex-row space-x-3;
@@ -209,4 +249,16 @@ const StyledIconBlock = styled(IconBlock).attrs({
 
 const TopContent = styled.div.attrs({
   className: 'flex flex-col space-y-3',
+})``;
+
+const StyledIconCommunity = styled(IconCommunity).attrs({
+  className: 'text-ui-600',
+})``;
+
+const StyledIconFinance = styled(IconFinance).attrs({
+  className: 'text-ui-600',
+})``;
+
+const StyledIconGovernance = styled(IconGovernance).attrs({
+  className: 'text-ui-600',
 })``;

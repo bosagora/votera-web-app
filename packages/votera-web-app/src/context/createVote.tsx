@@ -9,7 +9,7 @@ import {TransactionState} from 'utils/constants';
 import {useGlobalModalContext} from './globalModals';
 import {NormalSteps} from 'votera-sdk-client';
 import {generatePath, useNavigate} from 'react-router-dom';
-import {Details} from '../utils/paths';
+import {Dashboard} from '../utils/paths';
 import {useNetwork} from './network';
 
 type VoteParams = {
@@ -140,7 +140,7 @@ const CreateVoteProvider: React.FC<{children: React.ReactNode}> = ({
         setShowModal(false);
         window.location.reload();
         navigate(
-          generatePath(Details, {
+          generatePath(Dashboard, {
             network,
             id: proposalId,
           })

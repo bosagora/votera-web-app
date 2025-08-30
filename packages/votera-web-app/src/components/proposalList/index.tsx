@@ -6,11 +6,11 @@ import {NavigateFunction, generatePath, useNavigate} from 'react-router-dom';
 
 import {useNetwork} from 'context/network';
 import {CHAIN_METADATA, SupportedNetworks} from 'utils/constants';
-import {Details} from 'utils/paths';
+import {Dashboard} from 'utils/paths';
 import {useWallet} from 'hooks/useWallet';
 import {shortenAddress} from '../../utils/library';
 import {ProposalData, ProposalPeriod} from 'votera-sdk-client';
-import {getExtendedPhase} from '../../pages/details';
+import {getExtendedPhase} from '../../pages/dashboard';
 
 export type CardProposalDataProps = {
   id: string;
@@ -107,7 +107,7 @@ export function proposal2CardDataProps(
     phase: proposal.period,
     onClick: () => {
       navigate(
-        generatePath(Details, {
+        generatePath(Dashboard, {
           network,
           id: proposal.proposalId,
         })
