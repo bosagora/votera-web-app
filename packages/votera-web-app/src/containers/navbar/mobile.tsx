@@ -1,25 +1,38 @@
-import {ButtonWallet} from 'votera-ui-components';
+import {
+  AvatarDao,
+  ButtonIcon,
+  ButtonText,
+  ButtonWallet,
+  IconMenu,
+} from 'votera-ui-components';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
 import {useWallet} from 'hooks/useWallet';
 import NetworkIndicator from './networkIndicator';
+import useScreen from 'hooks/useScreen';
+import MobileMenu from './mobileMenu';
 import VoteraLogo from 'public/votera_color_logo.png';
 import {Landing} from 'utils/paths';
 import {useNavigate, useLocation} from 'react-router-dom';
+import {useReactiveVar} from '@apollo/client';
+import {selectedVoteraProposalVar} from '../../context/apolloClient';
 
 type MobileNavProps = {
   isProcess?: boolean;
-  onDaoSelect: () => void;
+  onSelect: () => void;
   onWalletClick: () => void;
 };
 
 const MobileNav: React.FC<MobileNavProps> = props => {
+  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
   const {t} = useTranslation();
   const {isConnected, address} = useWallet();
+  const {isMobile} = useScreen();
   const navigate = useNavigate();
   const location = useLocation();
+
   if (props.isProcess)
     return (
       <Container>
@@ -32,8 +45,9 @@ const MobileNav: React.FC<MobileNavProps> = props => {
       <Container data-testid="navbar">
         <Menu>
           <FlexOne>
-            {/* {isMobile ? (
+            {isMobile ? (
               <ButtonIcon
+                css={{}}
                 mode="secondary"
                 size="large"
                 icon={<IconMenu />}
@@ -48,34 +62,17 @@ const MobileNav: React.FC<MobileNavProps> = props => {
                 iconLeft={<IconMenu />}
                 onClick={() => open('mobileMenu')}
               />
-            )} */}
-
-            {location.pathname.includes('/proposals') && (
-              <div className="flex gap-3 items-center">
-                <div
-                  className="font-bold text-primary-500 cursor-pointer ft-text-xl"
-                  onClick={() => navigate(Landing)}
-                >
-                  {' < Back '}
-                </div>
-              </div>
             )}
           </FlexOne>
           <FlexOne className="justify-center">
-            {/* <DaoContainer>
+            <ProposalContainer>
               <AvatarDao
-                proposalTitle={currentDao.metadata.name}
-                onClick={props.onDaoSelect}
+                src={currentProposal.title}
+                proposalTitle={currentProposal.title}
+                onClick={props.onSelect}
               />
-              <DaoName>{currentDao.metadata.name}</DaoName>
-            </DaoContainer> */}
-
-            <img
-              src={VoteraLogo}
-              alt="Votera 로고"
-              className="h-4"
-              onClick={() => navigate(Landing)}
-            />
+              <ProposalName>{currentProposal.title}</ProposalName>
+            </ProposalContainer>
           </FlexOne>
           <FlexOne className="justify-end">
             <ButtonWallet
@@ -88,7 +85,7 @@ const MobileNav: React.FC<MobileNavProps> = props => {
         </Menu>
         <NetworkIndicator />
       </Container>
-      {/* <MobileMenu /> */}
+      <MobileMenu />
     </>
   );
 };
@@ -100,7 +97,7 @@ const FlexOne = styled.div.attrs({
 })``;
 
 const Container = styled.div.attrs({
-  className: 'flex flex-col fixed left-0 top-0 w-full z-10',
+  className: 'flex flex-col fixed left-0 bottom-0 w-full z-10',
 })``;
 
 const Menu = styled.nav.attrs({
@@ -114,3 +111,11 @@ const Menu = styled.nav.attrs({
   );
   backdrop-filter: blur(24px);
 `;
+
+const ProposalContainer = styled.div.attrs({
+  className: 'flex flex-col gap-y-0.5 items-center rounded-xl',
+})``;
+
+const ProposalName = styled.p.attrs({
+  className: 'hidden tablet:block text-sm font-bold text-ui-800',
+})``;

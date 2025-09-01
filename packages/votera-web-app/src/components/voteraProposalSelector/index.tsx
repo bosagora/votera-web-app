@@ -13,12 +13,14 @@ import useScreen from 'hooks/useScreen';
 type VoteraProposalSelectorProps = {
   proposalTitle: string;
   proposalId: string;
+  proposer: string;
   onClick: () => void;
 } & Pick<AvatarDaoProps, 'src'>;
 
 export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
   proposalTitle,
   proposalId,
+  proposer,
   onClick,
   src,
 }: VoteraProposalSelectorProps) => {
@@ -32,7 +34,7 @@ export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
         </AvatarWrapper>
         <TextContainer>
           <DaoName>{proposalTitle}</DaoName>
-          <DaoAddress>{shortenAddress(proposalId)}</DaoAddress>
+          <DaoAddress>{shortenAddress(proposer)}</DaoAddress>
         </TextContainer>
       </LeftContent>
 

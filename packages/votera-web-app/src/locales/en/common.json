@@ -3,6 +3,8 @@
   "menu": "Menu",
   "navLinks": {
     "dashboard": "Dashboard",
+    "evaluator": "Evaluator",
+    "validator": "Validator",
     "governance": "Governance",
     "explore": "Explore",
     "learn": "Learn",

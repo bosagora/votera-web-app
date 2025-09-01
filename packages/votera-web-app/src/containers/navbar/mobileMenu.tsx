@@ -11,7 +11,7 @@ import {useGlobalModalContext} from 'context/globalModals';
 import {usePrivacyContext} from 'context/privacyContext';
 
 const MobileNavMenu = () => {
-  const currentDao = useReactiveVar(selectedVoteraProposalVar);
+  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
   const {open, close, isMobileMenuOpen} = useGlobalModalContext();
   const {t} = useTranslation();
 
@@ -22,9 +22,10 @@ const MobileNavMenu = () => {
       <div className="tablet:w-50">
         <CardWrapper className="rounded-xl">
           <VoteraProposalSelector
-            proposalId={currentDao.proposalId}
-            proposalTitle={currentDao.title}
-            src={currentDao.address}
+            proposalId={currentProposal?.proposalId}
+            proposalTitle={currentProposal?.title}
+            proposer={currentProposal?.proposer}
+            src={currentProposal?.proposalId}
             onClick={() => {
               close('mobileMenu');
               handleWithFunctionalPreferenceMenu(() => open('selectDao'));

@@ -81,7 +81,6 @@ export type NavigationVoteraProposal = Omit<
   description: string;
   proposer: string;
   proposalId: string;
-  address: string;
   chain: SupportedChainID;
 };
 
@@ -91,7 +90,6 @@ const selectedVoteraProposalVar = makeVar<NavigationVoteraProposal>({
   description: '',
   proposer: '',
   proposalId: '',
-  address: '',
   chain: 1,
 });
 

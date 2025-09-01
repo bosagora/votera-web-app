@@ -14,6 +14,17 @@ import {i18n} from '../../../i18n.config';
 import DesktopNav from './desktop';
 import MobileNav from './mobile';
 import {SupportedChainID} from '../../utils/constants';
+import {
+  AssessmentResult,
+  ExecutionStates,
+  ProposalPeriod,
+  ProposalStates,
+  ProposalType,
+  SystemProposalParam,
+  SystemProposalType,
+  VoteResult,
+} from 'votera-sdk-client';
+import {BigNumber} from '@ethersproject/bignumber';
 
 const Navbar: React.FC = () => {
   const {open} = useGlobalModalContext();
@@ -32,27 +43,24 @@ const Navbar: React.FC = () => {
   // set current dao as selected dao
   useEffect(() => {
     if (voteraProposalDetails) {
+      console.log(
+        `voteraProposalDetails: ${JSON.stringify(voteraProposalDetails)}`
+      );
       selectedVoteraProposalVar({
-        address: '',
-        assessmentResult: undefined,
-        beginAssess: 0,
-        beginVote: 0,
-        documentId: '',
-        endAssess: 0,
-        endVote: 0,
-        executionStates: undefined,
-        fundAmount: undefined,
-        params: [],
-        period: undefined,
-        sendVoteCost: false,
-        states: undefined,
-        systemType: undefined,
-        voteResult: undefined,
         proposalType: voteraProposalDetails.proposalType,
         title: voteraProposalDetails.title,
         description: voteraProposalDetails.description,
         proposer: voteraProposalDetails.proposer,
         proposalId: voteraProposalDetails.proposalId,
+        fundAmount: voteraProposalDetails.fundAmount,
+        documentId: voteraProposalDetails.documentId,
+        beginAssess: voteraProposalDetails.beginAssess,
+        endAssess: voteraProposalDetails.endAssess,
+        beginVote: voteraProposalDetails.beginVote,
+        endVote: voteraProposalDetails.endVote,
+        systemType: voteraProposalDetails.systemType,
+        assessmentResult: voteraProposalDetails.assessmentResult,
+        voteResult: voteraProposalDetails.voteResult,
         chain: voteraProposalDetails.chain as SupportedChainID,
       });
     }
@@ -61,13 +69,15 @@ const Navbar: React.FC = () => {
   /*************************************************
    *                   Handlers                    *
    *************************************************/
-  const handleOnDaoSelect = () => {
+  const handleOnSelect = () => {
     handleWithFunctionalPreferenceMenu(() => open('selectDao'));
   };
 
   const handleWalletButtonClick = () => {
     open('wallet');
   };
+
+  const handleFeedbackButtonClick = () => {};
 
   if (isDesktop) {
     return (
@@ -76,7 +86,7 @@ const Navbar: React.FC = () => {
         returnURL={processInfo?.returnURL}
         processLabel={processInfo?.processLabel}
         processType={processInfo?.processType}
-        onDaoSelect={handleOnDaoSelect}
+        onSelect={handleOnSelect}
         onWalletClick={handleWalletButtonClick}
       />
     );
@@ -84,7 +94,7 @@ const Navbar: React.FC = () => {
   return (
     <MobileNav
       isProcess={processInfo?.isProcess}
-      onDaoSelect={handleOnDaoSelect}
+      onSelect={handleOnSelect}
       onWalletClick={handleWalletButtonClick}
     />
   );

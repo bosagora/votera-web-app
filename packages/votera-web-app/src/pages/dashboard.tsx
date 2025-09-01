@@ -518,7 +518,6 @@ const Dashboard: React.FC = () => {
     if (!proposal || !address) {
       return false;
     }
-    console.log(proposal);
     return (
       !proposal.sendVoteCost &&
       proposal.assessmentResult === AssessmentResult.APPROVED &&

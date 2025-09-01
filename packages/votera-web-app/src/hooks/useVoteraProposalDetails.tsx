@@ -60,10 +60,11 @@ export const useProposalQuery = (
 };
 
 export const useVoteraProposalDetailsQuery = () => {
-  const {proposal} = useParams();
+  const {id} = useParams();
+  console.log(`useVoteraProposalDetailsQuery: id: ${id}`);
   const navigate = useNavigate();
 
-  const proposalId = proposal?.toLowerCase();
+  const proposalId = id?.toLowerCase();
   const apiResponse = useProposalQuery(proposalId);
   useEffect(() => {
     if (apiResponse.isFetched) {

@@ -51,7 +51,7 @@ const ProposalSelectMenu: React.FC = () => {
           <ListGroup>
             <ListItemDao
               selected
-              proposalId={currentVoteraProposal?.address}
+              proposalId={currentVoteraProposal?.proposalId}
               proposalTitle={currentVoteraProposal?.title}
               onClick={() => close('selectDao')}
             />

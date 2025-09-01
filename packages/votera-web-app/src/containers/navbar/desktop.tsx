@@ -1,4 +1,10 @@
-import {Breadcrumb, ButtonWallet} from 'votera-ui-components';
+import {useReactiveVar} from '@apollo/client';
+import {
+  Breadcrumb,
+  ButtonText,
+  ButtonWallet,
+  IconFeedback,
+} from 'votera-ui-components';
 import React, {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -10,28 +16,37 @@ import {
 import styled from 'styled-components';
 
 import {Container} from 'components/layout';
+import NavLinks from 'components/navLinks';
 import ExitProcessMenu, {ProcessType} from 'containers/exitProcessMenu';
 import {useNetwork} from 'context/network';
+import {useMappedBreadcrumbs} from 'hooks/useMappedBreadcrumbs';
 import {useWallet} from 'hooks/useWallet';
+import {NavlinksDropdown} from './breadcrumbDropdown';
 import NetworkIndicator from './networkIndicator';
 import VoteraLogo from 'public/logoBlue.svg';
 import {Landing} from 'utils/paths';
 import {changeLanguage} from '../../../i18n.config';
+import {VoteraProposalSelector} from '../../components/voteraProposalSelector';
+import {selectedVoteraProposalVar} from '../../context/apolloClient';
+
+const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
 type DesktopNavProp = {
   isProcess?: boolean;
   returnURL?: string;
   processType?: ProcessType;
   processLabel?: string;
-  onDaoSelect: () => void;
+  onSelect: () => void;
   onWalletClick: () => void;
 };
 
 const DesktopNav: React.FC<DesktopNavProp> = props => {
+  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
   const {t, i18n} = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const {network} = useNetwork();
+  const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
   const {id} = useParams();
   const {address, isConnected} = useWallet();
 
@@ -95,22 +110,33 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
       <NetworkIndicator />
       <Menu>
         <Content>
-          <img
-            src={VoteraLogo}
-            alt="Votera 로고"
-            className="h-4  cursor-pointer"
-            onClick={() => navigate(Landing)}
+          <VoteraProposalSelector
+            proposalId={currentProposal?.proposalId}
+            proposalTitle={currentProposal?.title}
+            proposer={currentProposal?.proposer}
+            src={currentProposal?.proposalId}
+            onClick={props.onSelect}
           />
-          {location.pathname.includes('proposal') && (
-            <div className="flex gap-3 items-center">
-              <div className="font-bold text-primary-500 cursor-default ft-text-lg">
-                {'< Dashboard'}
-              </div>
-            </div>
-          )}
+          <LinksWrapper>
+            {breadcrumbs.length < MIN_ROUTE_DEPTH_FOR_BREADCRUMBS ? (
+              <NavLinks />
+            ) : (
+              <>
+                <NavlinksDropdown />
+                <Breadcrumb
+                  icon={icon}
+                  crumbs={breadcrumbs}
+                  onClick={(path: string) =>
+                    navigate(generatePath(path, {network, id}))
+                  }
+                  tag={tag}
+                />
+              </>
+            )}
+          </LinksWrapper>
         </Content>
 
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2">
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}
@@ -139,4 +165,8 @@ const Menu = styled.nav.attrs({
 
 const Content = styled.div.attrs({
   className: 'flex items-center space-x-6',
+})``;
+
+const LinksWrapper = styled.div.attrs({
+  className: 'flex items-center space-x-1.5',
 })``;

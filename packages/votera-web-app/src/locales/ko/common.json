@@ -3,6 +3,8 @@
   "menu": "Menu",
   "navLinks": {
     "dashboard": "대시보드",
+    "evaluator": "제안 평가자",
+    "validator": "노드 검증자",
     "governance": "거버넌스",
     "explore": "탐색",
     "learn": "배우기",

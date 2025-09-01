@@ -1,7 +1,8 @@
-import {IconDashboard, IconType} from 'votera-ui-components';
+import {IconCommunity, IconDashboard, IconType} from 'votera-ui-components';
 
 import {i18n} from '../../../i18n.config';
-import {Dashboard} from '../paths';
+import {Dashboard, Evaluator, Validator} from '../paths';
+import {IconFinance} from 'votera-ui-components/src/components/icons/module/icon_finance';
 
 export const enum TransactionState {
   WAITING = 'WAITING',
@@ -21,6 +22,16 @@ export const NAV_LINKS_DATA: NavLinkData[] = [
     label: i18n.t('navLinks.dashboard'),
     path: Dashboard,
     icon: IconDashboard,
+  },
+  {
+    label: i18n.t('navLinks.evaluator'),
+    path: Evaluator,
+    icon: IconFinance,
+  },
+  {
+    label: i18n.t('navLinks.validator'),
+    path: Validator,
+    icon: IconCommunity,
   },
 ];
 
