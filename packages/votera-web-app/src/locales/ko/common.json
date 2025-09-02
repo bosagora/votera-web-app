@@ -1162,7 +1162,7 @@
     "buttonLabelSuccess": "제안으로 이동",
     "evaluatorCount": "{{count}}/{{total}}명 참여",
     "evaluationStatus": "평가자 목록",
-    "emptyState": "참여한 평가자ㅂ 없습니다.",
+    "emptyState": "참여한 평가자가 없습니다.",
     "before": "평가 전",
     "after": "평가 후"
   },
