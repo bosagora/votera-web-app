@@ -14,17 +14,6 @@ import {i18n} from '../../../i18n.config';
 import DesktopNav from './desktop';
 import MobileNav from './mobile';
 import {SupportedChainID} from '../../utils/constants';
-import {
-  AssessmentResult,
-  ExecutionStates,
-  ProposalPeriod,
-  ProposalStates,
-  ProposalType,
-  SystemProposalParam,
-  SystemProposalType,
-  VoteResult,
-} from 'votera-sdk-client';
-import {BigNumber} from '@ethersproject/bignumber';
 
 const Navbar: React.FC = () => {
   const {open} = useGlobalModalContext();
@@ -43,9 +32,6 @@ const Navbar: React.FC = () => {
   // set current dao as selected dao
   useEffect(() => {
     if (voteraProposalDetails) {
-      console.log(
-        `voteraProposalDetails: ${JSON.stringify(voteraProposalDetails)}`
-      );
       selectedVoteraProposalVar({
         proposalType: voteraProposalDetails.proposalType,
         title: voteraProposalDetails.title,
