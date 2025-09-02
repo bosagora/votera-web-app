@@ -418,4 +418,11 @@ export interface IClientMethods extends IClientCore {
         endIndex: number,
         sortType: SortType
     ) => Promise<EvaluationData[]>;
+
+    getBallotOfAllMembersList: (
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ) => Promise<VoteBallotData[]>;
 }

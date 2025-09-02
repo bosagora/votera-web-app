@@ -20,6 +20,7 @@
     "03-transition": "npx ts-node scripts/03-transition/transition.ts",
     "04-postBallot": "npx ts-node scripts/04-vote/postBallot.ts",
     "04-getBallotSummary": "npx ts-node scripts/04-vote/getBallotSummary.ts",
+    "04-getBallotOfAllMembersList": "npx ts-node scripts/04-vote/getBallotOfAllMember.ts",
     "05-transition": "npx ts-node scripts/05-transition/transition.ts",
     "06-withdrawal": "npx ts-node scripts/06-execution/withdrawal.ts"
   },

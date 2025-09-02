@@ -17,6 +17,7 @@ import {
     ParamStorage,
     ParamStorage__factory,
     ParticipantStorage,
+    ParticipantStorage__factory,
     ProposalStorage,
     ProposalStorage__factory,
     ReceptionController,
@@ -25,7 +26,6 @@ import {
     VoteController__factory,
     VoteStorage,
     VoteStorage__factory,
-    ParticipantStorage__factory,
 } from "votera-contracts-lib";
 
 import {
@@ -45,25 +45,25 @@ import {
     AssessmentPostScoreStepValue,
     AssessmentResult,
     Candidate,
-    CreateProposalStepValue,
-    ExecutionStepValue,
     CommentData,
+    CreateProposalStepValue,
+    EvaluationData,
+    ExecutionStepValue,
+    NormalSteps,
     ParamValue,
     ProposalData,
-    ScoreData,
-    SystemProposalParam,
-    VoteBallotData,
-    NormalSteps,
     ProposalPeriod,
     ProposalStates,
     ProposalType,
+    ScoreData,
     SendVoteCostStepValue,
     SortType,
+    SystemProposalParam,
     SystemProposalType,
     TransitionStepValue,
+    VoteBallotData,
     VotePostBallotStepValue,
     VoteResult,
-    EvaluationData,
 } from "../../interfaces";
 import { ContractUtils } from "../../utils/ContractUtils";
 import { ResponseMessage } from "../../utils/ResponseMessage";
@@ -972,6 +972,41 @@ export class ClientMethods extends ClientCore implements IClientMethods {
                 }
             }
             return evaluations;
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
+    public async getBallotOfAllMembersList(
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ): Promise<VoteBallotData[]> {
+        try {
+            const ballots: VoteBallotData[] = [];
+            const voters = await this.getVoterList(proposalId, startIndex, endIndex, sortType);
+            for (const voter of voters) {
+                const ballotData = await this.getBallot(proposalId, voter);
+                const validatorKey = await this.getValidatorKeyOf(voter);
+                if (ballotData.voter === voter) {
+                    ballots.push({
+                        voter,
+                        validatorKey,
+                        timestamp: ballotData.timestamp,
+                        choice: ballotData.choice,
+                    });
+                } else {
+                    ballots.push({
+                        voter,
+                        validatorKey,
+                        timestamp: 0,
+                        choice: Candidate.BLANK,
+                    });
+                }
+            }
+            return ballots;
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
             throw new EVMException(message.code, message.error.message);
