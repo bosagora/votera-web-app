@@ -107,8 +107,8 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
       {evaluationData.length > 0 ? (
         <>
           {evaluationData.map(evaluation => (
-            <CommentItem key={evaluation.evaluator}>
-              <CommentHeader>
+            <EvaluatorItem key={evaluation.evaluator}>
+              <EvaluatorHeader>
                 <HeaderLeft>
                   <Link
                     external
@@ -132,9 +132,9 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
                       ).format('YYYY-MM-DD HH:mm:ss')
                     : ''}
                 </CreatedAt>
-              </CommentHeader>
+              </EvaluatorHeader>
               <Divider />
-            </CommentItem>
+            </EvaluatorItem>
           ))}
           {hasMoreEvaluator && (
             <ShowMoreButton onClick={handleLoadMore}>
@@ -154,11 +154,11 @@ const Container = styled.div.attrs({
   className: 'w-full p-4 bg-white',
 })``;
 
-const CommentItem = styled.div.attrs({
+const EvaluatorItem = styled.div.attrs({
   className: 'mb-3',
 })``;
 
-const CommentHeader = styled.div.attrs({
+const EvaluatorHeader = styled.div.attrs({
   className: 'flex justify-between items-center mb-3',
 })``;
 
