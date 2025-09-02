@@ -1,5 +1,6 @@
 import {
   AvatarDao,
+  AvatarProposal,
   ButtonIcon,
   ButtonText,
   ButtonWallet,
@@ -18,6 +19,7 @@ import {Landing} from 'utils/paths';
 import {useNavigate, useLocation} from 'react-router-dom';
 import {useReactiveVar} from '@apollo/client';
 import {selectedVoteraProposalVar} from '../../context/apolloClient';
+import {ProposalType} from 'votera-sdk-client';
 
 type MobileNavProps = {
   isProcess?: boolean;
@@ -66,9 +68,13 @@ const MobileNav: React.FC<MobileNavProps> = props => {
           </FlexOne>
           <FlexOne className="justify-center">
             <ProposalContainer>
-              <AvatarDao
-                src={currentProposal.title}
-                proposalTitle={currentProposal.title}
+              <AvatarProposal
+                title={currentProposal.title}
+                type={
+                  currentProposal.proposalType === ProposalType.FUND
+                    ? 'Fund'
+                    : 'System'
+                }
                 onClick={props.onSelect}
               />
               <ProposalName>{currentProposal.title}</ProposalName>

@@ -1,6 +1,6 @@
 import {
-  AvatarDao,
-  AvatarDaoProps,
+  AvatarProposal,
+  AvatarProposalProps,
   ButtonIcon,
   IconChevronDown,
   shortenAddress,
@@ -12,13 +12,15 @@ import useScreen from 'hooks/useScreen';
 
 type VoteraProposalSelectorProps = {
   proposalTitle: string;
+  proposalType: string;
   proposalId: string;
   proposer: string;
   onClick: () => void;
-} & Pick<AvatarDaoProps, 'src'>;
+} & Pick<AvatarProposalProps, 'src'>;
 
 export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
   proposalTitle,
+  proposalType,
   proposalId,
   proposer,
   onClick,
@@ -30,7 +32,7 @@ export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
     <Card data-testid="cardDao" onClick={onClick}>
       <LeftContent>
         <AvatarWrapper>
-          <AvatarDao proposalTitle={proposalTitle} src={src} />
+          <AvatarProposal title={proposalTitle} type={proposalType} src={src} />
         </AvatarWrapper>
         <TextContainer>
           <DaoName>{proposalTitle}</DaoName>

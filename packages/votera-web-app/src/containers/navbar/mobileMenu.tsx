@@ -9,6 +9,7 @@ import NavLinks from 'components/navLinks';
 import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import {usePrivacyContext} from 'context/privacyContext';
+import {ProposalType} from 'votera-sdk-client';
 
 const MobileNavMenu = () => {
   const currentProposal = useReactiveVar(selectedVoteraProposalVar);
@@ -24,6 +25,11 @@ const MobileNavMenu = () => {
           <VoteraProposalSelector
             proposalId={currentProposal?.proposalId}
             proposalTitle={currentProposal?.title}
+            proposalType={
+              currentProposal.proposalType === ProposalType.FUND
+                ? 'Fund'
+                : 'System'
+            }
             proposer={currentProposal?.proposer}
             src={currentProposal?.proposalId}
             onClick={() => {

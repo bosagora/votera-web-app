@@ -1,4 +1,4 @@
-import {AvatarDao, ButtonText, Spinner, Tag} from 'votera-ui-components';
+import {AvatarProposal, ButtonText, Spinner, Tag} from 'votera-ui-components';
 import {SessionTypes} from '@walletconnect/types';
 import React, {useCallback, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
@@ -116,8 +116,9 @@ const ActionListenerModal: React.FC<Props> = ({
       />
       <Content>
         <div className="flex flex-col items-center space-y-1.5">
-          <AvatarDao
-            proposalTitle={metadataName}
+          <AvatarProposal
+            title={metadataName}
+            type={''}
             src={metadataIcon}
             size="medium"
           />

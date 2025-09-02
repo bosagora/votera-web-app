@@ -4,3 +4,4 @@ export * from './blockchain';
 export * from './dao';
 export * from './address';
 export * from './header';
+export * from './proposal';

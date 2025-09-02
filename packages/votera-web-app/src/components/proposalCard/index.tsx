@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {
-  AvatarDao,
+  AvatarProposal,
   IconBlock,
   IconCommunity,
   IconFinance,
@@ -105,8 +105,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         <TextContent>
           <ProposalDataWrapper>
             <HeaderContainer>
-              <AvatarDao
-                proposalTitle={title}
+              <AvatarProposal
+                title={title}
+                type={proposalType === ProposalType.FUND ? 'Fund' : 'System'}
                 src={proposalId}
                 size={'medium'}
               />

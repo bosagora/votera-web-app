@@ -1,12 +1,19 @@
-import {AvatarDao, IconBlock, IconCommunity} from 'votera-ui-components';
+import {
+  AvatarDao,
+  AvatarProposal,
+  IconBlock,
+  IconCommunity,
+} from 'votera-ui-components';
 import React from 'react';
 import styled from 'styled-components';
 
 import useScreen from 'hooks/useScreen';
 import {getSupportedNetworkByChainId} from 'utils/constants';
+import {ProposalType} from 'votera-sdk-client';
 
 export interface IVoteraProposalProps {
   proposalTitle: string;
+  proposalType: string;
   description: string;
   proposalId: string;
   chainId: number;
@@ -25,9 +32,9 @@ export const VoteraProposalCard = (props: IVoteraProposalProps) => {
     <Container data-testid="voteraProposalCard" onClick={props.onClick}>
       <DaoDataWrapper>
         <HeaderContainer>
-          <AvatarDao
-            proposalTitle={props.proposalTitle}
-            src={props.proposalId}
+          <AvatarProposal
+            title={props.proposalTitle}
+            type={props.proposalType}
           />
           <div className="space-y-0.25 desktop:space-y-0.5 text-left">
             <Title>{props.proposalTitle}</Title>

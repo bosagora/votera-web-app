@@ -4,6 +4,7 @@ import {
   IconChevronLeft,
   IconLinkExternal,
   ListItemDao,
+  ListItemProposal,
 } from 'votera-ui-components';
 import React, {useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -15,6 +16,7 @@ import ModalBottomSheetSwitcher from 'components/modalBottomSheetSwitcher';
 import {selectedVoteraProposalVar} from 'context/apolloClient';
 import {useGlobalModalContext} from 'context/globalModals';
 import useScreen from 'hooks/useScreen';
+import {ProposalType} from 'votera-sdk-client';
 
 const ProposalSelectMenu: React.FC = () => {
   const {t} = useTranslation();
@@ -49,10 +51,15 @@ const ProposalSelectMenu: React.FC = () => {
         </ModalHeader>
         <ModalContentContainer>
           <ListGroup>
-            <ListItemDao
+            <ListItemProposal
               selected
               proposalId={currentVoteraProposal?.proposalId}
               proposalTitle={currentVoteraProposal?.title}
+              proposalType={
+                currentVoteraProposal.proposalType === ProposalType.FUND
+                  ? 'Fund'
+                  : 'System'
+              }
               onClick={() => close('selectDao')}
             />
           </ListGroup>

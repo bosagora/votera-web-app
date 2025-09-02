@@ -28,6 +28,7 @@ import {Landing} from 'utils/paths';
 import {changeLanguage} from '../../../i18n.config';
 import {VoteraProposalSelector} from '../../components/voteraProposalSelector';
 import {selectedVoteraProposalVar} from '../../context/apolloClient';
+import {ProposalType} from 'votera-sdk-client';
 
 const MIN_ROUTE_DEPTH_FOR_BREADCRUMBS = 2;
 
@@ -113,6 +114,11 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
           <VoteraProposalSelector
             proposalId={currentProposal?.proposalId}
             proposalTitle={currentProposal?.title}
+            proposalType={
+              currentProposal.proposalType === ProposalType.FUND
+                ? 'Fund'
+                : 'System'
+            }
             proposer={currentProposal?.proposer}
             src={currentProposal?.proposalId}
             onClick={props.onSelect}
