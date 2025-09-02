@@ -35,6 +35,8 @@
     "giveFeedback": "피드백 제공"
   },
   "labels": {
+    "evaluatorHeader": "제안 평가자의 목록 - {{count}} 개",
+    "validatorHeader": "노드 검증자의 목록 - {{count}} 개",
     "title": "제목",
     "uploadDocument": "문서 업로드",
     "fund": "자금",

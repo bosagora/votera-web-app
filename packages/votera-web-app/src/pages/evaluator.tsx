@@ -21,7 +21,7 @@ const Evaluator: React.FC = () => {
     useVoteraProposalDetailsQuery();
 
   const {
-    data: {length, members},
+    data: {length, scoreLength, members},
     isLoading: membersLoading,
   } = useEvaluatorMembers(proposalDetails ? proposalDetails.proposalId : '');
 
@@ -33,14 +33,18 @@ const Evaluator: React.FC = () => {
   if (detailsAreLoading || membersLoading) return <Loading />;
 
   return (
-    <PageWrapper title={`${totalMemberCount} ${t('labels.members')}`}>
+    <PageWrapper title={t('labels.evaluatorHeader', {count: totalMemberCount})}>
       <BodyContainer>
         <>
           {membersLoading ? (
             <Loading />
           ) : (
             <>
-              <EvaluatorMembersList members={members} />
+              <EvaluatorMembersList
+                members={members}
+                totalLength={totalMemberCount}
+                scoreLength={scoreLength}
+              />
             </>
           )}
         </>

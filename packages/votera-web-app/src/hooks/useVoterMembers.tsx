@@ -6,41 +6,47 @@ import {CHAIN_METADATA} from '../utils/constants';
 import {HookData} from '../utils/types';
 import {useWallet} from './useWallet';
 import {useClient} from './useClient';
-import {Client, EvaluationData, SortType} from 'votera-sdk-client';
+import {Client, VoteBallotData, SortType} from 'votera-sdk-client';
 
-export type EvaluationMembers = {
+export type VoterMembers = {
   length: number;
-  scoreLength: number;
-  members: EvaluationData[];
+  members: VoteBallotData[];
 };
 
 export type FetchEvaluatorResponse = {
   totalLength: number;
-  scoreLength: number;
-  responseData: EvaluationData[];
+  responseData: VoteBallotData[];
 };
 
-async function fetchEvaluatorMembers(
+async function fetchVoterMembers(
   client: Client | undefined,
-  proposalId: string
+  proposalId: string,
+  pageIndex: number = 1,
+  pageSize: number = 10
 ): Promise<FetchEvaluatorResponse> {
   if (client && proposalId !== '') {
-    const length = await client.methods.getEvaluatorLength(proposalId);
-    const scoreLength = await client.methods.getScoreLength(proposalId);
-    return {
-      totalLength: length,
-      scoreLength,
-      responseData: await client.methods.getEvaluationOfAllMembersList(
-        proposalId,
-        1,
-        length,
-        SortType.ASC
-      ),
-    };
+    const length = await client.methods.getVoterLength(proposalId);
+    const startIndex = (pageIndex - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    if (startIndex < length) {
+      return {
+        totalLength: length,
+        responseData: await client.methods.getBallotOfAllMembersList(
+          proposalId,
+          startIndex,
+          endIndex,
+          SortType.ASC
+        ),
+      };
+    } else {
+      return {
+        totalLength: length,
+        responseData: [],
+      };
+    }
   } else
     return {
       totalLength: 0,
-      scoreLength: 0,
       responseData: [],
     };
 }
@@ -52,13 +58,16 @@ async function fetchEvaluatorMembers(
  * DAO, and not the number of members returned when filtering by search term.
  *
  * @param proposalId
+ * @param pageIndex
+ * @param pageSize
  */
-export const useEvaluatorMembers = (
-  proposalId: string
-): HookData<EvaluationMembers> => {
-  const [data, setData] = useState<EvaluationData[]>([]);
+export const useVoterMembers = (
+  proposalId: string,
+  pageIndex: number = 1,
+  pageSize: number = 10
+): HookData<VoterMembers> => {
+  const [data, setData] = useState<VoteBallotData[]>([]);
   const [totalLength, setTotalLength] = useState<number>(0);
-  const [scoreLength, setScoreLength] = useState<number>(0);
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(false);
   const {network} = useNetwork();
@@ -71,15 +80,18 @@ export const useEvaluatorMembers = (
       try {
         if (client) {
           setIsLoading(true);
-          const response = await fetchEvaluatorMembers(client, proposalId);
+          const response = await fetchVoterMembers(
+            client,
+            proposalId,
+            pageIndex,
+            pageSize
+          );
           if (!response) {
             setTotalLength(0);
-            setScoreLength(0);
             setData([]);
             return;
           }
           setTotalLength(response.totalLength);
-          setScoreLength(response.scoreLength);
           setData(response.responseData);
           setIsLoading(false);
           setError(undefined);
@@ -99,7 +111,6 @@ export const useEvaluatorMembers = (
   return {
     data: {
       length: totalLength,
-      scoreLength: scoreLength,
       members: data,
     },
     isLoading,

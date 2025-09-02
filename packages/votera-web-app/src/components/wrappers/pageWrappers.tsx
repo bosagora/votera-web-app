@@ -43,5 +43,5 @@ const HeaderContainer = styled.div.attrs({
 })``;
 
 const BodyContainer = styled.div.attrs({
-  className: 'col-span-full desktop:col-start-3 desktop:col-end-11',
+  className: 'col-span-full desktop:col-start-2 desktop:col-end-12',
 })``;

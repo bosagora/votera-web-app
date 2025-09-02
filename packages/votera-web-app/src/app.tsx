@@ -23,6 +23,7 @@ import PoapClaimModal from 'containers/poapClaiming/PoapClaimModal';
 import CreateProposal from 'pages/createProposal';
 const ExplorePage = lazy(() => import('pages/explore'));
 const EvaluatorPage = lazy(() => import('pages/evaluator'));
+const ValidatorPage = lazy(() => import('pages/validator'));
 const NotFoundPage = lazy(() => import('pages/notFound'));
 const DashboardPage = lazy(() => import('pages/dashboard'));
 function App() {
@@ -66,6 +67,7 @@ function App() {
             <Route element={<VoteraWrapper />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="evaluator" element={<EvaluatorPage />} />
+              <Route path="validator" element={<ValidatorPage />} />
             </Route>
           </Route>
           <Route path={NotFound} element={<NotFoundPage />} />

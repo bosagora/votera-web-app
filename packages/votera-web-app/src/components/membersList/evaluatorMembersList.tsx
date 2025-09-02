@@ -12,9 +12,15 @@ import {t} from 'i18next';
 
 type MembersListProps = {
   members: Array<EvaluationData>;
+  totalLength: number;
+  scoreLength: number;
 };
 
-export const EvaluatorMembersList: React.FC<MembersListProps> = ({members}) => {
+export const EvaluatorMembersList: React.FC<MembersListProps> = ({
+  members,
+  totalLength,
+  scoreLength,
+}) => {
   const {network} = useNetwork();
 
   const getEvaluationText = (done: boolean, t: TFunction) => {
@@ -28,13 +34,22 @@ export const EvaluatorMembersList: React.FC<MembersListProps> = ({members}) => {
 
   return (
     <Container>
+      <Header>
+        <HeaderTitle></HeaderTitle>
+        <VoterCount>
+          {t('assessmentWidget.evaluatorCount', {
+            count: scoreLength,
+            total: totalLength,
+          })}
+        </VoterCount>
+      </Header>
       <>
         {members.length > 0 ? (
           <>
             {members.map(evaluation => (
               <EvaluatorItem key={evaluation.evaluator}>
-                <EvaluatorHeader>
-                  <HeaderLeft>
+                <Row>
+                  <div className={Col.evaluator}>
                     <Link
                       external
                       label={shortenAddress(evaluation.evaluator)}
@@ -43,22 +58,28 @@ export const EvaluatorMembersList: React.FC<MembersListProps> = ({members}) => {
                         evaluation.evaluator
                       )}
                     />
+                  </div>
+                  <div className={Col.status}>
                     <IsEvaluated done={evaluation.isEvaluated}>
                       {getEvaluationText(evaluation.isEvaluated, t)}
                     </IsEvaluated>
+                  </div>
+                  <div className={Col.values}>
                     <Values>
                       {evaluation.isEvaluated &&
                         JSON.stringify(evaluation.items)}
                     </Values>
-                  </HeaderLeft>
-                  <CreatedAt>
-                    {evaluation.timestamp != 0
-                      ? moment(
-                          new Date(Number(evaluation.timestamp) * 1000)
-                        ).format('YYYY-MM-DD HH:mm:ss')
-                      : ''}
-                  </CreatedAt>
-                </EvaluatorHeader>
+                  </div>
+                  <div className={Col.time}>
+                    <CreatedAt>
+                      {evaluation.timestamp != 0
+                        ? moment(
+                            new Date(Number(evaluation.timestamp) * 1000)
+                          ).format('YYYY-MM-DD HH:mm:ss')
+                        : ''}
+                    </CreatedAt>
+                  </div>
+                </Row>
                 <Divider />
               </EvaluatorItem>
             ))}
@@ -99,6 +120,19 @@ const HeaderLeft = styled.div.attrs({
   className: 'flex items-center gap-3',
 })``;
 
+// 4-Column aligned row for evaluator list
+const Row = styled.div.attrs({
+  className: 'grid grid-cols-12 items-center gap-3 mb-3',
+})``;
+
+/* col spans: evaluator(4) | status(2) | values(4) | timestamp(2) */
+const Col = {
+  evaluator: 'col-span-12 tablet:col-span-4',
+  status: 'col-span-6 tablet:col-span-2',
+  values: 'col-span-12 tablet:col-span-4',
+  time: 'col-span-6 tablet:col-span-2 text-right',
+};
+
 const IsEvaluated = styled.span<{done: boolean}>`
   ${({done}) => `
     padding: 2px 8px;
@@ -126,3 +160,16 @@ const EmptyMessage = styled.div`
   padding: 20px;
   color: #666;
 `;
+
+const Header = styled.div.attrs({
+  className:
+    'flex justify-between items-center mb-1 pb-3 border-b border-[#e6e6e6]',
+})``;
+
+const HeaderTitle = styled.h2.attrs({
+  className: 'text-lg font-semibold text-[#333]',
+})``;
+
+const VoterCount = styled.span.attrs({
+  className: 'text-sm text-[#666]',
+})``;

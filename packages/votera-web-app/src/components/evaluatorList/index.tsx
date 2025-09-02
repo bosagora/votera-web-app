@@ -108,8 +108,8 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
         <>
           {evaluationData.map(evaluation => (
             <EvaluatorItem key={evaluation.evaluator}>
-              <EvaluatorHeader>
-                <HeaderLeft>
+              <Row>
+                <div className={Col.evaluator}>
                   <Link
                     external
                     label={shortenAddress(evaluation.evaluator)}
@@ -118,21 +118,27 @@ const EvaluatorList: React.FC<EvaluationListProps> = ({proposalId}) => {
                       evaluation.evaluator
                     )}
                   />
+                </div>
+                <div className={Col.status}>
                   <IsEvaluated done={evaluation.isEvaluated}>
                     {getEvaluationText(evaluation.isEvaluated, t)}
                   </IsEvaluated>
+                </div>
+                <div className={Col.values}>
                   <Values>
                     {evaluation.isEvaluated && JSON.stringify(evaluation.items)}
                   </Values>
-                </HeaderLeft>
-                <CreatedAt>
-                  {evaluation.timestamp != 0
-                    ? moment(
-                        new Date(Number(evaluation.timestamp) * 1000)
-                      ).format('YYYY-MM-DD HH:mm:ss')
-                    : ''}
-                </CreatedAt>
-              </EvaluatorHeader>
+                </div>
+                <div className={Col.time}>
+                  <CreatedAt>
+                    {evaluation.timestamp != 0
+                      ? moment(
+                          new Date(Number(evaluation.timestamp) * 1000)
+                        ).format('YYYY-MM-DD HH:mm:ss')
+                      : ''}
+                  </CreatedAt>
+                </div>
+              </Row>
               <Divider />
             </EvaluatorItem>
           ))}
@@ -224,5 +230,18 @@ const EmptyMessage = styled.div`
   padding: 20px;
   color: #666;
 `;
+
+// 4-Column aligned row
+const Row = styled.div.attrs({
+  className: 'grid grid-cols-12 items-center gap-1 mb-1',
+})``;
+
+/* col spans: evaluator(4) | status(2) | values(4) | timestamp(2) */
+const Col = {
+  evaluator: 'col-span-12 tablet:col-span-4',
+  status: 'col-span-6 tablet:col-span-3',
+  values: 'col-span-12 tablet:col-span-2',
+  time: 'col-span-6 tablet:col-span-3 text-right',
+};
 
 export default EvaluatorList;
