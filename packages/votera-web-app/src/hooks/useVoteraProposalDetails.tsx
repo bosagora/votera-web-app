@@ -61,7 +61,6 @@ export const useProposalQuery = (
 
 export const useVoteraProposalDetailsQuery = () => {
   const {id} = useParams();
-  console.log(`useVoteraProposalDetailsQuery: id: ${id}`);
   const navigate = useNavigate();
 
   const proposalId = id?.toLowerCase();
