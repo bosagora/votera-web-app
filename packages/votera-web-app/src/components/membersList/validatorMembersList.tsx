@@ -1,4 +1,4 @@
-import {Link} from 'votera-ui-components';
+import {AvatarWallet, Link} from 'votera-ui-components';
 import React, {useEffect, useState} from 'react';
 import {Candidate, VoteBallotData} from 'votera-sdk-client';
 
@@ -58,6 +58,9 @@ export const ValidatorMembersList: React.FC<MembersListProps> = ({
             {members.map(ballot => (
               <ValidatorItem key={ballot.voter}>
                 <Row>
+                  <div className={Col.address}>
+                    <AvatarWallet src={ballot.voter}></AvatarWallet>
+                  </div>
                   <div className={Col.voter}>
                     <Link
                       external
@@ -114,14 +117,6 @@ const ValidatorItem = styled.div.attrs({
   className: 'mb-3',
 })``;
 
-const ValidatorHeader = styled.div.attrs({
-  className: 'flex justify-between items-center mb-3',
-})``;
-
-const Values = styled.span.attrs({
-  className: 'text-[#666] text-sm',
-})``;
-
 const CreatedAt = styled.span.attrs({
   className: 'text-[#666] text-sm',
 })``;
@@ -130,18 +125,14 @@ const Divider = styled.hr.attrs({
   className: 'border-0 border-b border-[#e6e6e6] m-0',
 })``;
 
-const HeaderLeft = styled.div.attrs({
-  className: 'flex items-center gap-3',
-})``;
-
-// 4-Column aligned row
 const Row = styled.div.attrs({
   className: 'grid grid-cols-12 items-center gap-3 mb-3',
 })``;
 
 /* col spans: voter(4) | validatorKey(4) | choice(2) | timestamp(2) */
 const Col = {
-  voter: 'col-span-12 tablet:col-span-4',
+  address: 'col-span-12 tablet:col-span-1',
+  voter: 'col-span-12 tablet:col-span-3',
   validatorKey: 'col-span-12 tablet:col-span-4',
   choice: 'col-span-6 tablet:col-span-2',
   time: 'col-span-6 tablet:col-span-2 text-right',
@@ -184,7 +175,7 @@ const EmptyMessage = styled.div`
 
 const Header = styled.div.attrs({
   className:
-    'flex justify-between items-center mb-1 pb-3 border-b border-[#e6e6e6]',
+    'flex justify-between items-center mb-3 pb-3 border-b border-[#e6e6e6]',
 })``;
 
 const HeaderTitle = styled.h2.attrs({

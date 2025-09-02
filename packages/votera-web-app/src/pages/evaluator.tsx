@@ -70,21 +70,11 @@ const Evaluator: React.FC = () => {
 };
 
 const BodyContainer = styled.div.attrs({
-  className: 'mt-5 desktop:space-y-8',
-})``;
-
-const SearchAndResultWrapper = styled.div.attrs({className: 'space-y-3'})``;
-
-const ResultsCountLabel = styled.p.attrs({
-  className: 'font-bold text-ui-800 ft-text-lg',
+  className: 'desktop:space-y-8',
 })``;
 
 const PaginationWrapper = styled.div.attrs({
   className: 'flex mt-8',
-})``;
-
-const InputWrapper = styled.div.attrs({
-  className: 'space-y-1',
 })``;
 
 export default withTransaction('Evaluator', 'component')(Evaluator);

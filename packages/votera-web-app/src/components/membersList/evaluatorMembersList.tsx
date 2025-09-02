@@ -1,4 +1,4 @@
-import {Link} from 'votera-ui-components';
+import {AvatarWallet, Link} from 'votera-ui-components';
 import React from 'react';
 import {EvaluationData} from 'votera-sdk-client';
 
@@ -49,6 +49,9 @@ export const EvaluatorMembersList: React.FC<MembersListProps> = ({
             {members.map(evaluation => (
               <EvaluatorItem key={evaluation.evaluator}>
                 <Row>
+                  <div className={Col.address}>
+                    <AvatarWallet src={evaluation.evaluator}></AvatarWallet>
+                  </div>
                   <div className={Col.evaluator}>
                     <Link
                       external
@@ -100,10 +103,6 @@ const EvaluatorItem = styled.div.attrs({
   className: 'mb-3',
 })``;
 
-const EvaluatorHeader = styled.div.attrs({
-  className: 'flex justify-between items-center mb-3',
-})``;
-
 const Values = styled.span.attrs({
   className: 'text-[#666] text-sm',
 })``;
@@ -116,20 +115,16 @@ const Divider = styled.hr.attrs({
   className: 'border-0 border-b border-[#e6e6e6] m-0',
 })``;
 
-const HeaderLeft = styled.div.attrs({
-  className: 'flex items-center gap-3',
-})``;
-
-// 4-Column aligned row for evaluator list
 const Row = styled.div.attrs({
   className: 'grid grid-cols-12 items-center gap-3 mb-3',
 })``;
 
 /* col spans: evaluator(4) | status(2) | values(4) | timestamp(2) */
 const Col = {
+  address: 'col-span-12 tablet:col-span-1',
   evaluator: 'col-span-12 tablet:col-span-4',
   status: 'col-span-6 tablet:col-span-2',
-  values: 'col-span-12 tablet:col-span-4',
+  values: 'col-span-12 tablet:col-span-3',
   time: 'col-span-6 tablet:col-span-2 text-right',
 };
 

@@ -3,8 +3,8 @@
   "menu": "Menu",
   "navLinks": {
     "dashboard": "Dashboard",
-    "evaluator": "Evaluator",
-    "validator": "Validator",
+    "evaluator": "Evaluators",
+    "validator": "Validators",
     "governance": "Governance",
     "explore": "Explore",
     "learn": "Learn",
@@ -35,8 +35,8 @@
     "giveFeedback": "Give feedback"
   },
   "labels": {
-    "evaluatorHeader": "Evaluator List - {{count}}",
-    "validatorHeader": "Validator List - {{count}}",
+    "evaluatorHeader": "Evaluators List - {{count}}",
+    "validatorHeader": "Validators List - {{count}}",
     "title": "Title",
     "uploadDocument": "Upload document",
     "fund": "Fund",

@@ -39,7 +39,7 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({title, ...props}) => {
 
 const HeaderContainer = styled.div.attrs({
   className:
-    'col-span-full desktop:col-start-2 desktop:col-end-12 -mx-2 tablet:mx-0 tablet:mt-3 desktop:mt-5',
+    'col-span-full desktop:col-start-2 desktop:col-end-12 -mx-2 tablet:mx-0 tablet:mt-2 desktop:mt-2',
 })``;
 
 const BodyContainer = styled.div.attrs({

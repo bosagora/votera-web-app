@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 
-import {ValidatorMembersList} from '../components/membersList';
+import {ValidatorMembersList} from '../components/membersList/validatorMembersList';
 import {Loading} from 'components/temporary';
 import {PageWrapper} from 'components/wrappers';
 import {useVoteraProposalDetailsQuery} from '../hooks/useVoteraProposalDetails';
@@ -107,7 +107,7 @@ const Validator: React.FC = () => {
 };
 
 const BodyContainer = styled.div.attrs({
-  className: 'mt-5 desktop:space-y-8',
+  className: 'desktop:space-y-8',
 })``;
 
 const PaginationWrapper = styled.div.attrs({
