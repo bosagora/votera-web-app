@@ -48,9 +48,9 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   const matches = matchRoutes([{path: data.path}], basePath) !== null;
 
   const handleOnClick = () => {
-    const dao = proposalMatch?.params?.dao;
+    const proposalId = proposalMatch?.params?.id;
     onItemClick?.();
-    navigate(generatePath(data.path, {network, dao}));
+    navigate(generatePath(data.path, {network, id: proposalId}));
   };
 
   if (caller === 'dropdown') {
