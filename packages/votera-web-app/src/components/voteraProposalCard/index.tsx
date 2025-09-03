@@ -1,15 +1,9 @@
-import {
-  AvatarDao,
-  AvatarProposal,
-  IconBlock,
-  IconCommunity,
-} from 'votera-ui-components';
+import {AvatarProposal, IconBlock, IconCommunity} from 'votera-ui-components';
 import React from 'react';
 import styled from 'styled-components';
 
 import useScreen from 'hooks/useScreen';
 import {getSupportedNetworkByChainId} from 'utils/constants';
-import {ProposalType} from 'votera-sdk-client';
 
 export interface IVoteraProposalProps {
   proposalTitle: string;

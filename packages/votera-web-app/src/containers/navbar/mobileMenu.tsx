@@ -31,7 +31,6 @@ const MobileNavMenu = () => {
                 : 'System'
             }
             proposer={currentProposal?.proposer}
-            src={currentProposal?.proposalId}
             onClick={() => {
               close('mobileMenu');
               handleWithFunctionalPreferenceMenu(() => open('selectDao'));

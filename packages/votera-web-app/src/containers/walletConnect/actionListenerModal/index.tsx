@@ -116,12 +116,7 @@ const ActionListenerModal: React.FC<Props> = ({
       />
       <Content>
         <div className="flex flex-col items-center space-y-1.5">
-          <AvatarProposal
-            title={metadataName}
-            type={''}
-            src={metadataIcon}
-            size="medium"
-          />
+          <AvatarProposal title={metadataName} type={''} size="medium" />
           <div className="flex justify-center items-center font-bold text-center text-ui-800">
             <Spinner size={'xs'} />
             <p className="ml-2">{t('wc.detaildApp.spinnerLabel')}</p>

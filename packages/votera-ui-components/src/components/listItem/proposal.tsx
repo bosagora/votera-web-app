@@ -10,7 +10,6 @@ import {IconRadioDefault, IconSuccess} from '../icons';
 export type ListItemProposalProps = {
   /** Dao's ethereum address **or** ENS name */
   proposalId: string;
-  proposalLogo?: string;
   proposalTitle: string;
   proposalType: string;
   selected?: boolean;
@@ -24,11 +23,7 @@ export type ListItemProposalProps = {
 export const ListItemProposal: React.FC<ListItemProposalProps> = props => {
   return (
     <Container selected={props.selected} onClick={props.onClick}>
-      <AvatarProposal
-        title={props.proposalTitle}
-        type={props.proposalType}
-        src={props.proposalLogo}
-      />
+      <AvatarProposal title={props.proposalTitle} type={props.proposalType} />
       <Content>
         <ProposalName selected={props.selected}>
           {props.proposalTitle}

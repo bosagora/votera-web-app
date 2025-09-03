@@ -115,12 +115,11 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
             proposalId={currentProposal?.proposalId}
             proposalTitle={currentProposal?.title}
             proposalType={
-              currentProposal.proposalType === ProposalType.FUND
+              currentProposal?.proposalType === ProposalType.FUND
                 ? 'Fund'
                 : 'System'
             }
             proposer={currentProposal?.proposer}
-            src={currentProposal?.proposalId}
             onClick={props.onSelect}
           />
           <LinksWrapper>

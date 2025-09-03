@@ -108,7 +108,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               <AvatarProposal
                 title={title}
                 type={proposalType === ProposalType.FUND ? 'Fund' : 'System'}
-                src={proposalId}
                 size={'medium'}
               />
               <div className="space-y-0.25 desktop:space-y-0.5 text-left">

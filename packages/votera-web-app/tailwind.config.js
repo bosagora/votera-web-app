@@ -1,5 +1,9 @@
 module.exports = {
-  purge: ['./src/**/*.html', './src/**/*.tsx', '../ui-components/src/**/*.tsx'],
+  purge: [
+    './src/**/*.html',
+    './src/**/*.tsx',
+    '../votera-ui-components/src/**/*.tsx',
+  ],
   darkMode: false,
   theme: {
     extend: {

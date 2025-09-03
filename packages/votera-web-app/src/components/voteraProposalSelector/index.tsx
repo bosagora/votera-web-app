@@ -1,6 +1,5 @@
 import {
   AvatarProposal,
-  AvatarProposalProps,
   ButtonIcon,
   IconChevronDown,
   shortenAddress,
@@ -16,15 +15,13 @@ type VoteraProposalSelectorProps = {
   proposalId: string;
   proposer: string;
   onClick: () => void;
-} & Pick<AvatarProposalProps, 'src'>;
+};
 
 export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
   proposalTitle,
   proposalType,
-  proposalId,
   proposer,
   onClick,
-  src,
 }: VoteraProposalSelectorProps) => {
   const {isDesktop} = useScreen();
 
@@ -32,7 +29,7 @@ export const VoteraProposalSelector: React.FC<VoteraProposalSelectorProps> = ({
     <Card data-testid="cardDao" onClick={onClick}>
       <LeftContent>
         <AvatarWrapper>
-          <AvatarProposal title={proposalTitle} type={proposalType} src={src} />
+          <AvatarProposal title={proposalTitle} type={proposalType} />
         </AvatarWrapper>
         <TextContainer>
           <DaoName>{proposalTitle}</DaoName>
