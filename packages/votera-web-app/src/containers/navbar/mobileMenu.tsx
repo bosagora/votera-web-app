@@ -26,7 +26,7 @@ const MobileNavMenu = () => {
             proposalId={currentProposal?.proposalId}
             proposalTitle={currentProposal?.title}
             proposalType={
-              currentProposal.proposalType === ProposalType.FUND
+              currentProposal?.proposalType === ProposalType.FUND
                 ? 'Fund'
                 : 'System'
             }

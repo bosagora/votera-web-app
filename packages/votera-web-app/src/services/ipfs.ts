@@ -1,16 +1,18 @@
-import {IPFS_ENDPOINT, IPFS_ENDPOINT_UPLOAD} from 'utils/constants';
-
 /**
  * Upload file to IPFS
+ * @param endPoint
  * @param file File to upload
  * @returns CID of uploaded file
  */
-export const uploadToIPFS = async (file: File | Blob): Promise<string> => {
+export const uploadToIPFS = async (
+  endPoint: string,
+  file: File | Blob
+): Promise<string> => {
   try {
     const formData = new FormData();
     formData.append('proposal', file);
 
-    const response = await fetch(IPFS_ENDPOINT_UPLOAD, {
+    const response = await fetch(endPoint, {
       method: 'POST',
       body: formData,
     });
@@ -31,24 +33,6 @@ export const uploadToIPFS = async (file: File | Blob): Promise<string> => {
     }
   } catch (error) {
     console.error('Error uploading to IPFS:', error);
-    throw error;
-  }
-};
-
-/**
- * Get file from IPFS
- * @param cid CID of file to get
- * @returns File data
- */
-export const getFromIPFS = async (cid: string): Promise<Response> => {
-  try {
-    const response = await fetch(`${IPFS_ENDPOINT}/${cid}`);
-    if (!response.ok) {
-      throw new Error('Failed to get file from IPFS');
-    }
-    return response;
-  } catch (error) {
-    console.error('Error getting file from IPFS:', error);
     throw error;
   }
 };

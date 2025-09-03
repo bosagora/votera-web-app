@@ -16,14 +16,10 @@ export const AvatarProposal: React.FC<AvatarProposalProps> = ({
   ...props
 }) => {
   const proposalInitials = useMemo(() => {
-    // To allow for no name daos - should not be a thing
-    if (!title) return '';
     if (!type) return '';
-
     const arr = type.trim().split(' ');
-    if (arr.length === 1) return arr[0][0];
-    else return arr[0][0] + arr[1][0];
-  }, [type]);
+    return arr.length === 1 ? arr[0][0] : arr[0][0] + arr[1][0];
+  }, []);
 
   return (
     <FallBackAvatar onClick={onClick} size={size} {...props}>

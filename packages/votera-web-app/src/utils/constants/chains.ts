@@ -78,6 +78,8 @@ export type ChainData = {
   rpc: string[];
   nativeCurrency: NativeTokenData;
   supportsEns: boolean;
+  ipfs_gateway: string;
+  ipfs_upload: string;
 };
 
 export type ChainList = Record<SupportedNetworks, ChainData>;
@@ -97,6 +99,8 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: '',
+    ipfs_upload: '',
   },
   sepolia: {
     id: 11155111,
@@ -113,6 +117,8 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: '',
+    ipfs_upload: '',
   },
   bosagora_mainnet: {
     id: 2151,
@@ -129,6 +135,8 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: 'https://votera-mainnet.s3.ap-northeast-2.amazonaws.com/',
+    ipfs_upload: 'https://votera-api.mainnet.bosagora.org/upload',
   },
   bosagora_testnet: {
     id: 2019,
@@ -145,6 +153,8 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: 'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/',
+    ipfs_upload: 'https://votera-api.testnet.bosagora.org/upload',
   },
   bosagora_devnet: {
     id: 24680,
@@ -161,9 +171,11 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: 'https://votera-unit-test.s3.ap-northeast-2.amazonaws.com/',
+    ipfs_upload: 'http://localhost:5050/upload',
   },
   unsupported: {
-    id: 1,
+    id: 2151,
     name: 'Unsupported',
     domain: 'Main Chain',
     logo: '',
@@ -177,6 +189,8 @@ export const CHAIN_METADATA: ChainList = {
       decimals: 18,
     },
     supportsEns: false,
+    ipfs_gateway: '',
+    ipfs_upload: '',
   },
 };
 

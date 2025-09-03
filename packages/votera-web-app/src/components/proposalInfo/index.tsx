@@ -1,12 +1,13 @@
-import {AlertInline, ButtonText, IconReload, Tag} from 'votera-ui-components';
+import {IconReload} from 'votera-ui-components';
 import {ListItemLink} from 'components/listItem/link';
 import {BigNumber} from 'ethers';
 import React from 'react';
 import {TFunction, useTranslation} from 'react-i18next';
 import styled from 'styled-components';
-import {IPFS_ENDPOINT} from 'utils/constants';
+import {CHAIN_METADATA} from 'utils/constants';
 import {Amount, ProposalPeriod, ProposalType} from 'votera-sdk-client';
 import moment from 'moment';
+import {useNetwork} from '../../context/network';
 
 const Icon = styled(IconReload).attrs({className: 'ml-1 w-1.5 h-1.5'})``;
 
@@ -59,6 +60,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   documentId,
 }) => {
   const {t} = useTranslation();
+  const {network, setNetwork} = useNetwork();
 
   return (
     <Container>
@@ -84,7 +86,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             {[
               {
                 name: t('proposalInfo.download'),
-                url: IPFS_ENDPOINT + documentId + '.pdf',
+                url: CHAIN_METADATA[network].ipfs_gateway + documentId + '.pdf',
               },
             ].map(({name, url}) => (
               <ListItemLink label={name} href={url} key={url} />

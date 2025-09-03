@@ -45,7 +45,6 @@ export const ProposalExplorer = () => {
       if (client) {
         try {
           const length = await client.methods.getProposalLength();
-          console.log(`ProposalExplorer - length: ${length}`);
           setProposalLength(length);
           if (length > 0) {
             setPage(1);
