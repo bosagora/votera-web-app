@@ -136,7 +136,7 @@ export const CHAIN_METADATA: ChainList = {
     },
     supportsEns: false,
     ipfs_gateway: 'https://votera-mainnet.s3.ap-northeast-2.amazonaws.com/',
-    ipfs_upload: 'https://votera-api.mainnet.bosagora.org/upload',
+    ipfs_upload: 'https://votera-api.mainnet.bosagora.org/upload/mainnet',
   },
   bosagora_testnet: {
     id: 2019,
@@ -154,7 +154,7 @@ export const CHAIN_METADATA: ChainList = {
     },
     supportsEns: false,
     ipfs_gateway: 'https://votera-testnet.s3.ap-northeast-2.amazonaws.com/',
-    ipfs_upload: 'https://votera-api.testnet.bosagora.org/upload',
+    ipfs_upload: 'https://votera-api.testnet.bosagora.org/upload/testnet',
   },
   bosagora_devnet: {
     id: 24680,
@@ -172,7 +172,7 @@ export const CHAIN_METADATA: ChainList = {
     },
     supportsEns: false,
     ipfs_gateway: 'https://votera-unit-test.s3.ap-northeast-2.amazonaws.com/',
-    ipfs_upload: 'http://localhost:5050/upload',
+    ipfs_upload: 'http://localhost:5050/upload/devnet',
   },
   unsupported: {
     id: 2151,
