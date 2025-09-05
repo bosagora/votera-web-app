@@ -1,6 +1,6 @@
 import { getNetwork as ethersGetNetwork, Networkish } from "@ethersproject/providers";
 import { Network } from "@ethersproject/networks";
-import { ADDITIONAL_NETWORKS } from "../client-common";
+import { ADDITIONAL_NETWORKS } from "../client-common/constants";
 import { UnsupportedNetworkError } from "votera-sdk-common";
 
 export function getNetwork(networkish: Networkish): Network {

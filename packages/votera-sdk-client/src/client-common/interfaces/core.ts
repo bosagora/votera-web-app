@@ -15,6 +15,7 @@ export interface IClientWeb3Core {
     attachContract: <T>(address: string, abi: ContractInterface) => Contract & T;
     getApproximateGasFee: (estimatedFee: bigint) => Promise<GasFeeEstimation>;
 
+    getIssuedContractAddress: () => string;
     getAddressStorageAddress: () => string;
     getBudgetManagerAddress: () => string;
     getParamStorageAddress: () => string;

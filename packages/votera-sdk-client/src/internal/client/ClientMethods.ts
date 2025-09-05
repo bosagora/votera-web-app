@@ -14,10 +14,14 @@ import {
     BudgetManager__factory,
     ExecutionManager,
     ExecutionManager__factory,
+    EvaluatorManager,
+    EvaluatorManager__factory,
     ParamStorage,
     ParamStorage__factory,
     ParticipantStorage,
     ParticipantStorage__factory,
+    ParticipantManager,
+    ParticipantManager__factory,
     ProposalStorage,
     ProposalStorage__factory,
     ReceptionController,
@@ -80,6 +84,20 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         const signer = this.web3.getConnectedSigner();
         if (!signer) throw new NoSignerError();
         return await signer.getAddress();
+    }
+
+    private getParticipantManager(): ParticipantManager {
+        const provider = this.web3.getProvider() as Provider;
+        if (!provider) throw new NoProviderError();
+
+        return ParticipantManager__factory.connect(this.web3.getParticipantManagerAddress(), provider);
+    }
+
+    private getEvaluatorManager(): EvaluatorManager {
+        const provider = this.web3.getProvider() as Provider;
+        if (!provider) throw new NoProviderError();
+
+        return EvaluatorManager__factory.connect(this.web3.getEvaluatorManagerAddress(), provider);
     }
 
     private getProposalStorage(): ProposalStorage {
@@ -1007,6 +1025,65 @@ export class ClientMethods extends ClientCore implements IClientMethods {
                 }
             }
             return ballots;
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
+    /**
+     * 특정범위의 유권자들의 정보를 요청한다
+     * @param startIndex
+     * @param endIndex
+     * @param sortType
+     */
+    public async getVoterListOfManager(startIndex: number, endIndex: number, sortType: SortType): Promise<string[]> {
+        try {
+            const values = await this.getParticipantManager().getParticipantList(startIndex, endIndex, sortType);
+            return values.map((m) => m.voter);
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
+    /**
+     * 전체 유권자들의 갯수를 요청한다
+     */
+    public async getVoterLengthOfManager(): Promise<number> {
+        try {
+            return (await this.getParticipantManager().getLength()).toNumber();
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
+    /**
+     * 전체 사전평가 구성원들 중 지정된 범위에 존재하는 사전평가 구성원들을 제공한다
+     * @param startIndex 시작 인덱스
+     * @param endIndex 마지막 인덱스
+     * @param sortType 정렬방식
+     */
+    public async getEvaluatorListOfManager(
+        startIndex: number,
+        endIndex: number,
+        sortType: SortType
+    ): Promise<string[]> {
+        try {
+            return await this.getEvaluatorManager().getMemberList(startIndex, endIndex, sortType);
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
+    /**
+     * 전체 사전평가 구성원들의 갯수를 제공한다
+     */
+    public async getEvaluatorLengthOfManager(): Promise<number> {
+        try {
+            return (await this.getEvaluatorManager().getLength()).toNumber();
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
             throw new EVMException(message.code, message.error.message);

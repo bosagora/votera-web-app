@@ -21,10 +21,10 @@ const supportedProtocols = ["https:", "http:"];
 const defaultState: ContextState = {
     network: {
         name: "mainnet",
-        chainId: 2151
+        chainId: 2151,
     },
     web3Providers: [],
-    gasFeeEstimationFactor: DEFAULT_GAS_FEE_ESTIMATION_FACTOR
+    gasFeeEstimationFactor: DEFAULT_GAS_FEE_ESTIMATION_FACTOR,
 };
 
 export class Context {
@@ -84,6 +84,10 @@ export class Context {
 
     get gasFeeEstimationFactor(): number {
         return this.state.gasFeeEstimationFactor || defaultState.gasFeeEstimationFactor;
+    }
+
+    get IssuedContract(): string | undefined {
+        return this.state.IssuedContract;
     }
 
     get AddressStorage(): string | undefined {
@@ -234,6 +238,8 @@ export class Context {
             throw new Error("Please pass the required signer");
         } else if (!contextParams.web3Providers) {
             throw new Error("No web3 endpoints defined");
+        } else if (!contextParams.IssuedContract) {
+            throw new Error("Missing IssuedContract contract address");
         } else if (!contextParams.AddressStorage) {
             throw new Error("Missing AddressStorage contract address");
         } else if (!contextParams.BudgetManager) {
@@ -271,6 +277,7 @@ export class Context {
                 contextParams.web3Providers,
                 Context.resolveNetwork(contextParams.network)
             ),
+            IssuedContract: contextParams.IssuedContract,
             AddressStorage: contextParams.AddressStorage,
             BudgetManager: contextParams.BudgetManager,
             ParamStorage: contextParams.ParamStorage,
@@ -285,7 +292,7 @@ export class Context {
             ParticipantManager: contextParams.ParticipantManager,
             EvaluatorManager: contextParams.EvaluatorManager,
             ExecutionManager: contextParams.ExecutionManager,
-            gasFeeEstimationFactor: Context.resolveGasFeeEstimationFactor(contextParams.gasFeeEstimationFactor)
+            gasFeeEstimationFactor: Context.resolveGasFeeEstimationFactor(contextParams.gasFeeEstimationFactor),
         };
     }
 
@@ -302,6 +309,14 @@ export class Context {
                 Context.resolveNetwork(this.state.network)
             );
         }
+
+        if (contextParams.IssuedContract) {
+            this.state.IssuedContract = contextParams.IssuedContract;
+        } else if (this.state.network.toString() in activeContractsList) {
+            this.state.IssuedContract =
+                activeContractsList[this.state.network.toString() as keyof typeof activeContractsList].IssuedContract;
+        }
+
         if (contextParams.AddressStorage) {
             this.state.AddressStorage = contextParams.AddressStorage;
         } else if (this.state.network.toString() in activeContractsList) {

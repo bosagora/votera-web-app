@@ -425,4 +425,30 @@ export interface IClientMethods extends IClientCore {
         endIndex: number,
         sortType: SortType
     ) => Promise<VoteBallotData[]>;
+
+    /**
+     * 특정범위의 유권자들의 정보를 요청한다
+     * @param startIndex
+     * @param endIndex
+     * @param sortType
+     */
+    getVoterListOfManager: (startIndex: number, endIndex: number, sortType: SortType) => Promise<string[]>;
+
+    /**
+     * 전체 유권자들의 갯수를 요청한다
+     */
+    getVoterLengthOfManager: () => Promise<number>;
+
+    /**
+     * 전체 사전평가 구성원들 중 지정된 범위에 존재하는 사전평가 구성원들을 제공한다
+     * @param startIndex 시작 인덱스
+     * @param endIndex 마지막 인덱스
+     * @param sortType 정렬방식
+     */
+    getEvaluatorListOfManager: (startIndex: number, endIndex: number, sortType: SortType) => Promise<string[]>;
+
+    /**
+     * 전체 사전평가 구성원들의 갯수를 제공한다
+     */
+    getEvaluatorLengthOfManager: () => Promise<number>;
 }

@@ -2,12 +2,13 @@ export enum SupportedNetwork {
     MAINNET = "bosagora_mainnet",
     TESTNET = "bosagora_testnet",
     DEVNET = "bosagora_devnet",
-    LOCAL = "localhost"
+    LOCAL = "localhost",
 }
 
 export const SupportedNetworksArray = Object.values(SupportedNetwork);
 
 export type NetworkDeployment = {
+    IssuedContract: string;
     AddressStorage: string;
     BudgetManager: string;
     ParamStorage: string;

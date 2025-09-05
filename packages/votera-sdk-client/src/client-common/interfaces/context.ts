@@ -10,6 +10,7 @@ type Web3ContextParams = {
     web3Providers?: string | JsonRpcProvider | (string | JsonRpcProvider)[];
     gasFeeEstimationFactor?: number;
 
+    IssuedContract: string;
     AddressStorage: string;
     BudgetManager: string;
     ParamStorage: string;
@@ -35,6 +36,7 @@ type Web3ContextState = {
     web3Providers: JsonRpcProvider[];
     gasFeeEstimationFactor: number;
 
+    IssuedContract?: string;
     AddressStorage?: string;
     BudgetManager?: string;
     ParamStorage?: string;

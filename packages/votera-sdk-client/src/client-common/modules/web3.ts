@@ -18,9 +18,10 @@ import {
     NoReceptionControllerAddress,
     NoVoteControllerAddress,
     NoParticipantManagerAddress,
-    NoAssessmentControllerAddress,
     NoEvaluatorStorageAddress,
-    NoEvaluatorManagerAddress
+    NoAssessmentControllerAddress,
+    NoEvaluatorManagerAddress,
+    NoIssuedContractAddress,
 } from "../../utils/errors";
 
 const gasFeeEstimationFactorMap = new Map<Web3Module, number>();
@@ -28,6 +29,7 @@ const providersMap = new Map<Web3Module, JsonRpcProvider[]>();
 const providerIdxMap = new Map<Web3Module, number>();
 const signerMap = new Map<Web3Module, Signer>();
 
+const IssuedContractAddressMap = new Map<Web3Module, string>();
 const AddressStorageAddressMap = new Map<Web3Module, string>();
 const BudgetManagerAddressMap = new Map<Web3Module, string>();
 const ParamStorageAddressMap = new Map<Web3Module, string>();
@@ -60,6 +62,10 @@ export class Web3Module implements IClientWeb3Core {
 
         if (context.gasFeeEstimationFactor) {
             gasFeeEstimationFactorMap.set(this, context.gasFeeEstimationFactor);
+        }
+
+        if (context.IssuedContract) {
+            IssuedContractAddressMap.set(this, context.IssuedContract);
         }
 
         if (context.AddressStorage) {
@@ -122,6 +128,10 @@ export class Web3Module implements IClientWeb3Core {
         Object.freeze(this);
     }
 
+    private get IssuedContract(): string {
+        return IssuedContractAddressMap.get(this) || "";
+    }
+
     private get AddressStorage(): string {
         return AddressStorageAddressMap.get(this) || "";
     }
@@ -140,10 +150,6 @@ export class Web3Module implements IClientWeb3Core {
 
     private get EvaluatorStorage(): string {
         return EvaluatorStorageAddressMap.get(this) || "";
-    }
-
-    private get EvaluatorManager(): string {
-        return EvaluatorManagerAddressMap.get(this) || "";
     }
 
     private get ProposalStorage(): string {
@@ -172,6 +178,10 @@ export class Web3Module implements IClientWeb3Core {
 
     private get ParticipantManager(): string {
         return ParticipantManagerAddressMap.get(this) || "";
+    }
+
+    private get EvaluatorManager(): string {
+        return EvaluatorManagerAddressMap.get(this) || "";
     }
 
     private get ExecutionManager(): string {
@@ -322,6 +332,13 @@ export class Web3Module implements IClientWeb3Core {
                 return resolve({ average, max });
             });
         });
+    }
+
+    public getIssuedContractAddress(): string {
+        if (!this.IssuedContract) {
+            throw new NoIssuedContractAddress();
+        }
+        return this.IssuedContract;
     }
 
     public getAddressStorageAddress(): string {

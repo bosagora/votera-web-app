@@ -59,6 +59,11 @@ export class NoAddressStorageAddress extends Error {
         super("AddressStorage address is needed");
     }
 }
+export class NoIssuedContractAddress extends Error {
+    constructor() {
+        super("IssuedContract address is needed");
+    }
+}
 
 export class NoProposalStorageAddress extends Error {
     constructor() {

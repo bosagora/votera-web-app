@@ -4,12 +4,12 @@ import { Network } from "@ethersproject/networks";
 
 export const LIVE_CONTRACTS: { [K in SupportedNetwork]: NetworkDeployment } = {
     [SupportedNetwork.MAINNET]: {
+        IssuedContract: activeContractsList.mainnet.IssuedContract,
         AddressStorage: activeContractsList.mainnet.AddressStorage,
         BudgetManager: activeContractsList.mainnet.BudgetManager,
         ParamStorage: activeContractsList.mainnet.ParamStorage,
         ParticipantStorage: activeContractsList.mainnet.ParticipantStorage,
         EvaluatorStorage: activeContractsList.mainnet.EvaluatorStorage,
-        EvaluatorManager: activeContractsList.mainnet.EvaluatorManager,
         ProposalStorage: activeContractsList.mainnet.ProposalStorage,
         AssessmentStorage: activeContractsList.mainnet.AssessmentStorage,
         VoteStorage: activeContractsList.mainnet.VoteStorage,
@@ -17,15 +17,16 @@ export const LIVE_CONTRACTS: { [K in SupportedNetwork]: NetworkDeployment } = {
         AssessmentController: activeContractsList.mainnet.AssessmentController,
         VoteController: activeContractsList.mainnet.VoteController,
         ParticipantManager: activeContractsList.mainnet.ParticipantManager,
-        ExecutionManager: activeContractsList.mainnet.ExecutionManager
+        EvaluatorManager: activeContractsList.mainnet.EvaluatorManager,
+        ExecutionManager: activeContractsList.mainnet.ExecutionManager,
     },
     [SupportedNetwork.TESTNET]: {
+        IssuedContract: activeContractsList.testnet.IssuedContract,
         AddressStorage: activeContractsList.testnet.AddressStorage,
         BudgetManager: activeContractsList.testnet.BudgetManager,
         ParamStorage: activeContractsList.testnet.ParamStorage,
         ParticipantStorage: activeContractsList.testnet.ParticipantStorage,
-        EvaluatorStorage: activeContractsList.mainnet.EvaluatorStorage,
-        EvaluatorManager: activeContractsList.mainnet.EvaluatorManager,
+        EvaluatorStorage: activeContractsList.testnet.EvaluatorStorage,
         ProposalStorage: activeContractsList.testnet.ProposalStorage,
         AssessmentStorage: activeContractsList.testnet.AssessmentStorage,
         VoteStorage: activeContractsList.testnet.VoteStorage,
@@ -33,15 +34,16 @@ export const LIVE_CONTRACTS: { [K in SupportedNetwork]: NetworkDeployment } = {
         AssessmentController: activeContractsList.testnet.AssessmentController,
         VoteController: activeContractsList.testnet.VoteController,
         ParticipantManager: activeContractsList.testnet.ParticipantManager,
-        ExecutionManager: activeContractsList.testnet.ExecutionManager
+        EvaluatorManager: activeContractsList.testnet.EvaluatorManager,
+        ExecutionManager: activeContractsList.testnet.ExecutionManager,
     },
     [SupportedNetwork.DEVNET]: {
+        IssuedContract: activeContractsList.devnet.IssuedContract,
         AddressStorage: activeContractsList.devnet.AddressStorage,
         BudgetManager: activeContractsList.devnet.BudgetManager,
         ParamStorage: activeContractsList.devnet.ParamStorage,
         ParticipantStorage: activeContractsList.devnet.ParticipantStorage,
-        EvaluatorStorage: activeContractsList.mainnet.EvaluatorStorage,
-        EvaluatorManager: activeContractsList.mainnet.EvaluatorManager,
+        EvaluatorStorage: activeContractsList.devnet.EvaluatorStorage,
         ProposalStorage: activeContractsList.devnet.ProposalStorage,
         AssessmentStorage: activeContractsList.devnet.AssessmentStorage,
         VoteStorage: activeContractsList.devnet.VoteStorage,
@@ -49,15 +51,16 @@ export const LIVE_CONTRACTS: { [K in SupportedNetwork]: NetworkDeployment } = {
         AssessmentController: activeContractsList.devnet.AssessmentController,
         VoteController: activeContractsList.devnet.VoteController,
         ParticipantManager: activeContractsList.devnet.ParticipantManager,
-        ExecutionManager: activeContractsList.devnet.ExecutionManager
+        EvaluatorManager: activeContractsList.devnet.EvaluatorManager,
+        ExecutionManager: activeContractsList.devnet.ExecutionManager,
     },
     [SupportedNetwork.LOCAL]: {
+        IssuedContract: activeContractsList.devnet.IssuedContract,
         AddressStorage: activeContractsList.devnet.AddressStorage,
         BudgetManager: activeContractsList.devnet.BudgetManager,
         ParamStorage: activeContractsList.devnet.ParamStorage,
         ParticipantStorage: activeContractsList.devnet.ParticipantStorage,
-        EvaluatorStorage: activeContractsList.mainnet.EvaluatorStorage,
-        EvaluatorManager: activeContractsList.mainnet.EvaluatorManager,
+        EvaluatorStorage: activeContractsList.devnet.EvaluatorStorage,
         ProposalStorage: activeContractsList.devnet.ProposalStorage,
         AssessmentStorage: activeContractsList.devnet.AssessmentStorage,
         VoteStorage: activeContractsList.devnet.VoteStorage,
@@ -65,21 +68,22 @@ export const LIVE_CONTRACTS: { [K in SupportedNetwork]: NetworkDeployment } = {
         AssessmentController: activeContractsList.devnet.AssessmentController,
         VoteController: activeContractsList.devnet.VoteController,
         ParticipantManager: activeContractsList.devnet.ParticipantManager,
-        ExecutionManager: activeContractsList.devnet.ExecutionManager
-    }
+        EvaluatorManager: activeContractsList.devnet.EvaluatorManager,
+        ExecutionManager: activeContractsList.devnet.ExecutionManager,
+    },
 };
 
 export const ADDITIONAL_NETWORKS: Network[] = [
     {
         name: SupportedNetwork.MAINNET,
-        chainId: 2151
+        chainId: 2151,
     },
     {
         name: SupportedNetwork.TESTNET,
-        chainId: 2019
+        chainId: 2019,
     },
     {
         name: SupportedNetwork.DEVNET,
-        chainId: 24680
-    }
+        chainId: 24680,
+    },
 ];
