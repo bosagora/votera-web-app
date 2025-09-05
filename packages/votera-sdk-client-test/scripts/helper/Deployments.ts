@@ -1,5 +1,15 @@
 import { Wallet } from "@ethersproject/wallet";
-import { Amount, BOACoin, ContextParams, LIVE_CONTRACTS, SupportedNetwork, ProposalStates, ProposalPeriod, AssessmentResult, VoteResult, ExecutionStates, ProposalType } from "votera-sdk-client";
+import {
+    AssessmentResult,
+    ContextParams,
+    ExecutionStates,
+    LIVE_CONTRACTS,
+    ProposalPeriod,
+    ProposalStates,
+    ProposalType,
+    SupportedNetwork,
+    VoteResult,
+} from "votera-sdk-client";
 
 import {
     AddressStorage,
@@ -7,20 +17,26 @@ import {
     AssessmentController__factory,
     AssessmentStorage__factory,
     BudgetManager__factory,
+    EvaluatorManager__factory,
     ExecutionManager__factory,
+    IssuedContract__factory,
     ParamStorage__factory,
     ParticipantManager__factory,
     ParticipantStorage__factory,
     ProposalStorage__factory,
     ReceptionController__factory,
+    VoteController__factory,
     VoteStorage__factory,
-    VoteController__factory
 } from "votera-contracts-lib";
 
 import { AddressZero } from "@ethersproject/constants";
 import { BaseContract, ContractFactory } from "@ethersproject/contracts";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import * as fs from "fs";
+
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 interface IDeployedContract {
     name: string;
@@ -46,21 +62,42 @@ export class Deployments {
     public deployments: Map<string, IDeployedContract>;
     public accounts: IAccount;
     public provider: JsonRpcProvider;
+    public network: string;
+    public web3Endpoint: string;
+    public supportedNetwork: SupportedNetwork = SupportedNetwork.DEVNET;
 
-    constructor(url: string) {
+    constructor() {
         this.deployments = new Map<string, IDeployedContract>();
-        this.provider = new JsonRpcProvider(url);
+        this.network = process.env.NETWORK || "devnet";
+        this.web3Endpoint = process.env.WEB3_ENDPOINT || "http://127.0.0.1:8545";
+        console.log(`network: ${this.network}`);
+        console.log(`web3Endpoint: ${this.web3Endpoint}`);
+        this.provider = new JsonRpcProvider(this.web3Endpoint);
+        switch (this.network) {
+            case "devnet":
+                this.supportedNetwork = SupportedNetwork.DEVNET;
+                break;
+            case "testnet":
+                this.supportedNetwork = SupportedNetwork.TESTNET;
+                break;
+            case "mainnet":
+                this.supportedNetwork = SupportedNetwork.MAINNET;
+                break;
+            default:
+                this.supportedNetwork = SupportedNetwork.LOCAL;
+                break;
+        }
 
-        const voters: any = JSON.parse(fs.readFileSync("./data/votes.json", "utf8"));
-        const evaluators: any = JSON.parse(fs.readFileSync("./data/evaluator.json", "utf8"));
-        const users: any = JSON.parse(fs.readFileSync("./data/accounts.json", "utf8"));
+        const voters: any = JSON.parse(fs.readFileSync(`./data/${this.network}/voters.json`, "utf8"));
+        const evaluators: any = JSON.parse(fs.readFileSync(`./data/${this.network}/evaluator.json`, "utf8"));
+        const users: any = JSON.parse(fs.readFileSync(`./data/${this.network}/accounts.json`, "utf8"));
         this.accounts = {
             users: users.map((m: any) => new Wallet(m.privateKey, this.provider)),
             voters: voters.map((m: any) => new Wallet(m.privateKey, this.provider)),
             evaluators: evaluators.map((m: any) => new Wallet(m.privateKey, this.provider)),
             validators: voters.map((m: any) => {
                 return { voter: m.address, validatorKey: m.validatorKey };
-            })
+            }),
         };
     }
 
@@ -68,7 +105,7 @@ export class Deployments {
         this.deployments.set(name, {
             name,
             address,
-            contract
+            contract,
         });
     }
 
@@ -92,6 +129,7 @@ export class Deployments {
 
     public async attachAll() {
         const deployers: FnDeployer[] = [
+            attachIssuedContract,
             attachAddressStorage,
             attachBudgetManager,
             attachParamStorage,
@@ -103,7 +141,8 @@ export class Deployments {
             attachAssessmentController,
             attachVoteController,
             attachParticipantManager,
-            attachExecutionManager
+            attachExecutionManager,
+            attachEvaluatorManager,
         ];
         for (const elem of deployers) {
             try {
@@ -119,6 +158,7 @@ export class Deployments {
             network: 24680,
             signer: this.accounts.users[0],
             web3Providers: [this.provider],
+            IssuedContract: this.getContractAddress("IssuedContract"),
             AddressStorage: this.getContractAddress("AddressStorage"),
             BudgetManager: this.getContractAddress("BudgetManager"),
             ParamStorage: this.getContractAddress("ParamStorage"),
@@ -130,7 +170,8 @@ export class Deployments {
             AssessmentController: this.getContractAddress("AssessmentController"),
             VoteController: this.getContractAddress("VoteController"),
             ParticipantManager: this.getContractAddress("ParticipantManager"),
-            ExecutionManager: this.getContractAddress("ExecutionManager")
+            ExecutionManager: this.getContractAddress("ExecutionManager"),
+            EvaluatorManager: this.getContractAddress("EvaluatorManager"),
         };
     }
 
@@ -139,12 +180,21 @@ export class Deployments {
     }
 }
 
+async function attachIssuedContract(accounts: IAccount, deployments: Deployments) {
+    const contractName = "IssuedContract";
+
+    const factory = new ContractFactory(IssuedContract__factory.abi, IssuedContract__factory.bytecode);
+    const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].IssuedContract);
+
+    deployments.addContract(contractName, contract.address, contract);
+}
+
 async function attachAddressStorage(accounts: IAccount, deployments: Deployments) {
     const contractName = "AddressStorage";
     // console.log(`Attach ${contractName}...`);
 
     const factory = new ContractFactory(AddressStorage__factory.abi, AddressStorage__factory.bytecode);
-    const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].AddressStorage)
+    const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].AddressStorage);
 
     deployments.addContract(contractName, contract.address, contract);
     // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -157,7 +207,7 @@ async function attachBudgetManager(accounts: IAccount, deployments: Deployments)
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(BudgetManager__factory.abi, BudgetManager__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].BudgetManager)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].BudgetManager);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -171,7 +221,7 @@ async function attachParamStorage(accounts: IAccount, deployments: Deployments) 
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ParamStorage__factory.abi, ParamStorage__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ParamStorage)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ParamStorage);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -185,7 +235,7 @@ async function attachParticipantStorage(accounts: IAccount, deployments: Deploym
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ParticipantStorage__factory.abi, ParticipantStorage__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ParticipantStorage)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ParticipantStorage);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -199,7 +249,7 @@ async function attachProposalStorage(accounts: IAccount, deployments: Deployment
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ProposalStorage__factory.abi, ProposalStorage__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ProposalStorage)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ProposalStorage);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -213,7 +263,7 @@ async function attachAssessmentStorage(accounts: IAccount, deployments: Deployme
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(AssessmentStorage__factory.abi, AssessmentStorage__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].AssessmentStorage)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].AssessmentStorage);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -227,7 +277,7 @@ async function attachVoteStorage(accounts: IAccount, deployments: Deployments) {
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(VoteStorage__factory.abi, VoteStorage__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].VoteStorage)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].VoteStorage);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -241,7 +291,7 @@ async function attachReceptionController(accounts: IAccount, deployments: Deploy
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ReceptionController__factory.abi, ReceptionController__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ReceptionController)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ReceptionController);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -255,7 +305,7 @@ async function attachAssessmentController(accounts: IAccount, deployments: Deplo
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(AssessmentController__factory.abi, AssessmentController__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].AssessmentController)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].AssessmentController);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -269,7 +319,7 @@ async function attachVoteController(accounts: IAccount, deployments: Deployments
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(VoteController__factory.abi, VoteController__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].VoteController)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].VoteController);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -283,7 +333,7 @@ async function attachParticipantManager(accounts: IAccount, deployments: Deploym
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ParticipantManager__factory.abi, ParticipantManager__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ParticipantManager)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ParticipantManager);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
@@ -297,15 +347,27 @@ async function attachExecutionManager(accounts: IAccount, deployments: Deploymen
     const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
     if (addressStorage !== undefined) {
         const factory = new ContractFactory(ExecutionManager__factory.abi, ExecutionManager__factory.bytecode);
-        const contract = factory.attach(LIVE_CONTRACTS[SupportedNetwork.DEVNET].ExecutionManager)
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].ExecutionManager);
 
         deployments.addContract(contractName, contract.address, contract);
         // console.log(`Attached ${contractName} to ${contract.address}`);
     }
 }
 
-export class Helper {
+async function attachEvaluatorManager(accounts: IAccount, deployments: Deployments) {
+    const contractName = "EvaluatorManager";
+    // console.log(`Attach ${contractName}...`);
 
+    const addressStorage = deployments.getContract("AddressStorage") as AddressStorage;
+    if (addressStorage !== undefined) {
+        const factory = new ContractFactory(EvaluatorManager__factory.abi, EvaluatorManager__factory.bytecode);
+        const contract = factory.attach(LIVE_CONTRACTS[deployments.supportedNetwork].EvaluatorManager);
+
+        deployments.addContract(contractName, contract.address, contract);
+    }
+}
+
+export class Helper {
     public static loadProposalId(): string {
         const data = JSON.parse(fs.readFileSync("./data/proposal.json", "utf-8"));
         if (data.proposalId !== undefined) return data.proposalId;
@@ -331,51 +393,71 @@ export class Helper {
 
     public static toStringOfProposalStates(value: ProposalStates): string {
         switch (value) {
-            case ProposalStates.INVALID: return "ProposalStates.INVALID";
-            case ProposalStates.OPENED: return "ProposalStates.OPENED";
-            case ProposalStates.CLOSED: return "ProposalStates.CLOSED";
+            case ProposalStates.INVALID:
+                return "ProposalStates.INVALID";
+            case ProposalStates.OPENED:
+                return "ProposalStates.OPENED";
+            case ProposalStates.CLOSED:
+                return "ProposalStates.CLOSED";
         }
     }
 
     public static toStringOfProposalPeriod(value: ProposalPeriod): string {
         switch (value) {
-            case ProposalPeriod.NONE: return "ProposalPeriod.NONE";
-            case ProposalPeriod.ASSESSMENT: return "ProposalPeriod.ASSESSMENT";
-            case ProposalPeriod.VOTE: return "ProposalPeriod.VOTE";
-            case ProposalPeriod.EXECUTION: return "ProposalPeriod.EXECUTION";
-            case ProposalPeriod.FINISHED: return "ProposalPeriod.FINISHED";
+            case ProposalPeriod.NONE:
+                return "ProposalPeriod.NONE";
+            case ProposalPeriod.ASSESSMENT:
+                return "ProposalPeriod.ASSESSMENT";
+            case ProposalPeriod.VOTE:
+                return "ProposalPeriod.VOTE";
+            case ProposalPeriod.EXECUTION:
+                return "ProposalPeriod.EXECUTION";
+            case ProposalPeriod.FINISHED:
+                return "ProposalPeriod.FINISHED";
         }
     }
 
     public static toStringOfAssessmentResult(value: AssessmentResult): string {
         switch (value) {
-            case AssessmentResult.NONE: return "AssessmentResult.NONE";
-            case AssessmentResult.APPROVED: return "AssessmentResult.APPROVED";
-            case AssessmentResult.REJECTED: return "AssessmentResult.REJECTED";
+            case AssessmentResult.NONE:
+                return "AssessmentResult.NONE";
+            case AssessmentResult.APPROVED:
+                return "AssessmentResult.APPROVED";
+            case AssessmentResult.REJECTED:
+                return "AssessmentResult.REJECTED";
         }
     }
 
     public static toStringOfVoteResult(value: VoteResult): string {
         switch (value) {
-            case VoteResult.NONE: return "VoteResult.NONE";
-            case VoteResult.APPROVED: return "VoteResult.APPROVED";
-            case VoteResult.REJECTED: return "VoteResult.REJECTED";
-            case VoteResult.INVALID_QUORUM: return "VoteResult.INVALID_QUORUM";
+            case VoteResult.NONE:
+                return "VoteResult.NONE";
+            case VoteResult.APPROVED:
+                return "VoteResult.APPROVED";
+            case VoteResult.REJECTED:
+                return "VoteResult.REJECTED";
+            case VoteResult.INVALID_QUORUM:
+                return "VoteResult.INVALID_QUORUM";
         }
     }
 
     public static toStringOfExecutionStates(value: ExecutionStates): string {
         switch (value) {
-            case ExecutionStates.NONE: return "ExecutionStates.NONE";
-            case ExecutionStates.IN_PROCESS: return "ExecutionStates.IN_PROCESS";
-            case ExecutionStates.FINISHED: return "ExecutionStates.FINISHED";
+            case ExecutionStates.NONE:
+                return "ExecutionStates.NONE";
+            case ExecutionStates.IN_PROCESS:
+                return "ExecutionStates.IN_PROCESS";
+            case ExecutionStates.FINISHED:
+                return "ExecutionStates.FINISHED";
         }
     }
 
     public static toStringOfProposalType(value: ProposalType): string {
         switch (value) {
-            case ProposalType.SYSTEM: return "ProposalType.SYSTEM";
-            case ProposalType.FUND: return "ProposalType.FUND";
+            case ProposalType.SYSTEM:
+                return "ProposalType.SYSTEM";
+            case ProposalType.FUND:
+                return "ProposalType.FUND";
         }
     }
 }

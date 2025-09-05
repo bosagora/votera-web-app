@@ -12,17 +12,18 @@ import {
     AssessmentResult,
     Candidate,
     VoteResult,
-    ExecutionStates, ContextParams
+    ExecutionStates,
+    ContextParams,
 } from "votera-sdk-client";
-import {Deployments, Helper} from "../helper/Deployments";
+import { Deployments, Helper } from "../helper/Deployments";
 
 import { expect } from "chai";
 
 async function main() {
-    const deployments= new Deployments("http://127.0.0.1:8545");
+    const deployments = new Deployments();
     await deployments.attachAll();
 
-    const ctx = new Context({...deployments.getContextParams(), signer: deployments.accounts.voters[0]});
+    const ctx = new Context({ ...deployments.getContextParams(), signer: deployments.accounts.voters[0] });
     const client = new Client(ctx);
 
     const proposalId = Helper.loadProposalId();
@@ -37,4 +38,3 @@ main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
-
