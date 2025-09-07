@@ -147,6 +147,7 @@ export class Deployments {
             network: 24680,
             signer: new Wallet(TEST_WALLET),
             web3Providers: ["http://localhost:7545"],
+            IssuedContract: this.getContractAddress("IssuedContract"),
             AddressStorage: this.getContractAddress("AddressStorage"),
             BudgetManager: this.getContractAddress("BudgetManager"),
             ParamStorage: this.getContractAddress("ParamStorage"),

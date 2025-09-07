@@ -164,6 +164,7 @@ export class Deployments {
             ParamStorage: this.getContractAddress("ParamStorage"),
             ParticipantStorage: this.getContractAddress("ParticipantStorage"),
             ProposalStorage: this.getContractAddress("ProposalStorage"),
+            EvaluatorStorage: this.getContractAddress("EvaluatorStorage"),
             AssessmentStorage: this.getContractAddress("AssessmentStorage"),
             VoteStorage: this.getContractAddress("VoteStorage"),
             ReceptionController: this.getContractAddress("ReceptionController"),

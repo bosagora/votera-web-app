@@ -53,10 +53,12 @@ export const UseClientProvider: React.FC<{children: React.ReactNode}> = ({
       network: translatedNetwork,
       signer: signer ? signer : undefined,
       web3Providers: CHAIN_METADATA[network].rpc[0],
+      IssuedContract: contracts.IssuedContract,
       AddressStorage: contracts.AddressStorage,
       BudgetManager: contracts.BudgetManager,
       ParamStorage: contracts.ParamStorage,
       ParticipantStorage: contracts.ParticipantStorage,
+      EvaluatorStorage: contracts.EvaluatorStorage,
       ProposalStorage: contracts.ProposalStorage,
       AssessmentStorage: contracts.AssessmentStorage,
       VoteStorage: contracts.VoteStorage,
@@ -64,6 +66,7 @@ export const UseClientProvider: React.FC<{children: React.ReactNode}> = ({
       AssessmentController: contracts.AssessmentController,
       VoteController: contracts.VoteController,
       ParticipantManager: contracts.ParticipantManager,
+      EvaluatorManager: contracts.EvaluatorManager,
       ExecutionManager: contracts.ExecutionManager,
     };
 

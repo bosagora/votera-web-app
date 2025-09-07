@@ -15,7 +15,7 @@ type Web3ContextParams = {
     BudgetManager: string;
     ParamStorage: string;
     ParticipantStorage: string;
-    EvaluatorStorage?: string;
+    EvaluatorStorage: string;
     ProposalStorage: string;
     AssessmentStorage: string;
     VoteStorage: string;
@@ -23,7 +23,7 @@ type Web3ContextParams = {
     AssessmentController: string;
     VoteController: string;
     ParticipantManager: string;
-    EvaluatorManager?: string;
+    EvaluatorManager: string;
     ExecutionManager: string;
 };
 
