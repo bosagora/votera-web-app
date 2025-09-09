@@ -675,7 +675,10 @@ const Dashboard: React.FC = () => {
             )}
           {proposal &&
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
-              <CommentList proposalId={proposal.id} isVoter={isVoter} />
+              <CommentList
+                proposalId={proposal.id}
+                isWriter={isVoter || isEvaluator}
+              />
             )}
           {proposal && proposal.period >= ProposalPeriod.VOTE && (
             <VoterList proposalId={proposal.id} />

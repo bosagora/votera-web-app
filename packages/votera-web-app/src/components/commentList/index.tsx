@@ -23,14 +23,14 @@ interface Comment {
 
 interface CommentListProps {
   proposalId: string;
-  isVoter: boolean;
+  isWriter: boolean;
 }
 
 const COMMENTS_PER_PAGE = 6;
 
 const CommentListContent: React.FC<CommentListProps> = ({
   proposalId,
-  isVoter,
+  isWriter,
 }) => {
   const {network} = useNetwork();
   const [newComment, setNewComment] = React.useState('');
@@ -91,7 +91,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (!newComment.trim() || !proposalId || !isVoter) return;
+    if (!newComment.trim() || !proposalId || !isWriter) return;
 
     try {
       // 새 댓글 등록
@@ -125,7 +125,7 @@ const CommentListContent: React.FC<CommentListProps> = ({
       <Header>
         <HeaderTitle>{t('assessmentWidget.commentTitle')}</HeaderTitle>
       </Header>
-      {isVoter && (
+      {isWriter && (
         <CommentInput>
           <InputWrapper>
             <StyledTextarea
