@@ -11,7 +11,7 @@ import {useVoteraProposalDetailsQuery} from '../hooks/useVoteraProposalDetails';
 import {useClient} from '../hooks/useClient';
 import {SortType, VoteBallotData} from 'votera-sdk-client';
 
-const MEMBERS_PER_PAGE = 20;
+const MEMBERS_PER_PAGE = 5;
 
 const Validator: React.FC = () => {
   const {t} = useTranslation();
@@ -97,6 +97,7 @@ const Validator: React.FC = () => {
               activePage={page}
               onChange={(newPage: number) => {
                 onChangePage(newPage);
+                window.scrollTo({top: 0, behavior: 'smooth'});
               }}
             />
           )}

@@ -693,7 +693,7 @@
     },
     "learn": {
       "linkLabel": "Votera 제안 설정에 대해서 학습하기",
-      "linkURL": "https://bosagora.io/education-portal"
+      "linkURL": "https://docs.bosagora.org/kr/votera/introduction"
     }
   },
   "privacyPolicy": {
@@ -733,12 +733,12 @@
     },
     "learn": {
       "title": "학습하기",
-      "description": "Votera 제안 설정을 생성하고 사용하는 방법을 학습합니다.",
+      "description": "Votera 제안 설정을 생성하고 사용하는 방법을 문서를 통해서 배워보세요.",
       "actionLabel": "Votera 제안 설정에 관해 배우기"
     },
     "build": {
       "title": "더 빠른 구축",
-      "description": "Aragon OSx 프로토콜에서 DAO, dApp 또는 상상할 수 있는 모든 것을 구축하기 위해 우리의 거버넌스 플러그인을 사용하세요.",
+      "description": "Votera OSx 프로토콜에서 DAO, dApp 또는 상상할 수 있는 모든 것을 구축하기 위해 우리의 거버넌스 플러그인을 사용하세요.",
       "actionLabel": "출시 예정"
     }
   },
@@ -747,21 +747,21 @@
     "reviewProposal": "제안 검토",
     "proposeSettingsSubtitle": "제안에 포함될 새로운 설정을 확인하세요.",
     "editDaoSettings": "Votera 제안서 편집",
-    "editSubtitle": "로고와 설명과 같은 설정을 편집하려면 제안을 생성하고 DAO에서 투표에 부쳐야 합니다.",
+    "editSubtitle": "로고와 설명과 같은 설정을 편집하려면 제안을 생성하고 Votera 에서 투표에 부쳐야 합니다.",
     "resetChanges": "변경사항 초기화",
     "edit": "설정 편집",
     "newSettings": "새 설정",
     "oldSettings": "이전 설정",
-    "proposeSettingsInfo": "설정을 변경하려면 제안을 생성하고 DAO에서 투표에 부쳐야 합니다."
+    "proposeSettingsInfo": "설정을 변경하려면 제안을 생성하고 Votera에서 투표에 부쳐야 합니다."
   },
   "dashboard": {
     "proposalsTitle": "제안이 생성되었습니다",
     "emptyState": {
-      "title": "DAO를 구축하고 있습니다!",
+      "title": "Votera를 구축하고 있습니다!",
       "subtitle": "온체인 데이터가 배포되고 게시되는 중입니다. 오래 걸리지 않을 것입니다.",
-      "daoReady": "DAO가 준비되었습니다",
-      "openDao": "DAO 열기",
-      "buildingDAO": "DAO 구축 중"
+      "daoReady": "Votera가 준비되었습니다",
+      "openDao": "Votera 열기",
+      "buildingVotera": "Votera 구축 중"
     }
   },
   "app": {
@@ -796,24 +796,24 @@
     "claimPoap": {
       "ctaLabel": "지금 POAP 받기",
       "ctaURL": "https://poap-claim-app.aragon.org/",
-      "title": "DAO 빌더 POAP 받기"
+      "title": "Votera 빌더 POAP 받기"
     },
     "mintTokensToTreasury": {
-      "title": "DAO 금고로 토큰 발행하기",
-      "description": "DAO는 투표를 할 수 없습니다. DAO 금고에 너무 많은 토큰을 발행하면 최소 참여율을 달성하지 못해 제안 작업을 실행할 수 없게 될 수 있으니 주의하세요.",
-      "alertTitle": "DAO에 대한 잠재적 위험",
-      "alertDescription": "DAO 금고로 토큰을 발행하는 대신, 토큰이 투표에 사용될 수 있도록 멤버의 지갑 주소로 발행하는 것을 고려하세요.",
+      "title": "Votera 금고로 토큰 발행하기",
+      "description": "Votera는 투표를 할 수 없습니다. Votera 금고에 너무 많은 토큰을 발행하면 최소 참여율을 달성하지 못해 제안 작업을 실행할 수 없게 될 수 있으니 주의하세요.",
+      "alertTitle": "Votera에 대한 잠재적 위험",
+      "alertDescription": "Votera 금고로 토큰을 발행하는 대신, 토큰이 투표에 사용될 수 있도록 멤버의 지갑 주소로 발행하는 것을 고려하세요.",
       "step1CtaLabel": "토큰 발행으로 돌아가기",
-      "step1CancelLabel": "DAO 주소로 진행",
-      "inputLabel": "DAO 주소로 확인",
-      "inputHelptext": "확인을 위해 아래에 DAO 컨트랙트 주소를 입력하세요.",
+      "step1CancelLabel": "Votera 주소로 진행",
+      "inputLabel": "Votera 주소로 확인",
+      "inputHelptext": "확인을 위해 아래에 Votera 컨트랙트 주소를 입력하세요.",
       "step2CtaLabel": "확인",
       "step2CancelLabel": "취소",
-      "alertChipSuccess": "DAO 금고 제거됨",
-      "alertChipCritical": "DAO 금고 추가됨"
+      "alertChipSuccess": "Votera 금고 제거됨",
+      "alertChipCritical": "Votera 금고 추가됨"
     },
     "wrapToken": {
-      "title": "DAO 참여하기",
+      "title": "Votera 참여하기",
       "desc": "거버넌스에 참여하기 위해 {{tokenSymbol}}을(를) {{gTokenSymbol}}(으)로 래핑하세요. 언제든지 {{gTokenSymbol}}을(를) 언래핑할 수 있습니다(1 {{tokenSymbol}} = 1 {{gTokenSymbol}}).",
       "inputModeLabel": "토큰으로 무엇을 하시겠습니까?",
       "inputSelectWrap": "래핑",
@@ -830,7 +830,7 @@
       "footerAlertCriticalApprove": "토큰 승인 중 오류가 발생했습니다. 다시 시도하세요.",
       "footerAlertCriticalWrap": "토큰 래핑 중 오류가 발생했습니다. 다시 시도하세요.",
       "successTitle": "토큰이 성공적으로 래핑되었습니다",
-      "successDesc": "지갑에 {{amount}} {{gTokenSymbol}}을(를) 받았습니다. 이제 DAO의 멤버가 되어 이 토큰으로 거버넌스에 참여할 수 있습니다.",
+      "successDesc": "지갑에 {{amount}} {{gTokenSymbol}}을(를) 받았습니다. 이제 Votera의 멤버가 되어 이 토큰으로 거버넌스에 참여할 수 있습니다.",
       "successCtaLabel": "커뮤니티 보기",
       "successBtnSecondaryLabel": "토큰 심볼 추가",
       "inputAmountBalanceWrapped": "보유량: {{amount}} g{{tokenSymbol}}",
@@ -947,19 +947,19 @@
   "community": {
     "emptyState": {
       "title": "첫 번째 멤버가 되어보세요",
-      "desc": "{{tokenSymbol}}을(를) 래핑하여 DAO 커뮤니티의 멤버가 되세요. 이를 통해 거버넌스에 참여할 수 있습니다. 자세한 내용은 {{link}}에서 확인하세요.",
-      "ctaLabel": "DAO 참여하기",
+      "desc": "{{tokenSymbol}}을(를) 래핑하여 Votera 커뮤니티의 멤버가 되세요. 이를 통해 거버넌스에 참여할 수 있습니다. 자세한 내용은 {{link}}에서 확인하세요.",
+      "ctaLabel": "Votera 참여하기",
       "descLinkLabel": "우리의 가이드에서",
       "descLinkURL": "https://bosagora.io/how-to/import-existing-tokens"
     },
     "ctaMain": {
-      "wrappedLabel": "DAO 참여하기"
+      "wrappedLabel": "Votera 참여하기"
     }
   },
   "modalAlert": {
     "wrapToken": {
       "title": "거버넌스 토큰을 찾을 수 없습니다",
-      "desc": "{{tokenSymbol}}을(를) 래핑하여 DAO 커뮤니티의 멤버가 되세요. 이를 통해 거버넌스에 참여할 수 있습니다. 자세한 내용은 {{link}}에서 확인하세요.",
+      "desc": "{{tokenSymbol}}을(를) 래핑하여 Votera 커뮤니티의 멤버가 되세요. 이를 통해 거버넌스에 참여할 수 있습니다. 자세한 내용은 {{link}}에서 확인하세요.",
       "ctaLabel": "토큰 래핑하기",
       "cancleLabel": "취소",
       "descLinkLabel": "우리의 가이드",
@@ -1031,7 +1031,7 @@
       "label": "1단계",
       "title": "블록체인 선택",
       "description": "제안을 생성할 블록체인을 선택하세요. 이는 나중에 변경할 수 없습니다.",
-      "descriptionLinkLabel": "DAO를 위한 블록체인",
+      "descriptionLinkLabel": "Votera를 위한 블록체인",
       "descriptionLinkURL": "https://bosagora.io/how-to/choose-the-right-blockchain-for-your-dao"
     },
     "step2": {
@@ -1043,11 +1043,11 @@
       "nameSubtitle": "최대 128자",
       "documentSubtitle": "PDF 파일만 허용됩니다. 제안이나 관련 문서를 PDF 형식으로 준비해 주세요. 최대 파일 크기는 10MB로 제한됩니다.",
       "descriptionSubtitle": "제안의 목적을 몇 문장으로 설명하세요. 이는 대시보드 페이지에 나열되어 새로운 기여자들이 찾을 수 있습니다.",
-      "linksSubtitle": "DAO의 웹사이트, 소셜 미디어 프로필, Discord 또는 커뮤니티가 모이는 다른 곳의 링크.",
+      "linksSubtitle": "Votera의 웹사이트, 소셜 미디어 프로필, Discord 또는 커뮤니티가 모이는 다른 곳의 링크.",
       "metadataOverviewGuide": "가이드 읽기",
       "descriptionLinkLabel": "가이드 읽기",
       "descriptionLinkURL": "https://bosagora.io/how-to/build-a-dao-brand-identity",
-      "ensNameSubtitle": "이것은 자동으로 생성되는 DAO의 고유한 ENS 서브도메인이 됩니다. 소문자, 숫자, 대시 '-'가 모두 허용되는 문자이며, 문자 수는 128자 미만이 이상적입니다."
+      "ensNameSubtitle": "이것은 자동으로 생성되는 Votera의 고유한 ENS 서브도메인이 됩니다. 소문자, 숫자, 대시 '-'가 모두 허용되는 문자이며, 문자 수는 128자 미만이 이상적입니다."
     },
     "step3": {
       "label": "3단계",
@@ -1164,6 +1164,7 @@
     "buttonLabelSuccess": "제안으로 이동",
     "evaluatorCount": "{{count}}/{{total}}명 참여",
     "evaluationStatus": "평가자 목록",
+    "commentTitle": "토론",
     "emptyState": "참여한 평가자가 없습니다.",
     "before": "평가 전",
     "after": "평가 후"

@@ -1,6 +1,8 @@
 import {CreateProposal} from 'utils/paths';
 
 import createProposalImg from '../../public/createProposal.svg';
+import learnImg from '../../public/learnVotera.svg';
+import buildFaster from '../../public/buildFaster.svg';
 import {i18n} from '../../../i18n.config';
 
 // temporary for review
@@ -13,14 +15,14 @@ const CTACards = [
     subtitle: i18n.t('cta.create.description'),
     title: i18n.t('cta.create.title'),
   },
-  // {
-  //   actionAvailable: true,
-  //   actionLabel: i18n.t('explore.learn.linkLabel'),
-  //   path: i18n.t('explore.learn.linkURL'),
-  //   imgSrc: learnImg,
-  //   subtitle: i18n.t('cta.learn.description'),
-  //   title: i18n.t('cta.learn.title'),
-  // },
+  {
+    actionAvailable: true,
+    actionLabel: i18n.t('explore.learn.linkLabel'),
+    path: i18n.t('explore.learn.linkURL'),
+    imgSrc: learnImg,
+    subtitle: i18n.t('cta.learn.description'),
+    title: i18n.t('cta.learn.title'),
+  },
   // {
   //   actionAvailable: false,
   //   actionLabel: i18n.t('cta.build.actionLabel'),

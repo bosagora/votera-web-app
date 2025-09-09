@@ -619,7 +619,7 @@
         "votingOption": {
           "label": "Approve",
           "description": "Each multisig member has the ability to approve the proposal and any associated optional actions. The proposal will be executed if {{amountMembers}} out of {{totalAmountMembers}} members approve it.",
-          "alert": "Approval is the only option for Multisig DAOs."
+          "alert": "Approval is the only option for Multisig Votera."
         },
         "startLabel": "Start time",
         "startDescription": "Define when a proposal should be active to receive approvals. If now is selected, the proposal is immediately active after publishing.",
@@ -766,17 +766,17 @@
     "showMore": "Show more",
     "emptyStateProposal": {
       "title": "There are no active proposals",
-      "description": "You can still check upcoming or past proposals in your DAOs."
+      "description": "You can still check upcoming or past proposals in your Votera."
     },
     "statistics": {
-      "daosCreated": "DAOs created",
-      "aragonMembers": "Members in Votera App DAOs",
+      "daosCreated": "Votera created",
+      "aragonMembers": "Members in Votera App Votera",
       "activeProposals": "Active proposals",
       "securedByAragon": "Secured by Aragon OSx"
     },
     "learn": {
-      "linkLabel": "다중 서명 지갑에 대해서 학습하기",
-      "linkURL": "https://bosagora.io/education-portal"
+      "linkLabel": "Learn about Votera",
+      "linkURL": "https://docs.bosagora.org/en/votera/introduction"
     }
   },
   "privacyPolicy": {
@@ -810,9 +810,9 @@
       "actionLabel": "Create a proposal"
     },
     "learn": {
-      "title": "학습하기",
-      "description": "Votera 제안 설정을 생성하고 사용하는 방법을 학습합니다.",
-      "actionLabel": "Votera 제안 설정에 관해 배우기"
+      "title": "Learn about Votera",
+      "description": "Find inspiration and learn about Votera in our education documentation designed for builders at every stage of the journey.",
+      "actionLabel": "Learn about Votera"
     },
     "build": {
       "title": "Build faster",
@@ -1251,6 +1251,7 @@
     "buttonLabelSuccess": "Go to proposal",
     "evaluatorCount": "{{count}}/{{total}} participants",
     "evaluationStatus": "Evaluator list",
+    "commentTitle": "Discussion",
     "emptyState": "No participants have voted yet.",
     "before": "before",
     "after": "after"

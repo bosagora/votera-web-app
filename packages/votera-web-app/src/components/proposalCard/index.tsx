@@ -124,14 +124,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <ProposalMetadataWrapper>
             <IconWrapper>
               <StyledIconWallet />
-              <IconLabel>
-                <Link
-                  external
-                  href={addressExploreUrl}
-                  label={addressLabel}
-                  className="text-sm"
-                />
-              </IconLabel>
+              <IconLabel>{addressLabel}</IconLabel>
             </IconWrapper>
 
             <IconWrapper>

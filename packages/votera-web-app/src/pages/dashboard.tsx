@@ -18,6 +18,7 @@ import {ProposalId} from 'utils/types';
 import {StageVoteWidget} from 'components/stageVoteWidget';
 import {StageAssessmentWidget} from 'components/stageAssessmentWidget';
 import ProposalInfo from 'components/proposalInfo';
+import CommentList from 'components/commentList';
 import VoterList from 'components/voterList';
 import {
   VoteBallotData,
@@ -668,13 +669,13 @@ const Dashboard: React.FC = () => {
         </ProposalContainer>
 
         <AdditionalInfoContainer>
-          {/*{proposal &&*/}
-          {/*  extendedPhase.toLocaleLowerCase().includes('assessment') && (*/}
-          {/*    <CommentList proposalId={proposal.id} isVoter={isVoter} />*/}
-          {/*  )}*/}
           {proposal &&
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
               <EvaluatorList proposalId={proposal.id} />
+            )}
+          {proposal &&
+            extendedPhase.toLocaleLowerCase().includes('assessment') && (
+              <CommentList proposalId={proposal.id} isVoter={isVoter} />
             )}
           {proposal && proposal.period >= ProposalPeriod.VOTE && (
             <VoterList proposalId={proposal.id} />

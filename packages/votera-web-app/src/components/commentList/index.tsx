@@ -13,6 +13,7 @@ import {useClient} from 'hooks/useClient';
 import {CommentData, SortType} from 'votera-sdk-client';
 import {useWallet} from 'hooks/useWallet';
 import {useTranslation} from 'react-i18next';
+import moment from 'moment/moment';
 interface Comment {
   id: string;
   author: string;
@@ -121,6 +122,9 @@ const CommentListContent: React.FC<CommentListProps> = ({
 
   return (
     <Container>
+      <Header>
+        <HeaderTitle>{t('assessmentWidget.commentTitle')}</HeaderTitle>
+      </Header>
       {isVoter && (
         <CommentInput>
           <InputWrapper>
@@ -151,11 +155,11 @@ const CommentListContent: React.FC<CommentListProps> = ({
                   href={`${CHAIN_METADATA[network].explorer}/address/${comment.writer}`}
                 />
                 <CreatedAt>
-                  {
-                    new Date(Number(comment.timestamp) * 1000)
-                      .toISOString()
-                      .split('T')[0]
-                  }
+                  {comment.timestamp != 0
+                    ? moment(new Date(Number(comment.timestamp) * 1000)).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                      )
+                    : ''}
                 </CreatedAt>
               </CommentHeader>
               <Content>{comment.message}</Content>
@@ -185,6 +189,15 @@ const CommentList: React.FC<CommentListProps> = props => {
 
 const Container = styled.div.attrs({
   className: 'w-full p-4 bg-white',
+})``;
+
+const Header = styled.div.attrs({
+  className:
+    'flex justify-between items-center mb-1 pb-3 border-b border-[#e6e6e6]',
+})``;
+
+const HeaderTitle = styled.h2.attrs({
+  className: 'text-lg font-semibold text-[#333]',
 })``;
 
 const CommentItem = styled.div.attrs({

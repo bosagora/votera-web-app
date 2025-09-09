@@ -26,7 +26,7 @@ const VoterList: React.FC<VoteListProps> = ({proposalId}) => {
   const {t} = useTranslation();
   const {client} = useClient();
 
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 5;
 
   const [ballotLength, setBallotLength] = useState<number>(0);
   const [voterLength, setVoterLength] = useState<number>(0);
