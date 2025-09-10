@@ -14,11 +14,9 @@ import {useWallet} from 'hooks/useWallet';
 import NetworkIndicator from './networkIndicator';
 import useScreen from 'hooks/useScreen';
 import MobileMenu from './mobileMenu';
-import VoteraLogo from 'public/votera_color_logo.png';
-import {Landing} from 'utils/paths';
-import {useNavigate, useLocation} from 'react-router-dom';
 import {useReactiveVar} from '@apollo/client';
 import {selectedVoteraProposalVar} from '../../context/apolloClient';
+import {useGlobalModalContext} from 'context/globalModals';
 import {ProposalType} from 'votera-sdk-client';
 
 type MobileNavProps = {
@@ -28,12 +26,11 @@ type MobileNavProps = {
 };
 
 const MobileNav: React.FC<MobileNavProps> = props => {
-  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
   const {t} = useTranslation();
+  const {open} = useGlobalModalContext();
   const {isConnected, address} = useWallet();
   const {isMobile} = useScreen();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
 
   if (props.isProcess)
     return (

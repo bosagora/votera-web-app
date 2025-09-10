@@ -42,14 +42,14 @@ type DesktopNavProp = {
 };
 
 const DesktopNav: React.FC<DesktopNavProp> = props => {
-  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const {network} = useNetwork();
   const {breadcrumbs, icon, tag} = useMappedBreadcrumbs();
   const {id} = useParams();
   const {address, isConnected} = useWallet();
+
+  const currentProposal = useReactiveVar(selectedVoteraProposalVar);
 
   const [showExitProcessMenu, setShowExitProcessMenu] = useState(false);
 

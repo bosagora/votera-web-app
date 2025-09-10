@@ -124,10 +124,6 @@ const CreateProposal: React.FC = () => {
     });
   }, [chainId, formMethods, setNetwork]);
 
-  // useEffect(() => {
-  //   console.log('Form values changed:', watchedValues);
-  // }, [watchedValues]); // watchedValues가 변경될 때마다 실행
-
   /*************************************************
    *             Step Validation States            *
    *************************************************/

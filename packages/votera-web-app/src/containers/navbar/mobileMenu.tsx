@@ -33,7 +33,7 @@ const MobileNavMenu = () => {
             proposer={currentProposal?.proposer}
             onClick={() => {
               close('mobileMenu');
-              handleWithFunctionalPreferenceMenu(() => open('selectDao'));
+              handleWithFunctionalPreferenceMenu(() => open('selectProposal'));
             }}
           />
         </CardWrapper>

@@ -3,7 +3,6 @@ import {
   ButtonText,
   IconChevronLeft,
   IconLinkExternal,
-  ListItemDao,
   ListItemProposal,
 } from 'votera-ui-components';
 import React, {useCallback} from 'react';
@@ -23,17 +22,17 @@ const ProposalSelectMenu: React.FC = () => {
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const currentVoteraProposal = useReactiveVar(selectedVoteraProposalVar);
-  const {isSelectDaoOpen, close, open} = useGlobalModalContext();
+  const {isSelectProposalOpen, close, open} = useGlobalModalContext();
 
   const handleBackButtonClick = useCallback(() => {
-    close('selectDao');
+    close('selectProposal');
     if (!isDesktop) open('mobileMenu');
   }, [close, isDesktop, open]);
 
   return (
     <ModalBottomSheetSwitcher
-      isOpen={isSelectDaoOpen}
-      onClose={() => close('selectDao')}
+      isOpen={isSelectProposalOpen}
+      onClose={() => close('selectProposal')}
       onOpenAutoFocus={(e: any) => e.preventDefault()}
     >
       <div className="flex flex-col h-full" style={{maxHeight: '75vh'}}>
@@ -60,7 +59,7 @@ const ProposalSelectMenu: React.FC = () => {
                   ? 'Fund'
                   : 'System'
               }
-              onClick={() => close('selectDao')}
+              onClick={() => close('selectProposal')}
             />
           </ListGroup>
         </ModalContentContainer>
@@ -74,7 +73,7 @@ const ProposalSelectMenu: React.FC = () => {
             className="w-full"
             onClick={() => {
               navigate('/');
-              close('selectDao');
+              close('selectProposal');
             }}
           />
         </div>

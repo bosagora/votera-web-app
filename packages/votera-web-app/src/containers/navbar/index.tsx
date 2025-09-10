@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
    *                   Handlers                    *
    *************************************************/
   const handleOnSelect = () => {
-    handleWithFunctionalPreferenceMenu(() => open('selectDao'));
+    handleWithFunctionalPreferenceMenu(() => open('selectProposal'));
   };
 
   const handleWalletButtonClick = () => {

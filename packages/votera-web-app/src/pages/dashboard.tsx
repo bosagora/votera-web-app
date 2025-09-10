@@ -6,6 +6,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {Loading} from 'components/temporary';
+import {PageWrapper} from 'components/wrappers';
 import {useGlobalModalContext} from 'context/globalModals';
 import {useNetwork} from 'context/network';
 import {useWallet} from 'hooks/useWallet';
@@ -583,9 +584,8 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <Container>
+    <PageWrapper title={proposal?.title}>
       <HeaderContainer>
-        <ProposalTitle>{proposal?.title}</ProposalTitle>
         <ContentWrapper>
           <ProposerLink>
             {t('governance.proposals.publishedBy')}{' '}
@@ -685,31 +685,20 @@ const Dashboard: React.FC = () => {
           )}
         </AdditionalInfoContainer>
       </ContentContainer>
-    </Container>
+    </PageWrapper>
   );
 };
 
 export default withTransaction('Proposal', 'component')(Dashboard);
 
-const Container = styled.div.attrs({
-  className: 'col-span-full desktop:col-start-2 desktop:col-end-12',
-})``;
-
 const HeaderContainer = styled.div.attrs({
-  className: 'flex flex-col gap-y-2 desktop:p-0 tablet:px-3 pt-2',
-})``;
-
-const ProposalTitle = styled.h1.attrs({
-  className: 'font-bold text-ui-800 text-3xl',
+  className:
+    'flex flex-col p-2 pb-3 tablet:p-3 desktop:p-5 bg-ui-0 gap-y-2 tablet:gap-y-3 tablet:rounded-xl tablet:border tablet:border-ui-100 tablet:shadow-100',
 })``;
 
 const ContentWrapper = styled.div.attrs({
   className: 'flex flex-col tablet:flex-row gap-x-3 gap-y-1.5',
 })``;
-
-// const BadgeContainer = styled.div.attrs({
-//   className: 'flex flex-wrap gap-x-1.5',
-// })``;
 
 const ProposerLink = styled.div.attrs({
   className: 'text-ui-500',
@@ -734,7 +723,7 @@ type ContentContainerProps = {
 const ContentContainer = styled.div.attrs(
   ({expandedProposal}: ContentContainerProps) => ({
     className: `${
-      expandedProposal ? 'tablet:mt-5' : 'tablet:mt-8'
-    } mt-3 tablet:flex tablet:space-x-3 space-y-3 tablet:space-y-0`,
+      expandedProposal ? 'tablet:mt-2' : 'tablet:mt-3'
+    } mt-2 tablet:flex tablet:space-x-3 space-y-3 tablet:space-y-0`,
   })
 )<ContentContainerProps>``;

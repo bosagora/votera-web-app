@@ -12,7 +12,7 @@ type GlobalModalsContextType = {
   isTransferOpen: boolean;
   isTokenOpen: boolean;
   isUtcOpen: boolean;
-  isSelectDaoOpen: boolean;
+  isSelectProposalOpen: boolean;
   isAddActionOpen: boolean;
   isAddressesOpen: boolean;
   isWalletOpen: boolean;
@@ -30,7 +30,7 @@ export type MenuTypes =
   | 'token'
   | 'utc'
   | 'addAction'
-  | 'selectDao'
+  | 'selectProposal'
   | 'default'
   | 'addresses'
   | 'wallet'
@@ -56,8 +56,8 @@ const GlobalModalsProvider: React.FC<Props> = ({children}) => {
     useState<GlobalModalsContextType['isUtcOpen']>(false);
   const [isAddActionOpen, setIsAddActionOpen] =
     useState<GlobalModalsContextType['isAddActionOpen']>(false);
-  const [isSelectDaoOpen, setIsSelectDaoOpen] =
-    useState<GlobalModalsContextType['isSelectDaoOpen']>(false);
+  const [isSelectProposalOpen, setIsSelectProposalOpen] =
+    useState<GlobalModalsContextType['isSelectProposalOpen']>(false);
   const [isAddressesOpen, setAddressesOpen] =
     useState<GlobalModalsContextType['isAddressesOpen']>(false);
   const [isWalletOpen, setWalletOpen] =
@@ -86,8 +86,8 @@ const GlobalModalsProvider: React.FC<Props> = ({children}) => {
       case 'addAction':
         setIsAddActionOpen(true);
         break;
-      case 'selectDao':
-        setIsSelectDaoOpen(true);
+      case 'selectProposal':
+        setIsSelectProposalOpen(true);
         break;
       case 'addresses':
         setAddressesOpen(true);
@@ -131,8 +131,8 @@ const GlobalModalsProvider: React.FC<Props> = ({children}) => {
       case 'addAction':
         setIsAddActionOpen(false);
         break;
-      case 'selectDao':
-        setIsSelectDaoOpen(false);
+      case 'selectProposal':
+        setIsSelectProposalOpen(false);
         break;
       case 'addresses':
         setAddressesOpen(false);
@@ -179,7 +179,7 @@ const GlobalModalsProvider: React.FC<Props> = ({children}) => {
       isTokenOpen,
       isUtcOpen,
       isAddActionOpen,
-      isSelectDaoOpen,
+      isSelectProposalOpen,
       isAddressesOpen,
       isWalletOpen,
       isNetworkOpen,
@@ -200,7 +200,7 @@ const GlobalModalsProvider: React.FC<Props> = ({children}) => {
       isMobileMenuOpen,
       isNetworkOpen,
       isPoapClaimOpen,
-      isSelectDaoOpen,
+      isSelectProposalOpen,
       isTokenOpen,
       isTransferOpen,
       isUtcOpen,
