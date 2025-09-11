@@ -10,6 +10,9 @@
   },
   "scripts": {
     "00-checkWeb3": "npx ts-node scripts/00-check/checkWeb3.ts",
+    "00-getBalanceOfCommonsBudget": "npx ts-node scripts/00-check/getBalanceOfCommonsBudget.ts",
+    "00-getEvaluators": "npx ts-node scripts/00-check/getEvaluators.ts",
+    "00-getVoters": "npx ts-node scripts/00-check/getVoters.ts",
     "01-createFundingProposal": "npx ts-node scripts/01-proposal/createFundingProposal.ts",
     "01-createSystemProposal": "npx ts-node scripts/01-proposal/createSystemProposal.ts",
     "01-getProposal": "npx ts-node scripts/01-proposal/getProposal.ts",
