@@ -92,8 +92,10 @@ export function NetworkProvider({children}: NetworkProviderProps) {
   >(determineNetwork(networkUrlSegment, chainId, status));
 
   useEffect(() => {
-    if (!isCreatePage)
-      setNetworkState(determineNetwork(networkUrlSegment, chainId, status));
+    if (!isCreatePage) {
+      const next = determineNetwork(networkUrlSegment, chainId, status);
+      setNetworkState(prev => (prev !== next ? next : prev));
+    }
   }, [chainId, isCreatePage, networkUrlSegment, status]);
 
   const changeNetwork = useCallback(

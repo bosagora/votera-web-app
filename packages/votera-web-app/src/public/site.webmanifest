@@ -3,12 +3,12 @@
     "short_name": "Votera App",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
+            "src": "/src/public/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
         },
         {
-            "src": "/android-chrome-512x512.png",
+            "src": "/src/public/votera_color_logo.png",
             "sizes": "512x512",
             "type": "image/png"
         }
