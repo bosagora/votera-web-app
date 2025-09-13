@@ -16,9 +16,10 @@ export function walletClientToSigner(walletClient: WalletClient) {
 /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
 export function useEthersSigner(chainId: number) {
   const {data: walletClient} = useWalletClient({chainId});
+  const accountAddress = walletClient?.account?.address;
   return React.useMemo(
     () => (walletClient ? walletClientToSigner(walletClient) : undefined),
-    [walletClient]
+    [walletClient, accountAddress]
   );
 }
 
@@ -52,6 +53,6 @@ export function useBOSagoraSigner(chainId: number, chainName: string) {
       walletClient
         ? walletClientToBOSagoraSigner(walletClient, chainId, chainName)
         : undefined,
-    [chainId, chainName, walletClient]
+    [chainId, chainName, walletClient, walletClient?.account?.address]
   );
 }
