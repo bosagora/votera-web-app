@@ -777,6 +777,10 @@
     "learn": {
       "linkLabel": "Learn about Votera",
       "linkURL": "https://docs.bosagora.org/en/votera/introduction"
+    },
+    "grant": {
+      "linkLabel": "View More",
+      "linkURL": "https://medium.com/bosagora/bosagora-community-grant-season-1-announcement-2025-09-7beab7062ae4"
     }
   },
   "privacyPolicy": {
@@ -818,6 +822,11 @@
       "title": "Build faster",
       "description": "Use our governance plugins to build a DAO, dApp, or anything you can imagine on the Aragon OSx protocol.",
       "actionLabel": "Coming soon"
+    },
+    "grant": {
+      "title": "Grant Provision Notice",
+      "description": "BOSagora is now accepting applications for Community Grant Season 1, supporting developers and projects to help shape the future of Web3.",
+      "actionLabel": "Learn More"
     },
     "404": {
       "titleLine1": "Oh no,",

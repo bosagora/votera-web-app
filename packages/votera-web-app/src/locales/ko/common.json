@@ -694,6 +694,10 @@
     "learn": {
       "linkLabel": "Votera 제안 설정에 대해서 학습하기",
       "linkURL": "https://docs.bosagora.org/kr/votera/introduction"
+    },
+    "grant": {
+      "linkLabel": "자세히 보기",
+      "linkURL": "https://medium.com/bosagora/bosagora-community-grant-season-1-announcement-2025-09-7beab7062ae4"
     }
   },
   "privacyPolicy": {
@@ -732,9 +736,14 @@
       "actionLabel": "제안 생성하기"
     },
     "learn": {
-      "title": "학습하기",
+      "title": "Votera 배우기",
       "description": "Votera 제안 설정을 생성하고 사용하는 방법을 문서를 통해서 배워보세요.",
-      "actionLabel": "Votera 제안 설정에 관해 배우기"
+      "actionLabel": "학습하기"
+    },
+    "grant": {
+      "title": "보조금 안내",
+      "description": "BOSagora는 Web3 생태계의 미래를 함께 만들어갈 프로젝트와 개발자를 찾고 있습니다.",
+      "actionLabel": "자세히 알아보기"
     },
     "build": {
       "title": "더 빠른 구축",

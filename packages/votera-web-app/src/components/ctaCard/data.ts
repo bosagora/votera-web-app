@@ -17,20 +17,20 @@ const CTACards = [
   },
   {
     actionAvailable: true,
-    actionLabel: i18n.t('explore.learn.linkLabel'),
+    actionLabel: i18n.t('cta.grant.actionLabel'),
+    path: i18n.t('explore.grant.linkURL'),
+    imgSrc: buildFaster,
+    subtitle: i18n.t('cta.grant.description'),
+    title: i18n.t('cta.grant.title'),
+  },
+  {
+    actionAvailable: true,
+    actionLabel: i18n.t('cta.learn.actionLabel'),
     path: i18n.t('explore.learn.linkURL'),
     imgSrc: learnImg,
     subtitle: i18n.t('cta.learn.description'),
     title: i18n.t('cta.learn.title'),
   },
-  // {
-  //   actionAvailable: false,
-  //   actionLabel: i18n.t('cta.build.actionLabel'),
-  //   path: '',
-  //   imgSrc: buildFaster,
-  //   subtitle: i18n.t('cta.build.description'),
-  //   title: i18n.t('cta.build.title'),
-  // },
 ];
 
 export {CTACards};
