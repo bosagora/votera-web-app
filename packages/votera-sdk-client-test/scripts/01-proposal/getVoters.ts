@@ -37,19 +37,16 @@ async function main() {
     const voterLength = await client.methods.getVoterLength(proposalId);
     console.log(`getVoterLength: ${voterLength}`);
 
-    const size = 30;
-    let page = 0;
-    const maxPage = Math.round(Math.ceil(deployments.accounts.validators.length / size));
-    for (let idx = 0; idx < deployments.accounts.validators.length; idx += size) {
-        console.log(`createParticipantPart: ${page + 1}/${maxPage}...`);
-        await receptionController
-            .connect(deployments.accounts.voters[0])
-            .createParticipantPart(
-                proposalCreateData[0].proposalId,
-                idx,
-                Math.min(idx + size, deployments.accounts.validators.length)
-            );
-        page++;
+    const pageSize = 10;
+    const voters: string[] = [];
+    for (let idx = 0; idx < voterLength; idx += pageSize) {
+        const res = await client.methods.getVoterList(proposalId, idx, idx + pageSize, SortType.ASC);
+        voters.push(...res);
+    }
+    let idx = 0;
+    for (const voter of voters) {
+        console.log(`Voter ${idx.toString(10).padStart(3, " ")}: ${voter}`);
+        idx++;
     }
 }
 

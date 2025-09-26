@@ -31,7 +31,7 @@ async function main() {
         proposalId: ContractUtils.getRandomId(),
         fundAmount: Amount.make(1000000, 18).value,
         assessmentPeriod: 2,
-        votePeriod: 20,
+        votePeriod: 10,
         documentId: ContractUtils.getRandomId(),
         systemType: SystemProposalType.NORMAL,
         params: [],
