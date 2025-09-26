@@ -663,11 +663,7 @@ const Dashboard: React.FC = () => {
             proposal.creator === address && (
               <StageExecutionWidget proposalId={proposal.id} />
             )}
-          {isCanSendVoteCost && (isVoter || isEvaluator) && (
-            <StageSendVoteCostWidget proposalId={proposal.id} />
-          )}
         </ProposalContainer>
-
         <AdditionalInfoContainer>
           {proposal &&
             extendedPhase.toLocaleLowerCase().includes('assessment') && (
