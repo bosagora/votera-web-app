@@ -37,6 +37,8 @@ async function main() {
         params: [],
     };
 
+    console.log(deployments.accounts.voters[0].address);
+
     const ctx = new Context({
         ...deployments.getContextParams(),
         signer: deployments.accounts.voters[0],

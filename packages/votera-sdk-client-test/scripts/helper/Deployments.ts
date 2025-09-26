@@ -35,6 +35,8 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 import * as fs from "fs";
 
 import * as dotenv from "dotenv";
+import { NonceManager } from "@ethersproject/experimental";
+import { GasPriceManager } from "./GasPriceManager";
 
 dotenv.config();
 
@@ -156,7 +158,7 @@ export class Deployments {
     public getContextParams(): ContextParams {
         return {
             network: 24680,
-            signer: this.accounts.users[0],
+            signer: new NonceManager(new GasPriceManager(this.accounts.users[0])),
             web3Providers: [this.provider],
             IssuedContract: this.getContractAddress("IssuedContract"),
             AddressStorage: this.getContractAddress("AddressStorage"),
