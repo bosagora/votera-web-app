@@ -10,8 +10,8 @@ import {
     AssessmentController__factory,
     AssessmentStorage,
     AssessmentStorage__factory,
-    BudgetManager,
-    BudgetManager__factory,
+    BudgetManagerV2,
+    BudgetManagerV2__factory,
     ExecutionManager,
     ExecutionManager__factory,
     EvaluatorManager,
@@ -24,10 +24,10 @@ import {
     ParticipantManager__factory,
     ProposalStorage,
     ProposalStorage__factory,
-    ReceptionController,
-    ReceptionController__factory,
-    VoteController,
-    VoteController__factory,
+    ReceptionControllerV2,
+    ReceptionControllerV2__factory,
+    VoteControllerV2,
+    VoteControllerV2__factory,
     VoteStorage,
     VoteStorage__factory,
 } from "votera-contracts-lib";
@@ -114,18 +114,18 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         return ParticipantStorage__factory.connect(this.web3.getParticipantStorageAddress(), provider);
     }
 
-    private getReceptionController(): ReceptionController {
+    private getReceptionController(): ReceptionControllerV2 {
         const provider = this.web3.getProvider() as Provider;
         if (!provider) throw new NoProviderError();
 
-        return ReceptionController__factory.connect(this.web3.getReceptionControllerAddress(), provider);
+        return ReceptionControllerV2__factory.connect(this.web3.getReceptionControllerAddress(), provider);
     }
 
-    private getReceptionControllerWithSigner(): ReceptionController {
+    private getReceptionControllerWithSigner(): ReceptionControllerV2 {
         const signer = this.web3.getConnectedSigner();
         if (!signer) throw new NoSignerError();
 
-        return ReceptionController__factory.connect(this.web3.getReceptionControllerAddress(), signer);
+        return ReceptionControllerV2__factory.connect(this.web3.getReceptionControllerAddress(), signer);
     }
 
     public async isAvailableProposalId(proposalId: BytesLike): Promise<boolean> {
@@ -195,6 +195,39 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         const log = ContractUtils.findLog(cr, storage.interface, "UpdatedProposalPeriod");
         if (!log) {
             throw new ProposalCreationError();
+        }
+
+        yield {
+            key: NormalSteps.DONE,
+            proposalId,
+        };
+    }
+
+    public async *createParticipantPart(
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number
+    ): AsyncGenerator<CreateProposalStepValue> {
+        yield {
+            key: NormalSteps.PREPARED,
+            proposalId,
+        };
+
+        const contract = this.getReceptionControllerWithSigner();
+        let tx: ContractTransaction;
+        let cr: ContractReceipt;
+        try {
+            tx = await contract.createParticipantPart(proposalId, startIndex, endIndex);
+
+            yield {
+                key: NormalSteps.SENT,
+                proposalId,
+                txHash: tx.hash,
+            };
+            cr = await tx.wait();
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
         }
 
         yield {
@@ -550,25 +583,25 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         return VoteStorage__factory.connect(this.web3.getVoteStorageAddress(), provider);
     }
 
-    private getVoteController(): VoteController {
+    private getVoteController(): VoteControllerV2 {
         const provider = this.web3.getProvider() as Provider;
         if (!provider) throw new NoProviderError();
 
-        return VoteController__factory.connect(this.web3.getVoteControllerAddress(), provider);
+        return VoteControllerV2__factory.connect(this.web3.getVoteControllerAddress(), provider);
     }
 
-    private getVoteControllerWithSigner(): VoteController {
+    private getVoteControllerWithSigner(): VoteControllerV2 {
         const signer = this.web3.getConnectedSigner();
         if (!signer) throw new NoSignerError();
 
-        return VoteController__factory.connect(this.web3.getVoteControllerAddress(), signer);
+        return VoteControllerV2__factory.connect(this.web3.getVoteControllerAddress(), signer);
     }
 
-    private getBudgetManager(): BudgetManager {
+    private getBudgetManager(): BudgetManagerV2 {
         const provider = this.web3.getProvider() as Provider;
         if (!provider) throw new NoProviderError();
 
-        return BudgetManager__factory.connect(this.web3.getBudgetManagerAddress(), provider);
+        return BudgetManagerV2__factory.connect(this.web3.getBudgetManagerAddress(), provider);
     }
 
     public async getVoteSummary(proposalId: BytesLike): Promise<[number, number, number]> {
@@ -853,6 +886,15 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         }
     }
 
+    public async isParticipant(voter: string): Promise<boolean> {
+        try {
+            return await this.getParticipantStorage().isParticipant(voter);
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
     public async getVoterOf(validatorKey: BytesLike): Promise<string> {
         try {
             return await this.getParticipantStorage().voterOf(validatorKey);
@@ -929,6 +971,53 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         let cr: ContractReceipt;
         try {
             tx = await this.getVoteControllerWithSigner().sendVoteCost(proposalId);
+            yield {
+                key: NormalSteps.SENT,
+                proposalId,
+                txHash: tx.hash,
+            };
+
+            cr = await tx.wait();
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+        const log = ContractUtils.findLog(cr, this.getBudgetManager().interface, "SentVoteCost");
+        if (!log) {
+            throw new PostSendVoteCostError();
+        }
+        yield {
+            key: NormalSteps.DONE,
+            proposalId,
+        };
+    }
+
+    public async *sendVoteCostPart(
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number
+    ): AsyncGenerator<SendVoteCostStepValue> {
+        yield {
+            key: NormalSteps.PREPARED,
+            proposalId,
+        };
+
+        let proposalData;
+        try {
+            proposalData = await this.getReceptionController().getProposal(proposalId);
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+
+        if (proposalData.assessmentResult !== AssessmentResult.APPROVED) {
+            throw new PostSendVoteCostError();
+        }
+
+        let tx: ContractTransaction;
+        let cr: ContractReceipt;
+        try {
+            tx = await this.getVoteControllerWithSigner().sendVoteCostPart(proposalId, startIndex, endIndex);
             yield {
                 key: NormalSteps.SENT,
                 proposalId,

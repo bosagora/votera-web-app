@@ -8,10 +8,10 @@ import {
     ExecutionManager__factory,
     ParamStorage,
     ParamStorage__factory,
-    ReceptionController,
-    ReceptionController__factory,
-    VoteController,
-    VoteController__factory,
+    ReceptionControllerV2,
+    ReceptionControllerV2__factory,
+    VoteControllerV2,
+    VoteControllerV2__factory,
 } from "votera-contracts-lib";
 import { NoProviderError, NoSignerError } from "votera-sdk-common";
 
@@ -29,11 +29,11 @@ export class ClientEstimationMethods extends ClientCore implements IClientEstima
         Object.freeze(this);
     }
 
-    private getReceptionControllerWithSigner(): ReceptionController {
+    private getReceptionControllerWithSigner(): ReceptionControllerV2 {
         const signer = this.web3.getConnectedSigner();
         if (!signer) throw new NoSignerError();
 
-        return ReceptionController__factory.connect(this.web3.getReceptionControllerAddress(), signer);
+        return ReceptionControllerV2__factory.connect(this.web3.getReceptionControllerAddress(), signer);
     }
 
     private getExecutionControllerWithSigner(): ExecutionManager {
@@ -151,11 +151,11 @@ export class ClientEstimationMethods extends ClientCore implements IClientEstima
         return this.web3.getApproximateGasFee(gasEstimation.toBigInt());
     }
 
-    private getVoteControllerWithSigner(): VoteController {
+    private getVoteControllerWithSigner(): VoteControllerV2 {
         const signer = this.web3.getConnectedSigner();
         if (!signer) throw new NoSignerError();
 
-        return VoteController__factory.connect(this.web3.getVoteControllerAddress(), signer);
+        return VoteControllerV2__factory.connect(this.web3.getVoteControllerAddress(), signer);
     }
 
     public async postBallot(proposalId: BytesLike, choice: Candidate): Promise<GasFeeEstimation> {

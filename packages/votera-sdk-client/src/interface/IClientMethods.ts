@@ -1,4 +1,4 @@
-import { IClientCore } from "../client-common";
+import { GasFeeEstimation, IClientCore } from "../client-common";
 import { BytesLike } from "@ethersproject/bytes";
 import {
     AssessmentPostScoreStepValue,
@@ -64,6 +64,12 @@ export interface IClientMethods extends IClientCore {
         documentId: BytesLike,
         systemType: SystemProposalType,
         params: SystemProposalParam[]
+    ) => AsyncGenerator<CreateProposalStepValue>;
+
+    createParticipantPart: (
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number
     ) => AsyncGenerator<CreateProposalStepValue>;
 
     /**
@@ -410,6 +416,12 @@ export interface IClientMethods extends IClientCore {
 
     sendVoteCost: (proposalId: BytesLike) => AsyncGenerator<SendVoteCostStepValue>;
 
+    sendVoteCostPart: (
+        proposalId: BytesLike,
+        startIndex: number,
+        endIndex: number
+    ) => AsyncGenerator<SendVoteCostStepValue>;
+
     canSendVoteCost: (proposalId: BytesLike) => Promise<boolean>;
 
     getEvaluationOfAllMembersList: (
@@ -451,4 +463,6 @@ export interface IClientMethods extends IClientCore {
      * 전체 사전평가 구성원들의 갯수를 제공한다
      */
     getEvaluatorLengthOfManager: () => Promise<number>;
+
+    isParticipant: (voter: string) => Promise<boolean>;
 }
