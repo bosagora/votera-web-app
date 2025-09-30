@@ -21,8 +21,8 @@ const Explore: React.FC = () => {
 
     // when network not supported by the SDK, don't set network
     if (!SupportedNetworksArray.includes(translatedNetwork)) {
-      console.warn('Unsupported network, defaulting to ethereum');
-      setNetwork('ethereum');
+      console.warn('Unsupported network, defaulting to BOSagora Mainnet');
+      setNetwork('bosagora_mainnet');
     }
   }, [network, setNetwork]);
 
