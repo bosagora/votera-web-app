@@ -74,8 +74,4 @@ export interface IClientEstimationMethods {
     postBallot: (proposalId: BytesLike, choice: Candidate) => Promise<GasFeeEstimation>;
 
     sendVoteCost: (proposalId: BytesLike) => Promise<GasFeeEstimation>;
-
-    sendVoteCostPart: (proposalId: BytesLike, startIndex: number, endIndex: number) => Promise<GasFeeEstimation>;
-
-    createParticipantPart: (proposalId: BytesLike, startIndex: number, endIndex: number) => Promise<GasFeeEstimation>;
 }

@@ -128,6 +128,7 @@ export interface IClientMethods extends IClientCore {
      * @param proposalId
      */
     getVoteResult: (proposalId: BytesLike) => Promise<VoteResult>;
+    getEstimateVoteResult: (proposalId: BytesLike) => Promise<VoteResult>;
 
     /**
      * 사전평가 결과를 요청한다

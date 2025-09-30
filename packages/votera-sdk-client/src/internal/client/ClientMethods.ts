@@ -373,6 +373,15 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         }
     }
 
+    public async getEstimateVoteResult(proposalId: BytesLike): Promise<VoteResult> {
+        try {
+            return await this.getVoteStorage().getVoteResult(proposalId);
+        } catch (error) {
+            const message = ResponseMessage.getEVMErrorMessage(error);
+            throw new EVMException(message.code, message.error.message);
+        }
+    }
+
     public async getAssessmentResult(proposalId: BytesLike): Promise<VoteResult> {
         try {
             const res = await this.getReceptionController().getProposal(proposalId);
