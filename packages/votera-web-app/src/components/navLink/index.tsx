@@ -9,6 +9,7 @@ import {
   useMatch,
   useNavigate,
 } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 import styled from 'styled-components';
 import {NavLinkData} from 'utils/constants';
 
@@ -38,7 +39,11 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {network} = useNetwork();
+  const {t} = useTranslation();
   const proposalMatch = useMatch('proposals/:network/:id/*');
+
+  // Get translated label if labelKey exists, otherwise use static label
+  const translatedLabel = data.labelKey ? (t(data.labelKey as any) as string) : data.label;
 
   // This logic is used to determine whether this NavLink is active or not.
   // I.e., whether the Navlink is the current page (or a subpage of it). It
@@ -57,7 +62,7 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
     return (
       <ListItemAction
         bgWhite
-        title={data.label}
+        title={translatedLabel}
         iconLeft={<data.icon />}
         onClick={handleOnClick}
         mode={matches ? 'selected' : 'default'}
@@ -66,13 +71,13 @@ const NavLink = ({caller, data, onItemClick}: NavLinkProps) => {
   } else if (isDesktop) {
     return (
       <NavItem isSelected={matches} onClick={handleOnClick}>
-        {data.label}
+        {translatedLabel}
       </NavItem>
     );
   } else {
     return (
       <ListItemAction
-        title={data.label}
+        title={translatedLabel}
         iconLeft={<data.icon />}
         onClick={handleOnClick}
         mode={matches ? 'selected' : 'default'}

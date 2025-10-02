@@ -7,6 +7,7 @@ import {useWallet} from 'hooks/useWallet';
 import Logo from 'public/logo.svg';
 import {useGlobalModalContext} from 'context/globalModals';
 import {Container, GridLayout} from 'components/layout';
+import {i18n, changeLanguage} from '../../../i18n.config';
 
 const ExploreNav: React.FC = () => {
   const {t} = useTranslation();
@@ -38,6 +39,20 @@ const ExploreNav: React.FC = () => {
           </LeftContent>
           <RightContent>
             <ActionsWrapper>
+              <LanguageButtonGroup>
+                <LanguageButton
+                  active={i18n.language === 'en'}
+                  onClick={() => changeLanguage('en')}
+                >
+                  English
+                </LanguageButton>
+                <LanguageButton
+                  active={i18n.language === 'ko'}
+                  onClick={() => changeLanguage('ko')}
+                >
+                  한국어
+                </LanguageButton>
+              </LanguageButtonGroup>
               <ButtonWallet
                 src={address}
                 onClick={handleWalletButtonClick}
@@ -74,5 +89,18 @@ const RightContent = styled.div.attrs({
 const ActionsWrapper = styled.div.attrs({
   className: 'flex space-x-3 items-center',
 })``;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex gap-1 bg-white/10 backdrop-blur-sm rounded-xl p-0.5',
+})``;
+
+const LanguageButton = styled.button.attrs({
+  className: 'px-3 py-1.5 rounded-lg text-sm font-medium transition-all',
+})<{active: boolean}>`
+  ${({active}) =>
+    active
+      ? 'background: white; color: #3164fa; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);'
+      : 'color: white; &:hover { background: rgba(255, 255, 255, 0.1); }'}
+`;
 
 export default ExploreNav;

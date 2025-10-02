@@ -7,6 +7,7 @@ import {
 } from 'votera-ui-components';
 import React, {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {i18n} from '../../../i18n.config';
 import {
   generatePath,
   useNavigate,
@@ -141,7 +142,21 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
           </LinksWrapper>
         </Content>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          <LanguageButtonGroup>
+            <LanguageButton
+              active={i18n.language === 'en'}
+              onClick={() => handleLanguageChange('en')}
+            >
+              English
+            </LanguageButton>
+            <LanguageButton
+              active={i18n.language === 'ko'}
+              onClick={() => handleLanguageChange('ko')}
+            >
+              한국어
+            </LanguageButton>
+          </LanguageButtonGroup>
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}
@@ -175,3 +190,16 @@ const Content = styled.div.attrs({
 const LinksWrapper = styled.div.attrs({
   className: 'flex items-center space-x-1.5',
 })``;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex gap-1 bg-ui-50 rounded-xl p-0.5',
+})``;
+
+const LanguageButton = styled.button.attrs({
+  className: 'px-3 py-1.5 rounded-lg text-sm font-medium transition-all',
+})<{active: boolean}>`
+  ${({active}) =>
+    active
+      ? 'background: white; color: #003da5; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);'
+      : 'color: #9aa5b1; &:hover { color: #003da5; }'}
+`;

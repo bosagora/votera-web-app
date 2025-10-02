@@ -54,7 +54,7 @@ export const useProposalQuery = (
     queryFn,
     select: addAvatarToWallet(network),
     enabled,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval,
   });
 };

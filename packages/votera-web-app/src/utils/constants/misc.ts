@@ -15,21 +15,25 @@ export type NavLinkData = {
   path: string;
   label: string;
   icon: IconType;
+  labelKey?: string; // i18n key for dynamic translation
 };
 
 export const NAV_LINKS_DATA: NavLinkData[] = [
   {
     label: i18n.t('navLinks.dashboard'),
+    labelKey: 'navLinks.dashboard',
     path: Dashboard,
     icon: IconDashboard,
   },
   {
     label: i18n.t('navLinks.evaluator'),
+    labelKey: 'navLinks.evaluator',
     path: Evaluator,
     icon: IconFinance,
   },
   {
     label: i18n.t('navLinks.validator'),
+    labelKey: 'navLinks.validator',
     path: Validator,
     icon: IconCommunity,
   },

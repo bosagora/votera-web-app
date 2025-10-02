@@ -2,6 +2,7 @@ import React, {useMemo, useCallback} from 'react';
 import {Carousel as ReactResponsiveCarousel} from 'react-responsive-carousel';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import CTACard from 'components/ctaCard';
@@ -14,6 +15,7 @@ const Carousel: React.FC = () => {
   const {isDesktop} = useScreen();
   const navigate = useNavigate();
   const {methods, isConnected} = useWallet();
+  const {t} = useTranslation();
 
   // TODO
   // this prevents the user from entering the creation
@@ -50,15 +52,28 @@ const Carousel: React.FC = () => {
 
   const ctaList = useMemo(
     () =>
-      CTACards.map(card => (
-        <CTACard
-          key={card.title}
-          {...card}
-          className="flex-1"
-          onClick={handleCTAClick}
-        />
-      )),
-    [handleCTAClick]
+      CTACards.map(card => {
+        // Apply dynamic translations if keys exist
+        const translatedCard = {
+          ...card,
+          title: card.titleKey ? (t(card.titleKey as any) as string) : card.title,
+          subtitle: card.subtitleKey ? (t(card.subtitleKey as any) as string) : card.subtitle,
+          actionLabel: card.actionLabelKey
+            ? (t(card.actionLabelKey as any) as string)
+            : card.actionLabel,
+          path: card.pathKey ? (t(card.pathKey as any) as string) : card.path,
+        };
+
+        return (
+          <CTACard
+            key={card.title}
+            {...translatedCard}
+            className="flex-1"
+            onClick={handleCTAClick}
+          />
+        );
+      }),
+    [handleCTAClick, t]
   );
 
   if (isDesktop) {
