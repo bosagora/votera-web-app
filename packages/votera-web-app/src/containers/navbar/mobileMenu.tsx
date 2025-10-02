@@ -45,7 +45,7 @@ const MobileNavMenu = () => {
           <NavLinks onItemClick={() => close('mobileMenu')} />
           {!isExplorePage && (
             <LanguageSection>
-              <LanguageLabel>{t('settings.language') || 'Language'}</LanguageLabel>
+              <LanguageLabel>{i18n.language === 'ko' ? '언어' : 'Language'}</LanguageLabel>
               <LanguageButtonGroup>
                 <LanguageButton
                   active={i18n.language === 'en'}
