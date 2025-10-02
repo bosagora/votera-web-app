@@ -2,9 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
 import {GridLayout} from 'components/layout';
+import {useNetwork} from 'context/network';
+import {useSwitchNetwork} from 'hooks/useSwitchNetwork';
+import {useWallet} from 'hooks/useWallet';
+import {useGlobalModalContext} from 'context/globalModals';
+import {i18n, changeLanguage} from '../../../i18n.config';
 
 function Hero() {
   const {t} = useTranslation();
+  const {network} = useNetwork();
+  const {switchWalletNetwork} = useSwitchNetwork();
+  const {isConnected} = useWallet();
+  const {open} = useGlobalModalContext();
+
+  const handleChainChange = async (
+    chainKey: 'bosagora_mainnet' | 'bosagora_testnet'
+  ) => {
+    if (!isConnected) {
+      open('wallet');
+      return;
+    }
+    await switchWalletNetwork(chainKey);
+  };
+
   return (
     <Container>
       <GridLayout>
@@ -15,6 +35,38 @@ function Hero() {
             <Subtitle>{t('explore.hero.subtitle2')}</Subtitle>
             <Subtitle>{t('explore.hero.subtitle3')}</Subtitle>
           </ContentWrapper>
+          <ChainSelectorWrapper>
+            <ChainButtonGroup>
+              <ChainButton
+                active={network === 'bosagora_mainnet'}
+                onClick={() => handleChainChange('bosagora_mainnet')}
+              >
+                Mainnet
+              </ChainButton>
+              <ChainButton
+                active={network === 'bosagora_testnet'}
+                onClick={() => handleChainChange('bosagora_testnet')}
+              >
+                Testnet
+              </ChainButton>
+            </ChainButtonGroup>
+          </ChainSelectorWrapper>
+          <LanguageSelectorWrapper>
+            <LanguageButtonGroup>
+              <LanguageButton
+                active={i18n.language === 'en'}
+                onClick={() => changeLanguage('en')}
+              >
+                English
+              </LanguageButton>
+              <LanguageButton
+                active={i18n.language === 'ko'}
+                onClick={() => changeLanguage('ko')}
+              >
+                한국어
+              </LanguageButton>
+            </LanguageButtonGroup>
+          </LanguageSelectorWrapper>
         </Wrapper>
       </GridLayout>
     </Container>
@@ -77,5 +129,40 @@ const GradientPurple = styled.img.attrs({
   className:
     'desktop:h-40 h-30 absolute desktop:-right-20 desktop:top-5 -right-5 -top-6',
 })``;
+
+const ChainSelectorWrapper = styled.div.attrs({
+  className: 'absolute top-1 right-52 desktop:top-1 desktop:right-60',
+})``;
+
+const ChainButtonGroup = styled.div.attrs({
+  className: 'flex gap-0.5 bg-white/10 backdrop-blur-sm rounded-xl p-1',
+})``;
+
+const ChainButton = styled.button.attrs({
+  className:
+    'px-2 py-1 rounded-lg text-sm font-medium transition-all whitespace-nowrap',
+})<{active: boolean}>`
+  ${({active}) =>
+    active
+      ? 'background: white; color: #3164fa; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);'
+      : 'color: white; &:hover { background: rgba(255, 255, 255, 0.1); }'}
+`;
+
+const LanguageSelectorWrapper = styled.div.attrs({
+  className: 'absolute top-1 right-4 desktop:top-1 desktop:right-6',
+})``;
+
+const LanguageButtonGroup = styled.div.attrs({
+  className: 'flex gap-0.5 bg-white/10 backdrop-blur-sm rounded-xl p-1',
+})``;
+
+const LanguageButton = styled.button.attrs({
+  className: 'px-2 py-1 rounded-lg text-sm font-medium transition-all',
+})<{active: boolean}>`
+  ${({active}) =>
+    active
+      ? 'background: white; color: #3164fa; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);'
+      : 'color: white; &:hover { background: rgba(255, 255, 255, 0.1); }'}
+`;
 
 export default Hero;

@@ -1,5 +1,5 @@
 import {useNetwork} from 'context/network';
-import {CHAIN_METADATA} from 'utils/constants';
+import {CHAIN_METADATA, SupportedNetworks} from 'utils/constants';
 import {toHex} from 'utils/library';
 
 type ErrorType = {
@@ -9,14 +9,16 @@ type ErrorType = {
 export const useSwitchNetwork = () => {
   const {network} = useNetwork();
 
-  const switchWalletNetwork = async () => {
+  const switchWalletNetwork = async (targetNetwork?: SupportedNetworks) => {
+    const networkToSwitch = targetNetwork || network;
+    
     // Check if MetaMask is installed
     if (window.ethereum) {
       try {
         // check if the chain to connect to is installed
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{chainId: toHex(CHAIN_METADATA[network].id)}], // chainId must be in hexadecimal numbers
+          params: [{chainId: toHex(CHAIN_METADATA[networkToSwitch].id)}], // chainId must be in hexadecimal numbers
         });
       } catch (error) {
         if ((error as ErrorType).code === 4902) {
@@ -25,10 +27,10 @@ export const useSwitchNetwork = () => {
               method: 'wallet_addEthereumChain',
               params: [
                 {
-                  chainName: CHAIN_METADATA[network].name,
-                  chainId: toHex(CHAIN_METADATA[network].id),
-                  rpcUrls: CHAIN_METADATA[network].rpc,
-                  nativeCurrency: CHAIN_METADATA[network].nativeCurrency,
+                  chainName: CHAIN_METADATA[networkToSwitch].name,
+                  chainId: toHex(CHAIN_METADATA[networkToSwitch].id),
+                  rpcUrls: CHAIN_METADATA[networkToSwitch].rpc,
+                  nativeCurrency: CHAIN_METADATA[networkToSwitch].nativeCurrency,
                 },
               ],
             });

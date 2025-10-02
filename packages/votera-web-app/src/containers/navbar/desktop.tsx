@@ -70,6 +70,9 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
     navigate(generatePath(props.returnURL!, {network, id}));
   }, [id, navigate, network, props.returnURL]);
 
+  const location = useLocation();
+  const isExplorePage = location.pathname === '/' || location.pathname === '/explore';
+
   const handleLanguageChange = (lang: string) => {
     changeLanguage(lang);
   };
@@ -143,20 +146,22 @@ const DesktopNav: React.FC<DesktopNavProp> = props => {
         </Content>
 
         <div className="flex gap-2 items-center">
-          <LanguageButtonGroup>
-            <LanguageButton
-              active={i18n.language === 'en'}
-              onClick={() => handleLanguageChange('en')}
-            >
-              English
-            </LanguageButton>
-            <LanguageButton
-              active={i18n.language === 'ko'}
-              onClick={() => handleLanguageChange('ko')}
-            >
-              한국어
-            </LanguageButton>
-          </LanguageButtonGroup>
+          {!isExplorePage && (
+            <LanguageButtonGroup>
+              <LanguageButton
+                active={i18n.language === 'en'}
+                onClick={() => handleLanguageChange('en')}
+              >
+                English
+              </LanguageButton>
+              <LanguageButton
+                active={i18n.language === 'ko'}
+                onClick={() => handleLanguageChange('ko')}
+              >
+                한국어
+              </LanguageButton>
+            </LanguageButtonGroup>
+          )}
           <ButtonWallet
             src={address}
             onClick={props.onWalletClick}

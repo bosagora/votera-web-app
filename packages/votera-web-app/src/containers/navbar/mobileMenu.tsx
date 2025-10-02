@@ -2,6 +2,7 @@ import {useReactiveVar} from '@apollo/client';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
+import {useLocation} from 'react-router-dom';
 
 import BottomSheet from 'components/bottomSheet';
 import {VoteraProposalSelector} from 'components/voteraProposalSelector';
@@ -16,6 +17,8 @@ const MobileNavMenu = () => {
   const currentProposal = useReactiveVar(selectedVoteraProposalVar);
   const {open, close, isMobileMenuOpen} = useGlobalModalContext();
   const {t} = useTranslation();
+  const location = useLocation();
+  const isExplorePage = location.pathname === '/' || location.pathname === '/explore';
 
   const {handleWithFunctionalPreferenceMenu} = usePrivacyContext();
 
@@ -40,23 +43,25 @@ const MobileNavMenu = () => {
         </CardWrapper>
         <div className="py-3 px-2 space-y-3">
           <NavLinks onItemClick={() => close('mobileMenu')} />
-          <LanguageSection>
-            <LanguageLabel>{t('settings.language') || 'Language'}</LanguageLabel>
-            <LanguageButtonGroup>
-              <LanguageButton
-                active={i18n.language === 'en'}
-                onClick={() => changeLanguage('en')}
-              >
-                English
-              </LanguageButton>
-              <LanguageButton
-                active={i18n.language === 'ko'}
-                onClick={() => changeLanguage('ko')}
-              >
-                한국어
-              </LanguageButton>
-            </LanguageButtonGroup>
-          </LanguageSection>
+          {!isExplorePage && (
+            <LanguageSection>
+              <LanguageLabel>{t('settings.language') || 'Language'}</LanguageLabel>
+              <LanguageButtonGroup>
+                <LanguageButton
+                  active={i18n.language === 'en'}
+                  onClick={() => changeLanguage('en')}
+                >
+                  English
+                </LanguageButton>
+                <LanguageButton
+                  active={i18n.language === 'ko'}
+                  onClick={() => changeLanguage('ko')}
+                >
+                  한국어
+                </LanguageButton>
+              </LanguageButtonGroup>
+            </LanguageSection>
+          )}
         </div>
       </div>
     </BottomSheet>
