@@ -36,7 +36,6 @@ import {StageTransitionWidget} from 'components/stageTransitionWidget';
 import {StageExecutionWidget} from 'components/stageExecutionWidget';
 import {useProposalQuery} from 'hooks/useProposalQuery';
 import EvaluatorList from '../components/evaluatorList';
-import {StageSendVoteCostWidget} from '../components/stageSendVoteCostWidget';
 
 enum ProposalStatus {
   OPENED = 'OPENED', // 시작
@@ -513,8 +512,8 @@ const Dashboard: React.FC = () => {
   }, [proposal, address, isEvaluator]);
 
   const canVote = useMemo(() => {
-    return !(!proposal || !address || !isVoter);
-  }, [proposal, address, isVoter]);
+    return !(!proposal || !address);
+  }, [proposal, address]);
 
   const canSendVoteCost = useMemo(() => {
     if (!proposal || !address) {
@@ -649,6 +648,7 @@ const Dashboard: React.FC = () => {
               phase={proposal.phase}
               txhash={transactionHash || proposal?.executionTxHash || undefined}
               canVote={canVote}
+              isVoter={isVoter}
               myBallot={myBallot || null}
               exPhase={extendedPhase}
               exPhaseMessage={getProposalStatusMessage(extendedPhase, t)}

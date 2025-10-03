@@ -12,6 +12,7 @@ import SelectVoteForm from 'containers/selectVoteForm';
 import {ProposalPhase} from 'utils/types';
 import {ProposalPhaseExtended} from '../../pages/dashboard';
 import VoteResults from 'components/voteResults';
+import ModalBottomSheetSwitcher from 'components/modalBottomSheetSwitcher';
 import {BigNumber} from 'ethers';
 import {CreateVoteProvider, useCreateVoteContext} from 'context/createVote';
 import {Candidate, ProposalPeriod, VoteBallotData} from 'votera-sdk-client';
@@ -23,6 +24,7 @@ type VoteWidgetProps = {
   txhash?: string;
   phase?: ProposalPhase;
   canVote?: boolean;
+  isVoter?: boolean;
   myBallot?: VoteBallotData | null;
   exPhase?: ProposalPhaseExtended;
   exPhaseMessage?: string;
@@ -33,6 +35,7 @@ type VoteWidgetProps = {
 export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
   phase,
   canVote,
+  isVoter,
   myBallot,
   exPhase,
   exPhaseMessage,
@@ -111,7 +114,10 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
   );
 };
 
-type FooterProps = Pick<VoteWidgetProps, 'phase' | 'exPhase' | 'canVote'> & {
+type FooterProps = Pick<
+  VoteWidgetProps,
+  'phase' | 'exPhase' | 'canVote' | 'isVoter'
+> & {
   proposalId: BigNumber;
   choice: Candidate;
 };
@@ -119,11 +125,14 @@ type FooterProps = Pick<VoteWidgetProps, 'phase' | 'exPhase' | 'canVote'> & {
 const WidgetFooter: React.FC<FooterProps> = ({
   phase = ProposalPhase.VOTE,
   canVote,
+  isVoter,
   proposalId,
   choice,
   exPhase,
 }) => {
   const {t} = useTranslation();
+  const [showNotVoterModal, setShowNotVoterModal] = useState(false);
+  
   const btnLabel =
     exPhase === ProposalPhaseExtended.OPENED_VOTE
       ? t('governance.proposals.buttons.vote')
@@ -135,11 +144,15 @@ const WidgetFooter: React.FC<FooterProps> = ({
     choice: Candidate,
     openExpiredVote: boolean
   ) => {
-    await handlePublishVote({
-      proposalId: proposalId.toString(),
-      choice: choice,
-      openExpiredVote,
-    });
+    if (isVoter) {
+      await handlePublishVote({
+        proposalId: proposalId.toString(),
+        choice: choice,
+        openExpiredVote,
+      });
+    } else {
+      setShowNotVoterModal(true);
+    }
   };
 
   const openExpiredVote = exPhase === ProposalPhaseExtended.OPENED_EXPIRED_VOTE;
@@ -154,6 +167,25 @@ const WidgetFooter: React.FC<FooterProps> = ({
         disabled={!canVote}
       />
       <AlertInline label={t('voteWidget.voteStatusDesc')} />
+      
+      <ModalBottomSheetSwitcher
+        isOpen={showNotVoterModal}
+        onClose={() => setShowNotVoterModal(false)}
+        title={t('voteWidget.notVoterModal.title')}
+      >
+        <ModalContent>
+          <MessageText>
+            {t('voteWidget.notVoterModal.message')}
+          </MessageText>
+          <CloseButton
+            css={{}}
+            label={t('voteWidget.notVoterModal.closeButton')}
+            mode="secondary"
+            size="large"
+            onClick={() => setShowNotVoterModal(false)}
+          />
+        </ModalContent>
+      </ModalBottomSheetSwitcher>
     </Footer>
   );
 };
@@ -186,4 +218,16 @@ const Footer = styled.div.attrs({
 
 const StyledButtonText = styled(ButtonText).attrs({
   className: 'w-full tablet:w-max',
+})``;
+
+const ModalContent = styled.div.attrs({
+  className: 'flex flex-col space-y-4 p-4',
+})``;
+
+const MessageText = styled.p.attrs({
+  className: 'text-ui-800 text-center text-base leading-relaxed',
+})``;
+
+const CloseButton = styled(ButtonText).attrs({
+  className: 'w-full',
 })``;

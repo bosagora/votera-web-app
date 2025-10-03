@@ -1282,7 +1282,12 @@
       "title": "Vote",
       "description": "Approve the transaction to vote."
     },
-    "buttonLabelSuccess": "Go to proposal"
+    "buttonLabelSuccess": "Go to proposal",
+    "notVoterModal": {
+      "title": "Cannot Vote",
+      "message": "The selected wallet is not a validator voting key and cannot participate in voting",
+      "closeButton": "Close"
+    }
   },
   "executionWidget": {
     "title": "Withdrawal request",
