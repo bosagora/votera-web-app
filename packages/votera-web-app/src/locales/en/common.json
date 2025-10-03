@@ -1283,12 +1283,12 @@
       "description": "Approve the transaction to vote."
     },
     "buttonLabelSuccess": "Go to proposal",
-    "notVoterAlert": "Only validator voting wallets can participate in voting.",
+    "notVoterAlert": "Only registered validators' voting wallets can participate in voting.",
     "notVoterAlertLink": "Learn more",
     "notVoterAlertLinkURL": "https://docs.bosagora.org/en/votera/voting-key",
     "notVoterModal": {
       "title": "Cannot Vote",
-      "message": "The selected wallet is not a validator voting wallet and cannot participate in voting",
+      "message": "The selected wallet is not a registered validator's voting wallet and cannot participate in voting",
       "closeButton": "Close"
     }
   },
