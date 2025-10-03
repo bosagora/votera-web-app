@@ -73,6 +73,12 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
             <div className="p-4 bg-white rounded-lg border">
               <div className="space-y-3">
                 {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
+                {!isVoter && (
+                  <AlertInline 
+                    label={t('voteWidget.notVoterAlert')} 
+                    mode="neutral" 
+                  />
+                )}
                 <div className="flex flex-col gap-3">
                   {exPhase === ProposalPhaseExtended.OPENED_VOTE && (
                     <SelectVoteForm onSelect={selectVote} />
@@ -83,6 +89,7 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
                     proposalId={proposalId}
                     choice={selectedVote}
                     canVote={canVote}
+                    isVoter={isVoter}
                   />
                 </div>
               </div>

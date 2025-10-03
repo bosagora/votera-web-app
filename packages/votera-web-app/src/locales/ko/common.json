@@ -1196,6 +1196,7 @@
       "description": "트랜잭션을 승인하여 투표를 실행하세요."
     },
     "buttonLabelSuccess": "제안으로 이동",
+    "notVoterAlert": "검증자용 투표용 키를 가진 지갑만 투표에 참여할 수 있습니다",
     "notVoterModal": {
       "title": "투표 불가",
       "message": "선택된 지갑은 검증자용 투표용 키가 아니기 때문에 투표에 참여할 수 없습니다",
