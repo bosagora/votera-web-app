@@ -43,7 +43,8 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
   proposalId,
 }) => {
   const {t} = useTranslation();
-  const [selectedVote, setSelectedVote] = useState<Candidate>(Candidate.BLANK);
+  const [selectedVote, setSelectedVote] = useState<Candidate | null>(null);
+  const [hasSelected, setHasSelected] = useState(false);
   const {client} = useClient();
   const [voteSummary, setVoteSummary] = useState<Array<number>>([0, 0, 0]);
   const {address} = useWallet();
@@ -59,6 +60,7 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
 
   const selectVote = (choice: Candidate) => {
     setSelectedVote(choice);
+    setHasSelected(true);
   };
 
   return (
@@ -97,6 +99,7 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
                     choice={selectedVote}
                     canVote={canVote}
                     isVoter={isVoter}
+                    hasSelected={hasSelected}
                   />
                 </div>
               </div>
@@ -133,7 +136,8 @@ type FooterProps = Pick<
   'phase' | 'exPhase' | 'canVote' | 'isVoter'
 > & {
   proposalId: BigNumber;
-  choice: Candidate;
+  choice: Candidate | null;
+  hasSelected: boolean;
 };
 
 const WidgetFooter: React.FC<FooterProps> = ({
@@ -143,6 +147,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
   proposalId,
   choice,
   exPhase,
+  hasSelected,
 }) => {
   const {t} = useTranslation();
   const [showNotVoterModal, setShowNotVoterModal] = useState(false);
@@ -155,9 +160,11 @@ const WidgetFooter: React.FC<FooterProps> = ({
   const {handlePublishVote} = useCreateVoteContext();
 
   const handleVoteSubmit = async (
-    choice: Candidate,
+    choice: Candidate | null,
     openExpiredVote: boolean
   ) => {
+    if (!choice) return;
+    
     if (isVoter) {
       await handlePublishVote({
         proposalId: proposalId.toString(),
@@ -178,7 +185,7 @@ const WidgetFooter: React.FC<FooterProps> = ({
         label={btnLabel}
         size="large"
         onClick={() => handleVoteSubmit(choice, openExpiredVote)}
-        disabled={!canVote}
+        disabled={!canVote || !hasSelected}
       />
       <AlertInline label={t('voteWidget.voteStatusDesc')} />
       
