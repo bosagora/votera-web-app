@@ -4,6 +4,7 @@ import {
   ButtonText,
   IconAdd,
   IconLinkExternal,
+  Link,
 } from 'votera-ui-components';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -74,10 +75,16 @@ export const StageVoteWidget: React.FC<VoteWidgetProps> = ({
               <div className="space-y-3">
                 {/* <p className="text-lg font-bold text-ui-800">투표하기</p> */}
                 {!isVoter && (
-                  <AlertInline 
-                    label={t('voteWidget.notVoterAlert')} 
-                    mode="neutral" 
-                  />
+                  <NotVoterAlertWrapper>
+                    <AlertMessage>
+                      {t('voteWidget.notVoterAlert')}{' '}
+                      <Link
+                        label={t('voteWidget.notVoterAlertLink')}
+                        href={t('voteWidget.notVoterAlertLinkURL')}
+                        iconRight={<IconLinkExternal />}
+                      />
+                    </AlertMessage>
+                  </NotVoterAlertWrapper>
                 )}
                 <div className="flex flex-col gap-3">
                   {exPhase === ProposalPhaseExtended.OPENED_VOTE && (
@@ -238,3 +245,29 @@ const MessageText = styled.p.attrs({
 const CloseButton = styled(ButtonText).attrs({
   className: 'w-full',
 })``;
+
+const NotVoterAlertWrapper = styled.div.attrs({
+  className: 'w-full p-3 bg-blue-50 border border-blue-200 rounded-lg',
+})``;
+
+const AlertMessage = styled.div.attrs({
+  className: 'flex items-center gap-2 text-sm text-ui-600',
+})`
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #003da5;
+    text-decoration: none;
+    font-weight: 500;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+    
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+`;
