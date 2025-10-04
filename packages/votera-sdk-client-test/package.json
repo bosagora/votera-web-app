@@ -21,6 +21,7 @@
     "01-getVoters": "npx ts-node scripts/01-proposal/getVoters.ts",
     "01-getProposal": "npx ts-node scripts/01-proposal/getProposal.ts",
     "01-getProposalLength": "npx ts-node scripts/01-proposal/getProposalLength.ts",
+    "01-getProposalList": "npx ts-node scripts/01-proposal/getProposalList.ts",
     "01-getProposalStates": "npx ts-node scripts/01-proposal/getProposalStates.ts",
     "02-postScore": "npx ts-node scripts/02-assessment/postScore.ts",
     "02-getScoreSummary": "npx ts-node scripts/02-assessment/getScoreSummary.ts",
