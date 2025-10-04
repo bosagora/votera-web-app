@@ -292,6 +292,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
 
     public async getProposalList(startIndex: number, endIndex: number, sortType: SortType): Promise<ProposalData[]> {
         try {
+            const length = await this.getReceptionController().getLength();
+            if (length.toNumber() === 0) return [];
             const res = await this.getReceptionController().getProposalList(startIndex, endIndex, sortType);
             return await Promise.all(res.map(async (m) => await this.toProposalData(m)));
         } catch (error) {
@@ -513,6 +515,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<ScoreData[]> {
         try {
+            const length = await this.getScoreLength(proposalId);
+            if (length === 0) return [];
             const res = await this.getAssessmentController().getScoreList(proposalId, startIndex, endIndex, sortType);
             return res.map((m) => this.toIAssessmentBallotData(m));
         } catch (error) {
@@ -568,6 +572,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<CommentData[]> {
         try {
+            const length = await this.getCommentLength(proposalId);
+            if (length === 0) return [];
             const res = await this.getAssessmentController().getCommentList(proposalId, startIndex, endIndex, sortType);
             return res.map((m) => this.toICommentDataOfAssessment(m));
         } catch (error) {
@@ -680,6 +686,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<VoteBallotData[]> {
         try {
+            const length = await this.getBallotLength(proposalId);
+            if (length === 0) return [];
             const res = await this.getVoteController().getBallotList(proposalId, startIndex, endIndex, sortType);
             return await Promise.all(res.map((m) => this.toIVoteBallotData(m)));
         } catch (error) {
@@ -703,6 +711,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<string[]> {
         try {
+            const length = await this.getVoterLength(proposalId);
+            if (length === 0) return [];
             return await this.getVoteController().getVoterList(proposalId, startIndex, endIndex, sortType);
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
@@ -933,6 +943,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<string[]> {
         try {
+            const length = await this.getEvaluatorLength(proposalId);
+            if (length === 0) return [];
             return await this.getVoteController().getEvaluatorList(proposalId, startIndex, endIndex, sortType);
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
@@ -1067,6 +1079,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<EvaluationData[]> {
         try {
+            const length = await this.getEvaluatorLength(proposalId);
+            if (length === 0) return [];
             const evaluations: EvaluationData[] = [];
             const evaluators = await this.getEvaluatorList(proposalId, startIndex, endIndex, sortType);
             for (const evaluator of evaluators) {
@@ -1101,6 +1115,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<VoteBallotData[]> {
         try {
+            const length = await this.getVoterLength(proposalId);
+            if (length === 0) return [];
             const ballots: VoteBallotData[] = [];
             const voters = await this.getVoterList(proposalId, startIndex, endIndex, sortType);
             for (const voter of voters) {
@@ -1137,6 +1153,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
      */
     public async getVoterListOfManager(startIndex: number, endIndex: number, sortType: SortType): Promise<string[]> {
         try {
+            const length = await this.getVoterLengthOfManager();
+            if (length === 0) return [];
             const values = await this.getParticipantManager().getParticipantList(startIndex, endIndex, sortType);
             return values.map((m) => m.voter);
         } catch (error) {
@@ -1169,6 +1187,8 @@ export class ClientMethods extends ClientCore implements IClientMethods {
         sortType: SortType
     ): Promise<string[]> {
         try {
+            const length = await this.getEvaluatorLengthOfManager();
+            if (length === 0) return [];
             return await this.getEvaluatorManager().getMemberList(startIndex, endIndex, sortType);
         } catch (error) {
             const message = ResponseMessage.getEVMErrorMessage(error);
